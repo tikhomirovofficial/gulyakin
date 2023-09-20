@@ -1,0 +1,98 @@
+.header {
+  .logoText {
+    p {
+      font-size: 1.3rem;
+    }
+
+    .city {
+      color: #FB634D;
+      font-size: 1.4rem;
+    }
+
+  }
+
+  nav {
+    .item {
+      font-size: 1.3rem;
+
+    }
+  }
+
+  .right {
+    b {
+      font-size: 1.6rem;
+    }
+
+    .profileBtn {
+      transition: .2s color;
+      path {
+        transition: .2s fill;
+      }
+      svg {
+        transition: .2s transform;
+      }
+      &:hover {
+        color: #FB634D;
+        svg {
+          transform: scale(1.1);
+        }
+        path {
+          fill: #FB634D;
+        }
+
+      }
+    }
+
+    .cartBtn {
+      transition: .2s color;
+      svg {
+        path {
+          transition: .2s fill, .2s stroke, .2s transform;
+        }
+      }
+
+    }
+    .cartBtnUnfilled {
+      &:hover {
+        color: #FB634D;
+        svg {
+
+          path:nth-child(1) {
+            stroke: #FB634D;
+          }
+          path:nth-child(2) {
+            stroke: #FB634D;
+            transform: translateY(-3px);
+          }
+          path:nth-child(3), path:nth-child(4){
+            stroke: #FB634D;
+          }
+        }
+      }
+    }
+    .cartBtnFilled {
+      svg {
+        path:nth-child(1) {
+          fill: black;
+        }
+        path:nth-child(3), path:nth-child(4){
+          stroke: white;
+        }
+      }
+      &:hover {
+        color: #FB634D;
+        svg {
+
+          path:nth-child(1) {
+            fill: #FB634D;
+            stroke: #FB634D;
+          }
+          path:nth-child(2) {
+            stroke: #FB634D;
+            transform: translateY(-3px);
+          }
+        }
+      }
+    }
+  }
+}

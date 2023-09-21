@@ -8,13 +8,74 @@
       color: #FB634D;
       font-size: 1.4rem;
     }
+    .geoPopup {
+      border-radius: 6px;
+      padding: 2rem 2.8rem;
+      width: 20rem;
+      left: -2rem;
+      b, p {
+        font-size: 1.6rem;
+      }
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
+      top: calc(100% + 1rem);
+    }
+    .selectCity {
+
+      .item {
+        cursor: pointer;
+
+      }
+      .checkedItem {
+        p {
+          font-weight: 700;
+        }
+      }
+    }
+    .yourCity {
+      .btn {
+        font-size: 1.4rem;
+        padding: .4rem .4rem;
+        min-width: 7.5rem;
+      }
+    }
 
   }
 
   nav {
+    width: 78rem;
+
     .item {
       font-size: 1.3rem;
 
+      &::after {
+        visibility: hidden;
+        opacity: 0;
+        transition: .3s visibility, .3s opacity, .3s width;
+        content: "";
+        top: calc(100% + .3rem);
+        height: 2px;
+        width: 1px;
+        position: absolute;
+        background: black;
+        left: 0;
+
+      }
+      .text {
+        transition: .3s font-weight;
+        min-width: calc(100% + 1rem);
+      }
+
+      &:hover {
+        &::after {
+          visibility: visible;
+          opacity: 1;
+          width: calc(100% + .5rem);
+        }
+        .text {
+          font-weight: 700;
+        }
+
+      }
     }
   }
 
@@ -92,6 +153,102 @@
             transform: translateY(-3px);
           }
         }
+      }
+    }
+  }
+}
+.promo {
+  background: #FAFAFA;
+  .logos {
+    .item {
+      width: 14.5rem;
+      border-radius: 4px;
+      height: 10.5rem;
+      background: white;
+      transition: .3s background;
+      svg {
+        path {
+          transition: .3s fill, .3s stroke;
+        }
+      }
+      &:hover {
+        background: #FB634D;
+        svg {
+          path {
+            fill: white;
+            stroke: white;
+          }
+        }
+      }
+    }
+
+  }
+  .promos {
+    .container {
+      .item {
+        overflow: hidden;
+        background: white;
+        width: 32rem;
+        min-height: 18.3rem;
+        border-radius: 4px;
+        border: 1px solid #FAFAFA;
+        transition: .3s border;
+        .image {
+          height: 11rem;
+          background-position: center;
+        }
+        .info {
+          h3 {
+            font-size: 2rem;
+          }
+          p {
+            font-size: 1.2rem;
+          }
+          svg {
+            transition: .3s transform;
+            path {
+              transition: .3s fill;
+            }
+          }
+        }
+        &:hover {
+          border: 1px solid #FB634D;
+          svg {
+            transform: translateX(5px);
+            path {
+              fill: #FB634D;
+            }
+          }
+        }
+
+      }
+    }
+    .arrowWrapper {
+      visibility: hidden;
+      background: rebeccapurple;
+      .arrow {
+        height: 4rem;
+        width: 4rem;
+        background: white;
+        border-radius: 50%;
+      }
+    }
+  }
+
+}
+.middleBar {
+
+  .block {
+    .restaurants {
+      .btn {
+        border-radius: 4px;
+        padding: 0 1.5rem;
+        height: 4.5rem;
+        font-size: 1.4rem;
+        background: linear-gradient(94deg, #FBF7F4 0%, #FCFBFB 99.45%);
+      }
+      .search {
+        height: 4.5rem;
       }
     }
   }

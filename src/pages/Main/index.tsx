@@ -4,11 +4,11 @@ import {
     ArrowMiniRightIcon,
     ArrowRight,
     CartIcon,
-    CheckedMark,
+    CheckedMark, CreatedLogo,
     FoodHallLogo, FoodPancakesLogo, Geo,
     GulenkiPelmeniLogo, GulibuliLogo, GustoLogo, IFoodLogo,
     Logo,
-    ProfileIcon, SearchIcon, ShrimpLogo, VorobushekLogo
+    ProfileIcon, SearchIcon, ShrimpLogo, VkIcon, VorobushekLogo
 } from "../../icons";
 import styles from './main.module.scss'
 import {getImgPath} from "../../utils/getAssetsPath";
@@ -355,14 +355,80 @@ const Main: FC = () => {
                         <div className="block f-column gap-40">
                             <div className={`${styles.categoryBlock} f-column gap-20`}>
                                 <h2 className="sectionTitle">Пельмени</h2>
-                                <div className="jc-between d-f gap-25">
+                                <div className="jc-between d-f gap-25 flex-wrap">
+                                    <div className={`${styles.product} f-column gap-15`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}></div>
+                                        <h3>Пельмени домашние</h3>
+                                        <div className="d-f jc-between gap-25">
+                                            <p>Свинина, говядина</p>
+                                            <div className={`${styles.weight} txt-right`}>250 г</div>
+                                        </div>
+                                        <div className="f-row-betw">
+                                            <h4>350 Р</h4>
+                                            <RedButton className={styles.btn}>
+                                                В корзину
+                                            </RedButton>
+                                        </div>
+
+                                    </div>
                                     <div className={`${styles.product} f-column gap-15`}>
                                         <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
 
                                         </div>
                                         <h3>Пельмени домашние</h3>
-                                        <div className="d-f jc-between gap-25">
-                                            <p>Свинина, говядина</p>
+                                        <div className="f-1 d-f jc-between gap-25">
+                                            <p>Свинина, говядина </p>
+                                            <div className={`${styles.weight} txt-right`}>250 г</div>
+                                        </div>
+                                        <div className="f-row-betw">
+                                            <h4>350 Р</h4>
+                                            <RedButton className={styles.btn}>
+                                                В корзину
+                                            </RedButton>
+                                        </div>
+
+                                    </div>
+                                    <div className={`${styles.product} f-column gap-15`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
+
+                                        </div>
+                                        <h3>Пельмени домашние</h3>
+                                        <div className="f-1 d-f jc-between gap-25">
+                                            <p>Свинина, говядина </p>
+                                            <div className={`${styles.weight} txt-right`}>250 г</div>
+                                        </div>
+                                        <div className="f-row-betw">
+                                            <h4>350 Р</h4>
+                                            <RedButton className={styles.btn}>
+                                                В корзину
+                                            </RedButton>
+                                        </div>
+
+                                    </div>
+                                    <div className={`${styles.product} f-column gap-15`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
+
+                                        </div>
+                                        <h3>Пельмени домашние</h3>
+                                        <div className="f-1 d-f jc-between gap-25">
+                                            <p>Свинина, говядина </p>
+                                            <div className={`${styles.weight} txt-right`}>250 г</div>
+                                        </div>
+                                        <div className="f-row-betw">
+                                            <h4>350 Р</h4>
+                                            <RedButton className={styles.btn}>
+                                                В корзину
+                                            </RedButton>
+                                        </div>
+
+                                    </div>
+                                    <div className={`${styles.product} f-column gap-15`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
+
+                                        </div>
+                                        <h3>Пельмени домашние</h3>
+                                        <div className="f-1 d-f jc-between gap-25">
+                                            <p>Свинина, говядина </p>
                                             <div className={`${styles.weight} txt-right`}>250 г</div>
                                         </div>
                                         <div className="f-row-betw">
@@ -427,12 +493,10 @@ const Main: FC = () => {
                                 </div>
                             </div>
                             <div className={`${styles.categoryBlock} f-column gap-20`}>
-                                <h2 className="sectionTitle">Пельмени</h2>
-                                <div className="jc-between d-f gap-25">
+                                <h2 className="sectionTitle">Вареники</h2>
+                                <div className="jc-between d-f gap-25 flex-wrap">
                                     <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}></div>
                                         <h3>Пельмени домашние</h3>
                                         <div className="d-f jc-between gap-25">
                                             <p>Свинина, говядина</p>
@@ -497,13 +561,144 @@ const Main: FC = () => {
                                         </div>
 
                                     </div>
+                                    <div className={`${styles.product} f-column gap-15`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
+
+                                        </div>
+                                        <h3>Пельмени домашние</h3>
+                                        <div className="f-1 d-f jc-between gap-25">
+                                            <p>Свинина, говядина </p>
+                                            <div className={`${styles.weight} txt-right`}>250 г</div>
+                                        </div>
+                                        <div className="f-row-betw">
+                                            <h4>350 Р</h4>
+                                            <RedButton className={styles.btn}>
+                                                В корзину
+                                            </RedButton>
+                                        </div>
+
+                                    </div>
+                                    <div className={`${styles.product} f-column gap-15`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
+
+                                        </div>
+                                        <h3>Пельмени домашние</h3>
+                                        <div className="f-1 d-f jc-between gap-25">
+                                            <p>Свинина, говядина </p>
+                                            <div className={`${styles.weight} txt-right`}>250 г</div>
+                                        </div>
+                                        <div className="f-row-betw">
+                                            <h4>350 Р</h4>
+                                            <RedButton className={styles.btn}>
+                                                В корзину
+                                            </RedButton>
+                                        </div>
+
+                                    </div>
+                                    <div className={`${styles.product} f-column gap-15`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
+
+                                        </div>
+                                        <h3>Пельмени домашние</h3>
+                                        <div className="f-1 d-f jc-between gap-25">
+                                            <p>Свинина, говядина </p>
+                                            <div className={`${styles.weight} txt-right`}>250 г</div>
+                                        </div>
+                                        <div className="f-row-betw">
+                                            <h4>350 Р</h4>
+                                            <RedButton className={styles.btn}>
+                                                В корзину
+                                            </RedButton>
+                                        </div>
+
+                                    </div>
+                                    <div className={`${styles.product} f-column gap-15`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
+
+                                        </div>
+                                        <h3>Пельмени домашние</h3>
+                                        <div className="f-1 d-f jc-between gap-25">
+                                            <p>Свинина, говядина </p>
+                                            <div className={`${styles.weight} txt-right`}>250 г</div>
+                                        </div>
+                                        <div className="f-row-betw">
+                                            <h4>350 Р</h4>
+                                            <RedButton className={styles.btn}>
+                                                В корзину
+                                            </RedButton>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
                 </div>
             </div>
+            <footer className={`${styles.footer} pd-40-0`}>
+                <div className="wrapper">
+                    <div className="block gap-40 f-column">
+                        <nav className={"d-f jc-between"}>
+                            <div className={`${styles.navColumn} f-column gap-10`}>
+                                <Logo className={styles.logo}/>
+                                <Link className={styles.navItem} to={"/"}>О нас</Link>
+                            </div>
+                            <div className={`${styles.navColumn} f-column gap-10`}>
+                                <b className={styles.navItem}>Работа</b>
+                                <Link className={styles.navItem} to={"/"}>В Гулякин <br/> Фудхолл</Link>
+                                <Link className={styles.navItem} to={"/"}>В Гуленьки <br/> Пельменная</Link>
+                                <Link className={styles.navItem} to={"/"}>В iFood</Link>
+                                <Link className={styles.navItem} to={"/"}>В Воробушек</Link>
+                                <Link className={styles.navItem} to={"/"}>В Gusto</Link>
+                                <Link className={styles.navItem} to={"/"}>В Креветочная</Link>
+                                <Link className={styles.navItem} to={"/"}>В Гулибули</Link>
+                            </div>
+                            <div className={`${styles.navColumn} f-column gap-10`}>
+                                <b className={styles.navItem}>Партнёрам</b>
+                                <Link className={styles.navItem} to={"/"}>Инвестиции</Link>
+                                <Link className={styles.navItem} to={"/"}>Поставщикам</Link>
+                                <Link className={styles.navItem} to={"/"}>Предложить помещение</Link>
+                            </div>
+                            <div className={`${styles.navColumn} f-column gap-10`}>
+                                <b className={styles.navItem}>Документы</b>
+                                <Link className={styles.navItem} to={"/"}>Политика конфиденциальности</Link>
+                                <Link className={styles.navItem} to={"/"}>Пользовательское соглашение</Link>
+                                <Link className={styles.navItem} to={"/"}>Соглашение на обработку ПД</Link>
+                                <Link className={styles.navItem} to={"/"}>Правила программы лояльности</Link>
+                            </div>
+                            <div className={`${styles.navColumn} f-column gap-10`}>
+                                <b className={styles.navItem}>Контакты</b>
+                                <a className={styles.navItem} href="">mail@mail.ru</a>
+                                <a className={styles.navItem} href="">+7 (495) 345-64-54</a>
+                                <div className={`${styles.socials} d-f gap-10`}>
+                                    <a href="" className={`${styles.item} f-c-col`}>
+                                        <VkIcon/>
+                                    </a>
+                                    <a href="" className={`${styles.item} f-c-col`}>
+                                        <VkIcon/>
+                                    </a>
+                                    <a href="" className={`${styles.item} f-c-col`}>
+                                        <VkIcon/>
+                                    </a>
+                                </div>
+                            </div>
+                        </nav>
+                        <div className="f-row-betw">
+                            <div className={styles.copyright}>
+                                <p>© 2023 ООО «Гулякин»</p>
+                                <p>ОГРН 1234567899116, ИНН 3589065840</p>
+                                <p> 162606, Ханты-Мансийский автономный округ, г. Сургут, ул. Энергетиков, д. 4</p>
+                            </div>
+                            <div className={styles.created}>
+                                <p>Создание сайта</p>
+                                <CreatedLogo/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
 
         </>
 

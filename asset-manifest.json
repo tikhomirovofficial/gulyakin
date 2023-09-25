@@ -1,13 +1,16 @@
 {
   "files": {
-    "main.css": "/gulyakin/static/css/main.e841a76a.css",
-    "main.js": "/gulyakin/static/js/main.a3b29506.js",
+    "main.css": "/gulyakin/static/css/main.056d2f53.css",
+    "main.js": "/gulyakin/static/js/main.76140d71.js",
+    "static/media/TTChocolatesBoldItalic.ttf": "/gulyakin/static/media/TTChocolatesBoldItalic.0f35c86956703d013403.ttf",
+    "static/media/TTChocolatesRegular.ttf": "/gulyakin/static/media/TTChocolatesRegular.684a862f75c4fda12833.ttf",
+    "static/media/TTChocolatesBold.ttf": "/gulyakin/static/media/TTChocolatesBold.789ec589192a119d87d8.ttf",
     "index.html": "/gulyakin/index.html",
-    "main.e841a76a.css.map": "/gulyakin/static/css/main.e841a76a.css.map",
-    "main.a3b29506.js.map": "/gulyakin/static/js/main.a3b29506.js.map"
+    "main.056d2f53.css.map": "/gulyakin/static/css/main.056d2f53.css.map",
+    "main.76140d71.js.map": "/gulyakin/static/js/main.76140d71.js.map"
   },
   "entrypoints": [
-    "static/css/main.e841a76a.css",
-    "static/js/main.a3b29506.js"
+    "static/css/main.056d2f53.css",
+    "static/js/main.76140d71.js"
   ]
 }

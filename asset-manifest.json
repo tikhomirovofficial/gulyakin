@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/gulyakin/static/css/main.53277e93.css",
-    "main.js": "/gulyakin/static/js/main.76140d71.js",
+    "main.css": "/gulyakin/static/css/main.5b691959.css",
+    "main.js": "/gulyakin/static/js/main.45839e9a.js",
     "static/media/TTChocolatesBoldItalic.ttf": "/gulyakin/static/media/TTChocolatesBoldItalic.0f35c86956703d013403.ttf",
     "static/media/TTChocolatesRegular.ttf": "/gulyakin/static/media/TTChocolatesRegular.684a862f75c4fda12833.ttf",
     "static/media/TTChocolatesBold.ttf": "/gulyakin/static/media/TTChocolatesBold.789ec589192a119d87d8.ttf",
     "index.html": "/gulyakin/index.html",
-    "main.53277e93.css.map": "/gulyakin/static/css/main.53277e93.css.map",
-    "main.76140d71.js.map": "/gulyakin/static/js/main.76140d71.js.map"
+    "main.5b691959.css.map": "/gulyakin/static/css/main.5b691959.css.map",
+    "main.45839e9a.js.map": "/gulyakin/static/js/main.45839e9a.js.map"
   },
   "entrypoints": [
-    "static/css/main.53277e93.css",
-    "static/js/main.76140d71.js"
+    "static/css/main.5b691959.css",
+    "static/js/main.45839e9a.js"
   ]
 }

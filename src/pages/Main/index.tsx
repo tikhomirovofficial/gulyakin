@@ -17,6 +17,8 @@ import GrayButton from "../../components/Buttons/GrayButton";
 import GrayBorderedBlock from "../../components/GrayBorderedBlock";
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import SearchInput from "../../components/Inputs/SearchInput";
+import List from "../../components/List";
+import Product from "../../components/Catalog/Product";
 
 const logosIsMax = true
 const cityIsDefined = true
@@ -146,28 +148,28 @@ const Main: FC = () => {
                     <div className="block f-column gap-30">
                         <div className={`${styles.logos} ${logosIsMax ? "jc-between" : "jc-around"}  d-f gap-20`}>
 
-                            <div className={`${styles.item} f-c-col `}>
+                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
                                 <FoodHallLogo/>
                             </div>
-                            <div className={`${styles.item} f-c-col `}>
+                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
                                 <GulenkiPelmeniLogo/>
                             </div>
-                            <div className={`${styles.item} f-c-col `}>
+                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
                                 <FoodPancakesLogo/>
                             </div>
-                            <div className={`${styles.item} f-c-col `}>
+                            <div className={`${styles.item} ${styles.neededFill} ${styles.neededIfood} f-c-col `}>
                                 <IFoodLogo/>
                             </div>
-                            <div className={`${styles.item} f-c-col `}>
+                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
                                 <VorobushekLogo/>
                             </div>
-                            <div className={`${styles.item} f-c-col `}>
+                            <div className={`${styles.item} ${styles.neededGusto} f-c-col `}>
                                 <GustoLogo/>
                             </div>
-                            <div className={`${styles.item} f-c-col `}>
+                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
                                 <ShrimpLogo/>
                             </div>
-                            <div className={`${styles.item} f-c-col `}>
+                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
                                 <GulibuliLogo/>
                             </div>
 
@@ -237,8 +239,8 @@ const Main: FC = () => {
                 </div>
 
             </div>
-            <div className="main f-column gap-20">
-                <div className={`${styles.middleBar} pd-30-0`}>
+            <div className={`${styles.main} f-column gap-20`}>
+                <div className={`pd-30-0`}>
                     <div className="wrapper">
                         <div className={`${styles.block} f-column gap-25`}>
                             <div className={`${styles.restaurants} d-f jc-between gap-30`}>
@@ -274,16 +276,15 @@ const Main: FC = () => {
                                     </div>
                                     <div className="w-100p d-f gap-10">
                                         <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Напитки</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Десерты</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>fdfffdfdf</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Вареники</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Супы</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Салаты</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Сытные блины</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Сладкие блины</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Картошка</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Креветки и мидии</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Правильные салаты</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Правильные горячие блюда</GrayBorderedBlock>
                                         <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
                                     </div>
 
@@ -300,7 +301,7 @@ const Main: FC = () => {
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
                                             <h4>Пельмени с говядиной</h4>
-                                            <p>от 319Р</p>
+                                            <p>от 319 ₽</p>
                                         </div>
 
                                     </div>
@@ -310,7 +311,7 @@ const Main: FC = () => {
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
                                             <h4>Пельмени с говядиной</h4>
-                                            <p>от 319Р</p>
+                                            <p>от 319 ₽</p>
                                         </div>
 
                                     </div>
@@ -320,7 +321,7 @@ const Main: FC = () => {
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
                                             <h4>Пельмени с говядиной</h4>
-                                            <p>от 319Р</p>
+                                            <p>от 319 ₽</p>
                                         </div>
 
                                     </div>
@@ -330,7 +331,7 @@ const Main: FC = () => {
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
                                             <h4>Пельмени с говядиной</h4>
-                                            <p>от 319Р</p>
+                                            <p>от 319 ₽</p>
                                         </div>
 
                                     </div>
@@ -340,302 +341,26 @@ const Main: FC = () => {
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
                                             <h4>Пельмени с говядиной</h4>
-                                            <p>от 319Р</p>
+                                            <p>от 319 ₽</p>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
+                            <div className={styles.catalog}>
+                                    <div className="block f-column gap-40">
+                                        <div className={`${styles.categoryBlock} f-column gap-20`}>
+                                            <h2 className="sectionTitle">Пельмени</h2>
+                                            <List listBlockClassname={"jc-between d-f flex-wrap gap-20"} list={Array(8).fill(null)}
+                                                  renderItem={() => <Product name={"Пельмени домашние"} composition={"Свинина, говядина"} weight={250} price={350}/>}/>
+                                        </div>
 
+                                    </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className={styles.catalog}>
-                    <div className="wrapper">
-                        <div className="block f-column gap-40">
-                            <div className={`${styles.categoryBlock} f-column gap-20`}>
-                                <h2 className="sectionTitle">Пельмени</h2>
-                                <div className="jc-between d-f gap-25 flex-wrap">
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}></div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="d-f jc-between gap-25">
-                                            <p>Свинина, говядина</p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
 
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={`${styles.categoryBlock} f-column gap-20`}>
-                                <h2 className="sectionTitle">Вареники</h2>
-                                <div className="jc-between d-f gap-25 flex-wrap">
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}></div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="d-f jc-between gap-25">
-                                            <p>Свинина, говядина</p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.product} f-column gap-15`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
-
-                                        </div>
-                                        <h3>Пельмени домашние</h3>
-                                        <div className="f-1 d-f jc-between gap-25">
-                                            <p>Свинина, говядина </p>
-                                            <div className={`${styles.weight} txt-right`}>250 г</div>
-                                        </div>
-                                        <div className="f-row-betw">
-                                            <h4>350 Р</h4>
-                                            <RedButton className={styles.btn}>
-                                                В корзину
-                                            </RedButton>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
             </div>
             <footer className={`${styles.footer} pd-40-0`}>
                 <div className="wrapper">

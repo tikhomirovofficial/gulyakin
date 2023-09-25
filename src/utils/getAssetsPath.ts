@@ -1,3 +1,3 @@
-const getImgPath = (img: string) => `/assets/img/${img}`;
+const getImgPath = (img: string) => `./assets/img/${img}`;
 
 export { getImgPath };

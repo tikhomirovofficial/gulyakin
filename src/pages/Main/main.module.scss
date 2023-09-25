@@ -1,12 +1,12 @@
 .header {
   .logoText {
     p {
-      font-size: 1.3rem;
+      font-size: 1.6rem;
     }
 
     .city {
       color: #FB634D;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
     }
     .geoPopup {
       border-radius: 6px;
@@ -33,7 +33,7 @@
     }
     .yourCity {
       .btn {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
         padding: .4rem .4rem;
         min-width: 7.5rem;
       }
@@ -42,10 +42,10 @@
   }
 
   nav {
-    width: 78rem;
+    width: 66.1rem;
 
     .item {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
 
       &::after {
         visibility: hidden;
@@ -106,6 +106,7 @@
 
     .cartBtn {
       transition: .2s color;
+
       svg {
         path {
           transition: .2s fill, .2s stroke, .2s transform;
@@ -171,13 +172,52 @@
           transition: .3s fill, .3s stroke;
         }
       }
+
+    }
+    .neededStroke {
+      &:hover {
+        background: #FB634D;
+        svg {
+          path {
+            stroke: white;
+          }
+        }
+      }
+    }
+    .neededFill {
       &:hover {
         background: #FB634D;
         svg {
           path {
             fill: white;
-            stroke: white;
           }
+        }
+      }
+    }
+    .neededIfood {
+      &:hover {
+        background: #FB634D;
+        svg {
+          g {
+            path {
+              fill: white;
+              stroke: white;
+            }
+          }
+
+        }
+      }
+    }
+    .neededGusto {
+      &:hover {
+        background: #FB634D;
+        svg {
+          g {
+            path {
+              fill: white;
+            }
+          }
+
         }
       }
     }
@@ -202,7 +242,7 @@
             font-size: 2rem;
           }
           p {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
           }
           svg {
             transition: .3s transform;
@@ -236,7 +276,7 @@
   }
 
 }
-.middleBar {
+.main {
 
   .block {
     .restaurants {
@@ -247,10 +287,11 @@
         background: linear-gradient(90deg, #F5F3F2 0.04%, #F5F3F2 48.98%, #F5F3F2 100%);
         .backgrounds {
           width: 55%;
+          mix-blend-mode: darken;
         }
         .text {
           transform: rotate(-7.5deg);
-          font-size: 1.4rem;
+          font-size: 1.6rem;
           font-style: italic;
           font-weight: 700;
           p:last-child {
@@ -271,14 +312,22 @@
       }
     }
     .menuCategories {
+      position: sticky;
+      z-index: 3;
+      padding: 1.5rem 0;
+      background: rgba(255, 255, 255, 0.9);
+      top: 0;
+      backdrop-filter: blur(10px);
       .shadowRight {
         width: 7.8rem;
         height: 3.4rem;
         background: linear-gradient(270deg, #FFF 0%, rgba(254, 254, 254, 0.62) 44.79%, rgba(252, 252, 252, 0.28) 79.17%, rgba(217, 217, 217, 0.00) 100%);
       }
-      padding: .9rem 0;
+
       .item {
         padding: .7rem 2rem;
+        white-space: nowrap;
+        background: white;
         cursor: pointer;
         transition: .3s border, .3s box-shadow;
         &:hover{
@@ -315,7 +364,8 @@
 
         }
         h4 {
-
+          font-size: 1.6rem;
+          line-height: 1;
         }
       }
     }
@@ -327,15 +377,19 @@
 
       h3 {
         color: #494949;
-        font-size: 2.1rem;
+        font-size: 2.4rem;
       }
       p, .weight{
-        font-size: 1.4rem;
+        font-size: 1.6rem;
       }
       .weight{
         min-width: 4.6rem;
       }
-
+      .count {
+        font-size: 2.4rem;
+        min-width: 3rem;
+        text-align: center;
+      }
       .img {
         border-radius: 6px;
         height: 26rem;
@@ -346,7 +400,9 @@
       min-height: 37.7rem;
       width: 31rem;
       .btn {
-        font-size: 1.8rem;
+        font-size: 2rem;
+        font-family: "TT Chocolates", sans-serif;
+
       }
     }
   }
@@ -360,8 +416,9 @@
     padding-bottom: 4rem;
     .navItem {
       font-size: 1.8rem;
-      max-width: 20rem;
+      max-width: 18rem;
     }
+
     .navColumn:last-child {
       flex: 1;
     }

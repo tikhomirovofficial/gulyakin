@@ -3,8 +3,12 @@
   color: white;
   background: #FB634D;
   font-weight: 700;
-  transition: .3s background;
+  transition: .3s filter;
   padding: .8rem 2.7rem;
   cursor: pointer;
   font-size: 2rem;
+
+  &:hover {
+    filter: brightness(95%);
+  }
 }

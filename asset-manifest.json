@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/gulyakin/static/css/main.e841a76a.css",
+    "main.js": "/gulyakin/static/js/main.57d59d9f.js",
+    "index.html": "/gulyakin/index.html",
+    "main.e841a76a.css.map": "/gulyakin/static/css/main.e841a76a.css.map",
+    "main.57d59d9f.js.map": "/gulyakin/static/js/main.57d59d9f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e841a76a.css",
+    "static/js/main.57d59d9f.js"
+  ]
+}

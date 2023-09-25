@@ -10,7 +10,8 @@ function App() {
 
     return (
         <div className="App">
-            <AppRoutes isAuth={false}/>
+            {/*<AppRoutes isAuth={false}/>*/}
+            <Main/>
         </div>
     );
 }

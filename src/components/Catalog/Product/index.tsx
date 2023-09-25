@@ -13,8 +13,9 @@ interface ProductProps {
 }
 
 
-const Product: FC<ProductProps> = ({name, inCart = true, composition, weight, price}) => {
+const Product: FC<ProductProps> = ({name, inCart = false, composition, weight, price}) => {
     const [count, setCount] = useState<number>(1)
+    const [isInCart, setInCart] = useState<boolean>(inCart)
     const addCount = () => setCount(prev => prev + 1)
     const reduceCount = () => setCount(prev => {
         if(prev > 1) {
@@ -39,8 +40,8 @@ const Product: FC<ProductProps> = ({name, inCart = true, composition, weight, pr
             <div className="f-row-betw">
                 <h4>{price} ₽</h4>
                 {
-                    inCart ?
-                        <div className={"d-f al-center gap-5"}>
+                    isInCart ?
+                        <div  className={"d-f al-center gap-5"}>
                             <div onClick={reduceCount} className={"cur-pointer f-c-col"}><MinusIcon/></div>
 
                             <div className={styles.count}>{count}</div>
@@ -48,7 +49,8 @@ const Product: FC<ProductProps> = ({name, inCart = true, composition, weight, pr
 
                         </div>
                         :
-                        <RedButton className={styles.btn}>
+
+                        <RedButton onClick={() => setInCart(true)} className={styles.btn}>
                             В корзину
                         </RedButton>
                 }

@@ -1,9 +1,10 @@
 import React, {FC} from 'react';
-import {HasChildrenProps, HasClassName} from "../../../types/components.types";
+import {ButtonProps, HasChildrenProps, HasClassName} from "../../../types/components.types";
 import styles from './redButton.module.scss'
-const RedButton: FC<HasChildrenProps & HasClassName> = ({children, className}) => {
+
+const RedButton: FC<HasChildrenProps & HasClassName & ButtonProps> = ({children, onClick, className}) => {
     return (
-        <button className={`${className} f-c-col ${styles.button}`}>{children}</button>
+        <button onClick={onClick} className={`${className} f-c-col ${styles.button}`}>{children}</button>
     );
 };
 

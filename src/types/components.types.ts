@@ -6,3 +6,6 @@ export interface HasChildrenProps {
 export interface HasClassName {
     className?: string
 }
+export interface ButtonProps {
+    onClick?: () => void
+}

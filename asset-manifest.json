@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/gulyakin/static/css/main.e841a76a.css",
-    "main.js": "/gulyakin/static/js/main.6f8bc769.js",
+    "main.js": "/gulyakin/static/js/main.a3b29506.js",
     "index.html": "/gulyakin/index.html",
     "main.e841a76a.css.map": "/gulyakin/static/css/main.e841a76a.css.map",
-    "main.6f8bc769.js.map": "/gulyakin/static/js/main.6f8bc769.js.map"
+    "main.a3b29506.js.map": "/gulyakin/static/js/main.a3b29506.js.map"
   },
   "entrypoints": [
     "static/css/main.e841a76a.css",
-    "static/js/main.6f8bc769.js"
+    "static/js/main.a3b29506.js"
   ]
 }

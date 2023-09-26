@@ -18,7 +18,7 @@ const SearchInput: FC<HasClassName> = ({className}) => {
             <input onBlur={() => setIsFocused(false)} onFocus={() => setIsFocused(true)} value={inputVal} onChange={changeVal} className={"f-1"} type="text" placeholder={"Поиск по меню"}/>
             {
                 inputVal.length ?
-                    <div onClick={handleClearInput} className={`${styles.close} visible f-c-col`}>
+                    <div onClick={handleClearInput} className={`${styles.close} cur-pointer visible f-c-col`}>
                         <CloseIcon/>
                     </div> : null
             }

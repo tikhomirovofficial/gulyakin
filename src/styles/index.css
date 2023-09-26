@@ -22,6 +22,10 @@ html {
 * {
     font-family: 'TTChocolates', sans-serif !important;
 }
+
+main {
+    margin-top: 11rem;
+}
 .wrapper {
     max-width: 142rem;
     padding: 0 1.5rem;
@@ -31,4 +35,22 @@ html {
     font-size: 3.6rem;
     font-weight: 700;
     color: #434343;
+}
+.App {
+    padding-top: 11rem;
+}
+.closeIcon:hover {
+    transform: scale(1.07);
+    cursor: pointer;
+}
+.caption {
+
+    font-size: 1.4rem;
+}
+.caption a {
+    color: #fb634d;
+}
+.validationErr {
+    color: #FF2000;
+    font-size: 1.4rem;
 }

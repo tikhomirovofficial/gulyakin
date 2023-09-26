@@ -1,0 +1,21 @@
+.window {
+  min-width: 42rem;
+  .caption {
+    max-width: 20.7rem;
+  }
+  .changePhone {
+    color: #fb634d;
+  }
+  .codeDigitBlock {
+    height: 6.3rem;
+    padding: 0 !important;
+    width: 5.2rem;
+    input {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .codeInput {
+    font-size: 4.8rem;
+  }
+}

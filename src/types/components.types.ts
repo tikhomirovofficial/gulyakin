@@ -7,5 +7,6 @@ export interface HasClassName {
     className?: string
 }
 export interface ButtonProps {
+    disabled?: boolean
     onClick?: () => void
 }

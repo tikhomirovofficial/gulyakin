@@ -4,11 +4,20 @@ import {
     ArrowMiniRightIcon,
     ArrowRight,
     CartIcon,
-    CheckedMark, CreatedLogo,
-    FoodHallLogo, FoodPancakesLogo, Geo,
-    GulenkiPelmeniLogo, GulibuliLogo, GustoLogo, IFoodLogo,
+    CheckedMark,
+    CreatedLogo,
+    FoodHallLogo,
+    FoodPancakesLogo,
+    Geo,
+    GulenkiPelmeniLogo,
+    GulibuliLogo,
+    GustoLogo,
+    IFoodLogo,
     Logo,
-    ProfileIcon, SearchIcon, ShrimpLogo, VkIcon, VorobushekLogo
+    ProfileIcon,
+    ShrimpLogo,
+    VkIcon,
+    VorobushekLogo
 } from "../../icons";
 import styles from './main.module.scss'
 import {getImgPath} from "../../utils/getAssetsPath";
@@ -44,7 +53,8 @@ const Main: FC = () => {
                                         <ArrowMiniRightIcon height={11}/>
                                     </div>
                                     {
-                                        !cityIsDefined ? <div className={`${styles.geoPopup} ${styles.yourCity} f-column gap-15 p-abs bg-white`}>
+                                        !cityIsDefined ? <div
+                                            className={`${styles.geoPopup} ${styles.yourCity} f-column gap-15 p-abs bg-white`}>
                                             <b className={"txt-center"}>Это ваш город?</b>
                                             <div className="d-f gap-5 jc-around">
                                                 <RedButton className={styles.btn}>Да</RedButton>
@@ -54,7 +64,8 @@ const Main: FC = () => {
                                         </div> : null
                                     }
                                     {
-                                        changingGeo ? <div className={`${styles.selectCity}  ${styles.geoPopup} f-column gap-15 p-abs bg-white`}>
+                                        changingGeo ? <div
+                                            className={`${styles.selectCity}  ${styles.geoPopup} f-column gap-15 p-abs bg-white`}>
                                             <div className={`${styles.item} ${styles.checkedItem} f-row-betw`}>
                                                 <p>Сургут</p>
                                                 <CheckedMark height={11} width={11}/>
@@ -65,7 +76,7 @@ const Main: FC = () => {
                                             <div className={`${styles.item} f-row-betw`}>
                                                 <p>Нижневартовск</p>
                                             </div>
-                                        </div>  : null
+                                        </div> : null
                                     }
 
 
@@ -177,7 +188,8 @@ const Main: FC = () => {
                         <div className={`${styles.promos} w-100p p-rel`}>
                             <div className={`${styles.container} w-100 f-row-betw`}>
                                 <Link to={"/"} className={styles.item}>
-                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}} className={`${styles.image} w-100p bg-cover`}></div>
+                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}}
+                                         className={`${styles.image} w-100p bg-cover`}></div>
                                     <div className={`${styles.info} f-column gap-5 pd-20`}>
                                         <div className="f-row-betw">
                                             <h3>Акция №1</h3>
@@ -188,7 +200,8 @@ const Main: FC = () => {
                                     </div>
                                 </Link>
                                 <Link to={"/"} className={styles.item}>
-                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}} className={`${styles.image} w-100p bg-cover`}></div>
+                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}}
+                                         className={`${styles.image} w-100p bg-cover`}></div>
                                     <div className={`${styles.info} f-column gap-5 pd-20`}>
                                         <div className="f-row-betw">
                                             <h3>Акция №2</h3>
@@ -199,7 +212,8 @@ const Main: FC = () => {
                                     </div>
                                 </Link>
                                 <Link to={"/"} className={styles.item}>
-                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}} className={`${styles.image} w-100p bg-cover`}></div>
+                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}}
+                                         className={`${styles.image} w-100p bg-cover`}></div>
                                     <div className={`${styles.info} f-column gap-5 pd-20`}>
                                         <div className="f-row-betw">
                                             <h3>Акция №3</h3>
@@ -210,7 +224,8 @@ const Main: FC = () => {
                                     </div>
                                 </Link>
                                 <Link to={"/"} className={styles.item}>
-                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}} className={`${styles.image} w-100p bg-cover`}></div>
+                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}}
+                                         className={`${styles.image} w-100p bg-cover`}></div>
                                     <div className={`${styles.info} f-column gap-5 pd-20`}>
                                         <div className="f-row-betw">
                                             <h3>Акция №4</h3>
@@ -241,8 +256,8 @@ const Main: FC = () => {
             </div>
             <div className={`${styles.main} f-column gap-20`}>
                 <div className={`pd-30-0`}>
-                    <div className="wrapper">
-                        <div className={`${styles.block} f-column gap-25`}>
+                    <div className={`${styles.block} f-column gap-25`}>
+                        <div className="wrapper w-100p">
                             <div className={`${styles.restaurants} d-f jc-between gap-30`}>
                                 <div className="left d-f gap-30">
                                     <GradientGrayBtn className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
@@ -253,7 +268,7 @@ const Main: FC = () => {
 
                                 </div>
                                 <div className={`${styles.orderTrigger} f-1  p-rel`}>
-                                    <div className="p-abs w-100p h-100p top-0 left-0 d-f jc-center ">
+                                    <div className="p-abs w-100p h-100p top-0 left-0 d-f jc-center">
                                         <div className={`${styles.backgrounds} p-rel f-row-betw h-100p`}>
                                             <img className={"h-100p"} src={getImgPath("pelmeni.png")} alt=""/>
                                             <img className={"h-100p"} src={getImgPath("vilki.png")} alt=""/>
@@ -268,13 +283,15 @@ const Main: FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={`${styles.menuCategories} p-rel  of-x-hide`}>
+                        </div>
 
+                        <div className={`${styles.menuCategories}`}>
+                            <div className="wrapper p-rel">
+                                <div className={`${styles.shadowRight} h-100p p-abs right-0`}>
+
+                                </div>
                                 <div className="w-100p">
-                                    <div className={`${styles.shadowRight} h-100p p-abs right-0`}>
-
-                                    </div>
-                                    <div className="w-100p d-f gap-10">
+                                    <div className="w-100p d-f gap-10 of-y-hide scrollbar-unset">
                                         <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
                                         <GrayBorderedBlock className={styles.item}>Вареники</GrayBorderedBlock>
                                         <GrayBorderedBlock className={styles.item}>Супы</GrayBorderedBlock>
@@ -284,19 +301,25 @@ const Main: FC = () => {
                                         <GrayBorderedBlock className={styles.item}>Картошка</GrayBorderedBlock>
                                         <GrayBorderedBlock className={styles.item}>Креветки и мидии</GrayBorderedBlock>
                                         <GrayBorderedBlock className={styles.item}>Правильные салаты</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Правильные горячие блюда</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Правильные горячие
+                                            блюда</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
+                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
                                         <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
                                     </div>
 
                                 </div>
-
-
                             </div>
+
+
+                        </div>
+                        <div className="wrapper f-column gap-30 w-100p">
                             <div className={`${styles.oftenOrdered} f-column gap-10`}>
                                 <h3>Часто заказывают</h3>
                                 <div className={"f-row-betw"}>
                                     <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}} className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
@@ -306,7 +329,8 @@ const Main: FC = () => {
 
                                     </div>
                                     <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}} className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
@@ -316,7 +340,8 @@ const Main: FC = () => {
 
                                     </div>
                                     <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}} className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
@@ -326,7 +351,8 @@ const Main: FC = () => {
 
                                     </div>
                                     <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}} className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
@@ -336,7 +362,8 @@ const Main: FC = () => {
 
                                     </div>
                                     <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}} className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
                                         </div>
                                         <div className={`${styles.info} f-column gap-5 p-rel`}>
@@ -348,16 +375,20 @@ const Main: FC = () => {
                                 </div>
                             </div>
                             <div className={styles.catalog}>
-                                    <div className="block f-column gap-40">
-                                        <div className={`${styles.categoryBlock} f-column gap-20`}>
-                                            <h2 className="sectionTitle">Пельмени</h2>
-                                            <List listBlockClassname={"jc-between d-f flex-wrap gap-20"} list={Array(8).fill(null)}
-                                                  renderItem={() => <Product name={"Пельмени домашние"} composition={"Свинина, говядина"} weight={250} price={350}/>}/>
-                                        </div>
-
+                                <div className="block f-column gap-40">
+                                    <div className={`${styles.categoryBlock} f-column gap-20`}>
+                                        <h2 className="sectionTitle">Пельмени</h2>
+                                        <List listBlockClassname={"jc-between d-f flex-wrap gap-20"}
+                                              list={Array(8).fill(null)}
+                                              renderItem={() => <Product name={"Пельмени домашние"}
+                                                                         composition={"Свинина, говядина"} weight={250}
+                                                                         price={350}/>}/>
                                     </div>
+
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -412,9 +443,9 @@ const Main: FC = () => {
                         </nav>
                         <div className="f-row-betw">
                             <div className={styles.copyright}>
-                                <p>© 2023 ООО «Гулякин»</p>
+                                <p>© 2023 ООО «Гулякин»</p>
                                 <p>ОГРН 1234567899116, ИНН 3589065840</p>
-                                <p> 162606, Ханты-Мансийский автономный округ, г. Сургут, ул. Энергетиков, д. 4</p>
+                                <p> 162606, Ханты-Мансийский автономный округ, г. Сургут, ул. Энергетиков, д. 4</p>
                             </div>
                             <div className={styles.created}>
                                 <p>Создание сайта</p>
@@ -424,7 +455,6 @@ const Main: FC = () => {
                     </div>
                 </div>
             </footer>
-
         </>
 
     );

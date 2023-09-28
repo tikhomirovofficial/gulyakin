@@ -1,7 +1,6 @@
 .block {
   border-radius: 4px;
   border: 1px solid #E2E2E9;
-  padding: 0 1.8rem;
   font-size: 1.4rem;
   transition: .3s border;
   label {
@@ -11,9 +10,9 @@
     border: 1px solid #FB634D;
   }
 }
-.focused {
-  border: 1px solid #FB634D;
+.errorTextColor {
+  color: #FF2000;
 }
-.error {
-  border: 1px solid #FF2000;
+.close {
+  min-height: 100%;
 }

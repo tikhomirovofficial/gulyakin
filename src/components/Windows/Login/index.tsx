@@ -1,14 +1,17 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {ChangeEvent, createContext, Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
 import WindowBody from "../WhiteWrapper";
 import ShadowWrapper from "../ShadowWrapper";
 import {CloseIcon} from "../../../icons";
 import styles from "./login.module.scss"
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import RedButton from "../../Buttons/RedButton";
+import {useInput} from "../../../hooks/useInput";
+import InputWrapper from "../../Inputs/InputWrapper";
 
 
 const LoginPhoneStep = () => {
-    const {setLoginStep} = useContext<LoginContextType>(LoginContext)
+    const {changePhone, phoneErr, phone, setLoginStep, setPhoneErr, setPhone} = useContext<LoginContextType>(LoginContext)
+
 
     return (
         <div className="gap-30 f-column">
@@ -20,16 +23,12 @@ const LoginPhoneStep = () => {
             </div>
             <div className="f-column gap-20">
                 <div className="f-column gap-10">
-                    <label htmlFor="login-phone">Номер телефона</label>
-                    <GrayBorderedBlock className={"f-row-betw"}>
-                        <input className={"f-1"} id={"login-phone"} type="text"/>
-                        <div className={`${styles.close} cur-pointer visible f-c-col`}>
-                            <CloseIcon/>
-                        </div>
-                    </GrayBorderedBlock>
+                    <InputWrapper setVal={setPhone} onInputBlur={() => setPhoneErr("")} errText={phoneErr} labelText={"Номер телефона"}
+                                  inputId={"phone"} inputVal={phone} changeVal={changePhone}/>
                 </div>
                 <div className="f-column gap-15">
-                    <RedButton onClick={() => setLoginStep(1)} disabled={false} className={"pd-10-0"}>Выслать код</RedButton>
+                    <RedButton onClick={() => setLoginStep(1)} disabled={false} className={"pd-10-0"}>Выслать
+                        код</RedButton>
                     <div className={"caption txt-center"}>Продолжая, вы соглашаетесь <a href=""> со сбором и
                         обработкой персональных данных и пользовательским соглашением</a></div>
                 </div>
@@ -40,7 +39,21 @@ const LoginPhoneStep = () => {
     )
 }
 const LoginCodeStep = () => {
-    const {setLoginStep} = useContext<LoginContextType>(LoginContext)
+    const {setLoginStep, code, setCode, codeErr} = useContext<LoginContextType>(LoginContext)
+    useEffect(() => {
+        console.log(code)
+    },[code])
+    const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+        if(e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))) {
+            setCode(prev => {
+                const newArr = [...prev]
+                newArr[index] = e.target.value
+                return newArr
+            })
+        }
+
+    }
+
     return (
         <div className="gap-30 f-column">
             <div className="f-column gap-10">
@@ -60,16 +73,24 @@ const LoginCodeStep = () => {
             <div className="f-column gap-20">
                 <div className="f-column al-center gap-5">
                     <div className="d-f jc-center gap-10">
-                        <GrayBorderedBlock className={`${styles.codeDigitBlock} f-c-col`}><input maxLength={1} className={styles.codeInput} type="text"/></GrayBorderedBlock>
-                        <GrayBorderedBlock className={`${styles.codeDigitBlock} f-c-col`}><input maxLength={1} className={styles.codeInput} type="text"/></GrayBorderedBlock>
-                        <GrayBorderedBlock className={`${styles.codeDigitBlock} f-c-col`}><input maxLength={1} className={styles.codeInput} type="text"/></GrayBorderedBlock>
-                        <GrayBorderedBlock className={`${styles.codeDigitBlock} f-c-col`}><input maxLength={1} className={styles.codeInput} type="text"/></GrayBorderedBlock>
+                        {
+                            code.map((digit, index) => (
+                                <GrayBorderedBlock className={`${styles.codeDigitBlock} f-c-col`}><input className={styles.codeInput} onChange={(e) => handleChangeCodes(e, index)} value={digit}
+                                                                type="text"/></GrayBorderedBlock>
+                            ))
+                        }
+
+
                     </div>
-                    <div className={"validationErr fw-7"}>Неверный код</div>
+                    {codeErr ?
+                        <div className={"validationErr fw-7"}>{codeErr}</div>
+                        : null
+                    }
+
                 </div>
 
                 <div className="f-column gap-15">
-                    <RedButton disabled={false} className={"pd-10-0"}>Получить новый код через 55 сек.</RedButton>
+                    <RedButton disabled={false} className={"pd-10-0"}>Получить новый код</RedButton>
                     <div className={"caption txt-center"}>Продолжая, вы соглашаетесь <a href=""> со сбором и
                         обработкой персональных данных и пользовательским соглашением</a></div>
                 </div>
@@ -82,19 +103,63 @@ const LoginCodeStep = () => {
 
 interface LoginContextType {
     setLoginStep: React.Dispatch<React.SetStateAction<number>>,
+    phone: string,
+    code: Array<string>
+    codeErr: string
+    phoneErr: string
+    changePhone: (e: ChangeEvent<HTMLInputElement>) => void,
+    setCode: Dispatch<SetStateAction<Array<string>>>,
+    setCodeErr: Dispatch<SetStateAction<string>>,
+    setPhone: Dispatch<SetStateAction<string>>,
+    setPhoneErr: Dispatch<SetStateAction<string>>,
 
 }
-const LoginContext = createContext<LoginContextType>({
-    setLoginStep: () => {},
-})
+
+const loginContextDefault = {
+    setLoginStep: () => {
+    },
+    code: ["", "", "", ""],
+    codeErr: "",
+    phone: "",
+    phoneErr: "",
+    setCode(value: ((prevState: Array<string>) => Array<string>) | Array<string>): void {
+    },
+    setCodeErr(value: ((prevState: string) => string) | string): void {
+    },
+    changePhone(e: React.ChangeEvent<HTMLInputElement>): void {
+    },
+    setPhoneErr(value: ((prevState: string) => string) | string): void {
+    },
+    setPhone(value: ((prevState: string) => string) | string): void {
+    }
+
+}
+const LoginContext = createContext<LoginContextType>(loginContextDefault)
+
 const loginSteps = [LoginPhoneStep, LoginCodeStep]
 const LoginWindow = () => {
-    const [loginStep, setLoginStep] = useState<number>(0)
+    const [loginStep, setLoginStep] = useState<number>(1)
     const CurrentStep = loginSteps[loginStep]
+
+    const [phoneVal, changePhone, setPhone] = useInput(loginContextDefault.phone)
+    const [codeVal, setCode] = useState<Array<string>>(loginContextDefault.code)
+
+    const [phoneErr, setPhoneErr] = useState<string>(loginContextDefault.phoneErr)
+    const [codeErr, setCodeErr] = useState<string>(loginContextDefault.codeErr)
 
     return (
         <LoginContext.Provider value={{
-            setLoginStep
+            setLoginStep,
+            phone: phoneVal,
+            code: codeVal,
+            phoneErr: phoneErr,
+            codeErr: codeErr,
+            changePhone: changePhone,
+            setCode: setCode,
+            setCodeErr: setCodeErr,
+            setPhoneErr: setPhoneErr,
+            setPhone: setPhone
+
         }}>
             <ShadowWrapper>
                 <WindowBody className={`${styles.window} f-column`}>

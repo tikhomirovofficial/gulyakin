@@ -7,6 +7,7 @@ import Main from "./pages/Main";
 import ShadowWrapper from "./components/Windows/ShadowWrapper";
 import WindowBody from "./components/Windows/WhiteWrapper";
 import LoginWindow from "./components/Windows/Login";
+import BookingWindow from "./components/Windows/Booking";
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
         <div className="App">
             {/*<AppRoutes isAuth={false}/>*/}
             <Main/>
-            <LoginWindow/>
+            <BookingWindow/>
         </div>
     );
 }

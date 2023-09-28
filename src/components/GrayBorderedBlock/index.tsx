@@ -4,11 +4,12 @@ import {HasChildrenProps, HasClassName} from "../../types/components.types";
 interface GrayBorderedBlock {
     isIncorrectStyle?: boolean
     isFocused?: boolean
-    validError?: string
+    validError?: string,
+    clickHandler?: () => void
 }
-const GrayBorderedBlock: FC<HasChildrenProps & HasClassName & GrayBorderedBlock> = ({className, validError, isFocused, children}) => {
+const GrayBorderedBlock: FC<HasChildrenProps & HasClassName & GrayBorderedBlock> = ({className, clickHandler, validError, isFocused, children}) => {
     return (
-        <div className={`${styles.block} ${validError ? styles.error : ""} ${isFocused ? styles.focused: ""} ${className || null}`}>
+        <div onClick={clickHandler} className={`${styles.block} ${validError ? styles.error : ""} ${isFocused ? styles.focused: ""} ${className || null}`}>
             {children}
         </div>
     );

@@ -40,9 +40,12 @@ const LoginPhoneStep = () => {
 }
 const LoginCodeStep = () => {
     const {setLoginStep, code, setCode, codeErr} = useContext<LoginContextType>(LoginContext)
+    const [currentDigit, setCurrentDigit] = useState<number | null>(null)
+
     useEffect(() => {
         console.log(code)
     },[code])
+
     const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
         if(e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))) {
             setCode(prev => {
@@ -75,7 +78,7 @@ const LoginCodeStep = () => {
                     <div className="d-f jc-center gap-10">
                         {
                             code.map((digit, index) => (
-                                <GrayBorderedBlock className={`${styles.codeDigitBlock} f-c-col`}><input className={styles.codeInput} onChange={(e) => handleChangeCodes(e, index)} value={digit}
+                                <GrayBorderedBlock isFocused={currentDigit === index} className={`${styles.codeDigitBlock} f-c-col`}><input onBlur={() => setCurrentDigit(null)} onFocus={() => setCurrentDigit(index)} className={styles.codeInput} onChange={(e) => handleChangeCodes(e, index)} value={digit}
                                                                 type="text"/></GrayBorderedBlock>
                             ))
                         }

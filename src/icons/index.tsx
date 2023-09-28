@@ -471,6 +471,13 @@ export const ArrowMiniRightIcon: FC<IconProps> = ({width = 13, height = 13}) => 
         </svg>
     )
 }
+export const ArrowMiniDown: FC<IconProps> = ({width = 13, height = 13}) => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 10 10" fill="none">
+            <path d="M9 3L5 7L1 3" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    )
+}
 export const ArrowRight: FC<IconProps> = ({width = 14, height = 10}) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 14 10" fill="none">

@@ -16,7 +16,7 @@
     }
     .geoPopup {
       border-radius: 6px;
-      padding: 2rem 2.8rem;
+      padding: 2rem 1.5rem;
       width: 20rem;
       left: -2rem;
       b, p {
@@ -25,17 +25,8 @@
       box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
       top: calc(100% + 1rem);
     }
-    .selectCity {
+    .selectCityItem {
 
-      .item {
-        cursor: pointer;
-
-      }
-      .checkedItem {
-        p {
-          font-weight: 700;
-        }
-      }
     }
     .yourCity {
       .btn {

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {Link} from "react-router-dom";
 import {
     ArrowMiniRightIcon,
@@ -28,13 +28,16 @@ import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import SearchInput from "../../components/Inputs/SearchInput";
 import List from "../../components/List";
 import Product from "../../components/Catalog/Product";
+import DropdownList from "../../components/DropdownList";
 
 const logosIsMax = true
 const cityIsDefined = true
-const changingGeo = false
 
+const cities = ["Сургут", "Сочи", "Нижневартовск"]
 const Main: FC = () => {
-
+    const [changingGeo, setChangingGeo] = useState<boolean>(false)
+    const [currentCity, setCurrentCity] = useState<number>(0)
+    const handleChangingGeo = () => setChangingGeo(!changingGeo)
     return (
         <>
             <header className={styles.header}>
@@ -48,7 +51,7 @@ const Main: FC = () => {
                                 <p>Доставка готовый еды</p>
                                 <div className={`d-f al-center gap-10`}>
                                     <p>в городе</p>
-                                    <div className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
+                                    <div onClick={handleChangingGeo} className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
                                         <b>Сургут</b>
                                         <ArrowMiniRightIcon height={11}/>
                                     </div>
@@ -64,19 +67,11 @@ const Main: FC = () => {
                                         </div> : null
                                     }
                                     {
-                                        changingGeo ? <div
-                                            className={`${styles.selectCity}  ${styles.geoPopup} f-column gap-15 p-abs bg-white`}>
-                                            <div className={`${styles.item} ${styles.checkedItem} f-row-betw`}>
-                                                <p>Сургут</p>
-                                                <CheckedMark height={11} width={11}/>
-                                            </div>
-                                            <div className={`${styles.item} f-row-betw`}>
-                                                <p>Сочи</p>
-                                            </div>
-                                            <div className={`${styles.item} f-row-betw`}>
-                                                <p>Нижневартовск</p>
-                                            </div>
-                                        </div> : null
+                                        changingGeo ?
+                                            <DropdownList selectHandler={(current) => setCurrentCity(current)} classNameItem={`${styles.selectCityItem} f-row-betw`}
+                                                          className={`${styles.geoPopup} f-column gap-15 p-abs bg-white `}
+                                                          items={cities} current={currentCity}/>
+                                       : null
                                     }
 
 

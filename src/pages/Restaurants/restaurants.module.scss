@@ -272,153 +272,61 @@
       }
     }
   }
-
 }
 .main {
-
-  .block {
-    .restaurants {
-      .orderTrigger {
-        cursor: pointer;
-        height: 4.8rem;
-        border-radius: 4px;
-        transition: .3s box-shadow;
+  margin-top: 2rem;
+}
+.backButton {
+  height: 4.5rem;
+  padding: 1.5rem !important;
+  font-size: 1.4rem !important;
+  max-width: fit-content;
+}
+.restaurantsSection {
+  .sideWrapper {
+    height: 100%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #c7c7c7;
+    }
+    width: 34rem;
+    background: white;
+    border-left: 2px solid #fafafa;
+    border-top: 2px solid #fafafa;
+    border-bottom: 2px solid #fafafa;
+    .itemWrapper {
+      padding-top: .4rem;
+      padding-left: .4rem;
+      padding-bottom: .4rem;
+      width: 100%;
+      border-bottom: 2px solid #fafafa;
+      cursor: pointer;
+      .item {
+        border-radius: 6px 0px 0px 6px;
+        padding: 1.1rem 1.6rem;
         &:hover {
-          box-shadow: 0px 0px 12px 0px rgba(56, 56, 56, 0.10);
+          background: #F3F3F7;
         }
-        background: linear-gradient(90deg, #F5F3F2 0.04%, #F5F3F2 48.98%, #F5F3F2 100%);
-        .backgrounds {
-          width: 55%;
-          mix-blend-mode: darken;
-        }
-        .text {
-          transform: rotate(-7.5deg);
+        transition: .3s background;
+        b {
           font-size: 1.6rem;
-          font-style: italic;
-          font-weight: 700;
-          p:last-child {
-            margin-left: 5rem;
-            margin-top: -.5rem;
-          }
         }
-      }
-      .btn {
-        border-radius: 4px;
-        height: 4.8rem;
-        font-size: 1.4rem;
-      }
-      .search {
-        height: 4.8rem;
-        width: 37.5rem;
-      }
-    }
-    .menuCategories {
-      position: sticky;
-      z-index: 3;
-      padding: 1.5rem 0;
-      background: white;
-      top: 11rem;
-      .shadowRight {
-        width: 7.8rem;
-        height: 3.4rem;
-        background: linear-gradient(270deg, #FFF 0%, rgba(254, 254, 254, 0.62) 44.79%, rgba(252, 252, 252, 0.28) 79.17%, rgba(217, 217, 217, 0.00) 100%);
-      }
-
-      .item {
-        margin: .5rem 0;
-        padding: .7rem 2rem;
-        white-space: nowrap;
-        background: white;
-        cursor: pointer;
-        transition: .3s border, .3s box-shadow;
-        &:hover{
-          border: 1px solid transparent;
-          box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.10);
+        p {
+          font-size: 1.2rem;
         }
-      }
-    }
-    .oftenOrdered {
-      h3 {
-        font-size: 2.4rem;
-        font-weight: 400;
-      }
-      .item {
-
-        border-radius: 4px;
-        background: #F7F7F7;
-        max-height: 9.8rem;
-        height: 9.8rem;
-        width: 24.5rem;
-        overflow: hidden;
-        color: #494949;
-        box-shadow: 0px 4px 12px 0px rgba(56, 56, 56, 0.10);
-        .bg {
-          background-size: cover;
-          background-position-y: center;
-          background-position-x: -18rem;
-        }
-        .info {
-          font-size: 1.5rem;
-          width: 60%;
-          padding: 1.8rem 0;
-          align-self: center;
-
-        }
-        h4 {
-          font-size: 1.6rem;
-          line-height: 1;
+        .bottomText {
+          font-size: 1.4rem;
         }
       }
     }
   }
-}
-.catalog {
-  .categoryBlock {
-
+  .map {
+    background: rgba(0, 128, 0, 0.3);
   }
-}
-.footer {
-  color: white;
-  margin-top: 10rem;
-  background: #232222;
-  nav {
-    border-bottom: 1px solid #303030;
-    padding-bottom: 4rem;
-    .navItem {
-      font-size: 1.8rem;
-      max-width: 18rem;
-    }
-
-    .navColumn:last-child {
-      flex: 1;
-    }
-    .socials {
-      .item {
-        background: #3A3A3A;
-        height: 3.5rem;
-        width: 3.5rem;
-        border-radius: 50%;
-      }
-    }
-
-    gap: 13rem;
-  }
-  .copyright {
-    color: #555;
-    max-width: 73rem;
-    font-size: 1.8rem;
-  }
-  .created {
-    gap: 3px;
-    p {
-      color: #8F8F8F;
-      font-size: 1.4rem;
-    }
-  }
-  .logo {
-    path {
-      fill: white;
-    }
-  }
-
+  height: 80vh;
+  border-radius: 6px;
+  max-height: 576px;
 }

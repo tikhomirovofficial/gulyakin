@@ -8,15 +8,20 @@ import ShadowWrapper from "./components/Windows/ShadowWrapper";
 import WindowBody from "./components/Windows/WhiteWrapper";
 import LoginWindow from "./components/Windows/Login";
 import BookingWindow from "./components/Windows/Booking";
+import {useAppSelector} from "./app/hooks";
+import Restaurants from "./pages/Restaurants";
 
 
 function App() {
+    const {bookingOpened, loginOpened} = useAppSelector(state => state.modals)
 
     return (
         <div className="App">
             {/*<AppRoutes isAuth={false}/>*/}
-            <Main/>
-            <BookingWindow/>
+            <Restaurants/>
+            {bookingOpened ? <BookingWindow/>: null}
+            {loginOpened ? <LoginWindow/>: null}
+
         </div>
     );
 }

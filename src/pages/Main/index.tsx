@@ -29,126 +29,18 @@ import SearchInput from "../../components/Inputs/SearchInput";
 import List from "../../components/List";
 import Product from "../../components/Catalog/Product";
 import DropdownList from "../../components/DropdownList";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 const logosIsMax = true
-const cityIsDefined = true
+
 
 const cities = ["Сургут", "Сочи", "Нижневартовск"]
 const Main: FC = () => {
-    const [changingGeo, setChangingGeo] = useState<boolean>(false)
-    const [currentCity, setCurrentCity] = useState<number>(0)
-    const handleChangingGeo = () => setChangingGeo(!changingGeo)
+
     return (
         <>
-            <header className={styles.header}>
-                <div className="wrapper">
-                    <div className="block pd-30-0 f-row-betw gap-50">
-                        <div className="left d-f al-center gap-35">
-                            <Link to={"/"} className="">
-                                <Logo/>
-                            </Link>
-                            <div className={`${styles.logoText} p-rel f-column gap-5`}>
-                                <p>Доставка готовый еды</p>
-                                <div className={`d-f al-center gap-10`}>
-                                    <p>в городе</p>
-                                    <div onClick={handleChangingGeo} className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
-                                        <b>Сургут</b>
-                                        <ArrowMiniRightIcon height={11}/>
-                                    </div>
-                                    {
-                                        !cityIsDefined ? <div
-                                            className={`${styles.geoPopup} ${styles.yourCity} f-column gap-15 p-abs bg-white`}>
-                                            <b className={"txt-center"}>Это ваш город?</b>
-                                            <div className="d-f gap-5 jc-around">
-                                                <RedButton className={styles.btn}>Да</RedButton>
-                                                <GrayButton className={styles.btn}>Другой</GrayButton>
-                                            </div>
-
-                                        </div> : null
-                                    }
-                                    {
-                                        changingGeo ?
-                                            <DropdownList selectHandler={(current) => setCurrentCity(current)} classNameItem={`${styles.selectCityItem} f-row-betw`}
-                                                          className={`${styles.geoPopup} f-column gap-15 p-abs bg-white `}
-                                                          items={cities} current={currentCity}/>
-                                       : null
-                                    }
-
-
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <nav className={"d-f gap-20"}>
-                            <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
-                                <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
-                                    О нас
-                                </div>
-                                <div className="hidden">О нас</div>
-                            </Link>
-                            <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
-                                <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
-                                    Каталог
-                                </div>
-                                <div className="hidden">Каталог</div>
-                            </Link>
-                            <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
-                                <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
-                                    Контакты
-                                </div>
-                                <div className="hidden">Контакты</div>
-                            </Link>
-                            <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
-                                <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
-                                    Вакансии
-                                </div>
-                                <div className="hidden">Вакансии</div>
-                            </Link>
-                            <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
-                                <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
-                                    Инвестиции
-                                </div>
-                                <div className="hidden">Инвестиции</div>
-                            </Link>
-                            <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
-                                <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
-                                    Предложить помещение
-                                </div>
-                                <div className="hidden">Предложить помещение</div>
-                            </Link>
-                            <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
-                                <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
-                                    Поставщикам
-                                </div>
-                                <div className="hidden">Поставщикам</div>
-                            </Link>
-                            <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
-                                <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
-                                    Помощь
-                                </div>
-                                <div className="hidden">Помощь</div>
-                            </Link>
-
-                        </nav>
-                        <div className={`${styles.right} d-f al-center gap-20`}>
-                            <div className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
-                                <ProfileIcon height={22} width={16}/>
-                                <b>
-                                    Кабинет
-                                </b>
-                            </div>
-                            <div
-                                className={`${styles.cartBtnFilled} ${styles.cartBtn} btn d-f gap-5 al-center cur-pointer`}>
-                                <CartIcon height={22} width={22}/>
-                                <b>
-                                    4300 ₽
-                                </b>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Header/>
             <div className={`${styles.promo} pd-40-0`}>
                 <div className="wrapper">
                     <div className="block f-column gap-30">
@@ -388,68 +280,7 @@ const Main: FC = () => {
                 </div>
 
             </div>
-            <footer className={`${styles.footer} pd-40-0`}>
-                <div className="wrapper">
-                    <div className="block gap-40 f-column">
-                        <nav className={"d-f jc-between"}>
-                            <div className={`${styles.navColumn} f-column gap-10`}>
-                                <Logo className={styles.logo}/>
-                                <Link className={styles.navItem} to={"/"}>О нас</Link>
-                            </div>
-                            <div className={`${styles.navColumn} f-column gap-10`}>
-                                <b className={styles.navItem}>Работа</b>
-                                <Link className={styles.navItem} to={"/"}>В Гулякин <br/> Фудхолл</Link>
-                                <Link className={styles.navItem} to={"/"}>В Гуленьки <br/> Пельменная</Link>
-                                <Link className={styles.navItem} to={"/"}>В iFood</Link>
-                                <Link className={styles.navItem} to={"/"}>В Воробушек</Link>
-                                <Link className={styles.navItem} to={"/"}>В Gusto</Link>
-                                <Link className={styles.navItem} to={"/"}>В Креветочная</Link>
-                                <Link className={styles.navItem} to={"/"}>В Гулибули</Link>
-                            </div>
-                            <div className={`${styles.navColumn} f-column gap-10`}>
-                                <b className={styles.navItem}>Партнёрам</b>
-                                <Link className={styles.navItem} to={"/"}>Инвестиции</Link>
-                                <Link className={styles.navItem} to={"/"}>Поставщикам</Link>
-                                <Link className={styles.navItem} to={"/"}>Предложить помещение</Link>
-                            </div>
-                            <div className={`${styles.navColumn} f-column gap-10`}>
-                                <b className={styles.navItem}>Документы</b>
-                                <Link className={styles.navItem} to={"/"}>Политика конфиденциальности</Link>
-                                <Link className={styles.navItem} to={"/"}>Пользовательское соглашение</Link>
-                                <Link className={styles.navItem} to={"/"}>Соглашение на обработку ПД</Link>
-                                <Link className={styles.navItem} to={"/"}>Правила программы лояльности</Link>
-                            </div>
-                            <div className={`${styles.navColumn} f-column gap-10`}>
-                                <b className={styles.navItem}>Контакты</b>
-                                <a className={styles.navItem} href="">mail@mail.ru</a>
-                                <a className={styles.navItem} href="">+7 (495) 345-64-54</a>
-                                <div className={`${styles.socials} d-f gap-10`}>
-                                    <a href="" className={`${styles.item} f-c-col`}>
-                                        <VkIcon/>
-                                    </a>
-                                    <a href="" className={`${styles.item} f-c-col`}>
-                                        <VkIcon/>
-                                    </a>
-                                    <a href="" className={`${styles.item} f-c-col`}>
-                                        <VkIcon/>
-                                    </a>
-                                </div>
-                            </div>
-                        </nav>
-                        <div className="f-row-betw">
-                            <div className={styles.copyright}>
-                                <p>© 2023 ООО «Гулякин»</p>
-                                <p>ОГРН 1234567899116, ИНН 3589065840</p>
-                                <p> 162606, Ханты-Мансийский автономный округ, г. Сургут, ул. Энергетиков, д. 4</p>
-                            </div>
-                            <div className={styles.created}>
-                                <p>Создание сайта</p>
-                                <CreatedLogo/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <Footer/>
         </>
 
     );

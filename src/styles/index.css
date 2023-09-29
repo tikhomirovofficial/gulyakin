@@ -67,3 +67,10 @@ main {
     background: #FFF;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
 }
+.closeWrapper {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

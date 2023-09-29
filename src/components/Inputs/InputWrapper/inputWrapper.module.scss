@@ -3,12 +3,16 @@
   border: 1px solid #E2E2E9;
   font-size: 1.4rem;
   transition: .3s border;
+
   label {
     transition: .3s color;
   }
   &:hover {
     border: 1px solid #FB634D;
   }
+}
+.input::placeholder {
+  color: #E2E2E9;
 }
 .errorTextColor {
   color: #FF2000;

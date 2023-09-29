@@ -7,7 +7,10 @@ import GrayBorderedBlock from "../../GrayBorderedBlock";
 import RedButton from "../../Buttons/RedButton";
 import {useInput} from "../../../hooks/useInput";
 import InputWrapper from "../../Inputs/InputWrapper";
+import {useAppDispatch} from "../../../app/hooks";
+import {handleLogin} from "../../../features/modals/modalsSlice";
 
+const CODE_LENGTH = 4
 
 const LoginPhoneStep = () => {
     const {changePhone, phoneErr, phone, setLoginStep, setPhoneErr, setPhone} = useContext<LoginContextType>(LoginContext)
@@ -23,7 +26,7 @@ const LoginPhoneStep = () => {
             </div>
             <div className="f-column gap-20">
                 <div className="f-column gap-10">
-                    <InputWrapper setVal={setPhone} onInputBlur={() => setPhoneErr("")} errText={phoneErr} labelText={"Номер телефона"}
+                    <InputWrapper isPhone={true} setVal={setPhone} onInputBlur={() => setPhoneErr("")} errText={phoneErr} labelText={"Номер телефона"}
                                   inputId={"phone"} inputVal={phone} changeVal={changePhone}/>
                 </div>
                 <div className="f-column gap-15">
@@ -48,9 +51,24 @@ const LoginCodeStep = () => {
 
     const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
         if(e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))) {
+
             setCode(prev => {
                 const newArr = [...prev]
                 newArr[index] = e.target.value
+
+                const prevLength = prev.join("").length
+                const newLength = newArr.join("").length
+                const digitsListNode = e.target.parentElement?.parentElement
+                
+                if(prevLength < newLength && index < CODE_LENGTH - 1) {
+                    const nextInput = digitsListNode?.children[index + 1].querySelector("input") as HTMLInputElement
+                    nextInput.focus()
+                }
+
+                if(prevLength > newLength && index != 0) {
+                    const prevInput = digitsListNode?.children[index - 1].querySelector("input") as HTMLInputElement
+                    prevInput.focus()
+                }
                 return newArr
             })
         }
@@ -141,7 +159,7 @@ const LoginContext = createContext<LoginContextType>(loginContextDefault)
 
 const loginSteps = [LoginPhoneStep, LoginCodeStep]
 const LoginWindow = () => {
-    const [loginStep, setLoginStep] = useState<number>(1)
+    const [loginStep, setLoginStep] = useState<number>(0)
     const CurrentStep = loginSteps[loginStep]
 
     const [phoneVal, changePhone, setPhone] = useInput(loginContextDefault.phone)
@@ -150,6 +168,7 @@ const LoginWindow = () => {
     const [phoneErr, setPhoneErr] = useState<string>(loginContextDefault.phoneErr)
     const [codeErr, setCodeErr] = useState<string>(loginContextDefault.codeErr)
 
+    const dispatch = useAppDispatch()
     return (
         <LoginContext.Provider value={{
             setLoginStep,
@@ -166,7 +185,11 @@ const LoginWindow = () => {
         }}>
             <ShadowWrapper>
                 <WindowBody className={`${styles.window} f-column`}>
-                    <div className="w-100p d-f jc-end"><CloseIcon isDark={true}/></div>
+                    <div className="w-100p d-f jc-end">
+                        <div onClick={() => dispatch(handleLogin())} className={"closeWrapper"}>
+                            <CloseIcon isDark={true}/>
+                        </div>
+                    </div>
                     <CurrentStep/>
                 </WindowBody>
             </ShadowWrapper>

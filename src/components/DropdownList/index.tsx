@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, RefObject} from 'react';
 import List from "../List";
 import {HasClassName} from "../../types/components.types";
 import styles from "./dropdown.module.scss"

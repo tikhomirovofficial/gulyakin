@@ -1,42 +1,26 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {Link} from "react-router-dom";
-import {
-    ArrowMiniRightIcon,
-    ArrowRight,
-    CartIcon,
-    CheckedMark,
-    CreatedLogo,
-    FoodHallLogo,
-    FoodPancakesLogo,
-    Geo,
-    GulenkiPelmeniLogo,
-    GulibuliLogo,
-    GustoLogo,
-    IFoodLogo,
-    Logo,
-    ProfileIcon,
-    ShrimpLogo,
-    VkIcon,
-    VorobushekLogo
-} from "../../icons";
+import {ArrowRight, Geo} from "../../icons";
 import styles from './main.module.scss'
 import {getImgPath} from "../../utils/getAssetsPath";
-import RedButton from "../../components/Buttons/RedButton";
-import GrayButton from "../../components/Buttons/GrayButton";
 import GrayBorderedBlock from "../../components/GrayBorderedBlock";
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import SearchInput from "../../components/Inputs/SearchInput";
 import List from "../../components/List";
 import Product from "../../components/Catalog/Product";
-import DropdownList from "../../components/DropdownList";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import LogosSection from "../../components/LogosSection";
+import {useAppDispatch} from "../../app/hooks";
+import {setTempPage} from "../../features/main/mainSlice";
+import {Swiper, SwiperSlide} from 'swiper/react';
+import 'swiper/css';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
 
-const logosIsMax = true
-
-
-const cities = ["Сургут", "Сочи", "Нижневартовск"]
 const Main: FC = () => {
+    const dispatch = useAppDispatch()
 
     return (
         <>
@@ -44,34 +28,7 @@ const Main: FC = () => {
             <div className={`${styles.promo} pd-40-0`}>
                 <div className="wrapper">
                     <div className="block f-column gap-30">
-                        <div className={`${styles.logos} ${logosIsMax ? "jc-between" : "jc-around"}  d-f gap-20`}>
-
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <FoodHallLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <GulenkiPelmeniLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <FoodPancakesLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} ${styles.neededIfood} f-c-col `}>
-                                <IFoodLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <VorobushekLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededGusto} f-c-col `}>
-                                <GustoLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <ShrimpLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <GulibuliLogo/>
-                            </div>
-
-                        </div>
+                        <LogosSection/>
                         <div className={`${styles.promos} w-100p p-rel`}>
                             <div className={`${styles.container} w-100 f-row-betw`}>
                                 <Link to={"/"} className={styles.item}>
@@ -147,7 +104,8 @@ const Main: FC = () => {
                         <div className="wrapper w-100p">
                             <div className={`${styles.restaurants} d-f jc-between gap-30`}>
                                 <div className="left d-f gap-30">
-                                    <GradientGrayBtn className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
+                                    <GradientGrayBtn onClick={() => dispatch(setTempPage(1))}
+                                                     className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
                                         <Geo/>
                                         <p>Рестораны на карте</p>
                                     </GradientGrayBtn>
@@ -173,26 +131,62 @@ const Main: FC = () => {
                         </div>
 
                         <div className={`${styles.menuCategories}`}>
-                            <div className="wrapper p-rel">
-                                <div className={`${styles.shadowRight} h-100p p-abs right-0`}>
+                            <div className="wrapper ">
 
-                                </div>
                                 <div className="w-100p">
                                     <div className="w-100p d-f gap-10 of-y-hide scrollbar-unset">
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Вареники</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Супы</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Салаты</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Сытные блины</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Сладкие блины</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Картошка</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Креветки и мидии</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Правильные салаты</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Правильные горячие
-                                            блюда</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
+                                        <Swiper
+                                            style={{margin: 0}}
+                                            slidesPerView={'auto'}
+                                            centeredSlides={false}
+                                            className={"p-rel"}
+                                            spaceBetween={10}
+                                        >
+                                            <div className={`${styles.shadowRight} h-100p p-abs right-0`}>
+
+                                            </div>
+
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Вареники</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Супы</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Салаты</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Сытные блины</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Сладкие блины</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Картошка</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Креветки и мидии</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Правильные салаты</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Правильные горячие</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Пельмени 1</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Пельмени 2</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content"}>
+                                                <GrayBorderedBlock className={styles.item}>Пельмени 3</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                        </Swiper>
+
                                     </div>
 
                                 </div>

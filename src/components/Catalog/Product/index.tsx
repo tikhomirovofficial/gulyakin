@@ -34,11 +34,13 @@ const Product: FC<ProductProps & HasClassName> = ({name, inCart = false, classNa
                 <h3>{name}</h3>
                 <div className="f-1 d-f jc-between gap-25">
                     <p>{composition}</p>
+
+
                     <div className={`${styles.weight} txt-right`}>{weight} г</div>
                 </div>
             </div>
 
-            <div className="f-row-betw">
+            <div style={{minHeight: 37}} className="f-row-betw">
                 <h4>{price} ₽</h4>
                 {
                     isInCart ?

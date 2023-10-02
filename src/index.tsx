@@ -5,14 +5,23 @@ import './styles/tikstyles.css';
 import App from './App';
 import {Provider} from 'react-redux';
 import {store} from "./app/store";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, createHashRouter, RouterProvider} from "react-router-dom";
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const router = createHashRouter([
+    {
+        path: "/*",
+        element: <App />,
+    }
+]);
+
 root.render(
-    <BrowserRouter basename={"/"}>
+    <BrowserRouter>
         <Provider store={store}>
-            <App />
+            <App/>
         </Provider>
     </BrowserRouter>
 

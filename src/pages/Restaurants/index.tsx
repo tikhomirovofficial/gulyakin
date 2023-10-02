@@ -1,36 +1,13 @@
-import React, {FC, useState} from 'react';
-import {Link} from "react-router-dom";
-import {
-    ArrowMiniRightIcon,
-    ArrowRight, Cap,
-    CartIcon,
-    CheckedMark,
-    CreatedLogo,
-    FoodHallLogo,
-    FoodPancakesLogo,
-    Geo,
-    GulenkiPelmeniLogo,
-    GulibuliLogo,
-    GustoLogo,
-    IFoodLogo,
-    Logo,
-    ProfileIcon,
-    ShrimpLogo,
-    VkIcon,
-    VorobushekLogo
-} from "../../icons";
+import React, {FC, useEffect, useState} from 'react';
+import {Cap} from "../../icons";
 import styles from './restaurants.module.scss'
-import {getImgPath} from "../../utils/getAssetsPath";
-import RedButton from "../../components/Buttons/RedButton";
-import GrayButton from "../../components/Buttons/GrayButton";
-import GrayBorderedBlock from "../../components/GrayBorderedBlock";
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
-import SearchInput from "../../components/Inputs/SearchInput";
-import List from "../../components/List";
-import Product from "../../components/Catalog/Product";
-import DropdownList from "../../components/DropdownList";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import {Map, YMaps} from '@pbe/react-yandex-maps';
+import LogosSection from "../../components/LogosSection";
+import {useAppDispatch} from "../../app/hooks";
+import {setTempPage} from "../../features/main/mainSlice";
 
 const logosIsMax = true
 
@@ -52,50 +29,17 @@ const RestaurantItem = () => {
     )
 }
 const Restaurants: FC = () => {
+    const dispatch = useAppDispatch()
+    const [currentCoords, setCurrentCoords] = useState([55.75, 37.57])
 
     return (
         <>
             <Header/>
-            <div className={`${styles.promo} pd-40-0`}>
-                <div className="wrapper">
-                    <div className="block f-column gap-30">
-                        <div className={`${styles.logos} ${logosIsMax ? "jc-between" : "jc-around"}  d-f gap-20`}>
-
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <FoodHallLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <GulenkiPelmeniLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <FoodPancakesLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} ${styles.neededIfood} f-c-col `}>
-                                <IFoodLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <VorobushekLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededGusto} f-c-col `}>
-                                <GustoLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <ShrimpLogo/>
-                            </div>
-                            <div className={`${styles.item} ${styles.neededFill} f-c-col `}>
-                                <GulibuliLogo/>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
+            <LogosSection/>
             <div className={`${styles.main} f-column gap-20`}>
                 <div className="wrapper w-100p">
                     <div className={`${styles.block} f-column gap-25`}>
-                        <GradientGrayBtn className={`${styles.backButton} cur-pointer d-f gap-10`}>
+                        <GradientGrayBtn onClick={() => dispatch(setTempPage(0))} className={`${styles.backButton} cur-pointer d-f gap-10`}>
                             <Cap/>
                             <p>Вернуться в меню</p>
                         </GradientGrayBtn>
@@ -113,7 +57,13 @@ const Restaurants: FC = () => {
                                     <RestaurantItem/>
                                     <RestaurantItem/>
                                 </div>
-                                <div className={`${styles.map} h-100p f-1`}></div>
+
+                                <div className={`${styles.map} h-100p f-1`}>
+                                    <YMaps>
+                                        <Map className={"h-100p w-100p"}
+                                             state={{center: currentCoords, zoom: 9}}/>
+                                    </YMaps>
+                                </div>
                             </div>
                         </div>
 

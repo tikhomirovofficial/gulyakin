@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
+    tempPage: 0,
     cities: ["Сургут", "Сочи", "Нижневартовск"],
     changingGeo: false,
     askCityVisible: true,
@@ -9,12 +10,13 @@ const initialState = {
     }
 }
 
-
-
 export const MainSlice = createSlice({
     name: "main",
     initialState,
     reducers: {
+        setTempPage: (state, action) => {
+            state.tempPage = action.payload
+        },
         setCurrentCity: (state, action : PayloadAction<number>) => {
             state.currentGeo.city = action.payload
         },
@@ -23,12 +25,11 @@ export const MainSlice = createSlice({
         },
         toggleAskCityVisible: (state) => {
             state.askCityVisible = !state.askCityVisible
-        },
-
+        }
     }
 })
 
-export const {setCurrentCity, toggleChangingGeo, toggleAskCityVisible} = MainSlice.actions
+export const {setCurrentCity, toggleChangingGeo, toggleAskCityVisible, setTempPage} = MainSlice.actions
 
 
 export const mainReducer = MainSlice.reducer

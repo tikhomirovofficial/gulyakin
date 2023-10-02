@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
-import {HasChildrenProps, HasClassName} from "../../../types/components.types";
+import {ButtonProps, HasChildrenProps, HasClassName} from "../../../types/components.types";
 import styles from './gradientGrayButton.module.scss'
-const GradientGrayBtn: FC<HasChildrenProps & HasClassName> = ({children, className}) => {
+const GradientGrayBtn: FC<HasChildrenProps & HasClassName & ButtonProps> = ({children, className, onClick}) => {
     return (
-        <button className={`${className} ${styles.button}`}>{children}</button>
+        <button onClick={onClick} className={`${className} ${styles.button}`}>{children}</button>
     );
 };
 

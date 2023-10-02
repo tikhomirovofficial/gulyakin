@@ -158,69 +158,6 @@
 }
 .promo {
   background: #FAFAFA;
-  .logos {
-    .item {
-      width: 14.5rem;
-      border-radius: 4px;
-      height: 10.5rem;
-      background: white;
-      transition: .3s background;
-      svg {
-        path {
-          transition: .3s fill, .3s stroke;
-        }
-      }
-
-    }
-    .neededStroke {
-      &:hover {
-        background: #FB634D;
-        svg {
-          path {
-            stroke: white;
-          }
-        }
-      }
-    }
-    .neededFill {
-      &:hover {
-        background: #FB634D;
-        svg {
-          path {
-            fill: white;
-          }
-        }
-      }
-    }
-    .neededIfood {
-      &:hover {
-        background: #FB634D;
-        svg {
-          g {
-            path {
-              fill: white;
-              stroke: white;
-            }
-          }
-
-        }
-      }
-    }
-    .neededGusto {
-      &:hover {
-        background: #FB634D;
-        svg {
-          g {
-            path {
-              fill: white;
-            }
-          }
-
-        }
-      }
-    }
-
-  }
   .promos {
     .container {
       .item {

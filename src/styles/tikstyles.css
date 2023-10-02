@@ -12,7 +12,9 @@
 .d-n {
     display: none;
 }
-
+.w-content {
+    max-width: fit-content;
+}
 /*POSITIONS*/
 
 .top-0 {

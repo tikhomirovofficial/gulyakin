@@ -25,10 +25,10 @@ const Main: FC = () => {
     return (
         <>
             <Header/>
-            <div className={`${styles.promo} pd-40-0`}>
+            <div className={`${styles.promo}`}>
+                <LogosSection/>
                 <div className="wrapper">
-                    <div className="block f-column gap-30">
-                        <LogosSection/>
+                    <div className="block f-column">
                         <div className={`${styles.promos} w-100p p-rel`}>
                             <div className={`${styles.container} w-100 f-row-betw`}>
                                 <Link to={"/"} className={styles.item}>

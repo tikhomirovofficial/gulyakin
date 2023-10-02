@@ -10,11 +10,11 @@ import {
     VorobushekLogo
 } from "../../icons";
 
-const logosIsMax = false
+const logosIsMax = true
 const LogosSection = () => {
     return (
-        <div className={`pd-40-0`}>
-            <div className="wrapper">
+        <div className={`pd-40-0 ${styles.section}`}>
+            <div className="wrapper w-100p">
                 <div className="block f-column gap-30">
                     <div className={`${styles.logos} ${logosIsMax ? "jc-between" : "jc-around"}  d-f gap-20`}>
 

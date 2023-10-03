@@ -6,7 +6,8 @@ export const store = configureStore({
     reducer: {
         profile: profileReducer,
         modals: modalsReducer,
-        main: mainReducer
+        main: mainReducer,
+        
     }
 })
 

@@ -50,6 +50,9 @@ main {
 .caption a {
     color: #fb634d;
 }
+.caption-big {
+    font-size: 1.8rem;
+}
 .validationErr {
     color: #FF2000;
     font-size: 1.4rem;
@@ -57,6 +60,7 @@ main {
 .inputField {
     height: 5.6rem;
 }
+
 .inactiveColor {
     color: #E2E2E9;
 }

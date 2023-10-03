@@ -2,7 +2,8 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     loginOpened: false,
-    bookingOpened: false
+    bookingOpened: false,
+    yourAddress: true
 }
 
 export const ModalsSlice = createSlice({
@@ -14,11 +15,14 @@ export const ModalsSlice = createSlice({
         },
         handleLogin: (state) => {
             state.loginOpened = !state.loginOpened
+        },
+        handleYourAddress: state => {
+            state.yourAddress = !state.yourAddress
         }
     }
 })
 
-export const {handleBooking, handleLogin} = ModalsSlice.actions
+export const {handleBooking, handleLogin, handleYourAddress} = ModalsSlice.actions
 
 
 export const modalsReducer = ModalsSlice.reducer

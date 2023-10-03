@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Link} from "react-router-dom";
-import {ArrowRight, Geo} from "../../icons";
+import {ArrowMiniRightIcon, ArrowRight, Geo} from "../../icons";
 import styles from './main.module.scss'
 import {getImgPath} from "../../utils/getAssetsPath";
 import GrayBorderedBlock from "../../components/GrayBorderedBlock";
@@ -133,18 +133,29 @@ const Main: FC = () => {
                         <div className={`${styles.menuCategories}`}>
                             <div className="wrapper ">
 
-                                <div className="w-100p">
+                                <div className="w-100p p-rel">
+                                    <div style={{transform: "rotateZ(180deg)"}} className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
+                                        <div className="f-c-col">
+                                            <ArrowMiniRightIcon width={14} height={14}/>
+                                        </div>
+
+                                    </div>
+                                    <div className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
+                                        <div className="f-c-col">
+                                            <ArrowMiniRightIcon width={14} height={14}/>
+                                        </div>
+
+                                    </div>
                                     <div className="w-100p d-f gap-10 of-y-hide scrollbar-unset">
+
+
                                         <Swiper
                                             style={{margin: 0}}
                                             slidesPerView={'auto'}
                                             centeredSlides={false}
-                                            className={"p-rel"}
+                                            className={""}
                                             spaceBetween={10}
                                         >
-                                            <div className={`${styles.shadowRight} h-100p p-abs right-0`}>
-
-                                            </div>
 
                                             <SwiperSlide className={"w-content"}>
                                                 <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
@@ -188,6 +199,7 @@ const Main: FC = () => {
                                         </Swiper>
 
                                     </div>
+
 
                                 </div>
                             </div>

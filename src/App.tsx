@@ -4,6 +4,8 @@ import LoginWindow from "./components/Windows/Login";
 import BookingWindow from "./components/Windows/Booking";
 import {useAppSelector} from "./app/hooks";
 import Restaurants from "./pages/Restaurants";
+import YourAdress from "./components/Windows/YourAdress";
+import YourAddressWindow from "./components/Windows/YourAdress";
 
 const tempPages = [
     Main,
@@ -12,10 +14,9 @@ const tempPages = [
 
 function App() {
 
-    const {bookingOpened, loginOpened} = useAppSelector(state => state.modals)
+    const {bookingOpened, loginOpened, yourAddress} = useAppSelector(state => state.modals)
     const {tempPage} = useAppSelector(state => state.main)
     const CurrentPage = tempPages[tempPage]
-
 
     return (
         <div className="App">
@@ -23,6 +24,7 @@ function App() {
             <CurrentPage/>
             {bookingOpened ? <BookingWindow/> : null}
             {loginOpened ? <LoginWindow/> : null}
+            {yourAddress ? <YourAddressWindow/> : null}
 
         </div>
     );

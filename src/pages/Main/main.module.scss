@@ -253,12 +253,14 @@
     .menuCategories {
       position: sticky;
       z-index: 3;
-      padding: 1.5rem 0;
+      margin: 1.5rem 0;
       background: white;
       top: 11rem;
       .shadowRight {
+        z-index: 9;
         width: 7.8rem;
-        height: 3.4rem;
+        height: 100%;
+        margin-right: -2px;
         background: linear-gradient(270deg, #FFF 0%, rgba(254, 254, 254, 0.62) 44.79%, rgba(252, 252, 252, 0.28) 79.17%, rgba(217, 217, 217, 0.00) 100%);
       }
 

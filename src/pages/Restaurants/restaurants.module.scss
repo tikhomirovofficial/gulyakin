@@ -267,3 +267,42 @@
   border-radius: 6px;
   max-height: 576px;
 }
+
+.choosenRestaruantBlock {
+  color: #494949;
+
+  .addressTitle {
+    font-size: 2rem;
+  }
+  .addressAreaText {
+    font-size: 1.4rem;
+  }
+  .gallery {
+    overflow-x: hidden;
+    .item {
+      min-width: 18rem;
+      min-height: 11rem;
+      background: #ababab;
+      border-radius: 6px;
+    }
+  }
+  .workTimeBlock {
+
+  }
+  .phoneLabel {
+    font-size: 1.4rem;
+    color: black;
+  }
+  .phone {
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .workClocks {
+    p {
+      font-size: 1.2rem;
+    }
+    b {
+      font-size: 1.6rem;
+    }
+  }
+}

@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Main from "./pages/Main";
 import LoginWindow from "./components/Windows/Login";
 import BookingWindow from "./components/Windows/Booking";
 import {useAppSelector} from "./app/hooks";
 import Restaurants from "./pages/Restaurants";
-import YourAdress from "./components/Windows/YourAdress";
 import YourAddressWindow from "./components/Windows/YourAdress";
+
+import Profile from "./pages/Profile";
+import ChosenRestaurant from "./pages/ChosenRestaurant";
 
 const tempPages = [
     Main,
@@ -21,10 +23,12 @@ function App() {
     return (
         <div className="App">
             {/*<AppRoutes isAuth={false}/>*/}
-            <CurrentPage/>
+            {/*<CurrentPage/>*/}
+
             {bookingOpened ? <BookingWindow/> : null}
             {loginOpened ? <LoginWindow/> : null}
             {yourAddress ? <YourAddressWindow/> : null}
+            <ChosenRestaurant/>
 
         </div>
     );

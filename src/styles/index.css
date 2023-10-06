@@ -78,3 +78,14 @@ main {
     justify-content: center;
     align-items: center;
 }
+.modalAbsoluteClose {
+    right: 2rem;
+    z-index: 3;
+    top: 2rem;
+}
+.colorRed {
+    color: #FB634D;
+}
+.svgRedStroke path{
+    stroke: #fb634d;
+}

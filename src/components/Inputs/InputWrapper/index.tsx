@@ -1,4 +1,4 @@
-import React, {ChangeEvent, Dispatch, FC, SetStateAction, useState} from 'react';
+import React, {ChangeEvent, Dispatch, FC, ReactNode, SetStateAction, useState} from 'react';
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import styles from "./inputWrapper.module.scss"
 import {CloseIcon} from "../../../icons";
@@ -10,7 +10,7 @@ interface InputWrapper {
     placeholder?: string,
     errText?: string,
     inputVal?: number | string,
-    labelText?: string,
+    labelText?: ReactNode,
     inputId?: string,
     onInputBlur?: () => void
     changeVal?: (e: ChangeEvent<HTMLInputElement>) => any,
@@ -44,7 +44,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
         }
     }
     return (
-        <>
+        <div className={`f-column gap-10 ${className}`}>
             {labelText ? <label className={`${errText ? styles.errorTextColor : null}`}
                                 htmlFor={inputId}>{labelText}</label> : null}
             <GrayBorderedBlock validError={errText} isFocused={isFocusedState} className={"f-row-betw inputField"}>
@@ -61,7 +61,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                 }
 
             </GrayBorderedBlock>
-        </>
+        </div>
     );
 
 };

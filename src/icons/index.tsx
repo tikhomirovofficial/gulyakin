@@ -452,9 +452,9 @@ export const CheckedMark: FC<IconProps> = ({width = 9, height = 7}) => {
         </svg>
     )
 }
-export const Geo: FC<IconProps> = ({width = 18, height = 20}) => {
+export const Geo: FC<IconProps & HasClassName> = ({width = 18, height = 20, className}) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 18 20" fill="none">
+        <svg className={className} xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 18 20" fill="none">
             <path
                 d="M17 9.17548C17 13.6907 13.4183 19 9 19C4.58172 19 1 13.6907 1 9.17548C1 4.66029 4.58172 1 9 1C13.4183 1 17 4.66029 17 9.17548Z"
                 stroke="black" stroke-width="1.5"/>

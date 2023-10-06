@@ -11,6 +11,9 @@
     border: 1px solid #FB634D;
   }
 }
+.input {
+  max-width: 100%;
+}
 .input::placeholder {
   color: #E2E2E9;
 }

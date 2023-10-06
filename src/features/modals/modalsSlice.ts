@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
     loginOpened: false,
     bookingOpened: false,
-    yourAddress: true
+    yourAddress: false
 }
 
 export const ModalsSlice = createSlice({

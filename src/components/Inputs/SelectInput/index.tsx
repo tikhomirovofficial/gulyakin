@@ -1,4 +1,14 @@
-import React, {ChangeEvent, Dispatch, FC, MouseEventHandler, SetStateAction, useEffect, useRef, useState} from 'react';
+import React, {
+    ChangeEvent,
+    Dispatch,
+    FC,
+    MouseEventHandler,
+    ReactNode,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState
+} from 'react';
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import styles from "./inputWrapper.module.scss"
 import {ArrowMiniDown, ArrowMiniRightIcon, CloseIcon} from "../../../icons";
@@ -13,7 +23,7 @@ interface SelectInputWrapper {
     isFocused?: boolean
     errText?: string,
     inputVal?: number | string,
-    labelText?: string,
+    labelText?: ReactNode,
     onInputBlur?: () => void
     changeVal?: (e: ChangeEvent<HTMLInputElement>) => any,
     setVal?: Dispatch<SetStateAction<string>>

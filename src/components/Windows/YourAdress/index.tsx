@@ -2,7 +2,7 @@ import React from "react";
 import ShadowWrapper from "../ShadowWrapper";
 import WindowBody from "../WhiteWrapper";
 import {CloseIcon} from "../../../icons";
-import styles from "./booking.module.scss"
+import styles from "./yourAdress.module.scss"
 import {useAppDispatch} from "../../../app/hooks";
 import {handleBooking, handleYourAddress} from "../../../features/modals/modalsSlice";
 import RedButton from "../../Buttons/RedButton";

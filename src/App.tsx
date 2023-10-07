@@ -8,6 +8,7 @@ import YourAddressWindow from "./components/Windows/YourAdress";
 
 import Profile from "./pages/Profile";
 import ChosenRestaurant from "./pages/ChosenRestaurant";
+import ProductAdditives from "./components/Windows/ProductAdditives";
 
 const tempPages = [
     Main,
@@ -28,7 +29,9 @@ function App() {
             {bookingOpened ? <BookingWindow/> : null}
             {loginOpened ? <LoginWindow/> : null}
             {yourAddress ? <YourAddressWindow/> : null}
-            <ChosenRestaurant/>
+            {/*<ChosenRestaurant/>*/}
+            <ProductAdditives/>
+
 
         </div>
     );

@@ -14,11 +14,25 @@ import SuccessWindow from "../SuccessWindow";
 interface AddressItemProps {
     selected: boolean
     disabled?: boolean,
-    selectedHandle: () => void
+    selectedHandle?: () => void
 }
 const AddressItem: FC<AddressItemProps> = ({selected,selectedHandle, disabled= false}) => {
+    if(disabled) {
+        return (
+            <GrayBorderedBlock disabled={disabled} className={`pd-20 d-f gap-10 ${styles.addressItem} `}>
+                <Geo/>
+                <div className={`f-column gap-5 ${styles.text}`}>
+                    <h2>Энергетиков, д. 4</h2>
+                    <div className="f-column">
+                        <div className={styles.timeWork}>Пн-Пт: 7:30 - 23:00</div>
+                        <div className={styles.timeWork}>Пн-Пт: 7:30 - 23:00</div>
+                    </div>
+                </div>
+            </GrayBorderedBlock>
+        )
+    }
     return (
-        <GrayBorderedBlock clickHandler={selectedHandle} disabled={disabled} isFocused={selected} className={`pd-20 d-f gap-10 ${styles.addressItem} `}>
+        <GrayBorderedBlock clickHandler={selectedHandle} isFocused={selected} className={`pd-20 d-f gap-10 ${styles.addressItem} `}>
             <Geo/>
             <div className={`f-column gap-5 ${styles.text}`}>
                 <h2>Энергетиков, д. 4</h2>

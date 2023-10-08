@@ -9,8 +9,17 @@ interface GrayBorderedBlock {
     clickHandler?: () => void
 }
 const GrayBorderedBlock: FC<HasChildrenProps & HasClassName & GrayBorderedBlock> = ({className, clickHandler, disabled, isIncorrectStyle, validError, isFocused, children}) => {
+
+    if(clickHandler) {
+        return (
+            <div onClick={clickHandler} className={`${styles.block} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+                {children}
+            </div>
+        );
+    }
+
     return (
-        <div onClick={clickHandler} className={`${styles.block} ${validError ? styles.error : ""} ${isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+        <div className={`${styles.block} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
             {children}
         </div>
     );

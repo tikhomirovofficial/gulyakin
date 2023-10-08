@@ -19,4 +19,7 @@
 }
 .disabled {
   background: #F3F3F7;
+  &:hover {
+    border: 1px solid #E2E2E9;
+  }
 }

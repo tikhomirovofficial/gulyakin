@@ -7,6 +7,7 @@ type ModalSliceState = {
     bookingOpened: boolean,
     yourAddress: boolean,
     productAdditives: boolean,
+    cookiesAccepted: boolean,
     deliveryWay: boolean,
     productAdditivesData: ProductAdditiveData
 }
@@ -16,6 +17,7 @@ const initialState: ModalSliceState = {
     bookingOpened: false,
     yourAddress: false,
     productAdditives: false,
+    cookiesAccepted: true,
     deliveryWay: false,
     productAdditivesData: {
         description: "Куриное филе, ветчина, бекон, огурцы маринованные,соус тар-тар, томаты, моцарелла, сыр гауда, чеддер",
@@ -41,6 +43,10 @@ export const ModalsSlice = createSlice({
     name: "modals",
     initialState,
     reducers: {
+        handleCookieAccepted: (state) => {
+            state.cookiesAccepted = !state.cookiesAccepted
+
+        },
         handleBooking: (state) => {
             state.bookingOpened = !state.bookingOpened
         },
@@ -63,7 +69,7 @@ export const ModalsSlice = createSlice({
     }
 })
 
-export const {handleBooking, handleLogin, handleYourAddress} = ModalsSlice.actions
+export const {handleBooking, handleLogin, handleYourAddress, handleProductAdditives, setProductAdditivesData, handleCookieAccepted, handleDeliveryWay} = ModalsSlice.actions
 
 
 export const modalsReducer = ModalsSlice.reducer

@@ -8,6 +8,7 @@ import {getImgPath} from "../../../utils/getAssetsPath";
 import {HasClassName} from "../../../types/components.types";
 import {AdditiveProduct} from "../../../types/products.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import SuccessWindow from "../SuccessWindow";
 
 type AdditiveItemProps = {
     isAdded: boolean,
@@ -48,6 +49,7 @@ const ProductAdditives = () => {
 
     return (
         <ShadowWrapper>
+
             <WindowBody className={`${styles.window} f-column`}>
                 <div className="w-100p d-f al-end jc-end">
                     <div onClick={() => {}} className={`closeWrapper ${styles.close}`}>

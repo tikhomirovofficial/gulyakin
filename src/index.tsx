@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
+import './styles/animations.css';
 import './styles/tikstyles.css';
 import App from './App';
 import {Provider} from 'react-redux';

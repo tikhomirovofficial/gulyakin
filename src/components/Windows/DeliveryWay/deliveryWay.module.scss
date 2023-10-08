@@ -15,7 +15,22 @@
 }
 .addressesList {
   overflow-y: auto;
+  max-height: 37rem;
   padding-right: 3px;
+  .addressItem {
+    padding: 1.5rem 2rem;
+    .text {
+      margin-top: -3px;
+      h2 {
+        font-size: 1.8rem;
+      }
+      .timeWork {
+        font-size: 1.4rem;
+        color: #ABADBA;
+      }
+    }
+
+  }
 }
 .addressesList::-webkit-scrollbar {
   width: 4px;
@@ -23,20 +38,7 @@
 .addressesList::-webkit-scrollbar-thumb {
   background: #c7c7c7;
 }
-.addressItem {
-  padding: 1.5rem 2rem;
-  .text {
-    margin-top: -3px;
-    h2 {
-      font-size: 1.8rem;
-    }
-    .timeWork {
-      font-size: 1.4rem;
-      color: #ABADBA;
-    }
-  }
 
-}
 
 .partInputBlock {
   max-width: 17rem;

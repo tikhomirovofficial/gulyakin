@@ -1,0 +1,17 @@
+.successWindow {
+  z-index: 12;
+  opacity: 0;
+  visibility: hidden;
+  text-align: center;
+  .container {
+    max-width: 42rem;
+    width: 100%;
+  }
+  h1 {
+    font-size: 3.6rem;
+  }
+}
+.successWindowOpened {
+  opacity: 1;
+  visibility: visible;
+}

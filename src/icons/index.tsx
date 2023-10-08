@@ -564,6 +564,22 @@ export const Cap: FC<IconProps & HasClassName> = ({width = 20, height = 18}) => 
         </svg>
     )
 }
+export const SuccessGreenIcon: FC<IconProps & HasClassName> = ({width = 95, height = 95}) => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 95 95" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M31.8237 1.81397C42.1346 -0.604654 52.8654 -0.604656 63.1763 1.81397C78.0667 5.30677 89.6932 16.9333 93.186 31.8237C95.6047 42.1346 95.6047 52.8654 93.186 63.1763C89.6932 78.0667 78.0667 89.6932 63.1763 93.186C52.8654 95.6047 42.1346 95.6046 31.8237 93.186C16.9333 89.6932 5.30678 78.0667 1.81397 63.1764C-0.604657 52.8654 -0.604657 42.1346 1.81397 31.8236C5.30678 16.9333 16.9333 5.30677 31.8237 1.81397ZM63.6099 39.4636C64.7523 38.2396 64.6861 36.3214 63.4622 35.179C62.2383 34.0367 60.32 34.1029 59.1777 35.3268L43.6354 51.9792L35.7494 44.0932C34.5656 42.9094 32.6462 42.9094 31.4624 44.0932C30.2786 45.2771 30.2786 47.1965 31.4624 48.3803L41.5671 58.485C42.1484 59.0663 42.9409 59.3866 43.7628 59.3724C44.5848 59.3582 45.3658 59.0108 45.9267 58.4098L63.6099 39.4636Z" fill="#59D659"/>
+        </svg>
+    )
+}
+
+export const MicroCloseIcon: FC<IconProps & HasClassName> = ({width = 6, height = 6,}) => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 6 6" fill="none">
+            <rect x="0.66687" width="7.54233" height="0.942792" rx="0.471396" transform="rotate(45 0.66687 0)" fill="#636A76"/>
+            <rect x="6" y="0.666504" width="7.54233" height="0.942792" rx="0.471396" transform="rotate(135 6 0.666504)" fill="#636A76"/>
+        </svg>
+    )
+}
 
 export const CartIcon: FC<IconProps & HasClassName> = ({width = 22, height = 22}) => {
     return (

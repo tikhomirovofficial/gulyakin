@@ -1,0 +1,29 @@
+.cookiePopup {
+  left: 50%;
+  width: fit-content;
+  bottom: 1rem;
+  font-size: 1.4rem;
+  border-radius: 6px;
+  transition: transform .3s;
+  transform: translateX(-50%) translateY(200%);
+  background: white;
+  padding: 1rem 2rem;
+
+  .cookieText {
+    color: rgba(73, 73, 73, 1);
+  }
+}
+.cookiePopupOpened {
+  transform: translateX(-50%) translateY(0);
+
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}

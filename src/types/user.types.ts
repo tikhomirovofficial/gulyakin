@@ -1,4 +1,13 @@
-export interface UserData  {
+
+export type Address = {
+    city: string
+    street: string
+}
+
+export type UserData = {
     name: string,
-    age: number
+    phone: string
+    birthday: string
+    email: string
+    addresses: Array<Address>
 }

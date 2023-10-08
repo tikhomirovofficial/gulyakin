@@ -11,7 +11,20 @@ export interface ProfileState {
 const initialState: ProfileState = {
     data: {
         name: "Artem",
-        age: 19
+        addresses: [
+            {
+                city: "г. Сургут",
+                street: "ул. Университетская, д. 9"
+            },
+            {
+                city: "г. Сургут",
+                street: "ул. Энергетиков, д. 4"
+            },
+
+        ],
+        birthday: "",
+        email: "",
+        phone: ""
     },
     isAuth: false
 }

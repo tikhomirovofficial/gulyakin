@@ -45,6 +45,7 @@
     .item {
       font-size: 1.4rem;
 
+
       &::after {
         visibility: hidden;
         opacity: 0;
@@ -267,7 +268,21 @@
   border-radius: 6px;
   max-height: 576px;
 }
-
+.sliderArrowWrapper {
+  z-index: 6;
+  > div {
+    background: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+  }
+}
+.sliderArrowWrapperLeft {
+  left: -1.5rem;
+}
+.sliderArrowWrapperRight {
+  right: -1.5rem;
+}
 .choosenRestaruantBlock {
   color: #494949;
 
@@ -280,9 +295,9 @@
   .gallery {
     overflow-x: hidden;
     .item {
+      background-position: center;
       min-width: 18rem;
       min-height: 11rem;
-      background: #ababab;
       border-radius: 6px;
     }
   }

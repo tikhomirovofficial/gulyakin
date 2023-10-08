@@ -13,6 +13,7 @@
 }
 .input {
   max-width: 100%;
+  background: inherit;
 }
 .input::placeholder {
   color: #E2E2E9;
@@ -22,4 +23,7 @@
 }
 .close {
   min-height: 100%;
+}
+.label {
+  font-size: 1.4rem;
 }

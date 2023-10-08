@@ -32,7 +32,7 @@ function App() {
             {bookingOpened ? <BookingWindow/> : null}
             {loginOpened ? <LoginWindow/> : null}
             {yourAddress ? <YourAddressWindow/> : null}
-            {!deliveryWay ? <DeliveryWay/> : null}
+            {deliveryWay ? <DeliveryWay/> : null}
             <ChosenRestaurant/>
             <CookiePopup isOpened={cookiesAccepted}/>
         </div>

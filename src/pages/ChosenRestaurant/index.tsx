@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {ArrowMiniRightIcon, Cap} from "../../icons";
+import {ArrowMiniRightIcon, Cap, SafeArrowIcon} from "../../icons";
 import styles from '../Restaurants/restaurants.module.scss'
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import Header from "../../components/Header";
@@ -15,8 +15,44 @@ import 'swiper/css';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination'
+import {getImgPath} from "../../utils/getAssetsPath";
+
+const weekItems = [
+    {
+        day: "Воскресенье",
+        workTime: "10:30-00:00"
+    },
+    {
+        day: "Понедельник",
+        workTime: "10:30-00:00"
+    },
+    {
+        day: "Вторник",
+        workTime: "10:30-00:00"
+    },
+    {
+        day: "Среда",
+        workTime: "10:30-00:00"
+    },
+    {
+        day: "Четверг",
+        workTime: "10:30-00:00"
+    },
+    {
+        day: "Пятница",
+        workTime: "10:30-00:00"
+    },
+    {
+        day: "Суббота",
+        workTime: "10:30-00:00"
+    },
+
+]
+const today = new Date();
+const dayOfWeek = today.getDay()
 
 const ChosenRestaurant: FC = () => {
+
     const dispatch = useAppDispatch()
     const [currentCoords, setCurrentCoords] = useState([55.75, 37.57])
 
@@ -48,25 +84,44 @@ const ChosenRestaurant: FC = () => {
                                             <h3 className={styles.addressTitle}>ул. Энергетиков, д. 4</h3>
                                             <p className={styles.addressAreaText}>Центральный район</p>
                                         </div>
-
-                                        <Swiper
-                                            style={{margin: 0}}
-                                            slidesPerView={'auto'}
-                                            centeredSlides={false}
-                                            className={styles.gallery}
-                                            spaceBetween={20}
-                                        >
-                                            <SwiperSlide className={"w-content"}>
-                                                <div className={styles.item}>
-
+                                        <div className="d-f p-rel">
+                                            <div style={{transform: "rotateZ(180deg)"}} className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperLeft} d-f jc-end al-center h-100p p-abs left-0`}>
+                                                <div className="f-c-col">
+                                                    <SafeArrowIcon width={7}/>
                                                 </div>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
-                                                <div className={styles.item}>
 
+                                            </div>
+                                            <div className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f jc-end al-center h-100p p-abs right-0`}>
+                                                <div className="f-c-col">
+                                                    <SafeArrowIcon width={7}/>
                                                 </div>
-                                            </SwiperSlide>
-                                        </Swiper>
+
+                                            </div>
+                                            <Swiper
+                                                style={{margin: 0}}
+                                                slidesPerView={'auto'}
+                                                centeredSlides={false}
+                                                className={styles.gallery}
+                                                spaceBetween={20}
+                                            >
+                                                <SwiperSlide className={"w-content"}>
+                                                    <div style={{backgroundImage: `url(${getImgPath("restaurant.jpg")})`}} className={`${styles.item} bg-cover`}>
+
+                                                    </div>
+                                                </SwiperSlide>
+                                                <SwiperSlide className={"w-content"}>
+                                                    <div style={{backgroundImage: `url(${getImgPath("restaurant.jpg")})`}} className={`${styles.item} bg-cover`}>
+
+                                                    </div>
+                                                </SwiperSlide>
+                                                <SwiperSlide className={"w-content"}>
+                                                    <div style={{backgroundImage: `url(${getImgPath("restaurant.jpg")})`}} className={`${styles.item} bg-cover`}>
+
+                                                    </div>
+                                                </SwiperSlide>
+                                            </Swiper>
+                                        </div>
+
 
 
                                     </div>
@@ -77,33 +132,18 @@ const ChosenRestaurant: FC = () => {
                                         </div>
                                         <div className={`f-column gap-5 ${styles.workClocks}`}>
                                             <p className={styles.phoneLabel}>График работы</p>
-                                            <div className={"f-row-betw"}>
-                                                <b>Понедельник</b>
-                                                <b>10:30-00:00</b>
-                                            </div>
-                                            <div className={"f-row-betw"}>
-                                                <b>Вторник</b>
-                                                <b>10:30-00:00</b>
-                                            </div>
-                                            <div className={"f-row-betw"}>
-                                                <b>Среда</b>
-                                                <b>10:30-00:00</b>
-                                            </div>
-                                            <div className={"f-row-betw"}>
-                                                <b>Четверг</b>
-                                                <b>10:30-00:00</b>
-                                            </div>
-                                            <div className={"f-row-betw colorRed"}>
-                                                <b>Пятница</b>
-                                                <b>10:30-00:00</b>
-                                            </div>
-                                            <div className={"f-row-betw"}>
-                                                <b>Суббота</b>
-                                                <b>10:30-00:00</b>
-                                            </div>
-                                            <div className={"f-row-betw"}>
-                                                <b>Воскресенье</b>
-                                                <b>10:30-00:00</b>
+                                            {
+                                                weekItems.map((item, index) => (
+                                                    index > 0 ?  <div className={`f-row-betw ${index === dayOfWeek? "colorRed" : ""}`}>
+                                                        <b>{item.day}</b>
+                                                        <b>{item.workTime}</b>
+                                                    </div> : null
+
+                                                ))
+                                            }
+                                            <div className={`f-row-betw ${dayOfWeek === 0 && "colorRed"}`}>
+                                                <b>{weekItems[0].day}</b>
+                                                <b>{weekItems[0].workTime}</b>
                                             </div>
                                         </div>
                                     </div>

@@ -1,7 +1,10 @@
 
 export type Address = {
     city: string
-    street: string
+    code_door?: number | string
+    floor: number | string
+    flat: number | string
+    entrance: number | string
 }
 
 export type UserData = {
@@ -9,5 +12,5 @@ export type UserData = {
     phone: string
     birthday: string
     email: string
-    addresses: Array<Address>
+
 }

@@ -6,11 +6,14 @@ import InputWrapper from "../../components/Inputs/InputWrapper";
 import {DeleteIcon, PlusIncCircleIcon, SaveIcon} from "../../icons";
 import GrayButton from "../../components/Buttons/GrayButton";
 import DarkBorderedButton from "../../components/Buttons/DarkBorderedButton";
-import {useAppSelector} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import List from "../../components/List";
+import {handleNewAddress} from "../../features/modals/modalsSlice";
+import {removeAddress} from "../../features/profile/profileSlice";
 
 const Profile = () => {
-    const {name, email, phone, birthday, addresses} = useAppSelector(state => state.profile.data)
+    const {data, addresses} = useAppSelector(state => state.profile)
+    const dispatch = useAppDispatch()
     return (
         <>
             <Header/>
@@ -59,7 +62,7 @@ const Profile = () => {
                                 <div className="sectionTitle">
                                     Адреса
                                 </div>
-                                <DarkBorderedButton className={`${styles.addAddressBtn}`}>
+                                <DarkBorderedButton onClick={() => dispatch(handleNewAddress())} className={`${styles.addAddressBtn}`}>
                                     <div className={"d-f al-center gap-5"}>
                                         <PlusIncCircleIcon height={14} width={14}/>
                                         <p>Добавить</p>
@@ -69,13 +72,16 @@ const Profile = () => {
                             {
                                 addresses.length ?
                                 <List listBlockClassname={"addresses f-column gap-20"} list={addresses}
-                                      renderItem={({street, city}) => (
+                                      renderItem={({city, id}) => (
                                           <div className={`${styles.addressItem} f-row-betw`}>
                                               <div className="left f-column gap-5">
-                                                  <p>{street}</p>
+                                                  <p>{city}</p>
                                                   <b>{city}</b>
                                               </div>
-                                              <DeleteIcon/>
+                                              <div onClick={() => dispatch(removeAddress(id))} className="w-content f-c-col">
+                                                  <DeleteIcon/>
+                                              </div>
+
                                           </div>
                                       ) }
                                 /> :

@@ -15,19 +15,22 @@ type AdditiveItemProps = {
     addHandler: () => void
     isEmpty?: boolean,
     price: number,
-    imageUrl: string,
+    imageUrl?: string,
     name: string
 
 } & AdditiveProduct
-const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, imageUrl, isAdded, className, isEmpty, price}) => {
+const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, imageUrl = "", isAdded, className, isEmpty, price}) => {
     return (
         <div className={`${styles.item} f-column-betw gap-20 al-center txt-center p-rel`}>
 
             <div className={styles.imageWrapper}>
                 {isEmpty ?
-                    <CancelCircleIcon height={73} width={73}/> :
-                    <div style={{backgroundImage: `url(${getImgPath('productAdditive.png')})`}} className={`${styles.img}`}>
+                    <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}} className={`${styles.imgPlashka} f-c-col`}>
+                    </div> :
+                    <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}} className={`${styles.imgPlashka} f-c-col`}>
+                        <div style={{backgroundImage: `url(${getImgPath('productAdditive.png')})`}} className={`${styles.img}`}>
 
+                        </div>
                     </div>
                 }
 
@@ -72,9 +75,11 @@ const ProductAdditives = () => {
                             <div className="additivesListBlock f-1 gap-10 f-column">
                                 <h4>Добавьте по вкусу</h4>
                                 <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
+                                    <AdditiveItem isAdded={false} isEmpty={true} price={0} name={"Без соуса"} addHandler={() => {
+                                    }} imageUrl={''}/>
                                     {
                                         additives.map(item => (
-                                            <AdditiveItem imageUrl={item.imageUrl} isAdded={false} price={item.price} name={item.name} addHandler={() => {}}/>
+                                            <AdditiveItem isEmpty={false} imageUrl={item.imageUrl} isAdded={false} price={item.price} name={item.name} addHandler={() => {}}/>
                                         ))
                                     }
                                 </div>

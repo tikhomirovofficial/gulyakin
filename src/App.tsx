@@ -12,6 +12,7 @@ import ProductAdditives from "./components/Windows/ProductAdditives";
 import CookiePopup from "./components/CookiePopup";
 import SuccessWindow from "./components/Windows/SuccessWindow";
 import DeliveryWay from "./components/Windows/DeliveryWay";
+import NewAddress from "./components/Windows/NewAddress";
 
 const tempPages = [
     Main,
@@ -20,7 +21,7 @@ const tempPages = [
 
 function App() {
 
-    const {bookingOpened, loginOpened, yourAddress, cookiesAccepted, deliveryWay} = useAppSelector(state => state.modals)
+    const {bookingOpened, loginOpened, yourAddress, cookiesAccepted, deliveryWay, productAdditives, newAddress} = useAppSelector(state => state.modals)
     const {tempPage} = useAppSelector(state => state.main)
     const CurrentPage = tempPages[tempPage]
 
@@ -33,7 +34,9 @@ function App() {
             {loginOpened ? <LoginWindow/> : null}
             {yourAddress ? <YourAddressWindow/> : null}
             {deliveryWay ? <DeliveryWay/> : null}
-            <ChosenRestaurant/>
+            {productAdditives ? <ProductAdditives/> : null}
+            {newAddress ? <NewAddress/> : null}
+            <Profile/>
             <CookiePopup isOpened={cookiesAccepted}/>
         </div>
     );

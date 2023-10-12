@@ -9,6 +9,7 @@ type ModalSliceState = {
     productAdditives: boolean,
     cookiesAccepted: boolean,
     deliveryWay: boolean,
+    newAddress: boolean,
     productAdditivesData: ProductAdditiveData
 }
 
@@ -19,6 +20,7 @@ const initialState: ModalSliceState = {
     productAdditives: false,
     cookiesAccepted: true,
     deliveryWay: false,
+    newAddress: false,
     productAdditivesData: {
         description: "Куриное филе, ветчина, бекон, огурцы маринованные,соус тар-тар, томаты, моцарелла, сыр гауда, чеддер",
         imageUrl: getImgPath('productCard.png'),
@@ -29,8 +31,13 @@ const initialState: ModalSliceState = {
         additives: [
             {
                 imageUrl: getImgPath('productAdditive.png'),
-                name: "",
-                price: 0,
+                name: "Соус 1",
+                price: 49,
+            },
+            {
+                imageUrl: getImgPath('productAdditive.png'),
+                name: "Соус 2",
+                price: 69,
             }
         ],
 
@@ -59,6 +66,9 @@ export const ModalsSlice = createSlice({
         handleProductAdditives: state => {
             state.productAdditives = !state.productAdditives
         },
+        handleNewAddress: state => {
+          state.newAddress = !state.newAddress
+        },
         handleDeliveryWay: (state) => {
             state.deliveryWay = !state.deliveryWay
         },
@@ -69,7 +79,16 @@ export const ModalsSlice = createSlice({
     }
 })
 
-export const {handleBooking, handleLogin, handleYourAddress, handleProductAdditives, setProductAdditivesData, handleCookieAccepted, handleDeliveryWay} = ModalsSlice.actions
+export const {
+    handleBooking,
+    handleLogin,
+    handleYourAddress,
+    handleProductAdditives,
+    setProductAdditivesData,
+    handleCookieAccepted,
+    handleDeliveryWay,
+    handleNewAddress,
+} = ModalsSlice.actions
 
 
 export const modalsReducer = ModalsSlice.reducer

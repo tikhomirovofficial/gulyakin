@@ -17,7 +17,7 @@ interface InputWrapper {
     inputId?: string,
     onInputBlur?: () => void
     changeVal?: (e: ChangeEvent<HTMLInputElement>) => any,
-    setVal?: Dispatch<SetStateAction<string>>
+    setVal?: (val: string) => any
 }
 
 const InputWrapper: FC<InputWrapper & HasClassName> = ({

@@ -33,10 +33,10 @@ function App() {
             {bookingOpened ? <BookingWindow/> : null}
             {loginOpened ? <LoginWindow/> : null}
             {yourAddress ? <YourAddressWindow/> : null}
-            {deliveryWay ? <DeliveryWay/> : null}
+            {deliveryWay.opened ? <DeliveryWay/> : null}
             {productAdditives ? <ProductAdditives/> : null}
             {newAddress ? <NewAddress/> : null}
-            <Profile/>
+            <Main/>
             <CookiePopup isOpened={cookiesAccepted}/>
         </div>
     );

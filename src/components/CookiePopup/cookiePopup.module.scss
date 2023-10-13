@@ -2,11 +2,13 @@
   left: 50%;
   width: fit-content;
   bottom: 1rem;
+  width: 91.7rem;
   font-size: 1.4rem;
   border-radius: 6px;
   transition: transform .3s;
   transform: translateX(-50%) translateY(200%);
-  background: white;
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(5px);
   padding: 1rem 2rem;
 
   .cookieText {

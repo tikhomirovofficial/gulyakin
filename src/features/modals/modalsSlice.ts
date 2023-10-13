@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ProductAdditiveData} from "../../types/products.types";
 import {getImgPath} from "../../utils/getAssetsPath";
+import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 
 type ModalSliceState = {
     loginOpened: boolean,
@@ -8,7 +9,10 @@ type ModalSliceState = {
     yourAddress: boolean,
     productAdditives: boolean,
     cookiesAccepted: boolean,
-    deliveryWay: boolean,
+    deliveryWay: {
+        opened: boolean
+        variant: number
+    },
     newAddress: boolean,
     productAdditivesData: ProductAdditiveData
 }
@@ -18,8 +22,11 @@ const initialState: ModalSliceState = {
     bookingOpened: false,
     yourAddress: false,
     productAdditives: false,
-    cookiesAccepted: true,
-    deliveryWay: false,
+    cookiesAccepted: getFromStorage("cookie_accepted") || false,
+    deliveryWay: {
+        opened: false,
+        variant: 0
+    },
     newAddress: false,
     productAdditivesData: {
         description: "Куриное филе, ветчина, бекон, огурцы маринованные,соус тар-тар, томаты, моцарелла, сыр гауда, чеддер",
@@ -51,8 +58,10 @@ export const ModalsSlice = createSlice({
     initialState,
     reducers: {
         handleCookieAccepted: (state) => {
-            state.cookiesAccepted = !state.cookiesAccepted
-
+            if(!state.cookiesAccepted) {
+                state.cookiesAccepted = !state.cookiesAccepted
+                addToStorage("cookie_accepted", true)
+            }
         },
         handleBooking: (state) => {
             state.bookingOpened = !state.bookingOpened
@@ -69,8 +78,17 @@ export const ModalsSlice = createSlice({
         handleNewAddress: state => {
           state.newAddress = !state.newAddress
         },
-        handleDeliveryWay: (state) => {
-            state.deliveryWay = !state.deliveryWay
+        handleDeliveryWayWindow: (state) => {
+            state.deliveryWay = {
+                opened: !state.deliveryWay.opened,
+                variant: state.deliveryWay.variant
+            }
+        },
+        handleDeliveryVariant: (state, action: PayloadAction<number>) => {
+            state.deliveryWay = {
+                opened: state.deliveryWay.opened,
+                variant: action.payload
+            }
         },
         setProductAdditivesData: (state, action: PayloadAction<ProductAdditiveData>) => {
             state.productAdditivesData = action.payload
@@ -86,7 +104,8 @@ export const {
     handleProductAdditives,
     setProductAdditivesData,
     handleCookieAccepted,
-    handleDeliveryWay,
+    handleDeliveryWayWindow,
+    handleDeliveryVariant,
     handleNewAddress,
 } = ModalsSlice.actions
 

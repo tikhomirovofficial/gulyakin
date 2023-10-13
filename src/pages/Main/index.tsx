@@ -18,6 +18,7 @@ import 'swiper/css';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
+import {handleBooking} from "../../features/modals/modalsSlice";
 
 const Main: FC = () => {
     const dispatch = useAppDispatch()
@@ -120,7 +121,7 @@ const Main: FC = () => {
                                         </div>
                                     </div>
 
-                                    <div className="w-100p f-c-row p-rel h-100p">
+                                    <div onClick={() => dispatch(handleBooking())} className="w-100p f-c-row p-rel h-100p">
                                         <div className={`${styles.text} f-column`}>
                                             <p>Забронируйте</p>
                                             <p>у нас столик!</p>

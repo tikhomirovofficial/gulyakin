@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import WindowBody from "../WhiteWrapper";
 import {CloseIcon, Geo} from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
@@ -8,16 +8,18 @@ import Switcher from "../../Switcher";
 import InputWrapper from "../../Inputs/InputWrapper";
 import {Map, YMaps} from "@pbe/react-yandex-maps";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
-import {useAppDispatch} from "../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
+import {handleDeliveryVariant, handleDeliveryWayWindow} from "../../../features/modals/modalsSlice";
 
 interface AddressItemProps {
     selected: boolean
     disabled?: boolean,
     selectedHandle?: () => void
 }
-const AddressItem: FC<AddressItemProps> = ({selected,selectedHandle, disabled= false}) => {
-    if(disabled) {
+
+const AddressItem: FC<AddressItemProps> = ({selected, selectedHandle, disabled = false}) => {
+    if (disabled) {
         return (
             <GrayBorderedBlock disabled={disabled} className={`pd-20 d-f gap-10 ${styles.addressItem} `}>
                 <Geo/>
@@ -32,7 +34,8 @@ const AddressItem: FC<AddressItemProps> = ({selected,selectedHandle, disabled= f
         )
     }
     return (
-        <GrayBorderedBlock clickHandler={selectedHandle} isFocused={selected} className={`pd-20 d-f gap-10 ${styles.addressItem} `}>
+        <GrayBorderedBlock clickHandler={selectedHandle} isFocused={selected}
+                           className={`pd-20 d-f gap-10 ${styles.addressItem} `}>
             <Geo/>
             <div className={`f-column gap-5 ${styles.text}`}>
                 <h2>Энергетиков, д. 4</h2>
@@ -44,18 +47,68 @@ const AddressItem: FC<AddressItemProps> = ({selected,selectedHandle, disabled= f
         </GrayBorderedBlock>
     )
 }
+type SearchAddressItemProps = {
+    address: string,
+    city: string
+}
+const SearchAddressItem: FC<SearchAddressItemProps> = ({address, city}) => {
+    return (
+        <div className={`pd-10 ${styles.searchAddressItem} f-column gap-5`}>
+            <b>{address}</b>
+            <p>{city}</p>
+        </div>
+    )
+}
 const DeliveryVariant = () => {
+    const [findedAddresses, setFindedAddressess] = useState<Array<SearchAddressItemProps>>([
+        {
+            address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
+            city: "Сургут, ул. Университетская, д. 9"
+        },
+        {
+            address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
+            city: "Сургут, ул. Университетская, д. 9"
+        },
+        {
+            address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
+            city: "Сургут, ул. Университетская, д. 9"
+        },
+        {
+            address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
+            city: "Сургут, ул. Университетская, д. 9"
+        }
+    ])
+
+    useEffect(() => {
+
+    }, [])
+
     return (
         <>
             <div className="f-column gap-10">
-                <InputWrapper placeholder={"Сургут, ул. Университетская, д. 9"} labelText={
-                    <div className={"d-f al-center gap-5 svgRedStroke"}>
-                        Город, улица и дом
-                        <div className={"f-c-col w-content"}>
-                            <Geo width={12}/>
+                <div className={"d-f w-100p p-rel"}>
+                    <InputWrapper className={"w-100p"} placeholder={"Сургут, ул. Университетская, д. 9"} labelText={
+                        <div className={"d-f al-center gap-5 svgRedStroke"}>
+                            Город, улица и дом
+                            <div className={"f-c-col w-content"}>
+                                <Geo width={12}/>
+                            </div>
                         </div>
-                    </div>
-                }/>
+                    }/>
+                    {
+                        !findedAddresses.length ?
+                            <div className={`${styles.searchedMatches} pd-10 p-abs left-0 w-100p bg-white`}>
+                                {
+                                    findedAddresses.map(item => (
+                                        <SearchAddressItem address={item.address} city={item.city}/>
+                                    ))
+                                }
+
+                            </div> : null
+                    }
+
+
+                </div>
                 <div className="f-row-betw gap-20 flex-wrap">
                     <InputWrapper className={styles.partInputBlock} placeholder={""} labelText={
                         <div className={"d-f al-center gap-5 svgRedStroke"}>
@@ -95,7 +148,7 @@ const DeliveryVariant = () => {
 const addresses = [{
     name: "Адрес 1",
     disabled: false
-},{
+}, {
     name: "Адрес 2",
     disabled: true
 },
@@ -103,7 +156,7 @@ const addresses = [{
         name: "Адрес 3",
         disabled: false
     }
-    ]
+]
 const PickupVariant = () => {
     const [selectedAddress, setSelectedAddress] = useState(0)
 
@@ -112,7 +165,8 @@ const PickupVariant = () => {
         <>
             <div className={`f-column gap-10 h-100p ${styles.addressesList}`}>
                 {addresses.map((item, index) => (
-                    <AddressItem disabled={item.disabled} selectedHandle={() => setSelectedAddress(index)} selected={index === selectedAddress}/>
+                    <AddressItem disabled={item.disabled} selectedHandle={() => setSelectedAddress(index)}
+                                 selected={index === selectedAddress}/>
                 ))}
             </div>
             <RedButton disabled={false} className={"pd-10-0"}>Выбрать</RedButton>
@@ -122,27 +176,26 @@ const PickupVariant = () => {
 }
 const DeliveryWay = () => {
     const dispatch = useAppDispatch()
-    const [deliveryWay, setDeliveryWay] = useState(0)
+    const {variant} = useAppSelector(state => state.modals.deliveryWay)
     const handleDeliveryWay = (index: number) => {
-        setDeliveryWay(index)
+        dispatch(handleDeliveryVariant(index))
     }
 
     return (
         <ShadowWrapper>
             <SuccessWindow isOpened={false} title={"Ваш адрес успешно добавлен!"}/>
             <WindowBody className={`${styles.window} f-row-betw p-rel`}>
-                <div onClick={() => {
-                }} className={"modalAbsoluteClose closeWrapper p-abs"}>
+                <div onClick={() => {dispatch(handleDeliveryWayWindow())}} className={"modalAbsoluteClose closeWrapper p-abs"}>
                     <CloseIcon isDark={true}/>
                 </div>
                 <div className={`${styles.content} f-column-betw pd-30 gap-20`}>
                     <div className="top f-column gap-10">
                         <h2>Новый адрес</h2>
-                        <Switcher onSwitch={handleDeliveryWay} currentSelected={deliveryWay}
+                        <Switcher onSwitch={handleDeliveryWay} currentSelected={variant}
                                   elements={["Доставка", "Самовывоз"]}/>
                     </div>
                     {
-                        deliveryWay === 0 ?
+                        !variant ?
                             <DeliveryVariant/> :
                             <PickupVariant/>
 

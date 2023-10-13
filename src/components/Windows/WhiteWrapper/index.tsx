@@ -4,7 +4,7 @@ import styles from './whiteWrapper.module.scss';
 import {CloseIcon} from "../../../icons";
 const WindowBody: FC<HasChildrenProps & HasClassName> = ({children, className}) => {
     return (
-        <div className={`${styles.whiteBlock} ${className || null} bg-white p-rel of-hide`}>
+        <div onClick={e => e.stopPropagation()} className={`${styles.whiteBlock} ${className || null} bg-white p-rel of-hide`}>
             {children}
         </div>
     );

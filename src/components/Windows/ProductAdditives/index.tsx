@@ -9,6 +9,7 @@ import {HasClassName} from "../../../types/components.types";
 import {AdditiveProduct} from "../../../types/products.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
+import {handleProductAdditives, handleYourAddress} from "../../../features/modals/modalsSlice";
 
 type AdditiveItemProps = {
     isAdded: boolean,
@@ -50,12 +51,17 @@ const ProductAdditives = () => {
     const {additives, imageUrl, price, weight, name, description} = useAppSelector(state => state.modals.productAdditivesData)
     const dispatch = useAppDispatch()
 
+    const handleAddToCartClick = () => {
+        dispatch(handleProductAdditives())
+        dispatch(handleYourAddress())
+    }
+
     return (
-        <ShadowWrapper>
+        <ShadowWrapper onClick={() => dispatch(handleProductAdditives())}>
 
             <WindowBody className={`${styles.window} f-column`}>
                 <div className="w-100p d-f al-end jc-end">
-                    <div onClick={() => {}} className={`closeWrapper ${styles.close}`}>
+                    <div onClick={() => dispatch(handleProductAdditives())} className={`closeWrapper ${styles.close}`}>
                         <CloseIcon isDark={true}/>
                     </div>
                 </div>
@@ -71,20 +77,25 @@ const ProductAdditives = () => {
                            </div>
                            <p className={styles.description}>{description}</p>
                        </div>
-                        <div className="content f-1 gap-10 f-column-betw">
-                            <div className="additivesListBlock f-1 gap-10 f-column">
-                                <h4>Добавьте по вкусу</h4>
-                                <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
-                                    <AdditiveItem isAdded={false} isEmpty={true} price={0} name={"Без соуса"} addHandler={() => {
-                                    }} imageUrl={''}/>
-                                    {
-                                        additives.map(item => (
-                                            <AdditiveItem isEmpty={false} imageUrl={item.imageUrl} isAdded={false} price={item.price} name={item.name} addHandler={() => {}}/>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-                            <RedButton disabled={false} className={"pd-10-0"}>Добавить в корзину за {price} ₽</RedButton>
+                        <div className={`${additives.length ? "f-1" : ""} content gap-10 f-column-betw`}>
+                            {
+                                additives.length ?
+                                    <div className="additivesListBlock f-1 gap-10 f-column">
+                                        <h4>Добавьте по вкусу</h4>
+                                        <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
+                                            <AdditiveItem isAdded={false} isEmpty={true} price={0} name={"Без соуса"} addHandler={() => {
+                                            }} imageUrl={''}/>
+                                            {
+                                                additives.map(item => (
+                                                    <AdditiveItem isEmpty={false} imageUrl={item.imageUrl} isAdded={false} price={item.price} name={item.name} addHandler={() => {}}/>
+                                                ))
+                                            }
+                                        </div>
+                                    </div> : null
+
+                            }
+
+                            <RedButton onClick={handleAddToCartClick} disabled={false} className={"pd-10-0"}>Добавить в корзину за {price} ₽</RedButton>
                         </div>
 
                     </div>

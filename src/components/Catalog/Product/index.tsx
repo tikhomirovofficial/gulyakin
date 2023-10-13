@@ -4,6 +4,8 @@ import {getImgPath} from "../../../utils/getAssetsPath";
 import RedButton from "../../Buttons/RedButton";
 import {MinusIcon, PlusIcon} from "../../../icons";
 import {HasClassName} from "../../../types/components.types";
+import {useAppDispatch} from "../../../app/hooks";
+import {handleProductAdditives, handleYourAddress, setProductAdditivesData} from "../../../features/modals/modalsSlice";
 
 interface ProductProps {
     name: string
@@ -15,6 +17,8 @@ interface ProductProps {
 
 
 const Product: FC<ProductProps & HasClassName> = ({name, inCart = false, className, composition, weight, price}) => {
+    const dispatch = useAppDispatch()
+
     const [count, setCount] = useState<number>(1)
     const [isInCart, setInCart] = useState<boolean>(inCart)
     const addCount = () => setCount(prev => prev + 1)
@@ -24,6 +28,26 @@ const Product: FC<ProductProps & HasClassName> = ({name, inCart = false, classNa
         }
         return prev
     })
+
+    const handleAddToCart = () => {
+        dispatch(setProductAdditivesData({
+            additives: [
+                {
+                    imageUrl: getImgPath("productAdditive.png"),
+                    name: "Кетчуп",
+                    price: 59
+                }
+            ],
+            currentAdditive: 0,
+            description: composition,
+            imageUrl: getImgPath("productCard.png"),
+            name: name,
+            price: price,
+            weight: weight
+
+        }))
+        dispatch(handleProductAdditives())
+    }
 
     return (
         <div className={`${styles.product} f-column gap-15`}>
@@ -53,7 +77,7 @@ const Product: FC<ProductProps & HasClassName> = ({name, inCart = false, classNa
                         </div>
                         :
 
-                        <RedButton onClick={() => setInCart(true)} className={`${styles.btn} `}>
+                        <RedButton onClick={handleAddToCart} className={`${styles.btn} `}>
                             В корзину
                         </RedButton>
                 }

@@ -13,6 +13,7 @@ import CookiePopup from "./components/CookiePopup";
 import SuccessWindow from "./components/Windows/SuccessWindow";
 import DeliveryWay from "./components/Windows/DeliveryWay";
 import NewAddress from "./components/Windows/NewAddress";
+import {YMaps} from "@pbe/react-yandex-maps";
 
 const tempPages = [
     Main,
@@ -26,19 +27,24 @@ function App() {
     const CurrentPage = tempPages[tempPage]
 
     return (
-        <div className="App">
-            {/*<AppRoutes isAuth={false}/>*/}
-            {/*<CurrentPage/>*/}
+        <YMaps>
+            <div className="App">
+                {/*<AppRoutes isAuth={false}/>*/}
+                {/*<CurrentPage/>*/}
 
-            {bookingOpened ? <BookingWindow/> : null}
-            {loginOpened ? <LoginWindow/> : null}
-            {yourAddress ? <YourAddressWindow/> : null}
-            {deliveryWay.opened ? <DeliveryWay/> : null}
-            {productAdditives ? <ProductAdditives/> : null}
-            {newAddress ? <NewAddress/> : null}
-            <Main/>
-            <CookiePopup isOpened={cookiesAccepted}/>
-        </div>
+                {bookingOpened ? <BookingWindow/> : null}
+                {loginOpened ? <LoginWindow/> : null}
+                {yourAddress ? <YourAddressWindow/> : null}
+                {deliveryWay.opened ? <DeliveryWay/> : null}
+                {productAdditives ? <ProductAdditives/> : null}
+                {newAddress ? <NewAddress/> : null}
+                <Restaurants/>
+                <CookiePopup isOpened={cookiesAccepted}/>
+            </div>
+        </YMaps>
+
+
+
     );
 }
 

@@ -8,20 +8,25 @@ import DropdownList from "../DropdownList";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
 import {handleLogin} from "../../features/modals/modalsSlice";
+import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 
 
 
 const Header = () => {
+    console.log(getFromStorage("city"))
     const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
     const {isAuth} = useAppSelector(state => state.profile)
 
     const dispatch = useAppDispatch()
     const handleChangingGeo = () =>  dispatch(toggleChangingGeo())
-    const handleAskCity = () => dispatch(toggleAskCityVisible())
+    const handleAskCity = () => {
+        dispatch(toggleAskCityVisible())
+        addToStorage("city", currentGeo.city)
+    }
 
     const handleNotYourCity = () => {
         handleChangingGeo()
-        handleAskCity()
+        dispatch(toggleAskCityVisible())
     }
     return (
         <header className={styles.header}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Main from "./pages/Main";
 import LoginWindow from "./components/Windows/Login";
 import BookingWindow from "./components/Windows/Booking";
@@ -14,6 +14,8 @@ import SuccessWindow from "./components/Windows/SuccessWindow";
 import DeliveryWay from "./components/Windows/DeliveryWay";
 import NewAddress from "./components/Windows/NewAddress";
 import {YMaps} from "@pbe/react-yandex-maps";
+import AppRoutes from "./router/AppRoutes";
+import {getFromStorage} from "./utils/LocalStorageExplorer";
 
 const tempPages = [
     Main,
@@ -26,10 +28,11 @@ function App() {
     const {tempPage} = useAppSelector(state => state.main)
     const CurrentPage = tempPages[tempPage]
 
+
     return (
         <YMaps>
             <div className="App">
-                {/*<AppRoutes isAuth={false}/>*/}
+                <AppRoutes isAuth={false}/>
                 {/*<CurrentPage/>*/}
 
                 {bookingOpened ? <BookingWindow/> : null}
@@ -38,7 +41,6 @@ function App() {
                 {deliveryWay.opened ? <DeliveryWay/> : null}
                 {productAdditives ? <ProductAdditives/> : null}
                 {newAddress ? <NewAddress/> : null}
-                <Restaurants/>
                 <CookiePopup isOpened={cookiesAccepted}/>
             </div>
         </YMaps>

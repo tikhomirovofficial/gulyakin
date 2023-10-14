@@ -89,3 +89,24 @@ main {
 .svgRedStroke path{
     stroke: #fb634d;
 }
+.miniSliderArrow path{
+    transition: .3s stroke;
+}
+.miniSliderArrow:hover path {
+    stroke: #FB634D;
+}
+.sliderArrowCircle:hover path {
+    fill: #FB634D;
+}
+.sliderArrowCircle path {
+    transition: .3s fill;
+}
+.sliderArrowCircle svg {
+    transition: .3s transform;
+}
+.sliderArrowCircle:hover svg {
+    transform: translateX(2px);
+}
+.cur-grabbing {
+    cursor: grabbing;
+}

@@ -3,7 +3,6 @@
   "name": "gulyakin",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/",
   "dependencies": {
     "@pbe/react-yandex-maps": "^1.2.5",
     "@reduxjs/toolkit": "^1.9.3",

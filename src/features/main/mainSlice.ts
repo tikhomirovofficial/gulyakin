@@ -1,12 +1,14 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
+
 
 const initialState = {
     tempPage: 0,
     cities: ["Сургут", "Сочи", "Нижневартовск"],
     changingGeo: false,
-    askCityVisible: true,
+    askCityVisible: !(getFromStorage("city") !== undefined && getFromStorage("city") !== null),
     currentGeo: {
-        city: 1
+        city: getFromStorage("city") || 0
     }
 }
 
@@ -19,6 +21,8 @@ export const MainSlice = createSlice({
         },
         setCurrentCity: (state, action : PayloadAction<number>) => {
             state.currentGeo.city = action.payload
+            addToStorage("city", action.payload)
+
         },
         toggleChangingGeo: (state) => {
             state.changingGeo = !state.changingGeo

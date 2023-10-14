@@ -26,12 +26,9 @@ const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, i
 
             <div className={styles.imageWrapper}>
                 {isEmpty ?
-                    <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}} className={`${styles.imgPlashka} f-c-col`}>
+                    <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}} className={`${styles.img} f-c-col`}>
                     </div> :
-                    <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}} className={`${styles.imgPlashka} f-c-col`}>
-                        <div style={{backgroundImage: `url(${getImgPath('productAdditive.png')})`}} className={`${styles.img}`}>
-
-                        </div>
+                    <div style={{backgroundImage: `url(${getImgPath('productAdditive.png')})`}} className={`${styles.img}`}>
                     </div>
                 }
 

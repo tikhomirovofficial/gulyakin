@@ -6,33 +6,42 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import LogosSection from "../../components/LogosSection";
-import {useAppDispatch} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {setTempPage} from "../../features/main/mainSlice";
 import {getImgPath} from "../../utils/getAssetsPath";
+import {RestaurantItemType} from "../../types/restaurants.types";
+import {Link} from "react-router-dom";
 
 const logosIsMax = true
 
-const RestaurantItem = () => {
+type RestaurantItemProps = {
+    link: string
+} & Pick<RestaurantItemType, "cityArea" | "canOnlineOrder" | "street">
+const RestaurantItem: FC<RestaurantItemProps> = ({cityArea, street, link, canOnlineOrder}) => {
     return (
-        <div className={styles.itemWrapper}>
+        <Link to={link} className={styles.itemWrapper}>
             <div className={styles.item}>
                 <div className={"f-column gap-10"}>
                     <div className="f-column f-1 gap-5">
-                        <b>ул. Энергетиков, д. 4</b>
-                        <p>Центральный район</p>
+                        <b>{street}</b>
+                        <p>{cityArea}</p>
                     </div>
-                    <div className={styles.bottomText}>
+
+                    <div className={`${!canOnlineOrder && "hidden"} ${styles.bottomText}`}>
                         Доступно онлайн бронирование столика
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 
 const Restaurants: FC = () => {
     const dispatch = useAppDispatch()
-    const [currentCoords, setCurrentCoords] = useState([55.75, 37.57])
+    const restaurant = useAppSelector(state => state.restaurants.list.filter(item => item.id === 1)[0])
+
+
+
 
     return (
         <>
@@ -41,37 +50,42 @@ const Restaurants: FC = () => {
             <div className={`${styles.main} f-column gap-20`}>
                 <div className="wrapper w-100p">
                     <div className={`${styles.block} f-column gap-25`}>
-                        <GradientGrayBtn onClick={() => dispatch(setTempPage(0))} className={`${styles.backButton} cur-pointer d-f gap-10`}>
-                            <Cap/>
-                            <p>Вернуться в меню</p>
-                        </GradientGrayBtn>
+                        <Link to={"/"}>
+                            <GradientGrayBtn className={`${styles.backButton} cur-pointer d-f gap-10`}>
+                                <Cap/>
+                                <p>Вернуться в меню</p>
+                            </GradientGrayBtn>
+                        </Link>
                         <div className="f-column gap-20">
                             <div className="sectionTitle">
-                                35 кафе Гулякин в Сургуте
+                                {restaurant.branches.length} кафе Гулякин в Сургуте
                             </div>
                             <div className={`of-hide w-100p f-row-betw ${styles.restaurantsSection}`}>
                                 <div className={styles.sideWrapper}>
-                                    <RestaurantItem/>
-                                    <RestaurantItem/>
-                                    <RestaurantItem/>
-                                    <RestaurantItem/>
-                                    <RestaurantItem/>
-                                    <RestaurantItem/>
-                                    <RestaurantItem/>
+                                    {
+                                        restaurant.branches.map(item => (
+                                            <RestaurantItem link={"/restaurants/1"} street={item.street} canOnlineOrder={item.canOnlineOrder} cityArea={item.cityArea}/>
+                                        ))
+                                    }
                                 </div>
 
                                 <div className={`${styles.map} h-100p f-1`}>
                                     <YMaps>
                                         <Map className={"h-100p w-100p"}
-                                             state={{center: currentCoords, zoom: 9}}>
-                                            <Placemark geometry={currentCoords} options={
-                                                {
-                                                    iconLayout: 'default#image', // Используем стандартный макет изображения
-                                                    iconImageHref: getImgPath("product.jpg"), // Укажите URL вашей кастомной иконки
-                                                    iconImageSize: [32, 32], // Размер вашей иконки
-                                                    iconImageOffset: [-16, -16],
-                                                }
-                                            }/>
+                                             state={{center: restaurant.branches[0].coords, zoom: 9}}>
+                                            {
+                                                restaurant.branches.map(item => (
+                                                    <Placemark geometry={item.coords} options={
+                                                        {
+                                                            iconLayout: 'default#image', // Используем стандартный макет изображения
+                                                            iconImageHref: restaurant.logoIconSrc, // Укажите URL вашей кастомной иконки
+                                                            iconImageSize: [52, 52], // Размер вашей иконки
+                                                            iconImageOffset: [-26, -26],
+                                                        }
+                                                    }/>
+                                                ))
+                                            }
+
                                         </Map>
 
                                     </YMaps>

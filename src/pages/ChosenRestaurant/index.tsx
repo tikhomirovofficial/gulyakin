@@ -1,12 +1,12 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {ArrowMiniRightIcon, Cap, SafeArrowIcon} from "../../icons";
 import styles from '../Restaurants/restaurants.module.scss'
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import {Map, YMaps} from '@pbe/react-yandex-maps';
+import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import LogosSection from "../../components/LogosSection";
-import {useAppDispatch} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {setTempPage} from "../../features/main/mainSlice";
 import {Link} from "react-router-dom";
 import RedButton from "../../components/Buttons/RedButton";
@@ -16,6 +16,8 @@ import 'swiper/css';
 import 'swiper/css';
 import 'swiper/css/pagination'
 import {getImgPath} from "../../utils/getAssetsPath";
+import {SwiperProps} from "swiper/swiper-react";
+import {RestaurantItemType} from "../../types/restaurants.types";
 
 const weekItems = [
     {
@@ -50,11 +52,23 @@ const weekItems = [
 ]
 const today = new Date();
 const dayOfWeek = today.getDay()
+const idRestaurant = 1
 
 const ChosenRestaurant: FC = () => {
-
     const dispatch = useAppDispatch()
-    const [currentCoords, setCurrentCoords] = useState([55.75, 37.57])
+    const restaurantImagesSlider = useRef<SwiperProps>(null)
+    const [currentSlide, setCurrentSlide] = useState<number>(0)
+    const [isEndSlider, setIsEndSlider] = useState(false)
+
+    const handleNext = () => {
+        restaurantImagesSlider.current.swiper.slideNext();
+    }
+
+    const handlePrev = () => {
+        restaurantImagesSlider.current.swiper.slidePrev();
+    }
+    const {coords, logoIconSrc, phone, street, cityArea, images} = useAppSelector(state => state.restaurants.chosen)
+
 
     return (
         <>
@@ -63,10 +77,13 @@ const ChosenRestaurant: FC = () => {
             <div className={`${styles.main} f-column gap-20`}>
                 <div className="wrapper w-100p">
                     <div className={`${styles.block} f-column gap-25`}>
-                        <GradientGrayBtn onClick={() => dispatch(setTempPage(0))} className={`${styles.backButton} cur-pointer d-f gap-10`}>
-                            <Cap/>
-                            <p>Вернуться в меню</p>
-                        </GradientGrayBtn>
+                        <Link to={"/"}>
+                            <GradientGrayBtn className={`${styles.backButton} cur-pointer d-f gap-10`}>
+                                <Cap/>
+                                <p>Вернуться в меню</p>
+                            </GradientGrayBtn>
+                        </Link>
+
                         <div className="f-column gap-20">
                             <Link to={"/restaurants"} className="d-f al-center gap-10">
                                 <div style={{transform: "rotateZ(180deg)"}} className="f-c-col">
@@ -81,44 +98,50 @@ const ChosenRestaurant: FC = () => {
                                 <div className={`${styles.sideWrapper} ${styles.choosenRestaruantBlock} f-column-betw gap-20 pd-20`}>
                                     <div className="top f-column gap-15">
                                         <div className="address f-column">
-                                            <h3 className={styles.addressTitle}>ул. Энергетиков, д. 4</h3>
-                                            <p className={styles.addressAreaText}>Центральный район</p>
+                                            <h3 className={styles.addressTitle}>{street}</h3>
+                                            <p className={styles.addressAreaText}>{cityArea}</p>
                                         </div>
                                         <div className="d-f p-rel">
-                                            <div style={{transform: "rotateZ(180deg)"}} className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperLeft} d-f jc-end al-center h-100p p-abs left-0`}>
-                                                <div className="f-c-col">
-                                                    <SafeArrowIcon width={7}/>
-                                                </div>
+                                            {
+                                                currentSlide > 0 ?
+                                                    <div style={{transform: "rotateZ(180deg)"}} className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperLeft} d-f jc-end al-center h-100p p-abs left-0`}>
+                                                        <div onClick={handlePrev} className="f-c-col sliderArrowCircle cur-pointer">
+                                                            <SafeArrowIcon width={7}/>
+                                                        </div>
 
-                                            </div>
-                                            <div className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f jc-end al-center h-100p p-abs right-0`}>
-                                                <div className="f-c-col">
-                                                    <SafeArrowIcon width={7}/>
-                                                </div>
+                                                    </div> : null
+                                            }
 
-                                            </div>
+                                            {
+                                                currentSlide < images.length - 2  ?  <div onClick={handleNext} className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f  jc-end al-center h-100p p-abs right-0`}>
+                                                    <div className="f-c-col sliderArrowCircle cur-pointer">
+                                                        <SafeArrowIcon width={7}/>
+                                                    </div>
+
+                                                </div> : null
+                                            }
+
                                             <Swiper
                                                 style={{margin: 0}}
                                                 slidesPerView={'auto'}
                                                 centeredSlides={false}
                                                 className={styles.gallery}
+                                                onActiveIndexChange={(slider: SwiperProps) => {
+                                                    setIsEndSlider(slider.isEnd)
+                                                    setCurrentSlide(slider.activeIndex)
+                                                }}
+                                                ref={restaurantImagesSlider}
                                                 spaceBetween={20}
                                             >
-                                                <SwiperSlide className={"w-content"}>
-                                                    <div style={{backgroundImage: `url(${getImgPath("restaurant.jpg")})`}} className={`${styles.item} bg-cover`}>
+                                                {
+                                                    images.map(src => (
+                                                        <SwiperSlide className={"w-content cur-grabbing"}>
+                                                            <div style={{backgroundImage: `url(${src})`}} className={`${styles.item} bg-cover`}>
 
-                                                    </div>
-                                                </SwiperSlide>
-                                                <SwiperSlide className={"w-content"}>
-                                                    <div style={{backgroundImage: `url(${getImgPath("restaurant.jpg")})`}} className={`${styles.item} bg-cover`}>
-
-                                                    </div>
-                                                </SwiperSlide>
-                                                <SwiperSlide className={"w-content"}>
-                                                    <div style={{backgroundImage: `url(${getImgPath("restaurant.jpg")})`}} className={`${styles.item} bg-cover`}>
-
-                                                    </div>
-                                                </SwiperSlide>
+                                                            </div>
+                                                        </SwiperSlide>
+                                                    ))
+                                                }
                                             </Swiper>
                                         </div>
 
@@ -128,7 +151,7 @@ const ChosenRestaurant: FC = () => {
                                     <div className={`${styles.workTimeBlock} f-column gap-20 f-1`}>
                                         <div className="f-column">
                                             <p className={styles.phoneLabel}>Телефон</p>
-                                            <div className={styles.phone}>+7 (951) 735-89-45</div>
+                                            <div className={styles.phone}>{phone}</div>
                                         </div>
                                         <div className={`f-column gap-5 ${styles.workClocks}`}>
                                             <p className={styles.phoneLabel}>График работы</p>
@@ -152,8 +175,7 @@ const ChosenRestaurant: FC = () => {
 
                                 <div className={`${styles.map} h-100p f-1`}>
                                     <YMaps>
-                                        <Map className={"h-100p w-100p"}
-                                             state={{center: currentCoords, zoom: 9}}/>
+                                        <ChosenRestaurantMap coords={coords} logoIconSrc={logoIconSrc}/>
                                     </YMaps>
                                 </div>
                             </div>
@@ -168,4 +190,22 @@ const ChosenRestaurant: FC = () => {
     );
 };
 
+type ChosenRestaurantMapProps = Pick<RestaurantItemType, "coords"> & {
+    logoIconSrc: string
+}
+const ChosenRestaurantMap: FC<ChosenRestaurantMapProps> = React.memo(({coords, logoIconSrc}) => {
+    return (
+        <Map className={"h-100p w-100p"}
+             state={{center: coords, zoom: 13}}>
+            <Placemark geometry={coords} options={
+                {
+                    iconLayout: 'default#image', // Используем стандартный макет изображения
+                    iconImageHref: logoIconSrc, // Укажите URL вашей кастомной иконки
+                    iconImageSize: [52, 52], // Размер вашей иконки
+                    iconImageOffset: [-26, -26],
+                }
+            }/>
+        </Map>
+    )
+})
 export default ChosenRestaurant;

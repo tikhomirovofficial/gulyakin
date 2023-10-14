@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import {ArrowMiniRightIcon, ArrowRight, Geo} from "../../icons";
 import styles from './main.module.scss'
@@ -13,7 +13,7 @@ import Footer from "../../components/Footer";
 import LogosSection from "../../components/LogosSection";
 import {useAppDispatch} from "../../app/hooks";
 import {setTempPage} from "../../features/main/mainSlice";
-import {Swiper, SwiperSlide} from 'swiper/react';
+import {Swiper, SwiperProps, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
 // Import Swiper styles
 import 'swiper/css';
@@ -22,6 +22,23 @@ import {handleBooking} from "../../features/modals/modalsSlice";
 
 const Main: FC = () => {
     const dispatch = useAppDispatch()
+    const sliderCategories = useRef<SwiperProps>(null)
+    const [currentSlide, setCurrentSlide] = useState<number>(0)
+    const [isEndSlider, setIsEndSlider] = useState(false)
+
+    const handleNext = () => {
+        sliderCategories.current.swiper.slideNext();
+    }
+
+    const handlePrev = () => {
+        sliderCategories.current.swiper.slidePrev();
+    }
+    useEffect(() => {
+        if(sliderCategories.current) {
+            console.log(sliderCategories.current.a)
+        }
+    }, [currentSlide])
+
 
     return (
         <>
@@ -135,67 +152,104 @@ const Main: FC = () => {
                             <div className="wrapper ">
 
                                 <div className="w-100p p-rel">
-                                    <div style={{transform: "rotateZ(180deg)"}} className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
-                                        <div className="f-c-col">
-                                            <ArrowMiniRightIcon width={14} height={14}/>
-                                        </div>
+                                    {
+                                        currentSlide > 0 ?  <div style={{transform: "rotateZ(180deg)"}} className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
+                                            <div onClick={handlePrev} className="miniSliderArrow cur-pointer f-c-col">
+                                                <ArrowMiniRightIcon width={14} height={14}/>
+                                            </div>
 
-                                    </div>
-                                    <div className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
-                                        <div className="f-c-col">
-                                            <ArrowMiniRightIcon width={14} height={14}/>
-                                        </div>
+                                        </div> : null
 
-                                    </div>
+                                    }
+                                    {
+                                        !isEndSlider ?  <div className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
+                                            <div onClick={handleNext} className="miniSliderArrow cur-pointer f-c-col">
+                                                <ArrowMiniRightIcon width={14} height={14}/>
+                                            </div>
+
+                                        </div> : null
+                                    }
+
+
                                     <div className="w-100p d-f gap-10 of-y-hide scrollbar-unset">
 
 
                                         <Swiper
+                                            onActiveIndexChange={(slider: SwiperProps) => {
+                                                setIsEndSlider(slider.isEnd)
+                                                setCurrentSlide(slider.activeIndex)
+                                            }}
+
                                             style={{margin: 0}}
                                             slidesPerView={'auto'}
                                             centeredSlides={false}
                                             className={""}
+                                            ref={sliderCategories}
                                             spaceBetween={10}
                                         >
 
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Вареники</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Супы</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Салаты</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Сытные блины</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Сладкие блины</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Картошка</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Креветки и мидии</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Правильные салаты</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Правильные горячие</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Пельмени 1</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Пельмени 2</GrayBorderedBlock>
                                             </SwiperSlide>
-                                            <SwiperSlide className={"w-content"}>
-                                                <GrayBorderedBlock className={styles.item}>Пельмени 3</GrayBorderedBlock>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Пельмыва аваыв</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Сладкие блины</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Картошка</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Креветки и мидии</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Правильные салаты</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Правильные горячие</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Пельмени 1</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Пельмени 2</GrayBorderedBlock>
+                                            </SwiperSlide>
+                                            <SwiperSlide className={"w-content cur-grabbing"}>
+                                                <GrayBorderedBlock className={styles.item}>Пельмыва аваыв</GrayBorderedBlock>
                                             </SwiperSlide>
                                         </Swiper>
 

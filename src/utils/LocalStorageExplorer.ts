@@ -6,7 +6,7 @@ export const getFromStorage = (storageName: string) => {
     const stored = localStorage.getItem(storageName) || ''
 
     if (!stored) {
-        return ''
+        return null
     }
 
     return JSON.parse(stored)

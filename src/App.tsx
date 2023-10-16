@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Main from "./pages/Main";
 import LoginWindow from "./components/Windows/Login";
 import BookingWindow from "./components/Windows/Booking";
-import {useAppSelector} from "./app/hooks";
+import {useAppDispatch, useAppSelector} from "./app/hooks";
 import Restaurants from "./pages/Restaurants";
 import YourAddressWindow from "./components/Windows/YourAdress";
 
@@ -17,6 +17,9 @@ import {YMaps} from "@pbe/react-yandex-maps";
 import AppRoutes from "./router/AppRoutes";
 import {getFromStorage} from "./utils/LocalStorageExplorer";
 import Cart from "./components/Cart";
+import {addProduct, plusProduct, setTotalPrice} from "./features/cart/cartSlice";
+import {formatNumberWithSpaces} from "./utils/numberWithSpaces";
+import {getImgPath} from "./utils/getAssetsPath";
 
 const tempPages = [
     Main,
@@ -27,7 +30,45 @@ function App() {
 
     const {bookingOpened, loginOpened, yourAddress, cookiesAccepted, deliveryWay, productAdditives, newAddress} = useAppSelector(state => state.modals)
     const {tempPage} = useAppSelector(state => state.main)
+    const {items, totalPrice} = useAppSelector(state => state.cart)
+    const dispatch = useAppDispatch()
+
     const CurrentPage = tempPages[tempPage]
+
+
+
+    useEffect(() => {
+        const totalProductPrice = items.reduce((prev, cur) => {
+            return prev + cur.price * cur.count
+        }, 0)
+        dispatch(setTotalPrice(totalProductPrice))
+    }, [items])
+
+    useEffect(() => {
+        // setTimeout(() => {
+        //     dispatch(addProduct({
+        //         count: 10,
+        //         description: "Свинина, Курица, Говядина, Сыр",
+        //         id: 5,
+        //         imageUrl: getImgPath("product.jpg"),
+        //         name: "Пельмешечки любимые",
+        //         price: 300
+        //
+        //     }))
+        //     dispatch(plusProduct(5))
+        //     dispatch(addProduct({
+        //         count: 1,
+        //         description: "Рыбка и всё",
+        //         id: 6,
+        //         isNotCanBeAdded: true,
+        //         imageUrl: getImgPath("product.jpg"),
+        //         name: "Рыба",
+        //         price: 850
+        //
+        //     }))
+        // }, 3000)
+    }, [])
+
 
 
     return (

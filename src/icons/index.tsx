@@ -474,9 +474,9 @@ export const ArrowMiniRightIcon: FC<IconProps> = ({width = 13, height = 13}) => 
         </svg>
     )
 }
-export const InfoCircle: FC<IconProps> = ({width = 20, height = 20}) => {
+export const InfoCircle: FC<IconProps & HasClassName> = ({width = 20, className, height = 20}) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 20 20" fill="none">
+        <svg className={className} xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 20 20" fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M10 1C14.9709 1 19 5.03005 19 10C19 14.9699 14.9709 19 10 19C5.03005 19 1 14.9699 1 10C1 5.03005 5.03005 1 10 1Z"
                   stroke="#434343" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

@@ -29,7 +29,8 @@ export const MainSlice = createSlice({
         },
         toggleAskCityVisible: (state) => {
             state.askCityVisible = !state.askCityVisible
-        }
+        },
+
     }
 })
 

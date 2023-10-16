@@ -7,7 +7,7 @@ interface ShadowWrapperProps {
 }
 const ShadowWrapper: FC<HasChildrenProps & ShadowWrapperProps & HasClassName> = ({children, className, onClick}) => {
     return (
-        <div onClick={onClick} className={`${className ? className : `f-c-col`} ${styles.shadowContainer}  h-100v w-100v p-fix top-0 left-0`}>
+        <div onClick={onClick} className={`${className ? className : `f-c-col p-fix h-100v w-100v`} ${styles.shadowContainer}   top-0 left-0`}>
             {children}
         </div>
     );

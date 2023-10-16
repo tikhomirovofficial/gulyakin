@@ -26,6 +26,14 @@ html {
 main {
     margin-top: 11rem;
 }
+body::-webkit-scrollbar {
+    width: 8px;
+    background: #f1f1f1;
+}
+body::-webkit-scrollbar-thumb {
+    background: #c7c7c7;
+    border-radius: 30px;
+}
 .wrapper {
     max-width: 142rem;
     padding: 0 1.5rem;

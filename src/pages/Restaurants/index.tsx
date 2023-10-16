@@ -41,8 +41,6 @@ const Restaurants: FC = () => {
     const restaurant = useAppSelector(state => state.restaurants.list.filter(item => item.id === 1)[0])
 
 
-
-
     return (
         <>
             <Header/>

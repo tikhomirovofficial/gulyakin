@@ -86,6 +86,10 @@ main {
 .colorRed {
     color: #FB634D;
 }
+.colorError {
+    color: #FF2000;
+}
+
 .svgRedStroke path{
     stroke: #fb634d;
 }

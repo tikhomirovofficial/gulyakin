@@ -16,6 +16,7 @@ import NewAddress from "./components/Windows/NewAddress";
 import {YMaps} from "@pbe/react-yandex-maps";
 import AppRoutes from "./router/AppRoutes";
 import {getFromStorage} from "./utils/LocalStorageExplorer";
+import Cart from "./components/Cart";
 
 const tempPages = [
     Main,
@@ -42,6 +43,7 @@ function App() {
                 {productAdditives ? <ProductAdditives/> : null}
                 {newAddress ? <NewAddress/> : null}
                 <CookiePopup isOpened={cookiesAccepted}/>
+                <Cart/>
             </div>
         </YMaps>
 

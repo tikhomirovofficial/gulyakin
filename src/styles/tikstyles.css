@@ -15,6 +15,15 @@
 .w-content {
     max-width: fit-content;
 }
+.h-content {
+    max-height: fit-content;
+}
+.al-self-center {
+    align-self: center;
+}
+.ale-self-end {
+    align-self: flex-end;
+}
 /*POSITIONS*/
 
 .top-0 {

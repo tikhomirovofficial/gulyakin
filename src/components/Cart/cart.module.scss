@@ -1,7 +1,6 @@
 .cartBlock {
   max-width: 42rem;
   max-height: 100vh;
-  overflow-y: auto;
   color: #494949;
   width: 100%;
   background: #FAFAFA;
@@ -54,11 +53,58 @@
   }
 
 }
+.additivesWindowShadow {
+  opacity: 0;
+  visibility: hidden;
+}
+.additivesWindowOpened {
+  .additivesWindowShadow {
+    visibility: visible;
+    opacity: 1;
+  }
+  .cartAdditivesBar {
+    transform: unset;
+  }
+}
+
 .cartAdditivesBar {
   z-index: 10;
-  height: 30rem;
+  max-height: 38.4rem;
+  height: 100%;
+  transition: .3s transform;
+  transform: translateY(100vh);
+  .additivesList {
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  .additivesList::-webkit-scrollbar {
+    width: 3px;
+  }
+  .additivesList::-webkit-scrollbar-thumb {
+    background: #e7e7e7;
+  }
   bottom: 0;
   border-radius: 20px 20px 0px 0px;
+  h3 {
+    font-size: 2.4rem;
+  }
+  .additiveItem {
+    p {
+      font-size: 1.4rem;
+    }
+    b {
+      font-size: 1.6rem;
+    }
+    .count {
+      font-size: 1.6rem;
+      min-width: 2.2rem;
+      text-align: center;
+    }
+    .add {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+  }
 }
 .cartItem {
   border-radius: 4px;

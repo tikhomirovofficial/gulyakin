@@ -8,39 +8,6 @@ type CartSliceState = {
 }
 
 const initialState: CartSliceState = {
-    // items: [
-    //     {
-    //         id: 1,
-    //         isNotCanBeAdded: false,
-    //         canBeChanged: false,
-    //         description: "",
-    //         imageUrl: "",
-    //         name: "",
-    //         price: 0,
-    //         count: 1
-    //     },
-    //     {
-    //         id: 2,
-    //         isNotCanBeAdded: false,
-    //         canBeChanged: true,
-    //         description: "",
-    //         imageUrl: "",
-    //         name: "",
-    //         price: 0,
-    //         count: 1
-    //     },
-    //     {
-    //         id: 3,
-    //         isNotCanBeAdded: false,
-    //         canBeChanged: false,
-    //         description: "",
-    //         imageUrl: "",
-    //         name: "",
-    //         price: 0,
-    //         count: 1
-    //     },
-    //
-    // ],
     items: [],
     totalPrice: 0,
 }

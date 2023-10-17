@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, useMemo, useState} from 'react';
 import ShadowWrapper from "../Windows/ShadowWrapper";
 import {CloseIcon, InfoCircle, MiniClose, MinusIcon, PlusIcon} from "../../icons";
 import styles from './cart.module.scss'
@@ -49,7 +49,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, price, count, n
                         <b className={styles.price}>
                             {formatNumberWithSpaces(price * count)} ₽
                         </b>
-                        <div  className={"d-f al-center gap-10"}>
+                        <div  className={"d-f al-center gap-5"}>
                             <div onClick={() => dispatch(minusProduct(id))} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
 
                             <div className={styles.count}>{count}</div>
@@ -67,10 +67,52 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, price, count, n
     )
 }
 
+const CartAdditiveItem: FC<Omit<CartItemProps, "description">> = ({canNotBeAdded = false, id, price, count, name, imageUrl}) =>{
+   return (
+       <div className={`${styles.additiveItem} f-row-betw gap-30`}>
+           <div className="d-f al-center gap-10">
+               <img src={getImgPath("productAdditive.png")} alt=""/>
+               <div className="f-column">
+                   <p>{name}</p>
+                   <b>{price} ₽</b>
+               </div>
+           </div>
+           {
+               count ?
+                   <div  className={"d-f al-center gap-5"}>
+                       <div onClick={() => {}} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
+
+                       <div className={styles.count}>{count}</div>
+                       <div onClick={() => {}} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
+
+                   </div> :
+                   <div className={`${styles.add} colorRed cur-pointer`}>Добавить</div>
+           }
+
+       </div>
+   )
+}
+
 
 const Cart = () => {
     const dispatch = useAppDispatch()
     const {items, totalPrice} = useAppSelector(state => state.cart)
+    const [additivesOpened, setAdditivesOpened] = useState(false)
+    const [classAdded, setClassAdded] = useState(false)
+
+    const handleOpenAdditives = () => {
+        setAdditivesOpened(true)
+
+        setTimeout(() => {
+            setClassAdded(true)
+        }, 200)
+    }
+    const handleCloseAdditives = () => {
+        setClassAdded(false)
+        setTimeout(() => {
+            setAdditivesOpened(false)
+        }, 300)
+    }
 
     const totalCount = useMemo(() => {
         return items.reduce((prev, cur) => {
@@ -90,13 +132,23 @@ const Cart = () => {
         <ShadowWrapper className={"d-f jc-end p-fix h-100v w-100v"}>
 
             <div className={`${styles.cartBlock} bg-white f-column p-rel`}>
-                <div className={"p-abs h-100p w-100p"}>
-                    <ShadowWrapper className={"d-f al-end h-100p w-100p p-abs top-0"}>
-                    </ShadowWrapper>
-                    <div className={`${styles.cartAdditivesBar} bg-white p-abs left-0 w-100p pd-30`}>
-                        Добавки
-                    </div>
-                </div>
+                {
+                    additivesOpened ?
+                        <div className={`${classAdded ? styles.additivesWindowOpened : ""} top-0 p-abs h-100v w-100p`}>
+                            <ShadowWrapper onClick={handleCloseAdditives} className={`${styles.additivesWindowShadow} d-f al-end h-100p w-100p p-abs top-0 t-opacity-visible-transform-3`}>
+                            </ShadowWrapper>
+                            <div className={`${styles.cartAdditivesBar} bg-white p-abs left-0 w-100p pd-30 f-column gap-15`}>
+                                <h3>Соусы для ваших блюд</h3>
+                                <div className={`${styles.additivesList} f-column gap-10`}>
+                                    <CartAdditiveItem id={2} count={4} price={49} imageUrl={getImgPath("productAdditive")} name={"Сырный соус"}/>
+                                    <CartAdditiveItem id={3} count={2} price={69} imageUrl={getImgPath("productAdditive")} name={"Сырный соус"}/>
+                                    <CartAdditiveItem id={3} count={1} price={39} imageUrl={getImgPath("productAdditive")} name={"Сырный соус"}/>
+                                    <CartAdditiveItem id={3} count={0} price={69} imageUrl={getImgPath("productAdditive")} name={"Сырный соус"}/>
+                                </div>
+                            </div>
+                        </div> : null
+
+                }
 
                 <div className={`${styles.top} w-100p d-f al-end jc-end pd-0-20`}>
                     <div onClick={() => {
@@ -163,11 +215,11 @@ const Cart = () => {
                                 <div className="additivesBlock f-column gap-5">
                                     <h3>Добавить к заказу?</h3>
                                     <div className={"f-row-betw gap-10"}>
-                                        <div className={`${styles.souses} cur-pointer al-center bg-white pd-20 f-column gap-5`}>
+                                        <div onClick={handleOpenAdditives} className={`${styles.souses} cur-pointer al-center bg-white pd-20 f-column gap-5`}>
                                             <div style={{backgroundImage: `url(${getImgPath("productAdditive.png")})`}} className={styles.img}></div>
                                             <p>Соусы</p>
                                         </div>
-                                        <div className={`${styles.bread} cur-pointer h-100p f-1 bg-white pd-20 gap-10 d-f al-center`}>
+                                        <div  className={`${styles.bread} cur-pointer h-100p f-1 bg-white pd-20 gap-10 d-f al-center`}>
                                             <img className={"d-b"} src={getImgPath("bread.png")} alt=""/>
                                             <div className="f-column">
                                                 <div className={styles.title}>Хлебная корзина</div>

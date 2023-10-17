@@ -1,5 +1,10 @@
+.cartBlockOpened {
+  transform: unset !important;
+}
 .cartBlock {
   max-width: 42rem;
+  transition: transform .3s;
+  transform: translateX(100vw);
   max-height: 100vh;
   color: #494949;
   width: 100%;

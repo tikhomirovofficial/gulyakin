@@ -14,8 +14,8 @@ export type AddressItemData = {
 
 const initialState: ProfileState = {
     data: {
-        name: "Artem",
-        birthday: "",
+        name: "Вячеслав",
+        dob: "",
         email: "",
         phone: ""
     },
@@ -38,7 +38,7 @@ const initialState: ProfileState = {
         },
 
     ],
-    isAuth: false
+    isAuth: true
 }
 
 export const ProfileSlice = createSlice({

@@ -10,7 +10,7 @@ export type Address = {
 export type UserData = {
     name: string,
     phone: string
-    birthday: string
+    dob: string
     email: string
 
 }

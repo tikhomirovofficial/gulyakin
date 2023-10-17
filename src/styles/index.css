@@ -122,3 +122,22 @@ body::-webkit-scrollbar-thumb {
 .cur-grabbing {
     cursor: grabbing;
 }
+.hoverRedPath {
+    transition: .3s fill;
+}
+.whiteSelectable {
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.10);
+    border: 1px solid transparent;
+    transition: .3s border, .3s box-shadow;
+    cursor: pointer;
+
+}
+.whiteSelectable:hover {
+    border: 1px solid #fb634d;
+}
+.whiteSelectableSelected {
+    border: 1px solid #fb634d;
+    box-shadow: unset;
+}

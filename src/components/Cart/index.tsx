@@ -1,4 +1,4 @@
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useEffect, useMemo, useState} from 'react';
 import ShadowWrapper from "../Windows/ShadowWrapper";
 import {CloseIcon, InfoCircle, MiniClose, MinusIcon, PlusIcon} from "../../icons";
 import styles from './cart.module.scss'
@@ -10,12 +10,13 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {CartProduct} from "../../types/cart.types";
 import {minusProduct, plusProduct, removeProduct} from "../../features/cart/cartSlice";
+import {handleCartOpened} from "../../features/modals/modalsSlice";
 
 
 type CartItemProps = {
-    canNotBeAdded?: boolean
-} & Pick<CartProduct, "price" | "imageUrl" | "name" | "description" | "count" | "id" >
-const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, price, count, name, description, imageUrl}) =>{
+    canNotBeAdded?: boolean,
+} & Pick<CartProduct, "price" | "imageUrl" | "name" | "description" | "count" | "id" | "canBeChanged" >
+const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, price, count, name, description, imageUrl}) =>{
     const dispatch = useAppDispatch()
 
     return (
@@ -49,13 +50,20 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, price, count, n
                         <b className={styles.price}>
                             {formatNumberWithSpaces(price * count)} ₽
                         </b>
-                        <div  className={"d-f al-center gap-5"}>
-                            <div onClick={() => dispatch(minusProduct(id))} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
+                        <div className="d-f gap-20">
+                            {
+                                canBeChanged ? <div onClick={() => {}} className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
+                            }
 
-                            <div className={styles.count}>{count}</div>
-                            <div onClick={() => dispatch(plusProduct(id))} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
+                            <div  className={"d-f al-center gap-5"}>
+                                <div onClick={() => dispatch(minusProduct(id))} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
 
+                                <div className={styles.count}>{count}</div>
+                                <div onClick={() => dispatch(plusProduct(id))} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
+
+                            </div>
                         </div>
+
                     </>:
                         <div className="w-100p jc-end d-f">
                             <div onClick={() => dispatch(removeProduct(id))} className={`colorRed cur-pointer ${styles.delete}`}>Удалить</div>
@@ -67,7 +75,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, price, count, n
     )
 }
 
-const CartAdditiveItem: FC<Omit<CartItemProps, "description">> = ({canNotBeAdded = false, id, price, count, name, imageUrl}) =>{
+const CartAdditiveItem: FC<Omit<CartItemProps, "description" | "canNotBeAdded" | "canBeChanged">> = ({id, price, count, name, imageUrl}) =>{
    return (
        <div className={`${styles.additiveItem} f-row-betw gap-30`}>
            <div className="d-f al-center gap-10">
@@ -97,28 +105,39 @@ const CartAdditiveItem: FC<Omit<CartItemProps, "description">> = ({canNotBeAdded
 const Cart = () => {
     const dispatch = useAppDispatch()
     const {items, totalPrice} = useAppSelector(state => state.cart)
+    const {cartOpened} = useAppSelector(state => state.modals)
     const [additivesOpened, setAdditivesOpened] = useState(false)
-    const [classAdded, setClassAdded] = useState(false)
+    const [classAdditivesAdded, setClassAdditivesAdded] = useState(false)
+    const [classOpened, setClassOpened] = useState(false)
 
     const handleOpenAdditives = () => {
         setAdditivesOpened(true)
 
         setTimeout(() => {
-            setClassAdded(true)
+            setClassAdditivesAdded(true)
         }, 200)
     }
     const handleCloseAdditives = () => {
-        setClassAdded(false)
+        setClassAdditivesAdded(false)
         setTimeout(() => {
             setAdditivesOpened(false)
         }, 300)
     }
+
+    const handleCloseCart = () => {
+        setClassOpened(false)
+        setTimeout(() => {
+            dispatch(handleCartOpened())
+        }, 300)
+    }
+
 
     const totalCount = useMemo(() => {
         return items.reduce((prev, cur) => {
             return prev + cur.count
         }, 0)
     }, [items])
+
 
     const handleToOrder = () => {
 
@@ -128,13 +147,19 @@ const Cart = () => {
 
     }
 
-    return (
-        <ShadowWrapper className={"d-f jc-end p-fix h-100v w-100v"}>
+    useEffect(() => {
+        setTimeout(() => {
+            setClassOpened(true)
+        }, 200)
+    }, [])
 
-            <div className={`${styles.cartBlock} bg-white f-column p-rel`}>
+    return (
+        <ShadowWrapper onClick={handleCloseCart} className={"d-f jc-end p-fix h-100v w-100v"}>
+
+            <div onClick={e => e.stopPropagation()} className={`${styles.cartBlock} ${classOpened ? styles.cartBlockOpened : ""} bg-white f-column p-rel`}>
                 {
                     additivesOpened ?
-                        <div className={`${classAdded ? styles.additivesWindowOpened : ""} top-0 p-abs h-100v w-100p`}>
+                        <div className={`${classAdditivesAdded ? styles.additivesWindowOpened : ""} top-0 p-abs h-100v w-100p`}>
                             <ShadowWrapper onClick={handleCloseAdditives} className={`${styles.additivesWindowShadow} d-f al-end h-100p w-100p p-abs top-0 t-opacity-visible-transform-3`}>
                             </ShadowWrapper>
                             <div className={`${styles.cartAdditivesBar} bg-white p-abs left-0 w-100p pd-30 f-column gap-15`}>
@@ -151,8 +176,7 @@ const Cart = () => {
                 }
 
                 <div className={`${styles.top} w-100p d-f al-end jc-end pd-0-20`}>
-                    <div onClick={() => {
-                    }} className={`closeWrapper`}>
+                    <div onClick={handleCloseCart} className={`closeWrapper`}>
                         <CloseIcon isDark={true}/>
                     </div>
 
@@ -197,6 +221,7 @@ const Cart = () => {
                                 list={items}
                                 renderItem={(item) => (
                                     <CartItem
+
                                         id={item.id}
                                         count={item.count}
                                         key={item.id}

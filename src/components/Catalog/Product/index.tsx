@@ -51,6 +51,7 @@ const Product: FC<ProductProps & HasClassName> = ({name, inCart = false, classNa
 
     return (
         <div className={`${styles.product} f-column gap-15`}>
+
             <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
 
             </div>

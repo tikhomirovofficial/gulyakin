@@ -8,7 +8,18 @@ type CartSliceState = {
 }
 
 const initialState: CartSliceState = {
-    items: [],
+    items: [
+        {
+            canBeChanged: false,
+            count: 1,
+            description: "",
+            id: 0,
+            imageUrl: "",
+            isNotCanBeAdded: false,
+            name: "",
+            price: 300,
+        }
+    ],
     totalPrice: 0,
 }
 

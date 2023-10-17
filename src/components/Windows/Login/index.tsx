@@ -1,7 +1,7 @@
 import React, {ChangeEvent, createContext, Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
 import WindowBody from "../WhiteWrapper";
 import ShadowWrapper from "../ShadowWrapper";
-import {CloseIcon} from "../../../icons";
+import {CloseIcon, Preloader} from "../../../icons";
 import styles from "./login.module.scss"
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import RedButton from "../../Buttons/RedButton";
@@ -42,13 +42,8 @@ const LoginPhoneStep = () => {
     )
 }
 const LoginCodeStep = () => {
-    const {setLoginStep, code, setCode, codeErr} = useContext<LoginContextType>(LoginContext)
+    const {setLoginStep, code, setCode, codeErr, codeLoading} = useContext<LoginContextType>(LoginContext)
     const [currentDigit, setCurrentDigit] = useState<number | null>(null)
-
-    useEffect(() => {
-        console.log(code)
-    },[code])
-
     const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
         if(e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))) {
 
@@ -96,15 +91,25 @@ const LoginCodeStep = () => {
                     <div className="d-f jc-center gap-10">
                         {
                             code.map((digit, index) => (
-                                <GrayBorderedBlock isFocused={currentDigit === index} className={`${styles.codeDigitBlock} f-c-col`}><input onBlur={() => setCurrentDigit(null)} onFocus={() => setCurrentDigit(index)} className={styles.codeInput} onChange={(e) => handleChangeCodes(e, index)} value={digit}
+                                <GrayBorderedBlock validError={codeErr} isFocused={currentDigit === index} className={`${styles.codeDigitBlock} f-c-col`}><input onBlur={() => setCurrentDigit(null)} onFocus={() => setCurrentDigit(index)} className={styles.codeInput} onChange={(e) => handleChangeCodes(e, index)} value={digit}
                                                                 type="text"/></GrayBorderedBlock>
                             ))
                         }
 
 
                     </div>
-                    {codeErr ?
-                        <div className={"validationErr fw-7"}>{codeErr}</div>
+                    {
+                        codeLoading ?
+                        <div className={`${styles.codePreloader} ${styles.codeStatusCaption} d-f al-center gap-5`}>
+                            <b>Проверяем код</b>
+                            <div className="f-c-col infiniteSpin w-content h-content">
+                                <Preloader/>
+                            </div>
+
+                        </div> : null
+                    }
+                    {codeErr.length ?
+                        <div className={`validationErr fw-7 ${styles.codeStatusCaption} `}>{codeErr}</div>
                         : null
                     }
 
@@ -128,11 +133,13 @@ interface LoginContextType {
     code: Array<string>
     codeErr: string
     phoneErr: string
+    codeLoading: boolean,
     changePhone: (e: ChangeEvent<HTMLInputElement>) => void,
     setCode: Dispatch<SetStateAction<Array<string>>>,
     setCodeErr: Dispatch<SetStateAction<string>>,
     setPhone: Dispatch<SetStateAction<string>>,
     setPhoneErr: Dispatch<SetStateAction<string>>,
+    setCodeLoading: Dispatch<SetStateAction<boolean>>
 
 }
 
@@ -142,6 +149,7 @@ const loginContextDefault = {
     code: ["", "", "", ""],
     codeErr: "",
     phone: "",
+    codeLoading: true,
     phoneErr: "",
     setCode(value: ((prevState: Array<string>) => Array<string>) | Array<string>): void {
     },
@@ -152,18 +160,20 @@ const loginContextDefault = {
     setPhoneErr(value: ((prevState: string) => string) | string): void {
     },
     setPhone(value: ((prevState: string) => string) | string): void {
-    }
-
+    },
+    setCodeLoading(value: ((prevState: boolean) => boolean) | boolean): void {},
 }
-const LoginContext = createContext<LoginContextType>(loginContextDefault)
 
+const LoginContext = createContext<LoginContextType>(loginContextDefault)
 const loginSteps = [LoginPhoneStep, LoginCodeStep]
+
 const LoginWindow = () => {
-    const [loginStep, setLoginStep] = useState<number>(0)
+    const [loginStep, setLoginStep] = useState<number>(1)
     const CurrentStep = loginSteps[loginStep]
 
     const [phoneVal, changePhone, setPhone] = useInput(loginContextDefault.phone)
     const [codeVal, setCode] = useState<Array<string>>(loginContextDefault.code)
+    const [codeLoading, setCodeLoading] = useState<boolean>(loginContextDefault.codeLoading)
 
     const [phoneErr, setPhoneErr] = useState<string>(loginContextDefault.phoneErr)
     const [codeErr, setCodeErr] = useState<string>(loginContextDefault.codeErr)
@@ -174,13 +184,15 @@ const LoginWindow = () => {
             setLoginStep,
             phone: phoneVal,
             code: codeVal,
+            codeLoading: codeLoading,
             phoneErr: phoneErr,
             codeErr: codeErr,
             changePhone: changePhone,
             setCode: setCode,
             setCodeErr: setCodeErr,
             setPhoneErr: setPhoneErr,
-            setPhone: setPhone
+            setPhone: setPhone,
+            setCodeLoading: setCodeLoading
 
         }}>
             <ShadowWrapper>

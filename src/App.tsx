@@ -28,14 +28,12 @@ const tempPages = [
 
 function App() {
 
-    const {bookingOpened, loginOpened, yourAddress, cookiesAccepted, deliveryWay, productAdditives, newAddress} = useAppSelector(state => state.modals)
+    const {bookingOpened, loginOpened, yourAddress, cartOpened, cookiesAccepted, deliveryWay, productAdditives, newAddress} = useAppSelector(state => state.modals)
     const {tempPage} = useAppSelector(state => state.main)
     const {items, totalPrice} = useAppSelector(state => state.cart)
     const dispatch = useAppDispatch()
 
     const CurrentPage = tempPages[tempPage]
-
-
 
     useEffect(() => {
         const totalProductPrice = items.reduce((prev, cur) => {
@@ -76,15 +74,16 @@ function App() {
             <div className="App">
                 <AppRoutes isAuth={false}/>
                 {/*<CurrentPage/>*/}
-
                 {bookingOpened ? <BookingWindow/> : null}
                 {loginOpened ? <LoginWindow/> : null}
                 {yourAddress ? <YourAddressWindow/> : null}
                 {deliveryWay.opened ? <DeliveryWay/> : null}
                 {productAdditives ? <ProductAdditives/> : null}
                 {newAddress ? <NewAddress/> : null}
+                {
+                    cartOpened ? <Cart/> : null
+                }
                 <CookiePopup isOpened={cookiesAccepted}/>
-                <Cart/>
             </div>
         </YMaps>
 

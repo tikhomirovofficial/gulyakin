@@ -78,7 +78,7 @@ const Restaurants: FC = () => {
                                                             iconLayout: 'default#image', // Используем стандартный макет изображения
                                                             iconImageHref: restaurant.logoIconSrc, // Укажите URL вашей кастомной иконки
                                                             iconImageSize: [52, 52], // Размер вашей иконки
-                                                            iconImageOffset: [-26, -26],
+                                                            iconImageOffset: [0, 0],
                                                         }
                                                     }/>
                                                 ))

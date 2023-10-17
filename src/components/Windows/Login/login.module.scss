@@ -1,5 +1,14 @@
 .window {
   min-width: 42rem;
+  .codePreloader {
+    b {
+      font-size: 1.4rem;
+      margin-top: -1px;
+    }
+  }
+  .codeStatusCaption {
+    min-height: 1.8rem;
+  }
   .caption {
     max-width: 20.7rem;
   }

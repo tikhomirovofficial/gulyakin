@@ -7,13 +7,16 @@ import GrayButton from "../Buttons/GrayButton";
 import DropdownList from "../DropdownList";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
-import {handleLogin} from "../../features/modals/modalsSlice";
+import {handleCartOpened, handleLogin} from "../../features/modals/modalsSlice";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
+import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 
 
 
 const Header = () => {
     console.log(getFromStorage("city"))
+
+    const {totalPrice} = useAppSelector(state => state.cart)
     const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
     const {isAuth} = useAppSelector(state => state.profile)
 
@@ -142,10 +145,11 @@ const Header = () => {
                         }
 
                         <div
+                            onClick={() => dispatch(handleCartOpened())}
                             className={`${styles.cartBtnFilled} ${styles.cartBtn} btn d-f gap-5 al-center cur-pointer`}>
                             <CartIcon height={22} width={22}/>
                             <b>
-                                4300 ₽
+                                {formatNumberWithSpaces(totalPrice)} ₽
                             </b>
                         </div>
                     </div>

@@ -1,0 +1,50 @@
+.order {
+  margin-top: 4rem;
+  .form {
+    max-width: 37.1rem;
+    textarea {
+      resize: none;
+    }
+
+  }
+
+
+}
+.textAreaField {
+  min-height: 10.5rem;
+}
+.inputField, .leftContent {
+  width: 34rem;
+}
+.backCart {
+  font-size: 1.6rem;
+  color: #e2e2e9;
+}
+.inputField {
+
+
+  input, textarea{
+    font-size: 1.6rem;
+  }
+  textarea::-webkit-scrollbar {
+    width: 2px;
+    display: none;
+    background: #e7e7e7;
+  }
+  textarea::-webkit-scrollbar-thumb {
+    background: lightgrey;
+  }
+
+}
+
+.wayOrderBtn, .timeOrder{
+  font-size: 1.6rem;
+}
+.timeOrder {
+  max-width: 24.2rem;
+}
+.inputSelectable {
+  text-wrap: nowrap;
+  font-size: 1.4rem;
+  padding: .8rem 1.5rem;
+}

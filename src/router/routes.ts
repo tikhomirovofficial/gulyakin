@@ -4,6 +4,8 @@ import NeededAuth from "../pages/NeededAuth";
 import Login from "../pages/Login";
 import Restaurants from "../pages/Restaurants";
 import ChosenRestaurant from "../pages/ChosenRestaurant";
+import Profile from "../pages/Profile";
+import Order from "../pages/Order";
 
 export interface RoutesCollection {
     auth: RoutesList,
@@ -26,11 +28,15 @@ export const routes: RoutesCollection = {
             Component: ChosenRestaurant,
             path: "/restaurants/:id"
         },
+        {
+            Component: Order,
+            path: "/order"
+        }
 
     ],
     auth: [
         {
-            Component: NeededAuth,
+            Component: Profile,
             path: "/profile"
         }
     ],

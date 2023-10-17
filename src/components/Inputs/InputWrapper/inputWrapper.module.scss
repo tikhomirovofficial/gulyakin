@@ -11,9 +11,16 @@
     border: 1px solid #FB634D;
   }
 }
-.input {
+.textField {
   max-width: 85%;
+  font-size: 1.6rem;
   background: inherit;
+}
+.input {
+
+}
+.textArea {
+  padding: 1.6rem !important;
 }
 .input::placeholder {
   color: #E2E2E9;

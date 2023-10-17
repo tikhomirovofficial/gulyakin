@@ -14,7 +14,8 @@ type ModalSliceState = {
         variant: number
     },
     newAddress: boolean,
-    productAdditivesData: ProductAdditiveData
+    productAdditivesData: ProductAdditiveData,
+    cartOpened: boolean
 }
 
 const initialState: ModalSliceState = {
@@ -27,6 +28,7 @@ const initialState: ModalSliceState = {
         opened: false,
         variant: 0
     },
+    cartOpened: false,
     newAddress: false,
     productAdditivesData: {
         description: "Куриное филе, ветчина, бекон, огурцы маринованные,соус тар-тар, томаты, моцарелла, сыр гауда, чеддер",
@@ -65,6 +67,9 @@ export const ModalsSlice = createSlice({
         },
         handleBooking: (state) => {
             state.bookingOpened = !state.bookingOpened
+        },
+        handleCartOpened: (state) => {
+            state.cartOpened = !state.cartOpened
         },
         handleLogin: (state) => {
             state.loginOpened = !state.loginOpened
@@ -107,6 +112,7 @@ export const {
     handleDeliveryWayWindow,
     handleDeliveryVariant,
     handleNewAddress,
+    handleCartOpened,
 } = ModalsSlice.actions
 
 

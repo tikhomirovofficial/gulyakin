@@ -1,0 +1,33 @@
+.radio {
+  cursor: pointer;
+  gap: 7px;
+
+  .marker {
+    min-height: 1.84rem;
+    min-width: 1.84rem;
+    max-height: 1.84rem;
+    max-width: 1.84rem;
+    border-radius: 50%;
+    border: 2px solid #4D4D4D;
+    transition: .3s border;
+  }
+
+  .selectedCircle {
+    height: 1.2rem;
+    width: 1.2rem;
+    background: #fb634d;
+    border-radius: 50%;
+  }
+
+  .text {
+    font-size: 1.8rem;
+    color: #434343;
+  }
+}
+
+.radioSelected {
+  .marker {
+    border: 1px solid #fb634d !important;
+  }
+
+}

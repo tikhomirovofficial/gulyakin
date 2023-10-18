@@ -3,10 +3,12 @@ import Header from "../../components/Header";
 import styles from './order.module.scss'
 import LogosSection from "../../components/LogosSection";
 import InputWrapper from "../../components/Inputs/InputWrapper";
-import {ArrowMiniRightIcon, EditIcon, SaveIcon} from "../../icons";
+import {ArrowMiniRightIcon, EditIcon, PaymentCard, PaymentCash, SaveIcon} from "../../icons";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
 import RedButton from "../../components/Buttons/RedButton";
+import RadioInput from "../../components/Inputs/RadioInput";
+import SelectInput from "../../components/Inputs/SelectInput";
 
 const Profile = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
@@ -80,20 +82,25 @@ const Profile = () => {
                                                 </div>
                                             </div>
                                             <div className="d-f jc-between gap-10">
-                                                <div className={`${styles.inputSelectable} f-1 whiteSelectable txt-center p-rel`}>
+                                                <div className={`${styles.inputSelectable} whiteSelectable txt-center p-rel`}>
                                                     <p>19:45-20:45</p>
                                                 </div>
-                                                <div className={`${styles.inputSelectable} whiteSelectable txt-center p-rel`}>
-                                                    <div className={"d-f al-center gap-5"}>
-                                                        <p>Другое время</p>
-                                                        <div className="f-c-col">
-                                                            <ArrowMiniRightIcon height={10}/>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <SelectInput placeholder={"Другое время"} iconMiniArrow={{
+                                                    height: 10,
+                                                    width: 10
+                                                }}  classDropDown={styles.orderSelect} classNameBlock={`${styles.inputSelectable} ${styles.timeSelect} whiteSelectable gap-5 f-1`} selectHandler={(selected) => {
+                                                    console.log(selected)}}  items={["18:30", "19:30"]}/>
                                             </div>
 
                                         </div>
+                                    </div>
+                                    <div className="f-column gap-20">
+                                       <RadioInput selected={false} text={
+                                           <p><b>Требуется</b> звонок оператора</p>
+                                       } onSelect={() => {}}/>
+                                        <RadioInput selected={false} text={
+                                            <p>Звонок оператора <b>не требуется</b></p>
+                                        } onSelect={() => {}}/>
                                     </div>
                                 </div>
 
@@ -106,9 +113,11 @@ const Profile = () => {
                                 <div className="sectionTitle">Способы оплаты</div>
                                 <div className="d-f gap-10">
                                     <div className={`${styles.inputSelectable} d-f al-center gap-5 whiteSelectable`}>
+                                        <PaymentCard/>
                                         <p>Картой онлайн</p>
                                     </div>
                                     <div className={`${styles.inputSelectable} d-f al-center gap-5 whiteSelectable`}>
+                                        <PaymentCash/>
                                         <p>Наличными</p>
                                     </div>
                                 </div>

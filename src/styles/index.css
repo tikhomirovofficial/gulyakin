@@ -139,5 +139,4 @@ body::-webkit-scrollbar-thumb {
 }
 .whiteSelectableSelected {
     border: 1px solid #fb634d;
-    box-shadow: unset;
 }

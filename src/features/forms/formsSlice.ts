@@ -13,9 +13,9 @@ type ProfileFormType = {
     email: FieldType
 }
 type OrderFormType = Pick<ProfileFormType, "name"> &{
-    time: number
+    time: "FAST" | string
     callNeeded: boolean,
-    paymentWay: "CASH" | "CARD"
+    paymentWay: "CASH" | "CARD",
 }
 
 type FormsSliceState = {
@@ -48,13 +48,22 @@ const initialState: FormsSliceState = {
             val: ""
         },
         callNeeded: false,
-        time: Date.now(),
+        time: "FAST",
         paymentWay: "CARD"
     }
 }
 
+
+
+
 type PayloadHandleProfile =  PayloadAction<FormChangeValByKey<ProfileFormType>>
 type PayloadHandleProfileEditing =  PayloadAction<keyof ProfileFormType>
+
+
+
+type PayloadHandleOrder =  PayloadAction<FormChangeValByKey<OrderFormType>>
+type PayloadHandleOrderEditing =  PayloadAction<keyof OrderFormType>
+
 export const formsSlice = createSlice({
     name: "forms",
     initialState,
@@ -70,6 +79,50 @@ export const formsSlice = createSlice({
                     val: newVal
                 }
             }
+        },
+        handleOrderFormVal: (state, action: PayloadHandleOrder) => {
+            const key = action.payload.keyField
+            const newVal = action.payload.val
+            const isObject = typeof state.orderForm[key] == "object"
+
+            if(isObject) {
+                const asObject = state.orderForm[key] as object as FieldType
+                const hasNecessaryFields = Object.hasOwn(asObject, "val") &&  Object.hasOwn(asObject, "isEditing")
+
+                if(hasNecessaryFields) {
+                    state.orderForm = {
+                        ...state.orderForm,
+
+                        [key]: {
+                            ...asObject,
+                            val: newVal
+                        }
+                    }
+                }
+            }
+
+
+        },
+        handleOrderFormEditing: (state, action: PayloadHandleOrderEditing) => {
+            const key = action.payload
+            const isObject = typeof state.orderForm[key] == "object"
+
+            if(isObject) {
+                const asObject = state.orderForm[key] as object as FieldType
+                const hasNecessaryFields = Object.hasOwn(asObject, "val") &&  Object.hasOwn(asObject, "isEditing")
+
+                if(hasNecessaryFields) {
+                    state.orderForm = {
+                        ...state.orderForm,
+                        [key]: {
+                            ...asObject,
+                            isEditing: !asObject.isEditing
+                        }
+                    }
+                }
+            }
+
+
         },
 
         handleProfileFormEditing: (state, action: PayloadHandleProfileEditing) => {
@@ -87,7 +140,10 @@ export const formsSlice = createSlice({
 
 export const {
     handleProfileFormVal,
-    handleProfileFormEditing
+    handleProfileFormEditing,
+
+    handleOrderFormVal,
+    handleOrderFormEditing
 } = formsSlice.actions
 
 

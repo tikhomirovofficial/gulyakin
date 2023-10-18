@@ -1,14 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from "../../components/Header";
 import styles from './order.module.scss'
 import LogosSection from "../../components/LogosSection";
 import InputWrapper from "../../components/Inputs/InputWrapper";
 import {ArrowMiniRightIcon, EditIcon, PaymentCard, PaymentCash, SaveIcon} from "../../icons";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
+import {
+    handleOrderFormEditing,
+    handleOrderFormVal,
+    handleProfileFormEditing,
+    handleProfileFormVal
+} from "../../features/forms/formsSlice";
 import RedButton from "../../components/Buttons/RedButton";
 import RadioInput from "../../components/Inputs/RadioInput";
 import SelectInput from "../../components/Inputs/SelectInput";
+import Footer from "../../components/Footer";
 
 const Order = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
@@ -27,10 +33,10 @@ const Order = () => {
                             <div className="f-column gap-20">
                                 <div className="f-column gap-10">
                                     <div className="orderForm f-column gap-20">
-                                        <InputWrapper isChanging={name.isEditing} setVal={val => dispatch(handleProfileFormVal({
+                                        <InputWrapper isChanging={name.isEditing} setVal={val => dispatch(handleOrderFormVal({
                                             keyField: "name",
                                             val: val
-                                        }))} changeVal={e => dispatch(handleProfileFormVal({
+                                        }))} changeVal={e => dispatch(handleOrderFormVal({
                                             keyField: "name",
                                             val: e.target.value
                                         }))} disabled={!name.isEditing} inActive={!name.isEditing}
@@ -40,7 +46,7 @@ const Order = () => {
                                                      className={"w-content cur-pointer f-c-col"}>
                                                     <SaveIcon fill={name.val === data.name ? "#E2E2E9" : "#FB634D"}/>
                                                 </div> :
-                                                <div onClick={() => dispatch(handleProfileFormEditing("name"))}
+                                                <div onClick={() => dispatch(handleOrderFormEditing("name"))}
                                                      className={"w-content cur-pointer f-c-col"}>
                                                     <EditIcon/>
                                                 </div>
@@ -74,24 +80,15 @@ const Order = () => {
                                         <p className={""}>Время доставки</p>
                                         <div className={`${styles.timeOrderItems} gap-10 f-column w-100p`}>
                                             <div className="d-f jc-between gap-10">
-                                                <div className={`${styles.inputSelectable} f-1 whiteSelectable txt-center p-rel`}>
-                                                    <p>Через ~40 мин</p>
-                                                </div>
-                                                <div className={`${styles.inputSelectable} whiteSelectable txt-center p-rel`}>
-                                                    <p>19:45-20:45</p>
-                                                </div>
-                                            </div>
-                                            <div className="d-f jc-between gap-10">
-                                                <div className={`${styles.inputSelectable} whiteSelectable txt-center p-rel`}>
-                                                    <p>19:45-20:45</p>
+                                                <div className={`${styles.inputSelectable} ${time === "FAST" ? "whiteSelectableSelected" : ""} f-1 whiteSelectable txt-center p-rel`}>
+                                                    <p>Через ~90 мин</p>
                                                 </div>
                                                 <SelectInput placeholder={"Другое время"} iconMiniArrow={{
                                                     height: 10,
                                                     width: 10
-                                                }}  classDropDown={styles.orderSelect} classNameBlock={`${styles.inputSelectable} ${styles.timeSelect} whiteSelectable gap-5 f-1`} selectHandler={(selected) => {
+                                                }}  classDropDown={styles.orderSelect} classNameBlock={`${styles.inputSelectable} ${styles.timeSelect} ${time !== "FAST" ? "whiteSelectableSelected" : ""} whiteSelectable gap-5 f-1`} selectHandler={(selected) => {
                                                     console.log(selected)}}  items={["18:30", "19:30"]}/>
                                             </div>
-
                                         </div>
                                     </div>
                                     <div className="f-column gap-20">
@@ -136,6 +133,7 @@ const Order = () => {
 
                 </div>
             </div>
+            <Footer/>
         </>
     );
 };

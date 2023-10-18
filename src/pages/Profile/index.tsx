@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {FC} from 'react';
 import Header from "../../components/Header";
 import styles from './profile.module.scss'
 import LogosSection from "../../components/LogosSection";
 import InputWrapper from "../../components/Inputs/InputWrapper";
-import {DeleteIcon, EditIcon, LockedIcon, PlusIncCircleIcon, SaveIcon} from "../../icons";
+import {DeleteIcon, EditIcon, PlusIncCircleIcon, SaveIcon} from "../../icons";
 import GrayButton from "../../components/Buttons/GrayButton";
 import DarkBorderedButton from "../../components/Buttons/DarkBorderedButton";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
@@ -12,6 +12,57 @@ import {handleNewAddress} from "../../features/modals/modalsSlice";
 import {removeAddress} from "../../features/profile/profileSlice";
 import {handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
 
+
+type TextFieldProps = {
+    isEditing: boolean,
+    formValue: string,
+    condValue: string,
+
+} & Pick<InputWrapper, "placeholder" | "labelText" | "changeVal" | "setVal">
+const TextField: FC<TextFieldProps> = ({isEditing, condValue, changeVal, setVal, placeholder, labelText, formValue}) => {
+    const condIsEmpty = condValue.length === 0
+    const formValIsEmpty = formValue.length === 0
+
+    const editingAndFilledCond = isEditing && condValue.length !== 0
+    const editingOrEmpty = isEditing || !formValue.length
+    const formValueEqualsCond = formValue === condValue
+
+    const canBeSaved = !formValueEqualsCond && !formValIsEmpty
+
+    const dispatch = useAppDispatch()
+
+    const handleBlur = () => {
+        dispatch(handleProfileFormEditing("name"))
+    }
+    const handleSave = () => {
+        dispatch(handleProfileFormVal({keyField: "name", val: condValue}))
+    }
+
+    return (
+        <InputWrapper
+            isChanging={isEditing}
+            setVal={setVal}
+            changeVal={changeVal}
+            disabled={!editingAndFilledCond && !canBeSaved}
+            inActive={!isEditing && !condIsEmpty && !canBeSaved}
+            onInputBlur={() => handleBlur()}
+            grayBorderedClassName={styles.inputField}
+            inputVal={formValue}
+            placeholder={placeholder}
+            labelText={labelText}
+            btn={
+                editingOrEmpty || !formValueEqualsCond ?
+                    <div onClick={canBeSaved ? handleSave : () => alert("net")}
+                         className={"w-content cur-pointer f-c-col"}>
+                        <SaveIcon fill={!canBeSaved ? "#E2E2E9" : "#FB634D"}/>
+                    </div> :
+                    <div onClick={() => dispatch(handleProfileFormEditing("name"))}
+                         className={"w-content cur-pointer f-c-col"}>
+                        <EditIcon/>
+                    </div>
+            }/>
+    )
+}
 const Profile = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
     const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
@@ -29,18 +80,16 @@ const Profile = () => {
                                 Личные данные
                             </div>
                             <div className="personalForm f-column gap-20">
-                                <InputWrapper isChanging={name.isEditing} setVal={val => dispatch(handleProfileFormVal({keyField: "name", val: val}))} changeVal={e => dispatch(handleProfileFormVal({keyField: "name", val: e.target.value}))} disabled={!name.isEditing} inActive={!name.isEditing}
-                                              grayBorderedClassName={styles.inputField} btn={
-                                    name.isEditing ?
-                                        <div  onClick={name.val === data.name ? () => alert("da") : () => alert("net")} className={"w-content cur-pointer f-c-col"}>
-                                            <SaveIcon fill={name.val === data.name ? "#E2E2E9" : "#FB634D"}/>
-                                        </div> :
-                                        <div onClick={() => dispatch(handleProfileFormEditing("name"))} className={"w-content cur-pointer f-c-col"}>
-                                            <EditIcon/>
-                                        </div>
-                                } inputVal={name.val} placeholder={"Ваше имя"} labelText={
-                                    "Ваше имя"
-                                }/>
+                                <TextField
+                                    placeholder={"Иван"}
+                                    labelText={"Ваше имя"}
+                                    isEditing={name.isEditing}
+                                    formValue={name.val}
+                                    condValue={data.name}
+                                    setVal={val => dispatch(handleProfileFormVal({keyField: "name", val: val}))}
+                                    changeVal={e => dispatch(handleProfileFormVal({keyField: "name", val: e.target.value}))}
+                                />
+
                                 <InputWrapper disabled={true} inActive={true} grayBorderedClassName={styles.inputField}
                                               locked={true}
                                               inputVal={"+7 (951) 735-89-45"} placeholder={"Номер телефона"}
@@ -54,13 +103,13 @@ const Profile = () => {
                                 } inputVal={"16-10-1900"} placeholder={"Дата рождения"} labelText={
                                     "Дата рождения"
                                 }/>
-                                <InputWrapper inActive={false} grayBorderedClassName={styles.inputField} btn={
-                                    <div className={"w-content f-c-col"}>
-                                        <SaveIcon/>
-                                    </div>
-                                } inputVal={"pochta@mail.ru"} placeholder={"Электронная почта"} labelText={
-                                    "Электронная почта"
-                                }/>
+                                <TextField
+                                    isEditing={email.isEditing}
+                                    formValue={email.val}
+                                    condValue={data.email}
+                                    placeholder={"address@mail.ru"}
+                                    labelText={"Ваша почта"}
+                                />
 
                             </div>
                         </div>

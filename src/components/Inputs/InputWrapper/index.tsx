@@ -51,13 +51,14 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
 
 
     const handleBlur = () => {
+
         setIsFocusedState(false)
-        if (onInputBlur) {
+        if (onInputBlur && !disabled && !inActive) {
             onInputBlur()
         }
     }
     const handleFocus = () => {
-        if(!inActive) {
+        if(!inActive && !disabled) {
             setIsFocusedState(true)
         }
 

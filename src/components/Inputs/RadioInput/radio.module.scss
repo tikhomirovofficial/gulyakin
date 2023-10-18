@@ -9,12 +9,13 @@
     max-width: 1.84rem;
     border-radius: 50%;
     border: 2px solid #4D4D4D;
-    transition: .3s border;
+    transition: .3s border, .3s border-stroke;
+
   }
 
   .selectedCircle {
-    height: 1.2rem;
-    width: 1.2rem;
+    height: 1rem;
+    width: 1rem;
     background: #fb634d;
     border-radius: 50%;
   }
@@ -27,7 +28,7 @@
 
 .radioSelected {
   .marker {
-    border: 1px solid #fb634d !important;
+    border: 2px solid #fb634d !important;
   }
 
 }

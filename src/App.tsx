@@ -42,31 +42,6 @@ function App() {
         dispatch(setTotalPrice(totalProductPrice))
     }, [items])
 
-    useEffect(() => {
-        // setTimeout(() => {
-        //     dispatch(addProduct({
-        //         count: 10,
-        //         description: "Свинина, Курица, Говядина, Сыр",
-        //         id: 5,
-        //         imageUrl: getImgPath("product.jpg"),
-        //         name: "Пельмешечки любимые",
-        //         price: 300
-        //
-        //     }))
-        //     dispatch(plusProduct(5))
-        //     dispatch(addProduct({
-        //         count: 1,
-        //         description: "Рыбка и всё",
-        //         id: 6,
-        //         isNotCanBeAdded: true,
-        //         imageUrl: getImgPath("product.jpg"),
-        //         name: "Рыба",
-        //         price: 850
-        //
-        //     }))
-        // }, 3000)
-    }, [])
-
 
 
     return (

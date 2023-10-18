@@ -14,7 +14,7 @@ export type AddressItemData = {
 
 const initialState: ProfileState = {
     data: {
-        name: "Вячеслав",
+        name: "",
         dob: "",
         email: "",
         phone: ""

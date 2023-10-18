@@ -2,8 +2,9 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ProductAdditiveData} from "../../types/products.types";
 import {getImgPath} from "../../utils/getAssetsPath";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
+import {withFieldType} from "../../utils/withFieldType";
 
-type FieldType = {
+export type FieldType = {
     val: string,
     isEditing: boolean
 }
@@ -12,10 +13,16 @@ type ProfileFormType = {
     dob: FieldType
     email: FieldType
 }
+
+type OrderTime = "FAST" | string
+type OrderPaymentWay =  "CASH" | "CARD"
+
 type OrderFormType = Pick<ProfileFormType, "name"> &{
-    time: "FAST" | string
+    time: OrderTime
     callNeeded: boolean,
-    paymentWay: "CASH" | "CARD",
+    paymentWay: OrderPaymentWay,
+    address: FieldType,
+    phone: string
 }
 
 type FormsSliceState = {
@@ -30,7 +37,7 @@ export type FormChangeValByKey<FormType> = {
 const initialState: FormsSliceState = {
     profileForm: {
         name: {
-            isEditing: false, val: "Вячеслав"
+            isEditing: false, val: ""
 
         },
         dob: {
@@ -49,7 +56,13 @@ const initialState: FormsSliceState = {
         },
         callNeeded: false,
         time: "FAST",
-        paymentWay: "CARD"
+        paymentWay: "CARD",
+        phone: "+7(900) 500-18-49",
+        address: {
+            isEditing: false,
+            val: "Адрес 1"
+        },
+
     }
 }
 
@@ -69,6 +82,7 @@ export const formsSlice = createSlice({
     initialState,
     reducers: {
         handleProfileFormVal: (state, action: PayloadHandleProfile) => {
+
             const key = action.payload.keyField
             const newVal = action.payload.val
 
@@ -83,44 +97,33 @@ export const formsSlice = createSlice({
         handleOrderFormVal: (state, action: PayloadHandleOrder) => {
             const key = action.payload.keyField
             const newVal = action.payload.val
-            const isObject = typeof state.orderForm[key] == "object"
+            const field = state.orderForm[key]
 
-            if(isObject) {
-                const asObject = state.orderForm[key] as object as FieldType
-                const hasNecessaryFields = Object.hasOwn(asObject, "val") &&  Object.hasOwn(asObject, "isEditing")
+            withFieldType(field, (fieldObject) => {
+                state.orderForm = {
+                    ...state.orderForm,
 
-                if(hasNecessaryFields) {
-                    state.orderForm = {
-                        ...state.orderForm,
-
-                        [key]: {
-                            ...asObject,
-                            val: newVal
-                        }
+                    [key]: {
+                        ...fieldObject,
+                        val: newVal
                     }
                 }
-            }
-
+            })
 
         },
         handleOrderFormEditing: (state, action: PayloadHandleOrderEditing) => {
             const key = action.payload
-            const isObject = typeof state.orderForm[key] == "object"
+            const field = state.orderForm[key]
 
-            if(isObject) {
-                const asObject = state.orderForm[key] as object as FieldType
-                const hasNecessaryFields = Object.hasOwn(asObject, "val") &&  Object.hasOwn(asObject, "isEditing")
-
-                if(hasNecessaryFields) {
-                    state.orderForm = {
-                        ...state.orderForm,
-                        [key]: {
-                            ...asObject,
-                            isEditing: !asObject.isEditing
-                        }
+            withFieldType(field, (fieldObject) => {
+                state.orderForm = {
+                    ...state.orderForm,
+                    [key]: {
+                        ...fieldObject,
+                        isEditing: !fieldObject.isEditing
                     }
                 }
-            }
+            })
 
 
         },
@@ -134,7 +137,32 @@ export const formsSlice = createSlice({
                     isEditing: !state.profileForm[key].isEditing
                 }
             }
-        }
+        },
+        handleOrderTime: (state, action: PayloadAction<OrderTime>) => {
+
+            state.orderForm = {
+                ...state.orderForm,
+                time: action.payload
+            }
+        },
+        handleOrderPaymentWay: (state, action: PayloadAction<OrderPaymentWay>) => {
+
+            state.orderForm = {
+                ...state.orderForm,
+                paymentWay: action.payload
+            }
+        },
+        handleOrderCallNeeded: (state) => {
+
+            state.orderForm = {
+                ...state.orderForm,
+                callNeeded: !state.orderForm.callNeeded
+            }
+        },
+
+
+
+
     }
 })
 
@@ -143,7 +171,10 @@ export const {
     handleProfileFormEditing,
 
     handleOrderFormVal,
-    handleOrderFormEditing
+    handleOrderFormEditing,
+    handleOrderCallNeeded,
+    handleOrderTime,
+    handleOrderPaymentWay
 } = formsSlice.actions
 
 

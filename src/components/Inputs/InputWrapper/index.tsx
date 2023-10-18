@@ -1,4 +1,4 @@
-import React, {ChangeEvent, Dispatch, FC, ReactNode, SetStateAction, useState} from 'react';
+import React, {ChangeEvent, Dispatch, FC, ReactNode, SetStateAction, useRef, useState} from 'react';
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import styles from "./inputWrapper.module.scss"
 import {CloseIcon, LockedIcon} from "../../../icons";
@@ -18,6 +18,7 @@ interface InputWrapper {
     labelText?: ReactNode,
     inputId?: string,
     onInputBlur?: () => void,
+    onInputFocus?: () => void,
     isTextArea?: boolean,
     changeVal?: (e: ChangeEvent<HTMLInputElement>) => any,
     textChangeVal?: (e: ChangeEvent<HTMLTextAreaElement>) => any,
@@ -36,6 +37,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                            inputId,
                                                            labelText,
                                                            inputVal,
+    onInputFocus,
     isChanging= false,
     locked = false,
     isTextArea = false,
@@ -48,19 +50,43 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
     btn
                                                        }) => {
     const [isFocusedState, setIsFocusedState] = useState<boolean>(isFocused || false)
-
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const handleBlur = () => {
-
-        setIsFocusedState(false)
-        if (onInputBlur && !disabled && !inActive) {
-            onInputBlur()
+        if(btn) {
+            if(!inActive && !disabled) {
+                setIsFocusedState(false)
+                if (onInputBlur) {
+                    onInputBlur()
+                }
+            }
+        } else {
+            setIsFocusedState(false)
+            if (onInputBlur) {
+                onInputBlur()
+            }
         }
+
+
+
     }
     const handleFocus = () => {
-        if(!inActive && !disabled) {
+        if(btn) {
+            if(!inActive && !disabled) {
+                if(!isChanging) {
+                    if(onInputFocus) {
+                        onInputFocus()
+                    }
+                }
+                setIsFocusedState(true)
+            }
+        } else {
             setIsFocusedState(true)
+            if(onInputFocus) {
+                onInputFocus()
+            }
         }
+
 
     }
     const handleResetInput = () => {
@@ -69,26 +95,26 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
         }
     }
     if(btn) {
+        console.log(placeholder, `Фокус ${isFocusedState} Изменяется ${isChanging} Пустое ${inputVal === ""}`)
         return (
-            <div className={"d-f al-center gap-10"}>
+            <div className={`d-f al-center gap-10`}>
                 <div className={`f-column gap-10 ${className}`}>
                     {labelText ? <label className={`${styles.label} ${errText ? styles.errorTextColor : null}`}
                                         htmlFor={inputId}>{labelText}</label> : null}
-                    <div className="d-f al-center gap-10">
+                    <div className={`d-f ${isTextArea ? "" : "al-center"} gap-10`}>
 
                         <GrayBorderedBlock disabled={inActive} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                             {
                                 isTextArea ?  <textarea readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                                      value={inputVal || (isPhone ? "+7" : "")} onChange={textChangeVal} className={`${styles.textField} f-1`}
                                                      id={inputId}></textarea> :
-                                    <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                                    <input ref={inputRef}  readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                            value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.textField} f-1`}
                                            id={inputId} type="text"/>
 
                             }
                             {
                                 inputVal ? <div className={`${styles.close} h-100p cur-pointer visible f-c-col`}>
-
 
                                 </div> : null
                             }
@@ -97,10 +123,12 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                     <div className={"w-content f-c-col"}>
                                         <LockedIcon/>
                                     </div> :
-                                    btn || null
+                                    btn
                             }
                         </GrayBorderedBlock>
-                        {isFocusedState || ( isChanging && inputVal !== "") ?<div onClick={handleResetInput} style={{width: "fit-content", height: "fit-content"}}>
+                        {
+
+                            isFocusedState || ( isChanging) ?<div onClick={handleResetInput} style={{width: "fit-content", height: "fit-content"}}>
                             <CloseIcon/>
                         </div> : null
                         }
@@ -121,7 +149,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                         htmlFor={inputId}>{labelText}</label> : null}
                     <div className="d-f al-center gap-10">
 
-                        <GrayBorderedBlock disabled={true} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} f-row-betw inputField`}>
+                        <GrayBorderedBlock disabled={true} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                             <input readOnly={true} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                    value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.textField} f-1`}
                                    id={inputId} type="text"/>
@@ -162,7 +190,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                 }
                 {
                     inputVal ? <div className={`${styles.close} h-100p cur-pointer visible f-c-col`}>
-                        <div onClick={handleResetInput} style={{width: "fit-content", height: "fit-content"}}>
+                        <div onClick={handleResetInput} className={"f-c-col"} style={{width: "fit-content", height: "fit-content"}}>
                             <CloseIcon/>
                         </div>
 

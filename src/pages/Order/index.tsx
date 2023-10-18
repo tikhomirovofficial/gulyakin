@@ -10,9 +10,9 @@ import RedButton from "../../components/Buttons/RedButton";
 import RadioInput from "../../components/Inputs/RadioInput";
 import SelectInput from "../../components/Inputs/SelectInput";
 
-const Profile = () => {
+const Order = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
-    const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
+    const {name, callNeeded, time, paymentWay} = useAppSelector(state => state.forms.orderForm)
 
     const dispatch = useAppDispatch()
     return (
@@ -95,10 +95,10 @@ const Profile = () => {
                                         </div>
                                     </div>
                                     <div className="f-column gap-20">
-                                       <RadioInput selected={false} text={
+                                       <RadioInput selected={callNeeded} text={
                                            <p><b>Требуется</b> звонок оператора</p>
                                        } onSelect={() => {}}/>
-                                        <RadioInput selected={false} text={
+                                        <RadioInput selected={!callNeeded} text={
                                             <p>Звонок оператора <b>не требуется</b></p>
                                         } onSelect={() => {}}/>
                                     </div>
@@ -112,11 +112,11 @@ const Profile = () => {
                             <div className="f-column gap-20 paymentWay">
                                 <div className="sectionTitle">Способы оплаты</div>
                                 <div className="d-f gap-10">
-                                    <div className={`${styles.inputSelectable} d-f al-center gap-5 whiteSelectable`}>
+                                    <div className={`${styles.inputSelectable} ${paymentWay == "CARD" ? "whiteSelectableSelected" : ""} d-f al-center gap-5 whiteSelectable`}>
                                         <PaymentCard/>
                                         <p>Картой онлайн</p>
                                     </div>
-                                    <div className={`${styles.inputSelectable} d-f al-center gap-5 whiteSelectable`}>
+                                    <div className={`${styles.inputSelectable} ${paymentWay == "CASH" ? "whiteSelectableSelected" : ""} d-f al-center gap-5 whiteSelectable`}>
                                         <PaymentCash/>
                                         <p>Наличными</p>
                                     </div>
@@ -140,4 +140,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default Order;

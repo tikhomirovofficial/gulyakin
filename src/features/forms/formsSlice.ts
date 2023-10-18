@@ -12,8 +12,15 @@ type ProfileFormType = {
     dob: FieldType
     email: FieldType
 }
+type OrderFormType = Pick<ProfileFormType, "name"> &{
+    time: number
+    callNeeded: boolean,
+    paymentWay: "CASH" | "CARD"
+}
+
 type FormsSliceState = {
-    profileForm: ProfileFormType
+    profileForm: ProfileFormType,
+    orderForm: OrderFormType
 }
 export type FormChangeValByKey<FormType> = {
     keyField: keyof FormType
@@ -34,6 +41,15 @@ const initialState: FormsSliceState = {
             isEditing: false, val: ""
 
         }
+    },
+    orderForm: {
+        name: {
+            isEditing:false,
+            val: ""
+        },
+        callNeeded: false,
+        time: Date.now(),
+        paymentWay: "CARD"
     }
 }
 

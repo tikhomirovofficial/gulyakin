@@ -138,5 +138,6 @@ body::-webkit-scrollbar-thumb {
     border: 1px solid #fb634d;
 }
 .whiteSelectableSelected {
-    border: 1px solid #fb634d;
+    border: 1px solid #fb634d !important;
+
 }

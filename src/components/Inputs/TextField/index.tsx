@@ -10,9 +10,11 @@ type TextFieldProps = {
     formValue: string,
     condValue: string,
     handleSave: () => void,
+    handleEdit?: () => void,
 
-} & Pick<InputWrapper, "placeholder" | "labelText" | "changeVal" | "setVal" | "onInputBlur" | "onInputFocus" | "isTextArea"> & HasClassName
-export const TextField: FC<TextFieldProps> = ({isEditing, onInputBlur, isTextArea, onInputFocus, className, handleSave, condValue, changeVal, setVal, placeholder, labelText, formValue}) => {
+} & Pick<InputWrapper, "placeholder" | "labelText" | "changeVal" | "setVal" | "onInputBlur" | "onInputFocus" | "isTextArea" | "textChangeVal"> & HasClassName
+export const TextField: FC<TextFieldProps> = ({isEditing, textChangeVal, handleEdit, onInputBlur, isTextArea, onInputFocus, className, handleSave, condValue, changeVal, setVal,
+  placeholder, labelText, formValue}) => {
 
 
     const editRef = useRef<HTMLDivElement>(null)
@@ -34,8 +36,11 @@ export const TextField: FC<TextFieldProps> = ({isEditing, onInputBlur, isTextAre
             inputElement.focus()
         }
     }
-    const handleEdit = () => {
-        dispatch(handleProfileFormEditing("name"))
+    const handleEditing = () => {
+        if(handleEdit) {
+            handleEdit()
+        }
+
         handleInputFocus()
     }
 
@@ -44,6 +49,7 @@ export const TextField: FC<TextFieldProps> = ({isEditing, onInputBlur, isTextAre
             isChanging={isEditing}
             setVal={setVal}
             changeVal={changeVal}
+            textChangeVal={textChangeVal}
             disabled={!isEditing && !condIsEmpty && !canBeSaved}
             inActive={!isEditing && !condIsEmpty && !canBeSaved}
             onInputBlur={formValueEqualsCond || (!formValueEqualsCond && formValIsEmpty)?  onInputBlur : undefined}
@@ -59,7 +65,7 @@ export const TextField: FC<TextFieldProps> = ({isEditing, onInputBlur, isTextAre
                          className={`w-content cur-pointer ${!isTextArea ? "f-c-col" : ""}`}>
                         <SaveIcon fill={!canBeSaved ? "#E2E2E9" : "#FB634D"}/>
                     </div> :
-                    <div ref={editRef} onClick={handleEdit}
+                    <div ref={editRef} onClick={handleEditing}
                          className={`w-content cur-pointer  ${!isTextArea ? "f-c-col" : ""}`}>
                         <EditIcon/>
                     </div>

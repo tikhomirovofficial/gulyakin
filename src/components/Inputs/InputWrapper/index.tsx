@@ -6,6 +6,7 @@ import {HasClassName} from "../../../types/components.types";
 
 interface InputWrapper {
     grayBorderedClassName?: string,
+    inputClassName?: string,
     inActive?: boolean,
     disabled?: boolean,
     btn?: ReactNode,
@@ -17,6 +18,7 @@ interface InputWrapper {
     inputVal?: number | string,
     labelText?: ReactNode,
     inputId?: string,
+    postFix?: string,
     onInputBlur?: () => void,
     onInputFocus?: () => void,
     isTextArea?: boolean,
@@ -29,6 +31,7 @@ interface InputWrapper {
 const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                            isFocused,
                                                            isPhone,
+    inputClassName,
                                                            placeholder,
                                                            setVal,
                                                            className,
@@ -37,6 +40,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                            inputId,
                                                            labelText,
                                                            inputVal,
+    postFix,
     onInputFocus,
     isChanging= false,
     locked = false,
@@ -128,7 +132,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                         </GrayBorderedBlock>
                         {
 
-                            isFocusedState || ( isChanging) ?<div onClick={handleResetInput} style={{width: "fit-content", height: "fit-content"}}>
+                            !locked && (isFocusedState || ( isChanging)) ?<div onClick={handleResetInput} style={{width: "fit-content", height: "fit-content"}}>
                             <CloseIcon/>
                         </div> : null
                         }
@@ -150,7 +154,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                     <div className="d-f al-center gap-10">
 
                         <GrayBorderedBlock disabled={true} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
-                            <input readOnly={true} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                            <input readOnly={true} placeholder={placeholder || ""}
                                    value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.textField} f-1`}
                                    id={inputId} type="text"/>
                             {
@@ -161,7 +165,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                 <LockedIcon/>
                             </div>
                         </GrayBorderedBlock>
-                        {isFocusedState || ( isChanging && inputVal !== "") ?<div onClick={handleResetInput} style={{width: "fit-content", height: "fit-content"}}>
+                        {!locked && (isFocusedState || ( isChanging && inputVal !== "")) ?<div onClick={handleResetInput} style={{width: "fit-content", height: "fit-content"}}>
                             <CloseIcon/>
                         </div> : null
                         }
@@ -184,9 +188,12 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                             value={inputVal || (isPhone ? "+7" : "")} onChange={textChangeVal} className={`${styles.textField} f-1`}
                                             id={inputId}></textarea> :
                         <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
-                               value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.input} f-1`}
+                               value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
                                id={inputId} type="text"/>
 
+                }
+                {postFix ?
+                    <p style={{fontSize: 16}} className={"f-1"}>{postFix}</p>: null
                 }
                 {
                     inputVal ? <div className={`${styles.close} h-100p cur-pointer visible f-c-col`}>

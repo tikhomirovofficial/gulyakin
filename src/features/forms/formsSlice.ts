@@ -22,7 +22,9 @@ type OrderFormType = Pick<ProfileFormType, "name"> &{
     callNeeded: boolean,
     paymentWay: OrderPaymentWay,
     address: FieldType,
-    phone: string
+    phone: string,
+    isPickup: boolean,
+    restaurant: number
 }
 
 type FormsSliceState = {
@@ -55,6 +57,7 @@ const initialState: FormsSliceState = {
             val: ""
         },
         callNeeded: false,
+
         time: "FAST",
         paymentWay: "CARD",
         phone: "+7(900) 500-18-49",
@@ -62,6 +65,9 @@ const initialState: FormsSliceState = {
             isEditing: false,
             val: "Адрес 1"
         },
+        isPickup: true,
+        restaurant: 0
+
 
     }
 }
@@ -159,6 +165,19 @@ export const formsSlice = createSlice({
                 callNeeded: !state.orderForm.callNeeded
             }
         },
+        handleOrderPickup: (state) => {
+
+            state.orderForm = {
+                ...state.orderForm,
+                isPickup: !state.orderForm.isPickup
+            }
+        },
+        handleSelectRestaurant: (state, action: PayloadAction<number>) => {
+            state.orderForm = {
+                ...state.orderForm,
+                restaurant: action.payload
+            }
+        }
 
 
 
@@ -174,7 +193,9 @@ export const {
     handleOrderFormEditing,
     handleOrderCallNeeded,
     handleOrderTime,
-    handleOrderPaymentWay
+    handleOrderPaymentWay,
+    handleOrderPickup,
+    handleSelectRestaurant
 } = formsSlice.actions
 
 

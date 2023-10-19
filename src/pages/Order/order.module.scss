@@ -2,6 +2,7 @@
   margin-top: 4rem;
   .form {
     max-width: 37.1rem;
+    min-width: 38rem;
     textarea {
       resize: none;
     }
@@ -63,4 +64,56 @@
 }
 .timeSelect {
   min-width: 12.5rem;
+}
+.compositionOrder {
+  padding: 3rem 4rem;
+  max-width: 42rem;
+  border-radius: 20px;
+  box-shadow: 0px 0px 12px 0px rgba(56, 56, 56, 0.05);
+  position: sticky;
+  color: #494949;;
+  height: fit-content;
+  top: 20rem;
+  h3 {
+    font-size: 2.4rem;
+  }
+  .part {
+    background: #FAFAFA;
+  }
+  .product {
+    .image {
+      min-width: 7.5rem;
+      min-height: 7.5rem;
+      max-width: 7.5rem;
+      max-height: 7.5rem;
+      border-radius: 4px;
+    }
+
+    h4, .price {
+      font-size: 1.6rem;
+    }
+    p {
+      font-size: 1.2rem;
+    }
+  }
+  .info {
+    p {
+      font-size: 1.6rem;
+    }
+    b {
+      font-size: 1.8rem;
+    }
+    .productsInfo {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #E2E2E9;
+    }
+  }
+}
+.selectRestaurant {
+  font-size: 1.6rem;
+  max-width: 34rem;
+}
+.diffCashInput {
+  max-width: 4rem;
+  margin-right: .5rem;
 }

@@ -1,12 +1,12 @@
 import axios, {Axios, AxiosResponse} from 'axios'
 import {getCookie, setCookie} from "../../utils/CookieUtil";
-import {JWT} from "../../types/auth.types";
+import {JWT} from "../../types/api.types";
 import {UserApi} from "../api/user.api";
 
 const api = axios.create({
     baseURL: 'http://dev.advafert.ru/api/',
     headers: {
-        Authorization: `Bearer ${getCookie('tokens').access}`,
+        Authorization: `Bearer ${getCookie('tokens')?.access}`,
         "Content-Type": 'application/json',
         'Accept': 'application/json',
     }

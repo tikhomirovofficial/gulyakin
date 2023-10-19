@@ -3,6 +3,7 @@ import GrayBorderedBlock from "../../GrayBorderedBlock";
 import styles from "./inputWrapper.module.scss"
 import {CloseIcon, LockedIcon} from "../../../icons";
 import {HasClassName} from "../../../types/components.types";
+import InputMask from "react-input-mask";
 
 interface InputWrapper {
     grayBorderedClassName?: string,
@@ -25,7 +26,8 @@ interface InputWrapper {
     changeVal?: (e: ChangeEvent<HTMLInputElement>) => any,
     textChangeVal?: (e: ChangeEvent<HTMLTextAreaElement>) => any,
     isChanging?: boolean
-    setVal?: (val: string) => any
+    setVal?: (val: string) => any,
+    mask?: string
 }
 
 const InputWrapper: FC<InputWrapper & HasClassName> = ({
@@ -40,6 +42,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                            inputId,
                                                            labelText,
                                                            inputVal,
+    mask,
     postFix,
     onInputFocus,
     isChanging= false,
@@ -187,9 +190,13 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                     isTextArea ?  <textarea readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                             value={inputVal || (isPhone ? "+7" : "")} onChange={textChangeVal} className={`${styles.textField} f-1`}
                                             id={inputId}></textarea> :
+                        !mask ?
                         <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
-                               value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
-                               id={inputId} type="text"/>
+                               value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
+                               id={inputId} type="text"/> :
+                            <InputMask mask={mask} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                                   value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
+                                   id={inputId} type="text"/>
 
                 }
                 {postFix ?

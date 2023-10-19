@@ -9,12 +9,24 @@ import {useInput} from "../../../hooks/useInput";
 import InputWrapper from "../../Inputs/InputWrapper";
 import {useAppDispatch} from "../../../app/hooks";
 import {handleLogin} from "../../../features/modals/modalsSlice";
+import InputMask from 'react-input-mask';
+import {UserApi} from "../../../http/api/user.api";
+import {extractDigits} from "../../../utils/normalizePhone";
 
 const CODE_LENGTH = 4
 
 const LoginPhoneStep = () => {
     const {changePhone, phoneErr, phone, setLoginStep, setPhoneErr, setPhone} = useContext<LoginContextType>(LoginContext)
+    const handleSendPhone = async () => {
+        const {status} = await UserApi.Registration({
+            phone: extractDigits(phone)
+        })
 
+        if(status) {
+            setLoginStep(1)
+        }
+
+    }
 
     return (
         <div className="gap-30 f-column">
@@ -26,11 +38,11 @@ const LoginPhoneStep = () => {
             </div>
             <div className="f-column gap-20">
                 <div className="f-column gap-10">
-                    <InputWrapper isPhone={true} setVal={setPhone} onInputBlur={() => setPhoneErr("")} errText={phoneErr} labelText={"Номер телефона"}
+                    <InputWrapper placeholder={"+7"}  mask={"+7(999) 999 99-99"} isPhone={true} setVal={setPhone} onInputBlur={() => setPhoneErr("")} errText={phoneErr} labelText={"Номер телефона"}
                                   inputId={"phone"} inputVal={phone} changeVal={changePhone}/>
                 </div>
                 <div className="f-column gap-15">
-                    <RedButton onClick={() => setLoginStep(1)} disabled={false} className={"pd-10-0"}>Выслать
+                    <RedButton onClick={handleSendPhone} disabled={phone.includes("_") || phone.length < 1} className={"pd-10-0"}>Выслать
                         код</RedButton>
                     <div className={"caption txt-center"}>Продолжая, вы соглашаетесь <a href=""> со сбором и
                         обработкой персональных данных и пользовательским соглашением</a></div>
@@ -42,7 +54,7 @@ const LoginPhoneStep = () => {
     )
 }
 const LoginCodeStep = () => {
-    const {setLoginStep, code, setCode, codeErr, codeLoading} = useContext<LoginContextType>(LoginContext)
+    const {setLoginStep, code, setCode, codeErr, codeLoading, phone} = useContext<LoginContextType>(LoginContext)
     const [currentDigit, setCurrentDigit] = useState<number | null>(null)
     const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
         if(e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))) {
@@ -79,7 +91,7 @@ const LoginCodeStep = () => {
                         Код отправили сообщением на
                     </p>
                     <div className="d-f gap-10">
-                        <b>+7 (951) 735-89-45</b>
+                        <b>{phone}</b>
                         <b onClick={() => setLoginStep(0)} className={styles.changePhone}>Изменить</b>
                     </div>
 
@@ -168,7 +180,7 @@ const LoginContext = createContext<LoginContextType>(loginContextDefault)
 const loginSteps = [LoginPhoneStep, LoginCodeStep]
 
 const LoginWindow = () => {
-    const [loginStep, setLoginStep] = useState<number>(1)
+    const [loginStep, setLoginStep] = useState<number>(0)
     const CurrentStep = loginSteps[loginStep]
 
     const [phoneVal, changePhone, setPhone] = useInput(loginContextDefault.phone)

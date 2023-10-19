@@ -1,17 +1,17 @@
-import {JWT} from "../../types/auth.types";
+import {JWT, LoginRequest, LoginResponse, RegistrationRequest, RegistrationResponse} from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import api from "../instance/instances";
 import {UserData} from "../../types/user.types";
 import {PATHS} from "./path.api";
 
 export class UserApi {
-    static async Registration(requestData: UserData): Promise<UserData> {
-        const res: AxiosResponse<UserData> = await api.post(PATHS.USER_REGISTER, {...requestData})
+    static async Registration(requestData: RegistrationRequest): Promise<RegistrationResponse> {
+        const res: AxiosResponse<RegistrationResponse> = await api.post(PATHS.USER_REGISTER, {...requestData})
         return res.data
     }
 
-    static async Login(requestData: any): Promise<any> {
-        const res: AxiosResponse<any> = await api.post(PATHS.USER_LOGIN, {...requestData});
+    static async Login(requestData: LoginRequest): Promise<LoginResponse> {
+        const res: AxiosResponse<LoginResponse> = await api.post(PATHS.USER_LOGIN, {...requestData});
         return res.data;
     }
 

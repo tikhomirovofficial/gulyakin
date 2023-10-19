@@ -1,4 +1,3 @@
-
 {
   "name": "gulyakin",
   "version": "0.1.0",
@@ -13,10 +12,12 @@
     "@types/node": "^16.18.14",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "@types/react-input-mask": "^3.0.4",
     "axios": "^1.4.0",
     "gh-pages": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-input-mask": "^2.0.4",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",

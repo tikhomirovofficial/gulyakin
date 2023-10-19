@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+ import React, {FC, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import {ArrowMiniRightIcon, ArrowRight, Geo} from "../../icons";
 import styles from './main.module.scss'
@@ -11,7 +11,7 @@ import Product from "../../components/Catalog/Product";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import LogosSection from "../../components/LogosSection";
-import {useAppDispatch} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {setTempPage} from "../../features/main/mainSlice";
 import {Swiper, SwiperProps, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
@@ -21,8 +21,11 @@ import 'swiper/css/pagination';
 import {handleBooking} from "../../features/modals/modalsSlice";
 
 const Main: FC = () => {
+    const categories = useAppSelector(state => state.categories)
+
     const dispatch = useAppDispatch()
     const sliderCategories = useRef<SwiperProps>(null)
+
     const [currentSlide, setCurrentSlide] = useState<number>(0)
     const [isEndSlider, setIsEndSlider] = useState(false)
 
@@ -187,7 +190,13 @@ const Main: FC = () => {
                                             ref={sliderCategories}
                                             spaceBetween={10}
                                         >
-
+                                            {
+                                                categories.items.map(item => (
+                                                    <SwiperSlide className={"w-content cur-grabbing"}>
+                                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
+                                                    </SwiperSlide>
+                                                ))
+                                            }
                                             <SwiperSlide className={"w-content cur-grabbing"}>
                                                 <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
                                             </SwiperSlide>

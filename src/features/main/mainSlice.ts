@@ -4,6 +4,7 @@ import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 
 const initialState = {
     tempPage: 0,
+    market: 0,
     cities: ["Сургут", "Сочи", "Нижневартовск"],
     changingGeo: false,
     askCityVisible: !(getFromStorage("city") !== undefined && getFromStorage("city") !== null),
@@ -30,11 +31,14 @@ export const MainSlice = createSlice({
         toggleAskCityVisible: (state) => {
             state.askCityVisible = !state.askCityVisible
         },
+        setMarket: (state, action: PayloadAction<number>) => {
+            state.market = action.payload
+        }
 
     }
 })
 
-export const {setCurrentCity, toggleChangingGeo, toggleAskCityVisible, setTempPage} = MainSlice.actions
+export const {setCurrentCity, toggleChangingGeo, toggleAskCityVisible, setTempPage, setMarket} = MainSlice.actions
 
 
 export const mainReducer = MainSlice.reducer

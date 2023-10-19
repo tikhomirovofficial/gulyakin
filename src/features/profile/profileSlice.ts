@@ -38,7 +38,7 @@ const initialState: ProfileState = {
         },
 
     ],
-    isAuth: true
+    isAuth: false
 }
 
 export const ProfileSlice = createSlice({

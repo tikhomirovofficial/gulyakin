@@ -12,19 +12,34 @@ import {handleLogin} from "../../../features/modals/modalsSlice";
 import InputMask from 'react-input-mask';
 import {UserApi} from "../../../http/api/user.api";
 import {extractDigits} from "../../../utils/normalizePhone";
+import {storeTokens} from "../../../utils/storeTokens";
+import {useNavigate} from "react-router-dom";
+import authApi from "../../../http/instance/instances";
+import {withChangeCodeArr} from "../../../utils/forms/withChangeCodeArr";
+import {useInterval} from "../../../hooks/useInterval";
 
-const CODE_LENGTH = 4
+
+
 
 const LoginPhoneStep = () => {
-    const {changePhone, phoneErr, phone, setLoginStep, setPhoneErr, setPhone} = useContext<LoginContextType>(LoginContext)
+    const {changePhone, phoneErr, phone, setCode, code, codeErr, setCodeErr, setLoginStep, setPhoneErr, setPhone} = useContext<LoginContextType>(LoginContext)
     const handleSendPhone = async () => {
         const {status} = await UserApi.Registration({
             phone: extractDigits(phone)
         })
 
         if(status) {
+            const codeIsFilled =  code.some(item => item !== "")
+
+            if(codeIsFilled) {
+                setCode(["", "", "", ""])
+            }
+            if(codeErr) {
+                setCodeErr("")
+            }
             setLoginStep(1)
         }
+
 
     }
 
@@ -54,33 +69,86 @@ const LoginPhoneStep = () => {
     )
 }
 const LoginCodeStep = () => {
-    const {setLoginStep, code, setCode, codeErr, codeLoading, phone} = useContext<LoginContextType>(LoginContext)
+    const navigate = useNavigate()
+    const {setLoginStep, isFreezed, code, setCode, setIsFreezed, codeErr, codeLoading, setFreezedSecs, codeFreezedSeconds, phone, setCodeLoading, setCodeErr} = useContext<LoginContextType>(LoginContext)
     const [currentDigit, setCurrentDigit] = useState<number | null>(null)
-    const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-        if(e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))) {
+    const freezed = codeFreezedSeconds !== undefined && codeFreezedSeconds > 0 && isFreezed
+    const dispatch = useAppDispatch()
+    const handleSendPhone = async () => {
+        const {status} = await UserApi.Registration({
+            phone: extractDigits(phone)
+        })
 
-            setCode(prev => {
-                const newArr = [...prev]
-                newArr[index] = e.target.value
+        if(status) {
+            const codeIsFilled =  code.some(item => item !== "")
 
-                const prevLength = prev.join("").length
-                const newLength = newArr.join("").length
-                const digitsListNode = e.target.parentElement?.parentElement
-                
-                if(prevLength < newLength && index < CODE_LENGTH - 1) {
-                    const nextInput = digitsListNode?.children[index + 1].querySelector("input") as HTMLInputElement
-                    nextInput.focus()
-                }
-
-                if(prevLength > newLength && index != 0) {
-                    const prevInput = digitsListNode?.children[index - 1].querySelector("input") as HTMLInputElement
-                    prevInput.focus()
-                }
-                return newArr
-            })
+            if(codeIsFilled) {
+                setCode(["", "", "", ""])
+            }
+            if(codeErr) {
+                setCodeErr("")
+            }
         }
 
+
     }
+    const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+        const validSymbolAndValue = e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))
+
+        if(validSymbolAndValue) {
+            setCodeErr("")
+            setCode(prev => {
+                const digitsListNode = e.target.parentElement?.parentElement
+                return withChangeCodeArr({
+                    prevCodeArr: prev,
+                    value: e.target.value,
+                    codeListNode: digitsListNode,
+                    index
+                })
+
+            })
+        }
+    }
+    const handleNewCode =  () => {
+        if(!isFreezed) {
+            handleSendPhone()
+            setIsFreezed(true)
+            setFreezedSecs(5)
+            setCode(["", "", "", ""])
+
+            return;
+        }
+    }
+    useEffect(() => {
+         (async () => {
+            const codeIsFilled = code.every(item => item !== "")
+
+            if(codeIsFilled) {
+                try {
+                    setCodeLoading(true)
+                    const {access, refresh, detail} = await UserApi.Login({
+                        username: extractDigits(phone),
+                        password: code.join("")
+                    })
+                    storeTokens({
+                        access,
+                        refresh
+                    })
+                    alert(access)
+                    authApi.defaults.headers["Authorization"] = `Bearer ${access}`
+                    dispatch(handleLogin())
+                    navigate("/profile")
+                }
+                catch (e: any) {
+                    setCodeErr("Неверный код")
+                }
+                finally {
+                    setCodeLoading(false)
+                }
+            }
+        })()
+
+    }, [code])
 
     return (
         <div className="gap-30 f-column">
@@ -128,7 +196,9 @@ const LoginCodeStep = () => {
                 </div>
 
                 <div className="f-column gap-15">
-                    <RedButton disabled={false} className={"pd-10-0"}>Получить новый код</RedButton>
+                    <RedButton onClick={handleNewCode} disabled={freezed} className={"pd-10-0"}>
+                        Получить новый код {freezed ? `через ${codeFreezedSeconds} сек` : ""}
+                    </RedButton>
                     <div className={"caption txt-center"}>Продолжая, вы соглашаетесь <a href=""> со сбором и
                         обработкой персональных данных и пользовательским соглашением</a></div>
                 </div>
@@ -144,10 +214,14 @@ interface LoginContextType {
     phone: string,
     code: Array<string>
     codeErr: string
-    phoneErr: string
+    isFreezed: boolean
+    phoneErr: string,
+    codeFreezedSeconds?: number,
     codeLoading: boolean,
     changePhone: (e: ChangeEvent<HTMLInputElement>) => void,
     setCode: Dispatch<SetStateAction<Array<string>>>,
+    setFreezedSecs: Dispatch<SetStateAction<number>>,
+    setIsFreezed: Dispatch<SetStateAction<boolean>>,
     setCodeErr: Dispatch<SetStateAction<string>>,
     setPhone: Dispatch<SetStateAction<string>>,
     setPhoneErr: Dispatch<SetStateAction<string>>,
@@ -161,8 +235,9 @@ const loginContextDefault = {
     code: ["", "", "", ""],
     codeErr: "",
     phone: "",
-    codeLoading: true,
+    codeLoading: false,
     phoneErr: "",
+    isFreezed: false,
     setCode(value: ((prevState: Array<string>) => Array<string>) | Array<string>): void {
     },
     setCodeErr(value: ((prevState: string) => string) | string): void {
@@ -174,6 +249,8 @@ const loginContextDefault = {
     setPhone(value: ((prevState: string) => string) | string): void {
     },
     setCodeLoading(value: ((prevState: boolean) => boolean) | boolean): void {},
+    setIsFreezed(value: ((prevState: boolean) => boolean) | boolean): void {},
+    setFreezedSecs(value: ((prevState: number) => number) | number): void {},
 }
 
 const LoginContext = createContext<LoginContextType>(loginContextDefault)
@@ -186,28 +263,43 @@ const LoginWindow = () => {
     const [phoneVal, changePhone, setPhone] = useInput(loginContextDefault.phone)
     const [codeVal, setCode] = useState<Array<string>>(loginContextDefault.code)
     const [codeLoading, setCodeLoading] = useState<boolean>(loginContextDefault.codeLoading)
+    const [isFreezed, setIsFreezed] = useState<boolean>(loginContextDefault.codeLoading)
+    const [codeFreezedSecs, setCodeFreezedSecs] = useState(0)
 
     const [phoneErr, setPhoneErr] = useState<string>(loginContextDefault.phoneErr)
     const [codeErr, setCodeErr] = useState<string>(loginContextDefault.codeErr)
+
+    useInterval(() => {
+        if (isFreezed && codeFreezedSecs > 0) {
+            setCodeFreezedSecs((prev) => prev - 1);
+        } else {
+            setIsFreezed(false);
+            setCodeFreezedSecs(0);
+        }
+    }, 1000);
 
     const dispatch = useAppDispatch()
     return (
         <LoginContext.Provider value={{
             setLoginStep,
+            isFreezed: isFreezed,
+            setIsFreezed: setIsFreezed,
             phone: phoneVal,
             code: codeVal,
             codeLoading: codeLoading,
             phoneErr: phoneErr,
             codeErr: codeErr,
+            codeFreezedSeconds: codeFreezedSecs,
             changePhone: changePhone,
             setCode: setCode,
+            setFreezedSecs: setCodeFreezedSecs,
             setCodeErr: setCodeErr,
             setPhoneErr: setPhoneErr,
             setPhone: setPhone,
             setCodeLoading: setCodeLoading
 
         }}>
-            <ShadowWrapper>
+            <ShadowWrapper onClick={() => dispatch(handleLogin())}>
                 <WindowBody className={`${styles.window} f-column`}>
                     <div className="w-100p d-f jc-end">
                         <div onClick={() => dispatch(handleLogin())} className={"closeWrapper"}>

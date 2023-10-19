@@ -8,14 +8,19 @@ function setCookie(name: string, data: any, days: number) {
 
 // Получение данных из cookie
 function getCookie(name: string): any | null {
-    const cookies = document.cookie.split('; ');
-    for (const cookie of cookies) {
-        const [cookieName, cookieValue] = cookie.split('=');
-        if (cookieName === name) {
-            return JSON.parse(decodeURIComponent(cookieValue));
+    try {
+        const cookies = document.cookie.split('; ');
+        for (const cookie of cookies) {
+            const [cookieName, cookieValue] = cookie.split('=');
+            if (cookieName === name) {
+                return JSON.parse(decodeURIComponent(cookieValue));
+            }
         }
+        return null;
+    } catch (e) {
+        return null
     }
-    return null;
+
 }
 
 

@@ -6,7 +6,7 @@ export type JWT = {
     refresh?: string
 }
 
-interface Supplement {
+export interface Supplement {
     id: number;
     title: string;
     short_description: string;
@@ -45,7 +45,9 @@ export type LoginRequest = {
     username: string,
     password: string
 }
-export type LoginResponse = JWT
+export type LoginResponse = JWT & {
+    detail?: string
+}
 
 export type RefreshRequest = Pick<JWT, "refresh">
 export type RefreshResponse = Pick<JWT, "access">

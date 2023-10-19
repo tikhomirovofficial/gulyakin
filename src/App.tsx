@@ -20,6 +20,7 @@ import Cart from "./components/Cart";
 import {addProduct, plusProduct, setTotalPrice} from "./features/cart/cartSlice";
 import {formatNumberWithSpaces} from "./utils/numberWithSpaces";
 import {getImgPath} from "./utils/getAssetsPath";
+import {ScrollToTop} from "./components/ServiceComponents";
 
 const tempPages = [
     Main,
@@ -46,6 +47,7 @@ function App() {
 
     return (
         <YMaps>
+            <ScrollToTop/>
             <div className="App">
                 <AppRoutes isAuth={false}/>
                 {/*<CurrentPage/>*/}

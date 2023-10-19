@@ -2,35 +2,50 @@ import axios, {Axios, AxiosResponse} from 'axios'
 import {getCookie, setCookie} from "../../utils/CookieUtil";
 import {JWT} from "../../types/api.types";
 import {UserApi} from "../api/user.api";
+import {getTokens, storeTokens} from "../../utils/storeTokens";
 
-const api = axios.create({
+const authApi = axios.create({
     baseURL: 'http://dev.advafert.ru/api/',
+    withCredentials: true,
     headers: {
         Authorization: `Bearer ${getCookie('tokens')?.access}`,
         "Content-Type": 'application/json',
         'Accept': 'application/json',
     }
 })
+export const api = axios.create({
+    baseURL: 'http://dev.advafert.ru/api/',
+    withCredentials: true,
+    headers: {
+        "Content-Type": 'application/json',
+        'Accept': 'application/json',
+    }
+})
+
+
 
 let _isRetried = false
-api.interceptors.response.use(null, (ctx) => {
-    const res = ctx.response as AxiosResponse
+authApi.interceptors.response.use(null, (ctx) => {
+    const res = ctx.response
+    console.log(res)
     const resDataCode = res.data.code
 
     if (resDataCode === 'token_not_valid' && !_isRetried) {
         _isRetried = true
         const requestConfig = res.config
-        const tokens = getCookie("tokens") as JWT
+        const tokens = getTokens()
         const refreshToken = tokens.refresh
+
 
         const response = UserApi.RefreshToken({refresh: refreshToken})
             .then((tokensRes: JWT) => {
-                setCookie("tokens", {
+                storeTokens({
                     access: tokensRes.access,
                     refresh: refreshToken
-                }, 30)
+                })
 
-                requestConfig.headers.Authorization = `Bearer ${tokens.access}`
+
+                requestConfig.headers.Authorization = `Bearer ${tokensRes.access}`
                 axios.request(requestConfig).then((res) => {
                     return res
                 })
@@ -41,4 +56,4 @@ api.interceptors.response.use(null, (ctx) => {
 
 })
 
-export default api
+export default authApi

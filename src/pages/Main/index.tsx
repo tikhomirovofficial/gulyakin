@@ -21,11 +21,13 @@ import 'swiper/css/pagination';
 import {handleBooking} from "../../features/modals/modalsSlice";
 
 const Main: FC = () => {
-    const categories = useAppSelector(state => state.categories)
+    const {categories, products} = useAppSelector(state => state)
+
 
     const dispatch = useAppDispatch()
     const sliderCategories = useRef<SwiperProps>(null)
 
+    const [sliderNeeded, setSliderNeeded] = useState(false)
     const [currentSlide, setCurrentSlide] = useState<number>(0)
     const [isEndSlider, setIsEndSlider] = useState(false)
 
@@ -36,11 +38,23 @@ const Main: FC = () => {
     const handlePrev = () => {
         sliderCategories.current.swiper.slidePrev();
     }
+
+
     useEffect(() => {
         if(sliderCategories.current) {
-            console.log(sliderCategories.current.a)
+            const slider = sliderCategories.current as HTMLDivElement
+            const parentWidth = slider.parentElement?.parentElement?.offsetWidth
+
+            if(parentWidth) {
+                const sliderIsSmaller = slider.offsetWidth < parentWidth
+                if(!sliderIsSmaller) {
+                    setSliderNeeded(true)
+                }
+            }
+
+
         }
-    }, [currentSlide])
+    }, [categories])
 
 
     return (
@@ -156,7 +170,7 @@ const Main: FC = () => {
 
                                 <div className="w-100p p-rel">
                                     {
-                                        currentSlide > 0 ?  <div style={{transform: "rotateZ(180deg)"}} className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
+                                        sliderNeeded && currentSlide > 0 ?  <div style={{transform: "rotateZ(180deg)"}} className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
                                             <div onClick={handlePrev} className="miniSliderArrow cur-pointer f-c-col">
                                                 <ArrowMiniRightIcon width={14} height={14}/>
                                             </div>
@@ -165,7 +179,7 @@ const Main: FC = () => {
 
                                     }
                                     {
-                                        !isEndSlider ?  <div className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
+                                        sliderNeeded && !isEndSlider ?  <div className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
                                             <div onClick={handleNext} className="miniSliderArrow cur-pointer f-c-col">
                                                 <ArrowMiniRightIcon width={14} height={14}/>
                                             </div>
@@ -192,74 +206,13 @@ const Main: FC = () => {
                                         >
                                             {
                                                 categories.items.map(item => (
-                                                    <SwiperSlide className={"w-content cur-grabbing"}>
-                                                        <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
+                                                    <SwiperSlide key={item.id} className={"w-content cur-grabbing"}>
+                                                        <GrayBorderedBlock clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)} className={styles.item}>
+                                                            {item.title}
+                                                        </GrayBorderedBlock>
                                                     </SwiperSlide>
                                                 ))
                                             }
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Пельмени</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Вареники</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Супы</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Салаты</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Сытные блины</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Сладкие блины</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Картошка</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Креветки и мидии</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Правильные салаты</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Правильные горячие</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Пельмени 1</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Пельмени 2</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Пельмыва аваыв</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Сладкие блины</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Картошка</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Креветки и мидии</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Правильные салаты</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Правильные горячие</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Пельмени 1</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Пельмени 2</GrayBorderedBlock>
-                                            </SwiperSlide>
-                                            <SwiperSlide className={"w-content cur-grabbing"}>
-                                                <GrayBorderedBlock className={styles.item}>Пельмыва аваыв</GrayBorderedBlock>
-                                            </SwiperSlide>
                                         </Swiper>
 
                                     </div>
@@ -333,14 +286,24 @@ const Main: FC = () => {
                             </div>
                             <div className={styles.catalog}>
                                 <div className="block f-column gap-40">
-                                    <div className={`${styles.categoryBlock} f-column gap-20`}>
-                                        <h2 className="sectionTitle">Пельмени</h2>
-                                        <List listBlockClassname={"jc-between d-f flex-wrap gap-20"}
-                                              list={Array(8).fill(null)}
-                                              renderItem={() => <Product name={"Пельмени домашние"}
-                                                                         composition={"Свинина, говядина"} weight={250}
-                                                                         price={350}/>}/>
-                                    </div>
+                                    {
+                                        categories.items.map(category => (
+                                            <div className={`${styles.categoryBlock} f-column gap-20`}>
+                                                <h2 className="sectionTitle">{category.title}</h2>
+                                                <List listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
+                                                      list={products.items.filter(product => product.category === category.id)}
+                                                      renderItem={(product) =>
+                                                          <Product name={product.title}
+                                                                   id={product.id}
+                                                                   count={0}
+                                                                   composition={product.composition}
+                                                                   weight={product.weight}
+                                                                   price={product.price}/>
+                                                }/>
+                                            </div>
+                                        ))
+                                    }
+
 
                                 </div>
                             </div>

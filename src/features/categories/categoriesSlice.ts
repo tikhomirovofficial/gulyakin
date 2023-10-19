@@ -2,15 +2,20 @@ import {createSlice} from "@reduxjs/toolkit";
 import {Category} from "../../types/api.types";
 
 
-type categoriesSliceState = {
+type CategoriesSliceState = {
     items: Category[]
 }
 
-const initialState: categoriesSliceState = {
+const initialState: CategoriesSliceState = {
     items: [
         {
             id: 1,
             title: "Пельмени",
+            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
+        },
+        {
+            id: 2,
+            title: "Супы",
             image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
         }
     ]

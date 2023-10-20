@@ -1,4 +1,4 @@
-import React, {FC, useRef} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import Header from "../../components/Header";
 import styles from './profile.module.scss'
 import LogosSection from "../../components/LogosSection";
@@ -19,8 +19,8 @@ import {TextField} from "../../components/Inputs/TextField";
 const Profile = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
     const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
-
     const dispatch = useAppDispatch()
+
     return (
         <>
             <Header/>

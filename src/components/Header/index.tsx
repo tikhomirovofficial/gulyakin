@@ -10,17 +10,21 @@ import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../fea
 import {handleCartOpened, handleLogin} from "../../features/modals/modalsSlice";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
+import useAuth from "../../hooks/useAuth";
+import useToken from "../../hooks/useToken";
 
 
 
 const Header = () => {
     console.log(getFromStorage("city"))
+    const dispatch = useAppDispatch()
 
     const {totalPrice} = useAppSelector(state => state.cart)
     const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
-    const {isAuth} = useAppSelector(state => state.profile)
 
-    const dispatch = useAppDispatch()
+    const user = useAppSelector(state => state.profile)
+    const token = useToken()
+
     const handleChangingGeo = () =>  dispatch(toggleChangingGeo())
     const handleAskCity = () => {
         dispatch(toggleAskCityVisible())
@@ -31,6 +35,7 @@ const Header = () => {
         handleChangingGeo()
         dispatch(toggleAskCityVisible())
     }
+
     return (
         <header className={styles.header}>
             <div className="wrapper">
@@ -128,7 +133,7 @@ const Header = () => {
                     }
                     <div className={`${styles.right} d-f al-center gap-20`}>
                         {
-                            !isAuth ?
+                            !token ?
                                 <div onClick={() => dispatch(handleLogin())} className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
                                     <ProfileIcon height={22} width={16}/>
                                     <b>

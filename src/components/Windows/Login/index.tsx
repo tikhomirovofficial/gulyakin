@@ -134,9 +134,10 @@ const LoginCodeStep = () => {
                         access,
                         refresh
                     })
-                    alert(access)
                     authApi.defaults.headers["Authorization"] = `Bearer ${access}`
                     dispatch(handleLogin())
+
+
                     navigate("/profile")
                 }
                 catch (e: any) {

@@ -1,33 +1,34 @@
 import React, {FC, useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {RouteProps} from "../types/router.types";
-import {getTokens} from "../utils/storeTokens";
-import {UserApi} from "../http/api/user.api";
+import {getUser} from "../features/profile/profileSlice";
+import {useAppDispatch} from "../app/hooks";
+import {deleteCookie, getCookie} from "../utils/CookieUtil";
+import useToken from "../hooks/useToken";
+import {handleLogin} from "../features/modals/modalsSlice";
 
-const REDIRECT_PATH = "/"
+const REDIRECT_PATH = "/";
+
 const AuthRoute: FC<RouteProps> = ({Component}) => {
-    const tokens = getTokens()
-    const navigate = useNavigate()
+    const dispatch = useAppDispatch();
+    const token = useToken()
 
     useEffect(() => {
-        if (!tokens?.refresh) {
-            navigate(REDIRECT_PATH)
+        if (token) {
+            dispatch(getUser());
         }
+    }, [dispatch, token]);
 
+    if (!token) {
+        if (getCookie('tokens')) {
+            deleteCookie("tokens")
+        }
+        dispatch(handleLogin())
+        return <Navigate to={REDIRECT_PATH}/>;
+    }
 
-        UserApi.User()
-            .then(({status}) => {
-                if (!status) {
-                    alert("ne status")
-                    navigate(REDIRECT_PATH)
-                }
-            })
-    }, [])
-
-
-    return (
-        <Component/>
-    );
+    return <Component/>;
 };
+
 
 export default AuthRoute;

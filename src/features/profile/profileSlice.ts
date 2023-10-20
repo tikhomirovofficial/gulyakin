@@ -1,17 +1,34 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Address, UserData} from "../../types/user.types";
+import {UserApi} from "../../http/api/user.api";
+import {getTokens} from "../../utils/storeTokens";
+import {decodeToken} from "react-jwt";
 
 
 export interface ProfileState {
     data: UserData
     addresses: Array<Address & {id: number}>
-    isAuth: boolean
 
 }
 export type AddressItemData = {
     id: number
 } & Address
+export const getUser = createAsyncThunk(
+    'user/get',
+    async () => {
+        const refresh = getTokens()?.refresh
 
+        const decoded = decodeToken(refresh || "") as { user_id?: string } || {};
+        const hasUserId = "user_id" in decoded;
+        const isRefreshValid = !!(refresh && hasUserId);
+
+        if(isRefreshValid) {
+            const res = await UserApi.User()
+            return res.user
+        }
+        throw new Error("No refresh")
+    }
+)
 const initialState: ProfileState = {
     data: {
         name: "",
@@ -38,7 +55,6 @@ const initialState: ProfileState = {
         },
 
     ],
-    isAuth: false
 }
 
 export const ProfileSlice = createSlice({
@@ -54,6 +70,21 @@ export const ProfileSlice = createSlice({
         removeAddress: (state, action: PayloadAction<number>) => {
             state.addresses = state.addresses.filter(item => item.id !== action.payload)
         }
+    },
+    extraReducers: builder => {
+        builder.addCase(getUser.fulfilled, (state, action) => {
+            if(action.payload) {
+                state.data = action.payload
+            }
+        })
+        builder.addCase(getUser.rejected, (state, action) => {
+            state.data = {
+                name: "",
+                dob: "",
+                email: "",
+                phone: ""
+            }
+        })
     }
 })
 

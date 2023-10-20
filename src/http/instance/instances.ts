@@ -25,6 +25,8 @@ export const api = axios.create({
 
 
 let _isRetried = false
+
+
 authApi.interceptors.response.use(null, (ctx) => {
     const res = ctx.response
     console.log(res)
@@ -35,7 +37,6 @@ authApi.interceptors.response.use(null, (ctx) => {
         const requestConfig = res.config
         const tokens = getTokens()
         const refreshToken = tokens.refresh
-
 
         const response = UserApi.RefreshToken({refresh: refreshToken})
             .then((tokensRes: JWT) => {
@@ -56,4 +57,13 @@ authApi.interceptors.response.use(null, (ctx) => {
 
 })
 
+authApi.interceptors.request.use((config) => {
+    const tokens = getTokens(); // Получите актуальные токены
+    if (tokens?.access) {
+        config.headers.Authorization = `Bearer ${tokens.access}`;
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 export default authApi

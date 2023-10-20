@@ -1,40 +1,35 @@
 import React, {useEffect} from 'react';
-import Main from "./pages/Main";
 import LoginWindow from "./components/Windows/Login";
 import BookingWindow from "./components/Windows/Booking";
 import {useAppDispatch, useAppSelector} from "./app/hooks";
-import Restaurants from "./pages/Restaurants";
 import YourAddressWindow from "./components/Windows/YourAdress";
-
-import Profile from "./pages/Profile";
-import ChosenRestaurant from "./pages/ChosenRestaurant";
 import ProductAdditives from "./components/Windows/ProductAdditives";
 import CookiePopup from "./components/CookiePopup";
-import SuccessWindow from "./components/Windows/SuccessWindow";
 import DeliveryWay from "./components/Windows/DeliveryWay";
 import NewAddress from "./components/Windows/NewAddress";
 import {YMaps} from "@pbe/react-yandex-maps";
 import AppRoutes from "./router/AppRoutes";
-import {getFromStorage} from "./utils/LocalStorageExplorer";
 import Cart from "./components/Cart";
-import {addProduct, plusProduct, setTotalPrice} from "./features/cart/cartSlice";
-import {formatNumberWithSpaces} from "./utils/numberWithSpaces";
-import {getImgPath} from "./utils/getAssetsPath";
+import {setTotalPrice} from "./features/cart/cartSlice";
 import {ScrollToTop} from "./components/ServiceComponents";
-
-const tempPages = [
-    Main,
-    Restaurants
-]
+import {getUser} from "./features/profile/profileSlice";
+import useAuth from "./hooks/useAuth";
 
 function App() {
-
-    const {bookingOpened, loginOpened, yourAddress, cartOpened, cookiesAccepted, deliveryWay, productAdditives, newAddress} = useAppSelector(state => state.modals)
-    const {tempPage} = useAppSelector(state => state.main)
-    const {items, totalPrice} = useAppSelector(state => state.cart)
     const dispatch = useAppDispatch()
+    const is_auth = useAuth()
 
-    const CurrentPage = tempPages[tempPage]
+    const {
+        bookingOpened,
+        loginOpened,
+        yourAddress,
+        cartOpened,
+        cookiesAccepted,
+        deliveryWay,
+        productAdditives,
+        newAddress
+    } = useAppSelector(state => state.modals)
+    const {items} = useAppSelector(state => state.cart)
 
     useEffect(() => {
         const totalProductPrice = items.reduce((prev, cur) => {
@@ -43,27 +38,31 @@ function App() {
         dispatch(setTotalPrice(totalProductPrice))
     }, [items])
 
+    useEffect(() => {
+        dispatch(getUser())
+    }, [])
 
+    useEffect(() => {
+        if (is_auth) {
+            console.log("Запрос корзина")
+        }
+    }, [is_auth])
 
     return (
         <YMaps>
             <ScrollToTop/>
             <div className="App">
                 <AppRoutes isAuth={false}/>
-                {/*<CurrentPage/>*/}
                 {bookingOpened ? <BookingWindow/> : null}
                 {loginOpened ? <LoginWindow/> : null}
                 {yourAddress ? <YourAddressWindow/> : null}
                 {deliveryWay.opened ? <DeliveryWay/> : null}
                 {productAdditives ? <ProductAdditives/> : null}
                 {newAddress ? <NewAddress/> : null}
-                {
-                    cartOpened ? <Cart/> : null
-                }
+                {cartOpened ? <Cart/> : null}
                 <CookiePopup isOpened={cookiesAccepted}/>
             </div>
         </YMaps>
-
 
 
     );

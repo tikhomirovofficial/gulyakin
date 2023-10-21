@@ -19,10 +19,10 @@ export const TextField: FC<TextFieldProps> = ({isEditing, textChangeVal, handleE
 
     const editRef = useRef<HTMLDivElement>(null)
 
-    const condIsEmpty = condValue.length === 0
-    const formValIsEmpty = formValue.length === 0
-    const editingAndFilledCond = isEditing && condValue.length !== 0
-    const editingOrEmpty = isEditing || !formValue.length
+    const condIsEmpty = condValue?.length === 0
+    const formValIsEmpty = formValue?.length === 0
+    const editingAndFilledCond = isEditing && condValue?.length !== 0
+    const editingOrEmpty = isEditing || !formValue?.length
     const formValueEqualsCond = formValue === condValue
     const bothEmpty = condValue === "" && formValueEqualsCond
 
@@ -43,7 +43,6 @@ export const TextField: FC<TextFieldProps> = ({isEditing, textChangeVal, handleE
 
         handleInputFocus()
     }
-
     return (
         <InputWrapper
             isChanging={isEditing}

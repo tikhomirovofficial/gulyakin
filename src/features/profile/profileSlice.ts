@@ -3,6 +3,9 @@ import {Address, UserData} from "../../types/user.types";
 import {UserApi} from "../../http/api/user.api";
 import {getTokens} from "../../utils/storeTokens";
 import {decodeToken} from "react-jwt";
+import {setProfileForm} from "../forms/formsSlice";
+import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
+import {GetUserDataResponse} from "../../types/api.types";
 
 
 export interface ProfileState {
@@ -15,18 +18,31 @@ export type AddressItemData = {
 } & Address
 export const getUser = createAsyncThunk(
     'user/get',
-    async () => {
-        const refresh = getTokens()?.refresh
+    async (_, {dispatch}) => {
+        // const refresh = getTokens()?.refresh
+        //
+        // const decoded = decodeToken(refresh || "") as { user_id?: string } || {};
+        // const hasUserId = "user_id" in decoded;
+        // const isRefreshValid = !!(refresh && hasUserId);
+        //
+        // if(isRefreshValid) {
+        //     const res = await UserApi.User()
+        //     console.log(res)
+        //     dispatch(setProfileForm({
+        //         ...res.user
+        //     }))
+        //
+        //     return res.user
+        // }
+        // throw new Error("No refresh")
+        const res: GetUserDataResponse = await handleTokenRefreshedRequest(UserApi.User)
 
-        const decoded = decodeToken(refresh || "") as { user_id?: string } || {};
-        const hasUserId = "user_id" in decoded;
-        const isRefreshValid = !!(refresh && hasUserId);
+        if(res.status) {
+            dispatch(setProfileForm(res.user))
 
-        if(isRefreshValid) {
-            const res = await UserApi.User()
-            return res.user
         }
-        throw new Error("No refresh")
+
+        return res.user
     }
 )
 const initialState: ProfileState = {

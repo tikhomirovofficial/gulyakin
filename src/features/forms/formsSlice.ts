@@ -3,6 +3,7 @@ import {ProductAdditiveData} from "../../types/products.types";
 import {getImgPath} from "../../utils/getAssetsPath";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {withFieldType} from "../../utils/withFieldType";
+import {UserData} from "../../types/user.types";
 
 export type FieldType = {
     val: string,
@@ -72,12 +73,8 @@ const initialState: FormsSliceState = {
     }
 }
 
-
-
-
 type PayloadHandleProfile =  PayloadAction<FormChangeValByKey<ProfileFormType>>
 type PayloadHandleProfileEditing =  PayloadAction<keyof ProfileFormType>
-
 
 
 type PayloadHandleOrder =  PayloadAction<FormChangeValByKey<OrderFormType>>
@@ -98,6 +95,25 @@ export const formsSlice = createSlice({
                     ...state.profileForm[key],
                     val: newVal
                 }
+            }
+        },
+        setProfileForm: (state, action: PayloadAction<UserData>) => {
+            const {name, dob, email} = action.payload
+
+            state.profileForm = {
+                name:  {
+                    val: name,
+                    isEditing: false
+                },
+                email: {
+                    val: email,
+                    isEditing: false
+                },
+                dob: {
+                    val: dob,
+                    isEditing: false
+                }
+
             }
         },
         handleOrderFormVal: (state, action: PayloadHandleOrder) => {
@@ -130,7 +146,6 @@ export const formsSlice = createSlice({
                     }
                 }
             })
-
 
         },
 
@@ -178,10 +193,6 @@ export const formsSlice = createSlice({
                 restaurant: action.payload
             }
         }
-
-
-
-
     }
 })
 
@@ -195,7 +206,8 @@ export const {
     handleOrderTime,
     handleOrderPaymentWay,
     handleOrderPickup,
-    handleSelectRestaurant
+    handleSelectRestaurant,
+    setProfileForm,
 } = formsSlice.actions
 
 

@@ -10,7 +10,7 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import List from "../../components/List";
 import {handleNewAddress} from "../../features/modals/modalsSlice";
 import {removeAddress} from "../../features/profile/profileSlice";
-import {handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
+import {handleOrderFormEditing, handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
 import {HasClassName} from "../../types/components.types";
 import {TextField} from "../../components/Inputs/TextField";
 
@@ -41,6 +41,9 @@ const Profile = () => {
                                     isEditing={name.isEditing}
                                     formValue={name.val}
                                     condValue={data.name}
+                                    handleEdit={() => {
+                                        dispatch(handleOrderFormEditing("name"))
+                                    }}
                                     onInputFocus={() => {
                                         dispatch(handleProfileFormEditing("name"))
                                     }}
@@ -54,7 +57,7 @@ const Profile = () => {
 
                                 <InputWrapper disabled={true} inActive={true} grayBorderedClassName={styles.inputField}
                                               locked={true}
-                                              inputVal={"+7 (951) 735-89-45"} placeholder={"Номер телефона"}
+                                              inputVal={data.phone} placeholder={"Номер телефона"}
                                               labelText={
                                                   "Номер телефона"
                                               }/>
@@ -66,6 +69,9 @@ const Profile = () => {
                                     isEditing={dob.isEditing}
                                     formValue={dob.val}
                                     condValue={data.dob}
+                                    handleEdit={() => {
+                                        dispatch(handleProfileFormEditing("dob"))
+                                    }}
                                     onInputFocus={() => {
                                         dispatch(handleProfileFormEditing("dob"))
                                     }}

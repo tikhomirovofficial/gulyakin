@@ -6,6 +6,7 @@ import {useAppDispatch} from "../app/hooks";
 import {deleteCookie, getCookie} from "../utils/CookieUtil";
 import useToken from "../hooks/useToken";
 import {handleLogin} from "../features/modals/modalsSlice";
+import useAuth from "../hooks/useAuth";
 
 const REDIRECT_PATH = "/";
 
@@ -17,7 +18,7 @@ const AuthRoute: FC<RouteProps> = ({Component}) => {
         if (token) {
             dispatch(getUser());
         }
-    }, [dispatch, token]);
+    }, [token]);
 
     if (!token) {
         if (getCookie('tokens')) {
@@ -27,7 +28,8 @@ const AuthRoute: FC<RouteProps> = ({Component}) => {
         return <Navigate to={REDIRECT_PATH}/>;
     }
 
-    return <Component/>;
+
+    return <Component/>
 };
 
 

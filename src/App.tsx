@@ -14,6 +14,7 @@ import {setTotalPrice} from "./features/cart/cartSlice";
 import {ScrollToTop} from "./components/ServiceComponents";
 import {getUser} from "./features/profile/profileSlice";
 import useAuth from "./hooks/useAuth";
+import useToken from "./hooks/useToken";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -29,7 +30,9 @@ function App() {
         productAdditives,
         newAddress
     } = useAppSelector(state => state.modals)
+
     const {items} = useAppSelector(state => state.cart)
+    const profileData = useAppSelector(state => state.profile.data)
 
     useEffect(() => {
         const totalProductPrice = items.reduce((prev, cur) => {
@@ -38,15 +41,13 @@ function App() {
         dispatch(setTotalPrice(totalProductPrice))
     }, [items])
 
-    useEffect(() => {
-        dispatch(getUser())
-    }, [])
 
     useEffect(() => {
         if (is_auth) {
             console.log("Запрос корзина")
         }
     }, [is_auth])
+
 
     return (
         <YMaps>

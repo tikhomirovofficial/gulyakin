@@ -19,10 +19,14 @@ import 'swiper/css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import {handleBooking} from "../../features/modals/modalsSlice";
+ import {getUser} from "../../features/profile/profileSlice";
+ import useAuth from "../../hooks/useAuth";
+ import useToken from "../../hooks/useToken";
 
 const Main: FC = () => {
     const {categories, products} = useAppSelector(state => state)
-
+    const is_auth = useAuth()
+    const token = useToken()
 
     const dispatch = useAppDispatch()
     const sliderCategories = useRef<SwiperProps>(null)
@@ -56,7 +60,11 @@ const Main: FC = () => {
         }
     }, [categories])
 
-
+    useEffect(() => {
+        if(token && !is_auth) {
+            dispatch(getUser())
+        }
+    }, [])
     return (
         <>
             <Header/>

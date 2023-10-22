@@ -13,7 +13,8 @@ import {ConvertDataToGetParams} from "../../utils/ConvertDataToGetParams";
 
 export class ProductsApi {
     static async ProductsByMarket(requestData: GetProductsByMarketRequest): Promise<AxiosResponse<GetProductsByMarketResponse>> {
-        const res: AxiosResponse<GetProductsByMarketResponse> = await api.get(PATHS.PRODUCT_BY_MARKET + ConvertDataToGetParams(requestData));
+        console.log(ConvertDataToGetParams(requestData))
+        const res: AxiosResponse<GetProductsByMarketResponse> = await api.get(PATHS.PRODUCT_BY_MARKET, {params: requestData});
         return res;
     }
 

@@ -1,27 +1,36 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import styles from "./product.module.scss";
 import {getImgPath} from "../../../utils/getAssetsPath";
 import RedButton from "../../Buttons/RedButton";
 import {MinusIcon, PlusIcon} from "../../../icons";
 import {HasClassName} from "../../../types/components.types";
 import {useAppDispatch} from "../../../app/hooks";
-import {handleProductAdditives, handleYourAddress, setProductAdditivesData} from "../../../features/modals/modalsSlice";
-import {Supplement} from "../../../types/api.types";
+import {handleLogin, handleProductAdditives, setProductAdditivesData} from "../../../features/modals/modalsSlice";
+import {ProductRes, Supplement} from "../../../types/api.types";
+import {addToCart} from "../../../features/cart/cartSlice";
+import useAuth from "../../../hooks/useAuth";
+import useToken from "../../../hooks/useToken";
 
-interface ProductProps {
+type ProductProps = {
     id: number,
-    count?: number,
-    name: string
-    composition: string
-    weight: number,
-    image?: string,
-    price: number,
     inCart?: boolean,
+    count?: number
     supplements?: Array<Supplement>
-}
+} & ProductRes
 
 
-const Product: FC<ProductProps & HasClassName> = ({name, supplements= [], image, id, count = 0 , inCart = false, className, composition, weight, price}) => {
+const Product: FC<ProductProps & HasClassName> = ({
+                                                      title,
+                                                      supplements = [],
+                                                      image,
+                                                      id,
+                                                      count = 0,
+                                                      inCart = false,
+                                                      className,
+                                                      composition,
+                                                      weight,
+                                                      price
+                                                  }) => {
     const dispatch = useAppDispatch()
 
     // const [count, setCount] = useState<number>(count1)
@@ -33,9 +42,10 @@ const Product: FC<ProductProps & HasClassName> = ({name, supplements= [], image,
     //     }
     //     return prev
     // })
+    const token = useToken()
 
     const handleAddToCart = () => {
-        if(supplements.length) {
+        if (supplements.length) {
             dispatch(setProductAdditivesData({
                 additives: [
                     {
@@ -47,7 +57,7 @@ const Product: FC<ProductProps & HasClassName> = ({name, supplements= [], image,
                 currentAdditive: 0,
                 description: composition,
                 imageUrl: image || "",
-                name: name,
+                name: "",
                 price: price,
                 weight: weight
 
@@ -55,19 +65,34 @@ const Product: FC<ProductProps & HasClassName> = ({name, supplements= [], image,
             dispatch(handleProductAdditives())
             return;
         }
-        alert("Добавление")
+        if (token) {
+            dispatch(addToCart({
+                category: 1,
+                composition,
+                description: composition,
+                id,
+                image,
+                price,
+                short_description: "",
+                supplements,
+                title: title,
+                weight
 
-
+            }))
+            return;
+        }
+        dispatch(handleLogin())
     }
 
     return (
         <div className={`${styles.product} h-100p f-column-betw gap-15`}>
             <div className="f-column gap-15">
-                <div style={{backgroundImage: `url(${getImgPath('product.jpg')})`}} className={`${styles.img} w-100p bg-cover`}>
+                <div style={{backgroundImage: `url("http://dev.advafert.ru/${image}")`}}
+                     className={`${styles.img} w-100p`}>
 
                 </div>
                 <div className="textBlock f-column gap-5">
-                    <h3>{name}</h3>
+                    <h3>{title}</h3>
                     <div className="f-1 d-f jc-between gap-25">
                         <p>{composition}</p>
 
@@ -82,7 +107,7 @@ const Product: FC<ProductProps & HasClassName> = ({name, supplements= [], image,
                 <h4>{price} ₽</h4>
                 {
                     inCart ?
-                        <div  className={"d-f al-center gap-5"}>
+                        <div className={"d-f al-center gap-5"}>
                             <div onClick={() => alert("Уменьшить")} className={"cur-pointer f-c-col"}><MinusIcon/></div>
 
                             <div className={styles.count}>{count}</div>

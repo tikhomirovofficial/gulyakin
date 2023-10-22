@@ -43,6 +43,8 @@ export const TextField: FC<TextFieldProps> = ({isEditing, textChangeVal, handleE
 
         handleInputFocus()
     }
+
+
     return (
         <InputWrapper
             isChanging={isEditing}

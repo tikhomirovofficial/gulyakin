@@ -53,7 +53,7 @@ export type RefreshRequest = Pick<JWT, "refresh">
 export type RefreshResponse = Pick<JWT, "access">
 
 export type ChangeUserRequest = Omit<UserData, "phone">
-export type ChangeUserResponse = ResponseStatus
+export type ChangeUserResponse = {user: UserData} & ResponseStatus
 
 export type AddressAddRequest = {
     address: string
@@ -184,30 +184,35 @@ export type GetCombosByMarketResponse = {
 
 export type AddToCartItem = {
     product: number,
-    supplements: Array<{
+    supplements?: Array<{
         id: number,
         count: number
     }>
+    count: number
 }
 export type AddToCartRequest = {
     products: AddToCartItem[]
 }
-export type AddToCartResponse = ResponseStatus
+export type AddToCartResponse = {
+    id: number
+    list_id: number
 
+} & ResponseStatus
+
+export type CartProductItem = {
+    id: number,
+    product: {
+        id: number
+        title: string,
+        short_description: string
+        image: string
+        price: number
+    }
+    count: number
+    supplements: Array<Supplement>
+}
 export type GetCartResponse = {
-    cart: Array<{
-        id: number,
-        product: Array<{
-            id: number
-            title: string,
-            short_description: string
-            image: string
-            price: number
-        }>
-        count: number
-        supplements: Array<Supplement>
-
-    }>
+    cart: Array<CartProductItem>
     price: number,
     supplement_counts: Record<string, number>
 } & ResponseStatus

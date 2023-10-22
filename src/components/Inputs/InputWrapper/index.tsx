@@ -1,4 +1,13 @@
-import React, {ChangeEvent, Dispatch, FC, ReactNode, SetStateAction, useRef, useState} from 'react';
+import React, {
+    ChangeEvent,
+    Dispatch,
+    FC,
+    HTMLInputTypeAttribute,
+    ReactNode,
+    SetStateAction,
+    useRef,
+    useState
+} from 'react';
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import styles from "./inputWrapper.module.scss"
 import {CloseIcon, LockedIcon} from "../../../icons";
@@ -19,6 +28,7 @@ interface InputWrapper {
     inputVal?: number | string,
     labelText?: ReactNode,
     inputId?: string,
+    inputType?: HTMLInputTypeAttribute
     postFix?: string,
     onInputBlur?: () => void,
     onInputFocus?: () => void,
@@ -40,6 +50,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                            onInputBlur,
                                                            grayBorderedClassName,
                                                            inputId,
+    inputType = "text",
                                                            labelText,
                                                            inputVal,
     mask,
@@ -193,7 +204,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                         !mask ?
                         <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
-                               id={inputId} type="text"/> :
+                               id={inputId} type={inputType}/> :
                             <InputMask mask={mask} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                    value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
                                    id={inputId} type="text"/>

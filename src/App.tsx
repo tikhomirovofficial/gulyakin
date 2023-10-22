@@ -18,6 +18,9 @@ import useToken from "./hooks/useToken";
 import Header from "./components/Header";
 import LogosSection from "./components/LogosSection";
 import Footer from "./components/Footer";
+import product from "./components/Catalog/Product";
+import {getProductByMarket} from "./features/products/productsSlice";
+import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -35,11 +38,13 @@ function App() {
     } = useAppSelector(state => state.modals)
 
     const {items} = useAppSelector(state => state.cart)
+    const products = useAppSelector(state => state.products.items)
     const profileData = useAppSelector(state => state.profile.data)
+    const {market} = useAppSelector(state => state.main)
 
     useEffect(() => {
         const totalProductPrice = items.reduce((prev, cur) => {
-            return prev + cur.price * cur.count
+            return prev + cur.product.price * cur.count
         }, 0)
         dispatch(setTotalPrice(totalProductPrice))
     }, [items])
@@ -51,6 +56,12 @@ function App() {
         }
     }, [is_auth])
 
+    useEffect(() => {
+        if(!products.length) {
+            dispatch(getCategoriesByMarket({market_id: market}))
+            dispatch(getProductByMarket({market_id: market}))
+        }
+    }, [])
 
     return (
         <>

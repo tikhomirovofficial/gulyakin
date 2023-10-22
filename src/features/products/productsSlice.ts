@@ -1,6 +1,17 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
-import {ProductRes} from "../../types/api.types";
+import {
+    GetProductsByMarketRequest,
+    GetProductsByMarketResponse,
+    GetUserDataResponse,
+    ProductRes
+} from "../../types/api.types";
+import {AxiosResponse} from "axios";
+import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
+import {UserApi} from "../../http/api/user.api";
+import {setProfileForm} from "../forms/formsSlice";
+import {ProductsApi} from "../../http/api/products.api";
+import {getUser} from "../profile/profileSlice";
 
 
 type ProductsSliceState = {
@@ -8,206 +19,33 @@ type ProductsSliceState = {
 }
 
 const initialState: ProductsSliceState = {
-    items: [
-        {
-            id: 1,
-            title: "Продукт 1",
-            short_description: "Продукт 1",
-            description: "Продукт 1",
-            price: 10.0,
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-            category: 1,
-            weight: 0,
-            supplements: [
-                {
-                    id: 1,
-                    title: "Добавка 1",
-                    short_description: "Добавка 1",
-                    image: "supplements/image_ad04967c-045a-4c5d-a529-754fcdb49a64.jpg",
-                    price: 1.0
-                },
-                {
-                    id: 2,
-                    title: "Добавка 2",
-                    short_description: "Добавка 2 описание",
-                    image: "supplements/image_bb2ea7bc-6b70-499a-ae78-fcfec1dc3680.jpg",
-                    price: 10.0
-                }
-            ],
-            composition: "Описание 1"
-        },
-        {
-            id: 2,
-            title: "Продукт 1",
-            short_description: "Продукт 1",
-            description: "Продукт 1",
-            price: 10.0,
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-            category: 1,
-            weight: 0,
-            supplements: [
-                {
-                    id: 1,
-                    title: "Добавка 1",
-                    short_description: "Добавка 1",
-                    image: "supplements/image_ad04967c-045a-4c5d-a529-754fcdb49a64.jpg",
-                    price: 1.0
-                },
-                {
-                    id: 2,
-                    title: "Добавка 2",
-                    short_description: "Добавка 2 описание",
-                    image: "supplements/image_bb2ea7bc-6b70-499a-ae78-fcfec1dc3680.jpg",
-                    price: 10.0
-                }
-            ],
-            composition: "Описание 1"
-        },
-        {
-            id: 3,
-            title: "Продукт 1",
-            short_description: "Продукт 1",
-            description: "Продукт 1",
-            price: 10.0,
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-            category: 1,
-            weight: 0,
-            supplements: [
-                {
-                    id: 1,
-                    title: "Добавка 1",
-                    short_description: "Добавка 1",
-                    image: "supplements/image_ad04967c-045a-4c5d-a529-754fcdb49a64.jpg",
-                    price: 1.0
-                },
-                {
-                    id: 2,
-                    title: "Добавка 2",
-                    short_description: "Добавка 2 описание",
-                    image: "supplements/image_bb2ea7bc-6b70-499a-ae78-fcfec1dc3680.jpg",
-                    price: 10.0
-                }
-            ],
-            composition: "Огурцы, перец, свинина, говядина, лук"
-        },
-        {
-            id: 4,
-            title: "Продукт 1",
-            short_description: "Продукт 1",
-            description: "Продукт 1",
-            price: 10.0,
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-            category: 1,
-            weight: 0,
-            supplements: [
-                {
-                    id: 1,
-                    title: "Добавка 1",
-                    short_description: "Добавка 1",
-                    image: "supplements/image_ad04967c-045a-4c5d-a529-754fcdb49a64.jpg",
-                    price: 1.0
-                },
-                {
-                    id: 2,
-                    title: "Добавка 2",
-                    short_description: "Добавка 2 описание",
-                    image: "supplements/image_bb2ea7bc-6b70-499a-ae78-fcfec1dc3680.jpg",
-                    price: 10.0
-                }
-            ],
-            composition: "Описание 1"
-        },
-        {
-            id: 5,
-            title: "Продукт 2",
-            short_description: "Продукт 1",
-            description: "Продукт 1",
-            price: 10.0,
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-            category: 1,
-            weight: 0,
-            supplements: [
-                {
-                    id: 1,
-                    title: "Добавка 1",
-                    short_description: "Добавка 1",
-                    image: "supplements/image_ad04967c-045a-4c5d-a529-754fcdb49a64.jpg",
-                    price: 1.0
-                },
-                {
-                    id: 2,
-                    title: "Добавка 2",
-                    short_description: "Добавка 2 описание",
-                    image: "supplements/image_bb2ea7bc-6b70-499a-ae78-fcfec1dc3680.jpg",
-                    price: 10.0
-                }
-            ],
-            composition: "Огурцы, помидоры, перец, свинина, говядина, лук"
-        },
-        {
-            id: 6,
-            title: "Продукт 1",
-            short_description: "Продукт 1",
-            description: "Продукт 1",
-            price: 10.0,
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-            category: 2,
-            weight: 0,
-            supplements: [
-                {
-                    id: 1,
-                    title: "Добавка 1",
-                    short_description: "Добавка 1",
-                    image: "supplements/image_ad04967c-045a-4c5d-a529-754fcdb49a64.jpg",
-                    price: 1.0
-                },
-                {
-                    id: 2,
-                    title: "Добавка 2",
-                    short_description: "Добавка 2 описание",
-                    image: "supplements/image_bb2ea7bc-6b70-499a-ae78-fcfec1dc3680.jpg",
-                    price: 10.0
-                }
-            ],
-            composition: "Описание 1"
-        },
-        {
-            id: 7,
-            title: "Продукт 1",
-            short_description: "Продукт 1",
-            description: "Продукт 1",
-            price: 10.0,
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-            category: 2,
-            weight: 0,
-            supplements: [
-                {
-                    id: 1,
-                    title: "Добавка 1",
-                    short_description: "Добавка 1",
-                    image: "supplements/image_ad04967c-045a-4c5d-a529-754fcdb49a64.jpg",
-                    price: 1.0
-                },
-                {
-                    id: 2,
-                    title: "Добавка 2",
-                    short_description: "Добавка 2 описание",
-                    image: "supplements/image_bb2ea7bc-6b70-499a-ae78-fcfec1dc3680.jpg",
-                    price: 10.0
-                }
-            ],
-            composition: "Описание 1"
-        }
-    ]
+    items: []
 }
-
+export const getProductByMarket = createAsyncThunk(
+    'product/by-market',
+    async (request: GetProductsByMarketRequest, {dispatch}) => {
+        const res: AxiosResponse<GetProductsByMarketResponse> = await handleTokenRefreshedRequest(ProductsApi.ProductsByMarket, request)
+        return res.data.products
+    }
+)
 export const ProductsSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
-    },
-    extraReducers: {
 
+    },
+    extraReducers: builder => {
+        builder.addCase(getProductByMarket.pending, (state, action) => {
+
+        })
+        builder.addCase(getProductByMarket.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.items = action.payload
+            }
+        })
+        builder.addCase(getProductByMarket.rejected, (state, action) => {
+
+        })
     }
 })
 

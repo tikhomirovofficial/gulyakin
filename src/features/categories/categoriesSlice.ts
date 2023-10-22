@@ -1,34 +1,51 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {Category} from "../../types/api.types";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {
+    Category,
+    GetCategoriesByMarketRequest, GetCategoriesByMarketResponse,
+    GetProductsByMarketRequest,
+    GetProductsByMarketResponse
+} from "../../types/api.types";
+import {AxiosResponse} from "axios/index";
+import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
+import {ProductsApi} from "../../http/api/products.api";
+import {getProductByMarket} from "../products/productsSlice";
 
 
 type CategoriesSliceState = {
-    items: Category[]
+    category: Category[]
 }
 
 const initialState: CategoriesSliceState = {
-    items: [
-        {
-            id: 1,
-            title: "Пельмени",
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-        },
-        {
-            id: 2,
-            title: "Супы",
-            image: "/media/products/image_2ee44e48-e078-4116-a60f-ec92d5f011f4.jpg",
-        }
-    ]
+    category: []
 }
+export const getCategoriesByMarket = createAsyncThunk(
+    'categories/by-market',
+    async (request: GetCategoriesByMarketRequest, {dispatch}) => {
+        const res: AxiosResponse<GetCategoriesByMarketResponse> = await handleTokenRefreshedRequest(ProductsApi.CategoriesByMarket, request)
+        return res.data.category
+    }
+)
 
 export const CategoriesSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
     },
-    extraReducers: {
 
+    extraReducers: builder => {
+        builder.addCase(getCategoriesByMarket.pending, (state, action) => {
+
+        })
+        builder.addCase(getCategoriesByMarket.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.category = action.payload
+            }
+        })
+        builder.addCase(getCategoriesByMarket.rejected, (state, action) => {
+
+        })
     }
+
 })
 
 export const {

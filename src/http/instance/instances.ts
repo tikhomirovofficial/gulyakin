@@ -32,6 +32,7 @@ authApi.interceptors.response.use(null, (ctx) => {
     if(res.code == "ERR_NETWORK") {
         //alert("ошибка интернета")
     }
+    return res
 })
 
 authApi.interceptors.request.use((config) => {

@@ -210,7 +210,7 @@ const Main: FC = () => {
                                             spaceBetween={10}
                                         >
                                             {
-                                                categories.items.map(item => (
+                                                categories.category.map(item => (
                                                     <SwiperSlide key={item.id} className={"w-content cur-grabbing"}>
                                                         <GrayBorderedBlock clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)} className={styles.item}>
                                                             {item.title}
@@ -292,18 +292,21 @@ const Main: FC = () => {
                             <div className={styles.catalog}>
                                 <div className="block f-column gap-40">
                                     {
-                                        categories.items.map(category => (
+                                        categories.category.map(category => (
                                             <div className={`${styles.categoryBlock} f-column gap-20`}>
                                                 <h2 className="sectionTitle">{category.title}</h2>
                                                 <List listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
                                                       list={products.items.filter(product => product.category === category.id)}
                                                       renderItem={(product) =>
-                                                          <Product name={product.title}
+                                                          <Product title={product.title}
                                                                    id={product.id}
-                                                                   count={0}
+                                                                   image={product.image}
                                                                    composition={product.composition}
                                                                    weight={product.weight}
-                                                                   price={product.price}/>
+                                                                   price={product.price} category={product.category}
+                                                                   description={product.description}
+                                                                   short_description={product.short_description}
+                                                                   supplements={product.supplements}/>
                                                 }/>
                                             </div>
                                         ))

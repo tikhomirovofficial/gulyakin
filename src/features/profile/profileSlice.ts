@@ -3,11 +3,13 @@ import {Address, UserData} from "../../types/user.types";
 import {UserApi} from "../../http/api/user.api";
 import {setProfileForm} from "../forms/formsSlice";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
-import {GetUserDataResponse} from "../../types/api.types";
+import {AddressAddRequest, ChangeUserRequest, ChangeUserResponse, GetUserDataResponse} from "../../types/api.types";
+import {AxiosResponse} from "axios";
 
 
 export interface ProfileState {
     isLoading: boolean,
+    error: string
     data: UserData
 
     addresses: Array<Address & { id: number }>
@@ -18,36 +20,42 @@ export type AddressItemData = {
     id: number
 } & Address
 
-
-function simulateFetchData(): Promise<UserData> {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve({
-                name: "John Doe",
-                dob: "1990-01-01",
-                email: "john@example.com",
-                phone: "1234567890"
-            });
-        }, 1000); // Задержка в 1 секунду (имитация запроса)
-    });
-}
-
-
 export const getUser = createAsyncThunk(
     'user/get',
     async (_, {dispatch}) => {
-        const res: GetUserDataResponse = await handleTokenRefreshedRequest(UserApi.User)
+        const res: AxiosResponse<GetUserDataResponse> = await handleTokenRefreshedRequest(UserApi.User)
         if (res.status) {
-            dispatch(setProfileForm(res.user))
+            dispatch(setProfileForm(res.data.user))
         }
-        return res.user
-        //return simulateFetchData()
+        return res.data.user
+    }
+)
+export const editUser = createAsyncThunk(
+    'user/edit',
+    async (request: ChangeUserRequest, {dispatch}) => {
+        const res: AxiosResponse<ChangeUserResponse> = await handleTokenRefreshedRequest(UserApi.Edit, request)
+        if (res.status) {
+            dispatch(setProfile(res.data.user))
+            dispatch(setProfileForm(res.data.user))
+        }
+        return res
+    }
+)
+export const addAddressUser = createAsyncThunk(
+    'user/address/add',
+    async (request: AddressAddRequest, {dispatch}) => {
+        const res: GetUserDataResponse = await handleTokenRefreshedRequest(UserApi.AddAddress, request)
+        if (res.status) {
+            dispatch(addAddressUser(request))
+        }
+        return res
     }
 )
 
 
 const initialState: ProfileState = {
     isLoading: false,
+    error: "",
     data: {
         name: "",
         dob: "",
@@ -55,23 +63,6 @@ const initialState: ProfileState = {
         phone: ""
     },
     addresses: [
-        {
-            id: 1,
-            city: "г. Сургут",
-            entrance: 3,
-            flat: 47,
-            floor: 4
-
-        },
-        {
-            id: 2,
-            city: "г. Сургут",
-            code_door: 309,
-            entrance: 2,
-            flat: 59,
-            floor: 6
-        },
-
     ],
 }
 
@@ -101,7 +92,9 @@ export const ProfileSlice = createSlice({
             if (action.payload) {
                 state.data = action.payload
             }
+            state.error = ""
             state.isLoading = false
+
         })
         builder.addCase(getUser.rejected, (state, action) => {
             state.data = {
@@ -110,9 +103,28 @@ export const ProfileSlice = createSlice({
                 email: "",
                 phone: ""
             }
+
+            state.error = "Произошла ошибка сервера"
             state.isLoading = false
 
         })
+        //CHANGE USER
+        builder.addCase(editUser.pending, (state, action) => {
+            state.isLoading = true
+        })
+        builder.addCase(editUser.fulfilled, (state, action) => {
+            // if (action.payload) {
+            //     state.data = action.payload.user
+            // }
+            state.error = ""
+            state.isLoading = false
+
+        })
+        builder.addCase(editUser.rejected, (state, action) => {
+            state.error = "Не удалось изменить данные."
+            state.isLoading = false
+        })
+
     }
 })
 

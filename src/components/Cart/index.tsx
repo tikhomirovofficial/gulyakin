@@ -11,22 +11,24 @@ import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {CartProduct} from "../../types/cart.types";
 import {minusProduct, plusProduct, removeProduct} from "../../features/cart/cartSlice";
 import {handleCartOpened} from "../../features/modals/modalsSlice";
+import {CartProductItem, Supplement} from "../../types/api.types";
 
 
 type CartItemProps = {
     canNotBeAdded?: boolean,
-} & Pick<CartProduct, "price" | "imageUrl" | "name" | "description" | "count" | "id" | "canBeChanged" >
-const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, price, count, name, description, imageUrl}) =>{
+    canBeChanged?: boolean,
+} & CartProductItem
+const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, count, supplements, product}) =>{
     const dispatch = useAppDispatch()
 
     return (
         <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
             <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
-                <div style={{backgroundImage: `url(${imageUrl})`}} className={`${styles.image} bg-cover`}></div>
+                <div style={{backgroundImage: `url(${product.image})`}} className={`${styles.image} bg-cover`}></div>
                 <div className="text f-column gap-5 f-1 al-self-center">
                     <div className={"f-column gap-5"}>
-                        <b>{name}</b>
-                        <p>{description}</p>
+                        <b>{product.title}</b>
+                        <p>{product.short_description}</p>
                     </div>
                     {
                         canNotBeAdded ?
@@ -48,7 +50,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, p
                     !canNotBeAdded ?
                     <>
                         <b className={styles.price}>
-                            {formatNumberWithSpaces(price * count)} ₽
+                            {formatNumberWithSpaces(product.price * count)} ₽
                         </b>
                         <div className="d-f gap-20">
                             {
@@ -75,22 +77,22 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, p
     )
 }
 
-const CartAdditiveItem: FC<Omit<CartItemProps, "description" | "canNotBeAdded" | "canBeChanged">> = ({id, price, count, name, imageUrl}) =>{
+const CartAdditiveItem: FC<Supplement> = ({id, price, short_description, title, image}) =>{
    return (
        <div className={`${styles.additiveItem} f-row-betw gap-30`}>
            <div className="d-f al-center gap-10">
                <img src={getImgPath("productAdditive.png")} alt=""/>
                <div className="f-column">
-                   <p>{name}</p>
+                   <p>{title}</p>
                    <b>{price} ₽</b>
                </div>
            </div>
            {
-               count ?
+               0 ?
                    <div  className={"d-f al-center gap-5"}>
                        <div onClick={() => {}} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
 
-                       <div className={styles.count}>{count}</div>
+                       <div className={styles.count}>{0}</div>
                        <div onClick={() => {}} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
 
                    </div> :
@@ -165,10 +167,10 @@ const Cart = () => {
                             <div className={`${styles.cartAdditivesBar} bg-white p-abs left-0 w-100p pd-30 f-column gap-15`}>
                                 <h3>Соусы для ваших блюд</h3>
                                 <div className={`${styles.additivesList} f-column gap-10`}>
-                                    <CartAdditiveItem id={2} count={4} price={49} imageUrl={getImgPath("productAdditive")} name={"Сырный соус"}/>
-                                    <CartAdditiveItem id={3} count={2} price={69} imageUrl={getImgPath("productAdditive")} name={"Сырный соус"}/>
-                                    <CartAdditiveItem id={3} count={1} price={39} imageUrl={getImgPath("productAdditive")} name={"Сырный соус"}/>
-                                    <CartAdditiveItem id={3} count={0} price={69} imageUrl={getImgPath("productAdditive")} name={"Сырный соус"}/>
+                                    <CartAdditiveItem short_description={"добавка"} id={1}  price={49} image={getImgPath("productAdditive.png")} title={"Сырный соус"}/>
+                                    <CartAdditiveItem short_description={"добавка"} id={2}  price={69} image={getImgPath("productAdditive.png")} title={"Сырный соус"}/>
+                                    <CartAdditiveItem short_description={"добавка"} id={3} price={39} image={getImgPath("productAdditive.png")} title={"Сырный соус"}/>
+                                    <CartAdditiveItem short_description={"добавка"} id={4}  price={69} image={getImgPath("productAdditive.png")} title={"Сырный соус"}/>
                                 </div>
                             </div>
                         </div> : null
@@ -191,7 +193,7 @@ const Cart = () => {
                                 }
                             </h2>
                             {
-                                items.some(item => item.isNotCanBeAdded) ?
+                                items.some(item => item.product.id == -1) ?
                                     <div className={`${styles.info} d-f al-center gap-10`}>
                                         <InfoCircle className={styles.infoIcon} height={18} width={18}/>
                                         <p>
@@ -221,15 +223,12 @@ const Cart = () => {
                                 list={items}
                                 renderItem={(item) => (
                                     <CartItem
-
+                                        supplements={item.supplements}
                                         id={item.id}
                                         count={item.count}
                                         key={item.id}
-                                        canNotBeAdded={item.isNotCanBeAdded}
-                                        price={item.price}
-                                        name={item.name}
-                                        imageUrl={item.imageUrl}
-                                        description={item.description}
+                                        canNotBeAdded={item.id < 0}
+                                        product={item.product}
                                     />
                                 )}
                             />
@@ -267,8 +266,8 @@ const Cart = () => {
                     </div>
                     {
                         items.length ?
-                            <RedButton disabled={items.some(item => item.isNotCanBeAdded)} className={"w-100p pd-15"}>К оформлению</RedButton> :
-                            <RedButton disabled={items.some(item => item.isNotCanBeAdded)} className={"w-100p pd-15"}>Перейти в меню</RedButton>
+                            <RedButton disabled={items.some(item => item.product.id < 0)} className={"w-100p pd-15"}>К оформлению</RedButton> :
+                            <RedButton disabled={items.some(item => item.product.id < 0)} className={"w-100p pd-15"}>Перейти в меню</RedButton>
                     }
 
                 </div>

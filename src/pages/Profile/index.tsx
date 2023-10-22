@@ -9,7 +9,7 @@ import DarkBorderedButton from "../../components/Buttons/DarkBorderedButton";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import List from "../../components/List";
 import {handleNewAddress} from "../../features/modals/modalsSlice";
-import {removeAddress} from "../../features/profile/profileSlice";
+import {editUser, removeAddress} from "../../features/profile/profileSlice";
 import {handleOrderFormEditing, handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
 import {HasClassName} from "../../types/components.types";
 import {TextField} from "../../components/Inputs/TextField";
@@ -20,6 +20,14 @@ const Profile = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
     const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
     const dispatch = useAppDispatch()
+
+    const handleUserEdit = () => {
+        dispatch(editUser({
+            name: name.val,
+            email: email.val,
+            dob: dob.val
+        }))
+    }
 
     return (
         <>
@@ -33,7 +41,7 @@ const Profile = () => {
                             </div>
                             <div className="personalForm f-column gap-20">
                                 <TextField
-                                    handleSave={() => alert("Сохраняем")}
+                                    handleSave={handleUserEdit}
                                     className={styles.inputField}
                                     placeholder={"Иван"}
                                     labelText={"Ваше имя"}
@@ -41,7 +49,7 @@ const Profile = () => {
                                     formValue={name.val}
                                     condValue={data.name}
                                     handleEdit={() => {
-                                        dispatch(handleOrderFormEditing("name"))
+                                        dispatch(handleProfileFormEditing("name"))
                                     }}
                                     onInputFocus={() => {
                                         dispatch(handleProfileFormEditing("name"))
@@ -61,7 +69,7 @@ const Profile = () => {
                                                   "Номер телефона"
                                               }/>
                                 <TextField
-                                    handleSave={() => alert("Сохраняем")}
+                                    handleSave={handleUserEdit}
                                     className={styles.inputField}
                                     placeholder={"Дата"}
                                     labelText={"Дата рождения"}
@@ -82,13 +90,16 @@ const Profile = () => {
                                     changeVal={e => dispatch(handleProfileFormVal({keyField: "dob", val: e.target.value}))}
                                 />
                                 <TextField
-                                    handleSave={() => alert("Сохраняем")}
+                                    handleSave={handleUserEdit}
                                     className={styles.inputField}
                                     placeholder={"address@mail.ru"}
                                     labelText={"Ваша почта"}
                                     isEditing={email.isEditing}
                                     formValue={email.val}
                                     condValue={data.email}
+                                    handleEdit={() => {
+                                        dispatch(handleProfileFormEditing("email"))
+                                    }}
                                     onInputFocus={() => {
                                         dispatch(handleProfileFormEditing("email"))
                                     }}

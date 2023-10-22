@@ -4,7 +4,7 @@ import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 
 const initialState = {
     tempPage: 0,
-    market: 0,
+    market: 1,
     cities: ["Сургут", "Сочи", "Нижневартовск"],
     changingGeo: false,
     askCityVisible: !(getFromStorage("city") !== undefined && getFromStorage("city") !== null),

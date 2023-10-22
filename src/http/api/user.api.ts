@@ -31,13 +31,19 @@ export class UserApi {
         return res
     }
     // USER REQS
-    static async User(): Promise<AxiosResponse<GetUserDataResponse>> {
-        const res: AxiosResponse<GetUserDataResponse> = await authApi.get(PATHS.USER_GET);
+    static async User(): Promise<any> {
+        const res = await authApi.get(PATHS.USER_GET);
+        if(!res.data) {
+            throw res
+        }
         return res;
     }
 
-    static async Edit(requestData: ChangeUserRequest): Promise<AxiosResponse<ChangeUserResponse>> {
-        const res: AxiosResponse<ChangeUserResponse> = await authApi.post(PATHS.USER_EDIT, {...requestData});
+    static async Edit(requestData: ChangeUserRequest): Promise<any> {
+        const res = await authApi.post(PATHS.USER_EDIT, {...requestData});
+        if(!res.data) {
+            throw res
+        }
         return res;
     }
 

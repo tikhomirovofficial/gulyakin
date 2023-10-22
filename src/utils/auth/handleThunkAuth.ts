@@ -12,12 +12,12 @@ export async function handleTokenRefreshedRequest(apiFunction: Function, ...args
 
     if (isRefreshValid) {
         try {
-            return await apiFunction(...args);
+            const res = await apiFunction(...args);
+            return res
         } catch (error: any) {
-            if (error.response && error.response.status === 401) {
+            if (error?.response.status === 401) {
                 const refreshToken = tokens.refresh;
                 const tokensRes = await UserApi.RefreshToken({refresh: refreshToken});
-
                 storeTokens({
                     access: tokensRes?.data?.access,
                     refresh: refreshToken
@@ -27,7 +27,6 @@ export async function handleTokenRefreshedRequest(apiFunction: Function, ...args
             } else {
                 throw error;
             }
-            console.log(error)
         }
     } else {
         throw new Error("No refresh token available.");

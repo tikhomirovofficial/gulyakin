@@ -3,9 +3,32 @@ export const PATHS = {
     USER_TOKEN_REFRESH: "/auth/token/refresh",
     USER_REGISTER: "/auth/token/create",
     USER_GET: "/lk/",
+    USER_EDIT: "/lk/edit",
+    USER_ADDRESS_ADD: "/lk/adress/add",
+    USER_ADDRESS_GET: "/lk/adress/get",
+    USER_ADDRESS_DEL: "/lk/adress/del",
 
+    MARKET_CITIES: "/market/",
     PRODUCT_BY_MARKET: "/product/in-market",
+    MARKET_ADDRESSES: "/market/adress/siti",
+    MARKET_ADDRESSES_BY_CITY: "/market/adress/market/siti",
+    MARKET_INFO: "/market/info",
+    MARKET_CATEGORIES: "/product/category",
+    MARKET_COMBOS: "/product/combo",
+    MARKET_PRODUCT_OF_THE_DAY: "/product/day",
+    MARKET_ADDRESS_INFO: "/market/adress/info",
 
-    REQUEST_HELP: "help-app/new",
+    ADD_TO_CART: "/cart/add",
+    VIEW_CART: "/cart/list",
+    EDIT_CART_ITEM: "/cart/edit",
+    EDIT_CART_SUPPLEMENTS: "/cart/edit/supplements",
+    DELETE_CART_ITEM: "/cart/delete",
 
-}
+    DELIVERY_OPTIONS: "/order/delivery/list",
+    PAYMENT_OPTIONS: "/order/payment/list",
+
+    CREATE_ORDER: "/order/create",
+    PAYMENT_CONFIRMATION: "/order/success",
+    GET_ORDER: "/order/get",
+    ORDER_HISTORY: "/order/list",
+};

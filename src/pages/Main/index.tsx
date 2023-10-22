@@ -67,9 +67,7 @@ const Main: FC = () => {
     }, [])
     return (
         <>
-            <Header/>
-            <div className={`${styles.promo}`}>
-                <LogosSection/>
+            <div className={`${styles.promo} d-n`}>
                 <div className="wrapper">
                     <div className="block f-column">
                         <div className={`${styles.promos} w-100p p-rel`}>
@@ -139,7 +137,6 @@ const Main: FC = () => {
                     </div>
 
                 </div>
-
             </div>
             <div className={`${styles.main} f-column gap-20`}>
                 <div className={`pd-30-0`}>
@@ -321,7 +318,7 @@ const Main: FC = () => {
                 </div>
 
             </div>
-            <Footer/>
+
         </>
 
     );

@@ -27,33 +27,12 @@ export const api = axios.create({
 //let _isRetried = false
 
 
-// authApi.interceptors.response.use(null, (ctx) => {
-//     const res = ctx.response
-//     console.log(res)
-//     const resDataCode = res.data.code
-//
-//     if (resDataCode === 'token_not_valid' && !_isRetried) {
-//         _isRetried = true
-//         const requestConfig = res.config
-//         const tokens = getTokens()
-//         const refreshToken = tokens.refresh
-//         const response = UserApi.RefreshToken({refresh: refreshToken})
-//             .then((tokensRes: JWT) => {
-//                 storeTokens({
-//                     access: tokensRes.access,
-//                     refresh: refreshToken
-//                 })
-//                 requestConfig.headers.Authorization = `Bearer ${tokensRes.access}`
-//                 axios.request(requestConfig).then((res) => {
-//                     _isRetried = false
-//                     return res
-//                 })
-//             })
-//         return response
-//     }
-//     return ctx.response
-//
-// })
+authApi.interceptors.response.use(null, (ctx) => {
+    const res = ctx
+    if(res.code == "ERR_NETWORK") {
+        //alert("ошибка интернета")
+    }
+})
 
 authApi.interceptors.request.use((config) => {
     const tokens = getTokens(); // Получите актуальные токены

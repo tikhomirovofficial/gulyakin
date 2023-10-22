@@ -1,9 +1,8 @@
 import {getTokens, storeTokens} from "../storeTokens";
 import {UserApi} from "../../http/api/user.api";
 import {decodeToken} from "react-jwt";
-import {AxiosResponse} from "axios";
 
-export async function handleTokenRefreshedRequest<ResType>(apiFunction: Function, ...args: any[]) {
+export async function handleTokenRefreshedRequest(apiFunction: Function, ...args: any[]) {
     const tokens = getTokens();
     const refresh = getTokens()?.refresh
 
@@ -17,17 +16,18 @@ export async function handleTokenRefreshedRequest<ResType>(apiFunction: Function
         } catch (error: any) {
             if (error.response && error.response.status === 401) {
                 const refreshToken = tokens.refresh;
-                const tokensRes = await UserApi.RefreshToken({ refresh: refreshToken });
+                const tokensRes = await UserApi.RefreshToken({refresh: refreshToken});
 
                 storeTokens({
-                    access: tokensRes.access,
+                    access: tokensRes?.data?.access,
                     refresh: refreshToken
                 });
 
-                return await apiFunction(...args) as AxiosResponse<ResType>;
+                return await apiFunction(...args);
             } else {
                 throw error;
             }
+            console.log(error)
         }
     } else {
         throw new Error("No refresh token available.");

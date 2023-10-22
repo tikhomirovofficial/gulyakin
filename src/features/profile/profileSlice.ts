@@ -1,51 +1,53 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Address, UserData} from "../../types/user.types";
 import {UserApi} from "../../http/api/user.api";
-import {getTokens} from "../../utils/storeTokens";
-import {decodeToken} from "react-jwt";
 import {setProfileForm} from "../forms/formsSlice";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {GetUserDataResponse} from "../../types/api.types";
 
 
 export interface ProfileState {
+    isLoading: boolean,
     data: UserData
-    addresses: Array<Address & {id: number}>
+
+    addresses: Array<Address & { id: number }>
 
 }
+
 export type AddressItemData = {
     id: number
 } & Address
+
+
+function simulateFetchData(): Promise<UserData> {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve({
+                name: "John Doe",
+                dob: "1990-01-01",
+                email: "john@example.com",
+                phone: "1234567890"
+            });
+        }, 1000); // Задержка в 1 секунду (имитация запроса)
+    });
+}
+
+
 export const getUser = createAsyncThunk(
     'user/get',
     async (_, {dispatch}) => {
-        // const refresh = getTokens()?.refresh
-        //
-        // const decoded = decodeToken(refresh || "") as { user_id?: string } || {};
-        // const hasUserId = "user_id" in decoded;
-        // const isRefreshValid = !!(refresh && hasUserId);
-        //
-        // if(isRefreshValid) {
-        //     const res = await UserApi.User()
-        //     console.log(res)
-        //     dispatch(setProfileForm({
-        //         ...res.user
-        //     }))
-        //
-        //     return res.user
-        // }
-        // throw new Error("No refresh")
         const res: GetUserDataResponse = await handleTokenRefreshedRequest(UserApi.User)
-
-        if(res.status) {
+        if (res.status) {
             dispatch(setProfileForm(res.user))
-
         }
-
         return res.user
+        //return simulateFetchData()
     }
 )
+
+
 const initialState: ProfileState = {
+    isLoading: false,
     data: {
         name: "",
         dob: "",
@@ -77,6 +79,9 @@ export const ProfileSlice = createSlice({
     name: "profile",
     initialState,
     reducers: {
+        setLoading: (state, action) => {
+            state.isLoading = action.payload
+        },
         setProfile: (state, action: PayloadAction<UserData>) => {
             state.data = action.payload
         },
@@ -88,10 +93,15 @@ export const ProfileSlice = createSlice({
         }
     },
     extraReducers: builder => {
+        //GET USER
+        builder.addCase(getUser.pending, (state, action) => {
+            state.isLoading = true
+        })
         builder.addCase(getUser.fulfilled, (state, action) => {
-            if(action.payload) {
+            if (action.payload) {
                 state.data = action.payload
             }
+            state.isLoading = false
         })
         builder.addCase(getUser.rejected, (state, action) => {
             state.data = {
@@ -100,11 +110,13 @@ export const ProfileSlice = createSlice({
                 email: "",
                 phone: ""
             }
+            state.isLoading = false
+
         })
     }
 })
 
-export const {setProfile, addAddress, removeAddress} = ProfileSlice.actions
+export const {setProfile, addAddress, removeAddress, setLoading} = ProfileSlice.actions
 
 
 export const profileReducer = ProfileSlice.reducer

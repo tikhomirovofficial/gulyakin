@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
 import styles from "../../pages/Main/main.module.scss";
 import {ArrowMiniRightIcon, CartIcon, Logo, ProfileIcon} from "../../icons";
@@ -10,9 +10,7 @@ import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../fea
 import {handleCartOpened, handleLogin} from "../../features/modals/modalsSlice";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
-import useAuth from "../../hooks/useAuth";
 import useToken from "../../hooks/useToken";
-
 
 
 const Header = () => {
@@ -25,7 +23,7 @@ const Header = () => {
     const user = useAppSelector(state => state.profile)
     const token = useToken()
 
-    const handleChangingGeo = () =>  dispatch(toggleChangingGeo())
+    const handleChangingGeo = () => dispatch(toggleChangingGeo())
     const handleAskCity = () => {
         dispatch(toggleAskCityVisible())
         addToStorage("city", currentGeo.city)
@@ -48,24 +46,29 @@ const Header = () => {
                             <p>Доставка готовый еды</p>
                             <div className={`d-f al-center gap-10`}>
                                 <p>в городе</p>
-                                <div onClick={handleChangingGeo} className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
+                                <div onClick={handleChangingGeo}
+                                     className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
                                     <b>{cities[currentGeo.city]}</b>
                                     <ArrowMiniRightIcon height={11}/>
                                 </div>
                                 {
-                                     askCityVisible ? <div
+                                    askCityVisible ? <div
                                         className={`${styles.geoPopup} ${styles.yourCity} f-column gap-15 p-abs bg-white`}>
                                         <b className={"txt-center"}>Это ваш город?</b>
                                         <div className="d-f gap-5 jc-around">
                                             <RedButton onClick={handleAskCity} className={styles.btn}>Да</RedButton>
-                                            <GrayButton onClick={handleNotYourCity} className={styles.btn}>Другой</GrayButton>
+                                            <GrayButton onClick={handleNotYourCity}
+                                                        className={styles.btn}>Другой</GrayButton>
                                         </div>
 
                                     </div> : null
                                 }
                                 {
                                     changingGeo ?
-                                        <DropdownList selectHandler={(current) => dispatch(setCurrentCity(current))} classNameItem={`${styles.selectCityItem} f-row-betw`}
+                                        <DropdownList selectHandler={current => {
+                                            dispatch(setCurrentCity(current))
+                                            handleChangingGeo()
+                                        }} classNameItem={`${styles.selectCityItem} f-row-betw`}
                                                       className={`${styles.geoPopup} f-column gap-15 p-abs bg-white `}
                                                       items={cities} current={currentGeo.city}/>
                                         : null
@@ -134,17 +137,19 @@ const Header = () => {
                     <div className={`${styles.right} d-f al-center gap-20`}>
                         {
                             !token ?
-                                <div onClick={() => dispatch(handleLogin())} className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
+                                <div onClick={() => dispatch(handleLogin())}
+                                     className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
                                     <ProfileIcon height={22} width={16}/>
                                     <b>
                                         Кабинет
                                     </b>
                                 </div> :
 
-                                <Link to={"/profile"} className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
+                                <Link to={"/profile"}
+                                      className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
                                     <ProfileIcon height={22} width={16}/>
                                     <b>
-                                        Кабинет
+                                        {user.data.phone}
                                     </b>
                                 </Link>
                         }

@@ -1,14 +1,34 @@
-import {JWT, LoginRequest, LoginResponse, RegistrationRequest, RegistrationResponse} from "../../types/api.types";
+import {
+    GetCategoriesByMarketRequest,
+    GetCategoriesByMarketResponse,
+    GetCombosByMarketRequest,
+    GetCombosByMarketResponse, GetProductDayByMarketRequest, GetProductDayByMarketResponse,
+    GetProductsByMarketRequest,
+    GetProductsByMarketResponse
+} from "../../types/api.types";
 import {AxiosResponse} from "axios";
-import authApi from "../instance/instances";
-import {UserData} from "../../types/user.types";
+import {api} from "../instance/instances";
 import {PATHS} from "./path.api";
+import {ConvertDataToGetParams} from "../../utils/ConvertDataToGetParams";
 
 export class ProductsApi {
-    static async getProductsByMarket(requestData: any): Promise<any> {
-        const res: AxiosResponse<LoginResponse> = await authApi.post(PATHS.USER_LOGIN, {...requestData});
+    static async ProductsByMarket(requestData: GetProductsByMarketRequest): Promise<AxiosResponse<GetProductsByMarketResponse>> {
+        const res: AxiosResponse<GetProductsByMarketResponse> = await api.get(PATHS.PRODUCT_BY_MARKET + ConvertDataToGetParams(requestData));
+        return res;
     }
 
+    static async CategoriesByMarket(requestData: GetCategoriesByMarketRequest): Promise<AxiosResponse<GetCategoriesByMarketResponse>> {
+        const res: AxiosResponse<GetCategoriesByMarketResponse> = await api.get(PATHS.MARKET_CATEGORIES+ ConvertDataToGetParams(requestData));
+        return res;
+    }
 
+    static async CombosByMarket(requestData: GetCombosByMarketRequest): Promise<AxiosResponse<GetCombosByMarketResponse>> {
+        const res: AxiosResponse<GetCombosByMarketResponse> = await api.get(PATHS.MARKET_COMBOS+ ConvertDataToGetParams(requestData));
+        return res;
+    }
 
+    static async ProductDay(requestData: GetProductDayByMarketRequest): Promise<AxiosResponse<GetProductDayByMarketResponse>> {
+        const res: AxiosResponse<GetProductDayByMarketResponse> = await api.get(PATHS.MARKET_PRODUCT_OF_THE_DAY+ ConvertDataToGetParams(requestData));
+        return res;
+    }
 }

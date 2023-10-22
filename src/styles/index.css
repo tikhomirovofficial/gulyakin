@@ -46,6 +46,7 @@ body::-webkit-scrollbar-thumb {
 }
 .App {
     padding-top: 11rem;
+    min-height: 100vh;
 }
 .closeIcon:hover {
     transform: scale(1.07);

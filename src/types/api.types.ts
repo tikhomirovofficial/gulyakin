@@ -61,8 +61,10 @@ export type AddressAddRequest = {
 export type AddressAddResponse = ResponseStatus
 
 export type UserAddressesResponse = ResponseStatus & {
-    id: number,
-    address: string
+   adress: Array<{
+       id: number,
+       address: string
+   }>
 }
 export type DeleteUserAddressRequest = {
     address_id: 1
@@ -73,23 +75,66 @@ export type GetUserDataResponse = ResponseStatus & {
     user: UserData
 }
 
-export type GetCityAddressesRequest = {
-    city_id: number
+export type GetByCityAddressesRequest = {
+    siti_id: number
 }
-export type GetCityAddResponse = ResponseStatus & {
+
+export type GetByCityAddressesResponse = ResponseStatus & {
     address: Array<{
         address_id: number,
-        city: string,
+        siti: string,
         address: string,
         long: number,
         lat: number
     }>
 }
 
-export type GetByMarketAddressesRequest = {
+export type GetAddressInfoRequest = {
+    adress_id: 1
+}
+export type GetAddressInfoResponse = {
+    data: {
+        id: number;
+        adress: string;
+        market: {
+            id: number;
+            name: string;
+            short_description: string;
+            description: string;
+            link: string;
+        };
+        long: number;
+        lat: number;
+        work_with: string;
+        works_until: string;
+        timeaone: string;
+        image: string[];
+    }
+} & ResponseStatus
+
+export type GetCitiesResponse = {
+    siti: Array<{
+        id: number,
+        name: string
+    }>
+} & ResponseStatus
+
+export type GetAddressesByMarketCityRequest = {
     city_id: number
     market_id: number
 }
+
+export type GetAddressesByMarketCityResponse = {
+   adress: Array<{
+       id: number,
+       adress: string,
+       market: string,
+       long: number,
+       lat: number,
+       work_with: string,
+       works_until: string
+   }>
+} & ResponseStatus
 
 export type GetProductsByMarketRequest = {
     market_id: number
@@ -98,6 +143,20 @@ export type GetProductsByMarketResponse = {
     products: ProductRes[];
 } & ResponseStatus
 
+
+export type GetMarketInfoRequest = {
+    market_id: number
+}
+
+export type GetMarketInfoResponse = {
+    shop: {
+        id: number,
+        name: string,
+        short_description: string,
+        description: string,
+        link: string
+    }
+} & ResponseStatus
 
 export type GetCategoriesByMarketRequest = {
     market_id: number
@@ -111,6 +170,13 @@ export type GetCombosByMarketRequest = {
     market_id: number
 }
 
+export type GetProductDayByMarketRequest = {
+    market_id: number,
+    date: string
+}
+export type GetProductDayByMarketResponse = {
+    product: ProductRes
+} & ResponseStatus
 
 export type GetCombosByMarketResponse = {
     combos: Combo[]
@@ -126,7 +192,7 @@ export type AddToCartItem = {
 export type AddToCartRequest = {
     products: AddToCartItem[]
 }
-export type AddToCartItemResponse = ResponseStatus
+export type AddToCartResponse = ResponseStatus
 
 export type GetCartResponse = {
     cart: Array<{
@@ -161,5 +227,66 @@ export type CartCountSupplementsRequest = {
     cart_id: number,
     count: number
 }
+export type CartCountSupplementsResponse = ResponseStatus
 
 
+export type CartProductDeleteRequest = {
+    cart_id: 1,
+}
+export type CartProductDeleteResponse = ResponseStatus
+
+export type GetDeliveryListResponse = {
+    delivery_list: Array<{
+        id: number,
+        title: string
+    }>
+} & ResponseStatus
+
+export type GetPaymentListResponse = {
+    payment_list: Array<{
+        id: number,
+        title: string
+    }>
+} & ResponseStatus
+
+//Если тип доставки самовывоз, то передайте marekt_adress_id, а user_adress_id можете не передавать
+export type CreateOrderRequest = {
+    user_adress_id?: number,
+    market_adress_id?: number,
+    is_call: boolean,
+    time_delivery: string,
+    delivery_type: number,
+    pyment_type: number
+}
+
+export type CreateOrderResponse = {
+    order_id: number,
+    payment_url: string
+} & ResponseStatus
+
+export type SendPaymentRequest = {
+    order_id: number
+}
+export type SendPaymentResponse = ResponseStatus
+
+
+export type GetOrderRequest = {
+    order_id: number
+}
+
+export type GetOrderResponse = {
+    order: {
+        order_id: number,
+        datetime: string,
+        price: number,
+        is_payment: false,
+        is_active: true,
+        products: string[]
+        address: string
+    }
+} & ResponseStatus
+
+
+export type GetHistoryOrdersResponse = {
+    order: Omit<GetOrderResponse, "status">
+} & ResponseStatus

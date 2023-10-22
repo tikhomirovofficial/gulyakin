@@ -24,7 +24,6 @@ const Profile = () => {
     return (
         <>
             <Header/>
-            <LogosSection/>
             <div className={styles.profile}>
                 <div className="wrapper">
                     <div className="profileBlock f-column gap-40">

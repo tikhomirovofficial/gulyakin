@@ -15,6 +15,9 @@ import {ScrollToTop} from "./components/ServiceComponents";
 import {getUser} from "./features/profile/profileSlice";
 import useAuth from "./hooks/useAuth";
 import useToken from "./hooks/useToken";
+import Header from "./components/Header";
+import LogosSection from "./components/LogosSection";
+import Footer from "./components/Footer";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -50,10 +53,13 @@ function App() {
 
 
     return (
-        <YMaps>
+        <>
             <ScrollToTop/>
-            <div className="App">
+            <div className="App f-column jc-between">
+                <Header/>
+                <LogosSection/>
                 <AppRoutes isAuth={false}/>
+                <Footer/>
                 {bookingOpened ? <BookingWindow/> : null}
                 {loginOpened ? <LoginWindow/> : null}
                 {yourAddress ? <YourAddressWindow/> : null}
@@ -63,7 +69,7 @@ function App() {
                 {cartOpened ? <Cart/> : null}
                 <CookiePopup isOpened={cookiesAccepted}/>
             </div>
-        </YMaps>
+        </>
 
 
     );

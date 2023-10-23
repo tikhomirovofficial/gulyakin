@@ -2,8 +2,12 @@ import axios from 'axios'
 import {getCookie} from "../../utils/CookieUtil";
 import {getTokens} from "../../utils/storeTokens";
 
-export const domen = "http://vps.advafert.ru:5000"
-const URL = domen + "/api"
+const isDev = true
+
+const devDomain = "http://dev.advafert.ru"
+const prodDomain = "http://vps.advafert.ru:5000"
+export const domain = isDev ? devDomain : prodDomain
+const URL = domain + "/api"
 
 const authApi = axios.create({
     baseURL: URL,

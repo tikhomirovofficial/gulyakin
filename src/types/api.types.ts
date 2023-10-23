@@ -120,20 +120,20 @@ export type GetCitiesResponse = {
 } & ResponseStatus
 
 export type GetAddressesByMarketCityRequest = {
-    city_id: number
+    siti_id: number
     market_id: number
 }
-
+export type AddressByMarketCity = {
+    id: number,
+    adress: string,
+    market: string,
+    long: number,
+    lat: number,
+    work_with: string,
+    works_until: string
+}
 export type GetAddressesByMarketCityResponse = {
-   adress: Array<{
-       id: number,
-       adress: string,
-       market: string,
-       long: number,
-       lat: number,
-       work_with: string,
-       works_until: string
-   }>
+   adress: Array<AddressByMarketCity>
 } & ResponseStatus
 
 export type GetProductsByMarketRequest = {

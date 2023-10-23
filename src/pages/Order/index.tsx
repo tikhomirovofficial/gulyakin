@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC, useEffect} from 'react';
 import Header from "../../components/Header";
 import styles from './order.module.scss'
 import LogosSection from "../../components/LogosSection";
@@ -21,13 +21,37 @@ import {
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {TextField} from "../../components/Inputs/TextField";
 import {getImgPath} from "../../utils/getAssetsPath";
+import {domain} from "../../http/instance/instances";
 
 const orderTimes = ["18:30", "19:30"]
 
-
+type OrderItemProps = {
+    id: number,
+    image: string,
+    title: string,
+    composition: string,
+    price: number,
+    count: number
+}
+const OrderItem: FC<OrderItemProps> = ({image, id, title, count, price, composition}) => {
+    return (
+        <div className={`${styles.part} ${styles.product} pd-15 d-f gap-10`}>
+            <div style={{backgroundImage: `url(${domain + "/" + image})`}}
+                 className={`bg-cover ${styles.image}`}></div>
+            <div className="f-column-betw f-1">
+                <div className="top">
+                    <h4>{title}</h4>
+                    <p>{composition}</p>
+                </div>
+                <b className={styles.price}>{price} ₽</b>
+            </div>
+        </div>
+    )
+}
 const Order = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
-    const {totalPrice} = useAppSelector(state => state.cart)
+    const marketAddresses = useAppSelector(state => state.main.addresses)
+    const cart = useAppSelector(state => state.cart)
     const {
         name,
         callNeeded,
@@ -40,6 +64,11 @@ const Order = () => {
     } = useAppSelector(state => state.forms.orderForm)
 
     const dispatch = useAppDispatch()
+    useEffect(() => {
+        console.log(marketAddresses)
+        console.log(restaurant)
+        console.log(marketAddresses.findIndex(item => item.id == restaurant), "rest")
+    }, [])
     return (
         <>
             <div className={styles.order}>
@@ -106,14 +135,15 @@ const Order = () => {
                                                             val: e.target.value
                                                         }))}
                                                     /> :
-                                                    <SelectInput defaultCurrent={restaurant}
+                                                    <SelectInput defaultCurrent={marketAddresses.findIndex(item => item.id == restaurant)}
                                                                  className={styles.selectRestaurant}
                                                                  labelText={"Выберите ресторан (обязательно)"}
                                                                  selectHandler={(selected) => {
-                                                                     dispatch(handleSelectRestaurant(selected))
+                                                                     const restaurantId = marketAddresses.filter((item, index) => index == selected)[0].id
+                                                                     dispatch(handleSelectRestaurant(restaurantId))
                                                                  }}
-                                                                 items={["первый", "второй"]
-                                                                 }/>
+                                                                 items={marketAddresses.map(item => item.adress)}
+                                                    />
 
                                             }
 
@@ -207,9 +237,9 @@ const Order = () => {
                                     }
                                 </div>
                                 <div className="f-column gap-15">
-                                    <RedButton disabled={!(address.val.length > 0) && !(totalPrice > 0)}
+                                    <RedButton disabled={!(address.val.length > 0) && !(cart.totalPrice > 0)}
                                                className={"pd-15"}>Оформить заказ
-                                        на {formatNumberWithSpaces(totalPrice)} ₽</RedButton>
+                                        на {formatNumberWithSpaces(cart.totalPrice)} ₽</RedButton>
                                     <div className={"w-100p d-f jc-center"}>
                                         <b className={`${styles.backCart}`}>Вернуться в корзину</b>
                                     </div>
@@ -224,34 +254,24 @@ const Order = () => {
                                 <h3>Состав заказа</h3>
                                 <div className="f-column gap-5">
                                     <div className="productList f-column gap-5">
-                                        <div className={`${styles.part} ${styles.product} pd-15 d-f gap-10`}>
-                                            <div style={{backgroundImage: `url(${getImgPath("product.jpg")})`}}
-                                                 className={`bg-cover ${styles.image}`}></div>
-                                            <div className="f-column-betw f-1">
-                                                <div className="top">
-                                                    <h4>Пельмени с говядиной</h4>
-                                                    <p>Свинина, говядина</p>
-                                                </div>
-                                                <b className={styles.price}>473 ₽</b>
-                                            </div>
-                                        </div>
-                                        <div className={`${styles.part} ${styles.product} pd-15 d-f gap-10`}>
-                                            <div style={{backgroundImage: `url(${getImgPath("product.jpg")})`}}
-                                                 className={`bg-cover ${styles.image}`}></div>
-                                            <div className="f-column-betw f-1">
-                                                <div className="top">
-                                                    <h4>Пельмени с говядиной</h4>
-                                                    <p>Свинина, говядина</p>
-                                                </div>
-                                                <b className={styles.price}>473 ₽</b>
-                                            </div>
-                                        </div>
+                                        {
+                                            cart.items.map(item => (
+                                                <OrderItem
+                                                    id={item.product.id}
+                                                    image={item.product.image}
+                                                    title={item.product.title}
+                                                    composition={item.product.composition}
+                                                    price={item.product.price}
+                                                    count={item.count}/>
+                                            ))
+                                        }
+
                                     </div>
                                     <div className={`${styles.info} ${styles.part} pd-15 f-column gap-10`}>
                                         <div className={`${styles.productsInfo} f-column gap-5`}>
                                             <div className="f-row-betw">
-                                                <p>5 товаров</p>
-                                                <p>{formatNumberWithSpaces(totalPrice)} ₽</p>
+                                                <p>{cart.items.length} товаров</p>
+                                                <p>{formatNumberWithSpaces(cart.totalPrice)} ₽</p>
                                             </div>
                                             <div className="f-row-betw">
                                                 <p>Доставка</p>
@@ -261,7 +281,7 @@ const Order = () => {
                                         <div className="totalInfo">
                                             <div className="f-row-betw">
                                                 <b>Сумма заказа</b>
-                                                <b>{formatNumberWithSpaces(totalPrice)} ₽</b>
+                                                <b>{formatNumberWithSpaces(cart.totalPrice + 100)} ₽</b>
                                             </div>
 
                                         </div>

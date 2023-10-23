@@ -35,7 +35,7 @@ body::-webkit-scrollbar-thumb {
     border-radius: 30px;
 }
 .wrapper {
-    max-width: 142rem;
+    max-width: 133rem;
     padding: 0 1.5rem;
     margin: 0 auto;
 }

@@ -12,10 +12,10 @@ import {
     setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
 import {ProductRes, Supplement} from "../../../types/api.types";
-import {addToCart, editCountCart} from "../../../features/cart/cartSlice";
+import {addToCart, editCountCart, setProductAfterLogin} from "../../../features/cart/cartSlice";
 import useAuth from "../../../hooks/useAuth";
 import useToken from "../../../hooks/useToken";
-import {domen} from "../../../http/instance/instances";
+import {domain} from "../../../http/instance/instances";
 
 type ProductProps = {
     id: number,
@@ -49,7 +49,7 @@ const Product: FC<ProductProps & HasClassName> = ({
     //     return prev
     // })
     const token = useToken()
-    const {address} = useAppSelector(state => state.forms.orderForm)
+    const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const cart = useAppSelector(state => state.cart.items)
     const handleAddToCart = () => {
         if (supplements.length) {
@@ -58,7 +58,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                 additives: supplements,
                 currentAdditive: 0,
                 description: composition,
-                imageUrl: domen + "/" + image || "",
+                imageUrl: domain + "/" + image || "",
                 name: title,
                 price: price,
                 weight: weight
@@ -68,7 +68,7 @@ const Product: FC<ProductProps & HasClassName> = ({
             return;
         }
         if (token) {
-            if(address.val.length > 0) {
+            if(address.val.length > 0 || restaurant !== -1) {
                 dispatch(addToCart({
                     category: 1,
                     composition,
@@ -88,16 +88,18 @@ const Product: FC<ProductProps & HasClassName> = ({
 
             return;
         }
+        dispatch(setProductAfterLogin(id))
         dispatch(handleLogin())
     }
 
     return (
         <div className={`${styles.product} h-100p f-column-betw gap-15`}>
             <div className="f-column gap-15">
-                <div style={{backgroundImage: `url("${domen}/${image}")`}}
-                     className={`${styles.img} w-100p`}>
-
+                <div className={`${styles.img} w-100p`}>
+                    <img src={domain + "/" + image} alt=""/>
                 </div>
+
+
                 <div className="textBlock f-column gap-5">
                     <h3>{title}</h3>
                     <div className="f-1 d-f jc-between gap-25">

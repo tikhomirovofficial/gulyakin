@@ -16,19 +16,26 @@ import {CartApi} from "../../http/api/cart.api";
 
 type CartSliceState = {
     items: Array<CartProductItem>,
-    totalPrice: number
+    addProductAfterLogin: number | null,
+    totalPrice: number,
+    cartCounts: Record<string,number>
 }
 
 const initialState: CartSliceState = {
     items: [],
+    addProductAfterLogin: null,
     totalPrice: 0,
+    cartCounts: {}
 }
 
 export const getCart = createAsyncThunk(
     'cart/get',
     async (_, {dispatch}) => {
         const res: AxiosResponse<GetCartResponse> = await handleTokenRefreshedRequest(CartApi.GetProducts)
-        return res.data.cart
+        return {
+            cart: res.data.cart,
+            sup_counts: res.data.supplement_counts
+        }
     }
 )
 export const addToCart = createAsyncThunk(
@@ -89,7 +96,11 @@ export const CartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
+        setProductAfterLogin: (state, action) => {
+          state.addProductAfterLogin = action.payload
+        },
         addProduct: (state, action: PayloadAction<CartProductItem>) => {
+
             state.items = [
                 ...state.items,
                 action.payload
@@ -147,11 +158,13 @@ export const CartSlice = createSlice({
         })
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
-                state.items = action.payload
-                state.totalPrice = action.payload.reduce((prev, cur) => {
+                state.items = action.payload.cart
+                state.totalPrice = action.payload.cart.reduce((prev, cur) => {
                     return prev + (cur.count * cur.product.price)
                 }, 0)
+                state.cartCounts = action.payload.sup_counts
             }
+
         })
         builder.addCase(getCart.rejected, (state, action) => {
 
@@ -226,6 +239,7 @@ export const {
     minusProduct,
     setTotalPrice,
     removeProduct,
+    setProductAfterLogin
 } = CartSlice.actions
 
 

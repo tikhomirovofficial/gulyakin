@@ -1,16 +1,17 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import styles from "../../pages/Main/main.module.scss";
-import {ArrowMiniRightIcon, CartIcon, Logo, ProfileIcon} from "../../icons";
+import {ArrowMiniDown, ArrowMiniRightIcon, CartIcon, Logo, ProfileIcon} from "../../icons";
 import RedButton from "../Buttons/RedButton";
 import GrayButton from "../Buttons/GrayButton";
-import DropdownList from "../DropdownList";
+import DropdownList, {DropDownItem} from "../DropdownList";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
 import {handleCartOpened, handleLogin} from "../../features/modals/modalsSlice";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import useToken from "../../hooks/useToken";
+import List from "../List";
 
 
 const Header = () => {
@@ -48,8 +49,17 @@ const Header = () => {
                                 <p>в городе</p>
                                 <div onClick={handleChangingGeo}
                                      className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
-                                    <b>{cities[currentGeo.city]}</b>
-                                    <ArrowMiniRightIcon height={11}/>
+                                    <b>{
+                                        cities.length > 0 ?
+                                            !currentGeo.city ?
+                                                cities[0].name :
+                                                cities.filter(item => item.id === currentGeo.city)[0]?.name
+                                        : "..."
+                                    }</b>
+                                    {
+                                        !changingGeo ? <ArrowMiniRightIcon height={11}/> : <ArrowMiniDown height={10}/>
+                                    }
+
                                 </div>
                                 {
                                     askCityVisible ? <div
@@ -65,12 +75,19 @@ const Header = () => {
                                 }
                                 {
                                     changingGeo ?
-                                        <DropdownList selectHandler={current => {
-                                            dispatch(setCurrentCity(current))
-                                            handleChangingGeo()
-                                        }} classNameItem={`${styles.selectCityItem} f-row-betw`}
-                                                      className={`${styles.geoPopup} f-column gap-15 p-abs bg-white `}
-                                                      items={cities} current={currentGeo.city}/>
+                                        <List
+                                            listBlockClassname={`${styles.geoPopup} f-column gap-15 p-abs bg-white `}
+                                            list={cities}
+                                            renderItem={(item) =>
+                                                <DropDownItem key={item.id}
+                                                    selectHandler={() =>  {
+                                                        dispatch(setCurrentCity(item.id))
+                                                        handleChangingGeo()
+                                                    }}
+                                                    className={`${styles.selectCityItem} f-row-betw`}
+                                                    text={item.name} isCurrent={item.id === currentGeo.city}
+                                                />
+                                        }/>
                                         : null
                                 }
 

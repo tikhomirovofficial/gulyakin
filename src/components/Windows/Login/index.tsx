@@ -1,26 +1,15 @@
-import React, {ChangeEvent, createContext, Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
+import React, {ChangeEvent, createContext, Dispatch, SetStateAction, useState} from 'react';
 import WindowBody from "../WhiteWrapper";
 import ShadowWrapper from "../ShadowWrapper";
-import {CloseIcon, Preloader} from "../../../icons";
+import {CloseIcon} from "../../../icons";
 import styles from "./login.module.scss"
-import GrayBorderedBlock from "../../GrayBorderedBlock";
-import RedButton from "../../Buttons/RedButton";
 import {useInput} from "../../../hooks/useInput";
-import InputWrapper from "../../Inputs/InputWrapper";
-import {useAppDispatch} from "../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {handleLogin} from "../../../features/modals/modalsSlice";
-import {UserApi} from "../../../http/api/user.api";
-import {extractDigits} from "../../../utils/normalizePhone";
-import {storeTokens} from "../../../utils/storeTokens";
-import {useNavigate} from "react-router-dom";
-import authApi from "../../../http/instance/instances";
-import {withChangeCodeArr} from "../../../utils/forms/withChangeCodeArr";
 import {useInterval} from "../../../hooks/useInterval";
 import LoginPhoneStep from "./PhoneStep";
 import LoginCodeStep from "./CodeStep";
-
-
-
+import {setProductAfterLogin} from "../../../features/cart/cartSlice";
 
 
 export interface LoginContextType {
@@ -102,6 +91,13 @@ const LoginWindow = () => {
     }, 1000);
 
     const dispatch = useAppDispatch()
+    const productAfterLogin = useAppSelector(state => state.cart.addProductAfterLogin)
+    const handleCloseLogin = () => {
+        if(productAfterLogin !== null) {
+            dispatch(setProductAfterLogin(null))
+        }
+        dispatch(handleLogin())
+    }
     return (
         <LoginContext.Provider value={{
             setLoginStep,
@@ -124,7 +120,7 @@ const LoginWindow = () => {
             setPhoneLoading: setPhoneLoading
 
         }}>
-            <ShadowWrapper onClick={() => dispatch(handleLogin())}>
+            <ShadowWrapper onClick={handleCloseLogin}>
                 <WindowBody className={`${styles.window} f-column`}>
                     <div className="w-100p d-f jc-end">
                         <div onClick={() => dispatch(handleLogin())} className={"closeWrapper"}>

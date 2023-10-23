@@ -67,7 +67,7 @@ const initialState: FormsSliceState = {
             val: ""
         },
         isPickup: true,
-        restaurant: 0
+        restaurant: -1
     }
 }
 

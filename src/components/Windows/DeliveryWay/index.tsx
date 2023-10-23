@@ -11,22 +11,23 @@ import GrayBorderedBlock from "../../GrayBorderedBlock";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
 import {handleDeliveryVariant, handleDeliveryWayWindow} from "../../../features/modals/modalsSlice";
-import {handleOrderFormVal} from "../../../features/forms/formsSlice";
+import {handleOrderFormVal, handleSelectRestaurant} from "../../../features/forms/formsSlice";
 import {useInput} from "../../../hooks/useInput";
 
 interface AddressItemProps {
-    selected: boolean
+    selected: boolean,
+    text: string
     disabled?: boolean,
     selectedHandle?: () => void
 }
 
-const AddressItem: FC<AddressItemProps> = ({selected, selectedHandle, disabled = false}) => {
+const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, disabled = false}) => {
     if (disabled) {
         return (
-            <GrayBorderedBlock disabled={disabled} className={`pd-20 d-f gap-10 ${styles.addressItem} `}>
+            <GrayBorderedBlock disabled={disabled} className={`pd-20 d-f gap-10 cur-pointer ${styles.addressItem} `}>
                 <Geo/>
                 <div className={`f-column gap-5 ${styles.text}`}>
-                    <h2>Энергетиков, д. 4</h2>
+                    <h2>{text}</h2>
                     <div className="f-column">
                         <div className={styles.timeWork}>Пн-Пт: 7:30 - 23:00</div>
                         <div className={styles.timeWork}>Пн-Пт: 7:30 - 23:00</div>
@@ -37,10 +38,10 @@ const AddressItem: FC<AddressItemProps> = ({selected, selectedHandle, disabled =
     }
     return (
         <GrayBorderedBlock clickHandler={selectedHandle} isFocused={selected}
-                           className={`pd-20 d-f gap-10 ${styles.addressItem} `}>
+                           className={`pd-20 d-f gap-10 cur-pointer ${styles.addressItem} `}>
             <Geo/>
             <div className={`f-column gap-5 ${styles.text}`}>
-                <h2>Энергетиков, д. 4</h2>
+                <h2>{text}</h2>
                 <div className="f-column">
                     <div className={styles.timeWork}>Пн-Пт: 7:30 - 23:00</div>
                     <div className={styles.timeWork}>Пн-Пт: 7:30 - 23:00</div>
@@ -95,13 +96,13 @@ const DeliveryVariant = () => {
                         className={"w-100p"}
                         placeholder={"Сургут, ул. Университетская, д. 9"}
                         labelText={
-                        <div className={"d-f al-center gap-5 svgRedStroke"}>
-                            Город, улица и дом
-                            <div className={"f-c-col w-content"}>
-                                <Geo width={12}/>
+                            <div className={"d-f al-center gap-5 svgRedStroke"}>
+                                Город, улица и дом
+                                <div className={"f-c-col w-content"}>
+                                    <Geo width={12}/>
+                                </div>
                             </div>
-                        </div>
-                    }/>
+                        }/>
                     {
                         !findedAddresses.length ?
                             <div className={`${styles.searchedMatches} pd-10 p-abs left-0 w-100p bg-white`}>
@@ -154,35 +155,28 @@ const DeliveryVariant = () => {
                     val: addressInput
                 }))
 
-            }} disabled={addressInput.length == 0} className={"pd-10-0"}>Добавить адрес доставки</RedButton>
+            }} disabled={addressInput.length == 0} className={"pd-10-0"}>Добавить</RedButton>
         </>
     )
 }
-const addresses = [{
-    name: "Адрес 1",
-    disabled: false
-}, {
-    name: "Адрес 2",
-    disabled: true
-},
-    {
-        name: "Адрес 3",
-        disabled: false
-    }
-]
+
 const PickupVariant = () => {
-    const [selectedAddress, setSelectedAddress] = useState(0)
+    const [selectedAddress, setSelectedAddress] = useState(-1)
+    const {addresses}= useAppSelector(state => state.main)
+    const dispatch = useAppDispatch()
+    const handleAddAdressPickup = () => {
+        dispatch(handleSelectRestaurant(selectedAddress))
 
-
+    }
     return (
         <>
             <div className={`f-column gap-10 h-100p ${styles.addressesList}`}>
-                {addresses.map((item, index) => (
-                    <AddressItem disabled={item.disabled} selectedHandle={() => setSelectedAddress(index)}
-                                 selected={index === selectedAddress}/>
+                {addresses.map((item) => (
+                    <AddressItem text={item.adress} key={item.id} selectedHandle={() => setSelectedAddress(item.id)}
+                                 selected={item.id === selectedAddress}/>
                 ))}
             </div>
-            <RedButton disabled={false} className={"pd-10-0"}>Выбрать</RedButton>
+            <RedButton onClick={handleAddAdressPickup} disabled={selectedAddress == -1} className={"pd-10-0"}>Выбрать</RedButton>
         </>
 
     )
@@ -222,7 +216,8 @@ const DeliveryWay = () => {
                 <div className={styles.map}>
                     <YMaps>
                         <Map className={"h-100p w-100p"}
-                             state={{center: [0, 9], zoom: 9}}/>
+                             state={{center: [0, 9], zoom: 9}}>
+                        </Map>
                     </YMaps>
                 </div>
             </WindowBody>

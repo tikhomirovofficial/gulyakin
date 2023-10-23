@@ -9,7 +9,7 @@ interface DropDownItemProps  {
     text: string,
     selectHandler: () => void
 }
-const DropDownItem: FC<DropDownItemProps & HasClassName> = ({isCurrent, className, text, selectHandler}) => {
+export const DropDownItem: FC<DropDownItemProps & HasClassName> = ({isCurrent, className, text, selectHandler}) => {
     return (
         <div onClick={selectHandler} className={`${className} ${styles.item} ${isCurrent ? styles.checkedItem : ""}`}>
             <p>
@@ -19,7 +19,7 @@ const DropDownItem: FC<DropDownItemProps & HasClassName> = ({isCurrent, classNam
         </div>
     )
 }
-interface DropdownListProps {
+interface DropdownListProps{
     items: Array<string>,
     current: number,
     classNameItem?: string,

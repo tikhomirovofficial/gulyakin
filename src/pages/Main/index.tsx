@@ -1,4 +1,4 @@
- import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import {ArrowMiniRightIcon, ArrowRight, Geo} from "../../icons";
 import styles from './main.module.scss'
@@ -8,20 +8,16 @@ import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import SearchInput from "../../components/Inputs/SearchInput";
 import List from "../../components/List";
 import Product from "../../components/Catalog/Product";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import LogosSection from "../../components/LogosSection";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {setTempPage} from "../../features/main/mainSlice";
 import {Swiper, SwiperProps, SwiperSlide} from 'swiper/react';
-import 'swiper/css';
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import {handleBooking} from "../../features/modals/modalsSlice";
- import {getUser} from "../../features/profile/profileSlice";
- import useAuth from "../../hooks/useAuth";
- import useToken from "../../hooks/useToken";
+import {getUser} from "../../features/profile/profileSlice";
+import useAuth from "../../hooks/useAuth";
+import useToken from "../../hooks/useToken";
+import Preloader from "../../components/Preloader";
+import Loader from "../../components/Preloader";
 
 const Main: FC = () => {
     const {categories, products, cart} = useAppSelector(state => state)
@@ -45,13 +41,13 @@ const Main: FC = () => {
 
 
     useEffect(() => {
-        if(sliderCategories.current) {
+        if (sliderCategories.current) {
             const slider = sliderCategories.current as HTMLDivElement
             const parentWidth = slider.parentElement?.parentElement?.offsetWidth
 
-            if(parentWidth) {
+            if (parentWidth) {
                 const sliderIsSmaller = slider.offsetWidth < parentWidth
-                if(!sliderIsSmaller) {
+                if (!sliderIsSmaller) {
                     setSliderNeeded(true)
                 }
             }
@@ -61,7 +57,7 @@ const Main: FC = () => {
     }, [categories])
 
     useEffect(() => {
-        if(token && !is_auth) {
+        if (token && !is_auth) {
             dispatch(getUser())
         }
     }, [])
@@ -144,13 +140,14 @@ const Main: FC = () => {
                         <div className="wrapper w-100p">
                             <div className={`${styles.restaurants} d-f jc-between gap-30`}>
                                 <div className="left d-f gap-30">
-                                    <GradientGrayBtn onClick={() => dispatch(setTempPage(1))}
-                                                     className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
-                                        <Geo/>
-                                        <p>Рестораны на карте</p>
-                                    </GradientGrayBtn>
+                                    <Link to={"/restaurants"}>
+                                        <GradientGrayBtn
+                                                         className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
+                                            <Geo/>
+                                            <p>Рестораны на карте</p>
+                                        </GradientGrayBtn>
+                                    </Link>
                                     <SearchInput className={styles.search}/>
-
                                 </div>
                                 <div className={`${styles.orderTrigger} f-1  p-rel`}>
                                     <div className="p-abs w-100p h-100p top-0 left-0 d-f jc-center">
@@ -160,7 +157,8 @@ const Main: FC = () => {
                                         </div>
                                     </div>
 
-                                    <div onClick={() => dispatch(handleBooking())} className="w-100p f-c-row p-rel h-100p">
+                                    <div onClick={() => dispatch(handleBooking())}
+                                         className="w-100p f-c-row p-rel h-100p">
                                         <div className={`${styles.text} f-column`}>
                                             <p>Забронируйте</p>
                                             <p>у нас столик!</p>
@@ -175,7 +173,8 @@ const Main: FC = () => {
 
                                 <div className="w-100p p-rel">
                                     {
-                                        sliderNeeded && currentSlide > 0 ?  <div style={{transform: "rotateZ(180deg)"}} className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
+                                        sliderNeeded && currentSlide > 0 ? <div style={{transform: "rotateZ(180deg)"}}
+                                                                                className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
                                             <div onClick={handlePrev} className="miniSliderArrow cur-pointer f-c-col">
                                                 <ArrowMiniRightIcon width={14} height={14}/>
                                             </div>
@@ -184,7 +183,8 @@ const Main: FC = () => {
 
                                     }
                                     {
-                                        sliderNeeded && !isEndSlider ?  <div className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
+                                        sliderNeeded && !isEndSlider ? <div
+                                            className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
                                             <div onClick={handleNext} className="miniSliderArrow cur-pointer f-c-col">
                                                 <ArrowMiniRightIcon width={14} height={14}/>
                                             </div>
@@ -194,31 +194,41 @@ const Main: FC = () => {
 
 
                                     <div className="w-100p d-f gap-10 of-y-hide scrollbar-unset">
+                                        {
+                                            categories.category.length > 0 ?
+                                                <Swiper
+                                                    onActiveIndexChange={(slider: SwiperProps) => {
+                                                        setIsEndSlider(slider.isEnd)
+                                                        setCurrentSlide(slider.activeIndex)
+                                                    }}
 
+                                                    style={{margin: 0}}
+                                                    slidesPerView={'auto'}
+                                                    centeredSlides={false}
+                                                    className={""}
+                                                    ref={sliderCategories}
+                                                    spaceBetween={10}
+                                                >
+                                                    {
+                                                        categories.category.map(item => (
+                                                            <SwiperSlide key={item.id}
+                                                                         className={"w-content cur-grabbing"}>
+                                                                <GrayBorderedBlock
+                                                                    clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)}
+                                                                    className={styles.item}>
+                                                                    {item.title}
+                                                                </GrayBorderedBlock>
+                                                            </SwiperSlide>
+                                                        ))
+                                                    }
+                                                </Swiper> :
 
-                                        <Swiper
-                                            onActiveIndexChange={(slider: SwiperProps) => {
-                                                setIsEndSlider(slider.isEnd)
-                                                setCurrentSlide(slider.activeIndex)
-                                            }}
+                                                <div className="f-c-col infiniteSpin w-content h-content">
+                                                    <Preloader height={20} width={20}/>
+                                                </div>
 
-                                            style={{margin: 0}}
-                                            slidesPerView={'auto'}
-                                            centeredSlides={false}
-                                            className={""}
-                                            ref={sliderCategories}
-                                            spaceBetween={10}
-                                        >
-                                            {
-                                                categories.category.map(item => (
-                                                    <SwiperSlide key={item.id} className={"w-content cur-grabbing"}>
-                                                        <GrayBorderedBlock clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)} className={styles.item}>
-                                                            {item.title}
-                                                        </GrayBorderedBlock>
-                                                    </SwiperSlide>
-                                                ))
-                                            }
-                                        </Swiper>
+                                        }
+
 
                                     </div>
 
@@ -289,34 +299,43 @@ const Main: FC = () => {
                                     </div>
                                 </div>
                             </div>
+
                             <div className={styles.catalog}>
-                                <div className="block f-column gap-40">
-                                    {
-                                        categories.category.map(category => (
-                                            <div className={`${styles.categoryBlock} f-column gap-20`}>
-                                                <h2 className="sectionTitle">{category.title}</h2>
-                                                <List listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
-                                                      list={products.items.filter(product => product.category === category.id)}
-                                                      renderItem={(product) =>
-                                                          <Product title={product.title}
-                                                                   id={product.id}
-                                                                   count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
-                                                                   inCart={cart.items.some(item => item.product.id === product.id)}
-                                                                   image={product.image}
-                                                                   composition={product.composition}
-                                                                   weight={product.weight}
-                                                                   price={product.price} category={product.category}
-                                                                   description={product.description}
-                                                                   short_description={product.short_description}
-                                                                   supplements={product.supplements}/>
-                                                }/>
-                                            </div>
-                                        ))
-                                    }
+                                {!(products.items.length > 0) ?
+                                    <div className={"d-f jc-center al-center"}>
+                                        <Loader/>
+                                    </div> : <div className="block f-column gap-40">
+                                        {
+                                            categories.category.map(category => (
+                                                <div className={`${styles.categoryBlock} f-column gap-20`}>
+                                                    <h2 className="sectionTitle">{category.title}</h2>
+                                                    <List
+                                                        listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
+                                                        list={products.items.filter(product => product.category === category.id)}
+                                                        renderItem={(product) =>
+                                                            <Product title={product.title}
+                                                                     id={product.id}
+                                                                     count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
+                                                                     inCart={cart.items.some(item => item.product.id === product.id)}
+                                                                     image={product.image}
+                                                                     composition={product.composition}
+                                                                     weight={product.weight}
+                                                                     price={product.price} category={product.category}
+                                                                     description={product.description}
+                                                                     short_description={product.short_description}
+                                                                     supplements={product.supplements}/>
+                                                        }/>
+                                                </div>
+                                            ))
+                                        }
 
 
-                                </div>
+                                    </div>
+                                }
+
                             </div>
+
+
                         </div>
 
                     </div>

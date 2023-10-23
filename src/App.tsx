@@ -23,10 +23,11 @@ import {getProductByMarket} from "./features/products/productsSlice";
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage} from "./utils/LocalStorageExplorer";
 import order from "./pages/Order";
+import {getAddressesByMarketCity, getCities} from "./features/main/mainSlice";
 
 function App() {
     const dispatch = useAppDispatch()
-    const is_auth = useAuth()
+    const token = useToken()
 
     const {
         bookingOpened,
@@ -42,7 +43,7 @@ function App() {
     const {items} = useAppSelector(state => state.cart)
     const products = useAppSelector(state => state.products.items)
     const orderForm = useAppSelector(state => state.forms.orderForm)
-    const {market} = useAppSelector(state => state.main)
+    const {market, cities, currentGeo} = useAppSelector(state => state.main)
 
     useEffect(() => {
         addToStorage("order_form", orderForm)
@@ -59,16 +60,30 @@ function App() {
 
     }, [items])
 
+
     useEffect(() => {
         if(!products.length) {
             dispatch(getCategoriesByMarket({market_id: market}))
             dispatch(getProductByMarket({market_id: market}))
         }
-        if(is_auth) {
-            dispatch(getCart())
+        if(!cities.length) {
+            dispatch(getCities())
         }
     }, [])
 
+    useEffect(() => {
+        if(token) {
+            dispatch(getCart())
+        }
+    }, [token])
+    useEffect(() => {
+        if(cities.length > 0) {
+            dispatch(getAddressesByMarketCity({
+                market_id: market,
+                siti_id: currentGeo.city
+            }))
+        }
+    }, [cities])
     return (
         <>
             <ScrollToTop/>

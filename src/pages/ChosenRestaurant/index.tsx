@@ -1,21 +1,14 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useRef, useState} from 'react';
 import {ArrowMiniRightIcon, Cap, SafeArrowIcon} from "../../icons";
 import styles from '../Restaurants/restaurants.module.scss'
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
-import LogosSection from "../../components/LogosSection";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {setTempPage} from "../../features/main/mainSlice";
 import {Link} from "react-router-dom";
 import RedButton from "../../components/Buttons/RedButton";
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
-// Import Swiper styles
-import 'swiper/css';
 import 'swiper/css/pagination'
-import {getImgPath} from "../../utils/getAssetsPath";
 import {SwiperProps} from "swiper/swiper-react";
 import {RestaurantItemType} from "../../types/restaurants.types";
 
@@ -72,8 +65,6 @@ const ChosenRestaurant: FC = () => {
 
     return (
         <>
-            <Header/>
-            <LogosSection/>
             <div className={`${styles.main} f-column gap-20`}>
                 <div className="wrapper w-100p">
                     <div className={`${styles.block} f-column gap-25`}>
@@ -95,7 +86,8 @@ const ChosenRestaurant: FC = () => {
                             </Link>
 
                             <div className={`of-hide w-100p f-row-betw ${styles.restaurantsSection}`}>
-                                <div className={`${styles.sideWrapper} ${styles.choosenRestaruantBlock} f-column-betw gap-20 pd-20`}>
+                                <div
+                                    className={`${styles.sideWrapper} ${styles.choosenRestaruantBlock} f-column-betw gap-20 pd-20`}>
                                     <div className="top f-column gap-15">
                                         <div className="address f-column">
                                             <h3 className={styles.addressTitle}>{street}</h3>
@@ -104,8 +96,10 @@ const ChosenRestaurant: FC = () => {
                                         <div className="d-f p-rel">
                                             {
                                                 currentSlide > 0 ?
-                                                    <div style={{transform: "rotateZ(180deg)"}} className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperLeft} d-f jc-end al-center h-100p p-abs left-0`}>
-                                                        <div onClick={handlePrev} className="f-c-col sliderArrowCircle cur-pointer">
+                                                    <div style={{transform: "rotateZ(180deg)"}}
+                                                         className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperLeft} d-f jc-end al-center h-100p p-abs left-0`}>
+                                                        <div onClick={handlePrev}
+                                                             className="f-c-col sliderArrowCircle cur-pointer">
                                                             <SafeArrowIcon width={7}/>
                                                         </div>
 
@@ -113,7 +107,8 @@ const ChosenRestaurant: FC = () => {
                                             }
 
                                             {
-                                                currentSlide < images.length - 2  ?  <div onClick={handleNext} className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f  jc-end al-center h-100p p-abs right-0`}>
+                                                currentSlide < images.length - 2 ? <div onClick={handleNext}
+                                                                                        className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f  jc-end al-center h-100p p-abs right-0`}>
                                                     <div className="f-c-col sliderArrowCircle cur-pointer">
                                                         <SafeArrowIcon width={7}/>
                                                     </div>
@@ -136,7 +131,8 @@ const ChosenRestaurant: FC = () => {
                                                 {
                                                     images.map(src => (
                                                         <SwiperSlide className={"w-content cur-grabbing"}>
-                                                            <div style={{backgroundImage: `url(${src})`}} className={`${styles.item} bg-cover`}>
+                                                            <div style={{backgroundImage: `url(${src})`}}
+                                                                 className={`${styles.item} bg-cover`}>
 
                                                             </div>
                                                         </SwiperSlide>
@@ -144,7 +140,6 @@ const ChosenRestaurant: FC = () => {
                                                 }
                                             </Swiper>
                                         </div>
-
 
 
                                     </div>
@@ -157,7 +152,8 @@ const ChosenRestaurant: FC = () => {
                                             <p className={styles.phoneLabel}>График работы</p>
                                             {
                                                 weekItems.map((item, index) => (
-                                                    index > 0 ?  <div className={`f-row-betw ${index === dayOfWeek? "colorRed" : ""}`}>
+                                                    index > 0 ? <div
+                                                        className={`f-row-betw ${index === dayOfWeek ? "colorRed" : ""}`}>
                                                         <b>{item.day}</b>
                                                         <b>{item.workTime}</b>
                                                     </div> : null
@@ -184,7 +180,6 @@ const ChosenRestaurant: FC = () => {
                     </div>
                 </div>
             </div>
-            <Footer/>
         </>
 
     );

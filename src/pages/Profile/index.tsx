@@ -33,7 +33,7 @@ const Profile = () => {
     }
     const handleLogout = () => {
         deleteCookie("tokens")
-        navigate("/")
+        window.location.href = "/"
 
     }
 
@@ -80,6 +80,7 @@ const Profile = () => {
                                     handleSave={handleUserEdit}
                                     className={styles.inputField}
                                     placeholder={"Дата"}
+                                    mask={"99/99/99"}
                                     labelText={"Дата рождения"}
                                     isEditing={dob.isEditing}
                                     formValue={dob.val}

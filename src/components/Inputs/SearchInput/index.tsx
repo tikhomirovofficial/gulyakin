@@ -13,9 +13,9 @@ const SearchInput: FC<HasClassName> = ({className}) => {
     const handleClearInput = () => setVal("")
 
     return (
-        <GrayBorderedBlock className={`${styles.search} ${className || null} ${isFocused ? styles.searchFocused : null} f-row-betw gap-20`}>
+        <GrayBorderedBlock labelFor={"searchInput"} className={`${styles.search} ${className || null} ${isFocused ? styles.searchFocused : null} f-row-betw gap-20`}>
             <SearchIcon/>
-            <input onBlur={() => setIsFocused(false)} onFocus={() => setIsFocused(true)} value={inputVal} onChange={changeVal} className={"f-1"} type="text" placeholder={"Поиск по меню"}/>
+            <input id={"searchInput"} onBlur={() => setIsFocused(false)} onFocus={() => setIsFocused(true)} value={inputVal} onChange={changeVal} className={"f-1"} type="text" placeholder={"Поиск по меню"}/>
             {
                 inputVal.length ?
                     <div onClick={handleClearInput} className={`${styles.close} cur-pointer visible f-c-col`}>

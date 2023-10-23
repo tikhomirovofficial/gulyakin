@@ -1,8 +1,6 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {HasClassName} from "../../types/components.types";
 import styles from "./switcher.module.scss"
-import RedButton from "../Buttons/RedButton";
-
 interface SwitcherProps {
     currentSelected?: number,
     elements: Array<string>,
@@ -35,12 +33,12 @@ const Switcher: FC<SwitcherProps & HasClassName> = ({currentSelected, onSwitch, 
             </div>
             {elements.map((element, index) => {
                 if(index) {
-                    return <div onClick={() => handleSwitch(index)} ref={elementRef} className={`${styles.item} f-c-col txt-center`}>
+                    return <div onClick={() => handleSwitch(index)} ref={elementRef} className={`${styles.item} cur-pointer f-c-col txt-center`}>
                         {element}
                     </div>
                 }
 
-                return(<div onClick={() => handleSwitch(index)} className={`${styles.item} f-c-col txt-center`}>
+                return(<div onClick={() => handleSwitch(index)} className={`${styles.item} cur-pointer  f-c-col txt-center`}>
                     {element}
                 </div>)
             })}

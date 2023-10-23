@@ -12,9 +12,11 @@ import {
 } from "../../../features/modals/modalsSlice";
 import RedButton from "../../Buttons/RedButton";
 import LightRedButton from "../../Buttons/LightRedButton";
+import useToken from "../../../hooks/useToken";
 
 const YourAddressWindow = () => {
     const dispatch = useAppDispatch()
+    const token = useToken()
 
     const handleDeliveryBtn = () => {
         dispatch(handleYourAddress())
@@ -51,8 +53,10 @@ const YourAddressWindow = () => {
                         </div>
                     </div>
                     <div className="f-column gap-15">
+                        {
+                            !token?  <div className={"caption caption-big txt-center"}>Уже есть аккаунт? <span onClick={handleLoginBtn} className={"colorRed cur-pointer"}>Войти</span></div> : null
+                        }
 
-                        <div className={"caption caption-big txt-center"}>Уже есть аккаунт? <span onClick={handleLoginBtn} className={"colorRed"}>Войти</span></div>
                     </div>
 
                 </div>

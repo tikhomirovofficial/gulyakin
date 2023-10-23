@@ -19,8 +19,17 @@
     border-radius: 6px;
     background-size: contain!important;
     background-repeat: no-repeat;
-    height: 26rem;
+    height: 23.3rem;
     background-position: center;
+    overflow: hidden;
+    position: relative;
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: auto;
+      width: 100%
+    }
   }
   h4 {
     font-size: 2.3rem;

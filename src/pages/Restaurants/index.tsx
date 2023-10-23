@@ -1,14 +1,9 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {Cap} from "../../icons";
 import styles from './restaurants.module.scss'
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
-import LogosSection from "../../components/LogosSection";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {setTempPage} from "../../features/main/mainSlice";
-import {getImgPath} from "../../utils/getAssetsPath";
 import {RestaurantItemType} from "../../types/restaurants.types";
 import {Link} from "react-router-dom";
 
@@ -43,8 +38,6 @@ const Restaurants: FC = () => {
 
     return (
         <>
-            <Header/>
-            <LogosSection/>
             <div className={`${styles.main} f-column gap-20`}>
                 <div className="wrapper w-100p">
                     <div className={`${styles.block} f-column gap-25`}>
@@ -62,7 +55,9 @@ const Restaurants: FC = () => {
                                 <div className={styles.sideWrapper}>
                                     {
                                         restaurant.branches.map(item => (
-                                            <RestaurantItem link={"/restaurants/1"} street={item.street} canOnlineOrder={item.canOnlineOrder} cityArea={item.cityArea}/>
+                                            <RestaurantItem link={"/restaurants/1"} street={item.street}
+                                                            canOnlineOrder={item.canOnlineOrder}
+                                                            cityArea={item.cityArea}/>
                                         ))
                                     }
                                 </div>
@@ -94,7 +89,6 @@ const Restaurants: FC = () => {
                     </div>
                 </div>
             </div>
-            <Footer/>
         </>
 
     );

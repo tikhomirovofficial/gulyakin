@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
-import React, {ChangeEvent, useContext, useEffect, useState} from "react";
-import {useAppDispatch} from "../../../app/hooks";
+import React, {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {UserApi} from "../../../http/api/user.api";
 import {extractDigits} from "../../../utils/normalizePhone";
 import {withChangeCodeArr} from "../../../utils/forms/withChangeCodeArr";
@@ -12,6 +12,7 @@ import GrayBorderedBlock from "../../GrayBorderedBlock";
 import {Preloader} from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
 import {LoginContext, LoginContextType} from "./index";
+import {addToCart} from "../../../features/cart/cartSlice";
 
 const LoginCodeStep = () => {
     const navigate = useNavigate()
@@ -30,8 +31,12 @@ const LoginCodeStep = () => {
         setCodeErr,
         setPhoneErr
     } = useContext<LoginContextType>(LoginContext)
+
     const [currentDigit, setCurrentDigit] = useState<number | null>(null)
     const freezed = codeFreezedSeconds !== undefined && codeFreezedSeconds > 0 && isFreezed
+    const codeBlockRef = useRef<HTMLDivElement>(null)
+    const productAfterLogin = useAppSelector(state => state.cart.addProductAfterLogin)
+    const products = useAppSelector(state => state.products)
     const dispatch = useAppDispatch()
 
     const handleSendPhone = async () => {
@@ -51,7 +56,7 @@ const LoginCodeStep = () => {
                 }
             }
         } catch (e: any) {
-            if(e?.code == "ERR_NETWORK") {
+            if (e?.code == "ERR_NETWORK") {
                 setCodeErr("Ошибка подключения к серверу")
             }
         }
@@ -91,7 +96,7 @@ const LoginCodeStep = () => {
             if (codeIsFilled) {
                 try {
                     setCodeLoading(true)
-                    const {access, refresh, detail} = await UserApi.Login({
+                    const {access, refresh} = await UserApi.Login({
                         username: extractDigits(phone),
                         password: code.join("")
                     })
@@ -100,11 +105,22 @@ const LoginCodeStep = () => {
                         refresh
                     })
                     authApi.defaults.headers["Authorization"] = `Bearer ${access}`
-                    dispatch(handleLogin())
 
+                    if (productAfterLogin !== null) {
+                        const matchedProduct = products.items.filter(item => item.id == productAfterLogin)[0]
+                        if (matchedProduct?.id !== undefined) {
+                            dispatch(addToCart({
+                                ...matchedProduct,
+                            }))
+                        }
+                        dispatch(handleLogin())
+                    } else {
+                        dispatch(handleLogin())
+                        navigate("/profile")
+                    }
 
-                    navigate("/profile")
                 } catch (e: any) {
+                    console.log(e)
                     setCodeErr("Неверный код")
                 } finally {
                     setCodeLoading(false)
@@ -113,7 +129,12 @@ const LoginCodeStep = () => {
         })()
 
     }, [code])
-
+    useEffect(() => {
+        if (codeBlockRef.current) {
+            const firstInput = codeBlockRef.current.children[0].children[0] as HTMLInputElement
+            firstInput.focus()
+        }
+    }, [])
     return (
         <div className="gap-30 f-column">
             <div className="f-column gap-10">
@@ -132,7 +153,7 @@ const LoginCodeStep = () => {
             </div>
             <div className="f-column gap-20">
                 <div className="f-column al-center gap-5">
-                    <div className="d-f jc-center gap-10">
+                    <div ref={codeBlockRef} className="d-f jc-center gap-10">
                         {
                             code.map((digit, index) => (
                                 <GrayBorderedBlock validError={codeErr} isFocused={currentDigit === index}

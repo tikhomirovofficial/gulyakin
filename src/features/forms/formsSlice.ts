@@ -52,7 +52,7 @@ const initialState: FormsSliceState = {
 
         }
     },
-    orderForm: {
+    orderForm: getFromStorage("order_form") as OrderFormType || {
         name: {
             isEditing:false,
             val: ""
@@ -64,12 +64,10 @@ const initialState: FormsSliceState = {
         phone: "+7(900) 500-18-49",
         address: {
             isEditing: false,
-            val: "Адрес 1"
+            val: ""
         },
         isPickup: true,
         restaurant: 0
-
-
     }
 }
 

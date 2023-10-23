@@ -1,11 +1,12 @@
-import axios, {Axios, AxiosResponse} from 'axios'
-import {getCookie, setCookie} from "../../utils/CookieUtil";
-import {JWT} from "../../types/api.types";
-import {UserApi} from "../api/user.api";
-import {getTokens, storeTokens} from "../../utils/storeTokens";
+import axios from 'axios'
+import {getCookie} from "../../utils/CookieUtil";
+import {getTokens} from "../../utils/storeTokens";
+
+export const domen = "http://vps.advafert.ru:5000"
+const URL = domen + "/api"
 
 const authApi = axios.create({
-    baseURL: 'http://dev.advafert.ru/api/',
+    baseURL: URL,
     withCredentials: true,
     headers: {
         Authorization: `Bearer ${getCookie('tokens')?.access}`,
@@ -14,7 +15,7 @@ const authApi = axios.create({
     }
 })
 export const api = axios.create({
-    baseURL: 'http://dev.advafert.ru/api/',
+    baseURL: URL,
     withCredentials: true,
     headers: {
         "Content-Type": 'application/json',
@@ -23,13 +24,12 @@ export const api = axios.create({
 })
 
 
-
 //let _isRetried = false
 
 
 authApi.interceptors.response.use(null, (ctx) => {
     const res = ctx
-    if(res.code == "ERR_NETWORK") {
+    if (res.code == "ERR_NETWORK") {
         //alert("ошибка интернета")
     }
     return res

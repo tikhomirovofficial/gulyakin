@@ -4,17 +4,23 @@ import {getImgPath} from "../../../utils/getAssetsPath";
 import RedButton from "../../Buttons/RedButton";
 import {MinusIcon, PlusIcon} from "../../../icons";
 import {HasClassName} from "../../../types/components.types";
-import {useAppDispatch} from "../../../app/hooks";
-import {handleLogin, handleProductAdditives, setProductAdditivesData} from "../../../features/modals/modalsSlice";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {
+    handleLogin,
+    handleProductAdditives,
+    handleYourAddress,
+    setProductAdditivesData
+} from "../../../features/modals/modalsSlice";
 import {ProductRes, Supplement} from "../../../types/api.types";
-import {addToCart} from "../../../features/cart/cartSlice";
+import {addToCart, editCountCart} from "../../../features/cart/cartSlice";
 import useAuth from "../../../hooks/useAuth";
 import useToken from "../../../hooks/useToken";
+import {domen} from "../../../http/instance/instances";
 
 type ProductProps = {
     id: number,
     inCart?: boolean,
-    count?: number
+    count?: number,
     supplements?: Array<Supplement>
 } & ProductRes
 
@@ -43,21 +49,17 @@ const Product: FC<ProductProps & HasClassName> = ({
     //     return prev
     // })
     const token = useToken()
-
+    const {address} = useAppSelector(state => state.forms.orderForm)
+    const cart = useAppSelector(state => state.cart.items)
     const handleAddToCart = () => {
         if (supplements.length) {
             dispatch(setProductAdditivesData({
-                additives: [
-                    {
-                        imageUrl: getImgPath("productAdditive.png"),
-                        name: "Кетчуп",
-                        price: 59
-                    }
-                ],
+                id: id,
+                additives: supplements,
                 currentAdditive: 0,
                 description: composition,
-                imageUrl: image || "",
-                name: "",
+                imageUrl: domen + "/" + image || "",
+                name: title,
                 price: price,
                 weight: weight
 
@@ -66,19 +68,24 @@ const Product: FC<ProductProps & HasClassName> = ({
             return;
         }
         if (token) {
-            dispatch(addToCart({
-                category: 1,
-                composition,
-                description: composition,
-                id,
-                image,
-                price,
-                short_description: "",
-                supplements,
-                title: title,
-                weight
+            if(address.val.length > 0) {
+                dispatch(addToCart({
+                    category: 1,
+                    composition,
+                    description: composition,
+                    id,
+                    image,
+                    price,
+                    short_description: "",
+                    supplements,
+                    title: title,
+                    weight
 
-            }))
+                }))
+                return;
+            }
+            dispatch(handleYourAddress())
+
             return;
         }
         dispatch(handleLogin())
@@ -87,7 +94,7 @@ const Product: FC<ProductProps & HasClassName> = ({
     return (
         <div className={`${styles.product} h-100p f-column-betw gap-15`}>
             <div className="f-column gap-15">
-                <div style={{backgroundImage: `url("http://dev.advafert.ru/${image}")`}}
+                <div style={{backgroundImage: `url("${domen}/${image}")`}}
                      className={`${styles.img} w-100p`}>
 
                 </div>
@@ -108,10 +115,27 @@ const Product: FC<ProductProps & HasClassName> = ({
                 {
                     inCart ?
                         <div className={"d-f al-center gap-5"}>
-                            <div onClick={() => alert("Уменьшить")} className={"cur-pointer f-c-col"}><MinusIcon/></div>
+                            <div onClick={() => {
+                                if(count > 1) {
+                                    dispatch(editCountCart({
+                                        cart_id: cart.filter(item => item.product.id === id)[0].id,
+                                        count: count - 1,
+                                        id: id
+
+                                    }))
+                                }
+
+                            }} className={"cur-pointer f-c-col"}><MinusIcon/></div>
 
                             <div className={styles.count}>{count}</div>
-                            <div onClick={() => alert("Увеличить")} className={"cur-pointer f-c-col"}><PlusIcon/></div>
+                            <div onClick={() => {
+                                dispatch(editCountCart({
+                                    cart_id: cart.filter(item => item.product.id === id)[0].id,
+                                    count: count + 1,
+                                    id: id
+
+                                }))
+                            }} className={"cur-pointer f-c-col"}><PlusIcon/></div>
 
                         </div>
                         :

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import ShadowWrapper from "../ShadowWrapper";
 import WindowBody from "../WhiteWrapper";
 import {AddedAdditiveIcon, CancelCircleIcon, CloseIcon} from "../../../icons";
@@ -10,9 +10,10 @@ import {AdditiveProduct} from "../../../types/products.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
 import {handleProductAdditives, handleYourAddress} from "../../../features/modals/modalsSlice";
+import {addToCart} from "../../../features/cart/cartSlice";
 
 type AdditiveItemProps = {
-    isAdded: boolean,
+    selected: boolean,
     addHandler: () => void
     isEmpty?: boolean,
     price: number,
@@ -20,9 +21,9 @@ type AdditiveItemProps = {
     name: string
 
 } & AdditiveProduct
-const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, imageUrl = "", isAdded, className, isEmpty, price}) => {
+const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, imageUrl = "", selected, className, isEmpty, price}) => {
     return (
-        <div className={`${styles.item} f-column-betw gap-20 al-center txt-center p-rel`}>
+        <div onClick={addHandler} className={`${styles.item} ${selected ? styles.itemSelected : ""} f-column-betw gap-20 al-center txt-center p-rel`}>
 
             <div className={styles.imageWrapper}>
                 {isEmpty ?
@@ -45,13 +46,31 @@ const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, i
     )
 }
 const ProductAdditives = () => {
-    const {additives, imageUrl, price, weight, name, description} = useAppSelector(state => state.modals.productAdditivesData)
+    const {additives, imageUrl, price, weight, name, description, id} = useAppSelector(state => state.modals.productAdditivesData)
     const dispatch = useAppDispatch()
+    const {address} = useAppSelector(state => state.forms.orderForm)
+    const {items} = useAppSelector(state => state.products)
+    const [selectedAdditive, setSelectedAdditive] = useState(-1)
 
     const handleAddToCartClick = () => {
         dispatch(handleProductAdditives())
+        if(address.val.length > 0) {
+            const product = items.filter(item => item.id === id)[0]
+            dispatch(addToCart({
+                ...product,
+                supplements: [
+                    {
+
+                        ...product.supplements.filter(supplement => supplement.id === selectedAdditive)[0]
+                    }
+                ]
+            }))
+            return;
+        }
         dispatch(handleYourAddress())
     }
+    const additivePrice = selectedAdditive !== -1 ? additives.filter(supplement => supplement.id === selectedAdditive)[0].price : 0
+
 
     return (
         <ShadowWrapper onClick={() => dispatch(handleProductAdditives())}>
@@ -80,11 +99,14 @@ const ProductAdditives = () => {
                                     <div className="additivesListBlock f-1 gap-10 f-column">
                                         <h4>Добавьте по вкусу</h4>
                                         <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
-                                            <AdditiveItem isAdded={false} isEmpty={true} price={0} name={"Без соуса"} addHandler={() => {
+                                            <AdditiveItem selected={selectedAdditive == -1} isEmpty={true} price={0} name={"Без соуса"} addHandler={() => {
+                                                setSelectedAdditive(-1)
                                             }} imageUrl={''}/>
                                             {
                                                 additives.map(item => (
-                                                    <AdditiveItem isEmpty={false} imageUrl={item.imageUrl} isAdded={false} price={item.price} name={item.name} addHandler={() => {}}/>
+                                                    <AdditiveItem isEmpty={false} imageUrl={item.image} selected={selectedAdditive == item.id} price={item.price} name={item.title} addHandler={() => {
+                                                        setSelectedAdditive(item.id)
+                                                    }}/>
                                                 ))
                                             }
                                         </div>
@@ -92,7 +114,7 @@ const ProductAdditives = () => {
 
                             }
 
-                            <RedButton onClick={handleAddToCartClick} disabled={false} className={"pd-10-0"}>Добавить в корзину за {price} ₽</RedButton>
+                            <RedButton onClick={handleAddToCartClick} disabled={false} className={"pd-10-0"}>Добавить в корзину за {price + additivePrice} ₽</RedButton>
                         </div>
 
                     </div>

@@ -104,7 +104,9 @@
 
     .cartBtn {
       transition: .2s color;
-
+      b {
+        text-align: end;
+      }
       svg {
         path {
           transition: .2s fill, .2s stroke, .2s transform;

@@ -195,7 +195,7 @@ export type AddToCartRequest = {
 }
 export type AddToCartResponse = {
     id: number
-    list_id: number
+    list_id: number[]
 
 } & ResponseStatus
 
@@ -207,6 +207,7 @@ export type CartProductItem = {
         short_description: string
         image: string
         price: number
+        composition: string
     }
     count: number
     supplements: Array<Supplement>
@@ -236,7 +237,7 @@ export type CartCountSupplementsResponse = ResponseStatus
 
 
 export type CartProductDeleteRequest = {
-    cart_id: 1,
+    cart_id: number,
 }
 export type CartProductDeleteResponse = ResponseStatus
 

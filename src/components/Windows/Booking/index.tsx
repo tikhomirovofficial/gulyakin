@@ -12,7 +12,7 @@ import RedButton from "../../Buttons/RedButton";
 const BookingWindow = () => {
     const dispatch = useAppDispatch()
     return (
-        <ShadowWrapper>
+        <ShadowWrapper onClick={() => dispatch(handleBooking())}>
             <WindowBody className={`${styles.window} f-column`}>
                 <div className="w-100p d-f jc-end">
                     <div onClick={() => dispatch(handleBooking())} className={"closeWrapper"}>

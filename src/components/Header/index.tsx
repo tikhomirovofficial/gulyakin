@@ -149,14 +149,14 @@ const Header = () => {
                                       className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
                                     <ProfileIcon height={22} width={16}/>
                                     <b>
-                                        {user.data.phone}
+                                        Кабинет
                                     </b>
                                 </Link>
                         }
 
                         <div
                             onClick={() => dispatch(handleCartOpened())}
-                            className={`${styles.cartBtnFilled} ${styles.cartBtn} btn d-f gap-5 al-center cur-pointer`}>
+                            className={`${styles.cartBtnFilled} ${styles.cartBtn} gap-5 btn d-f al-center cur-pointer`}>
                             <CartIcon height={22} width={22}/>
                             <b>
                                 {formatNumberWithSpaces(totalPrice)} ₽

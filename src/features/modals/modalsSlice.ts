@@ -31,23 +31,14 @@ const initialState: ModalSliceState = {
     cartOpened: false,
     newAddress: false,
     productAdditivesData: {
-        description: "Куриное филе, ветчина, бекон, огурцы маринованные,соус тар-тар, томаты, моцарелла, сыр гауда, чеддер",
-        imageUrl: getImgPath('productCard.png'),
-        name: "Блин деревнский топ",
+        id: 0,
+        description: "",
+        imageUrl: "",
+        name: "",
         price: 0,
-        weight: 250,
+        weight: 0,
         currentAdditive: 0,
         additives: [
-            {
-                imageUrl: getImgPath('productAdditive.png'),
-                name: "Соус 1",
-                price: 49,
-            },
-            {
-                imageUrl: getImgPath('productAdditive.png'),
-                name: "Соус 2",
-                price: 69,
-            }
         ],
 
     }

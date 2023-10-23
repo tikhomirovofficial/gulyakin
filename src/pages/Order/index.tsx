@@ -3,30 +3,41 @@ import Header from "../../components/Header";
 import styles from './order.module.scss'
 import LogosSection from "../../components/LogosSection";
 import InputWrapper from "../../components/Inputs/InputWrapper";
-import {EditIcon, PaymentCard, PaymentCash} from "../../icons";
+import {PaymentCard, PaymentCash} from "../../icons";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import RedButton from "../../components/Buttons/RedButton";
 import RadioInput from "../../components/Inputs/RadioInput";
 import SelectInput from "../../components/Inputs/SelectInput";
 import Footer from "../../components/Footer";
 import {
-    handleOrderCallNeeded, handleOrderFormEditing,
+    handleOrderCallNeeded,
+    handleOrderFormEditing,
     handleOrderFormVal,
-    handleOrderPaymentWay, handleOrderPickup,
-    handleOrderTime, handleProfileFormEditing,
-    handleProfileFormVal, handleSelectRestaurant
+    handleOrderPaymentWay,
+    handleOrderPickup,
+    handleOrderTime,
+    handleSelectRestaurant
 } from "../../features/forms/formsSlice";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {TextField} from "../../components/Inputs/TextField";
 import {getImgPath} from "../../utils/getAssetsPath";
 
-const orderTimes  = ["18:30", "19:30"]
+const orderTimes = ["18:30", "19:30"]
 
 
 const Order = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
     const {totalPrice} = useAppSelector(state => state.cart)
-    const {name, callNeeded, time, paymentWay, address, phone, isPickup, restaurant} = useAppSelector(state => state.forms.orderForm)
+    const {
+        name,
+        callNeeded,
+        time,
+        paymentWay,
+        address,
+        phone,
+        isPickup,
+        restaurant
+    } = useAppSelector(state => state.forms.orderForm)
 
     const dispatch = useAppDispatch()
     return (
@@ -38,15 +49,21 @@ const Order = () => {
                     <div className="orderContainer d-f jc-between gap-80">
                         <div className="orderBlock f-column gap-40">
                             <div className={`${styles.form} f-column gap-25`}>
-                                <div className="sectionTitle">Заказ на {!isPickup ? "доставку": "самовывоз"}</div>
+                                <div className="sectionTitle">Заказ на {!isPickup ? "доставку" : "самовывоз"}</div>
                                 <div className="f-column gap-20">
                                     <div className="f-column gap-10">
                                         <div className="orderForm f-column gap-20">
                                             <InputWrapper
                                                 className={styles.inputField}
                                                 grayBorderedClassName={styles.inputField}
-                                                setVal={val => dispatch(handleOrderFormVal({keyField: "name", val: val}))}
-                                                changeVal={e => dispatch(handleOrderFormVal({keyField: "name", val: e.target.value}))}
+                                                setVal={val => dispatch(handleOrderFormVal({
+                                                    keyField: "name",
+                                                    val: val
+                                                }))}
+                                                changeVal={e => dispatch(handleOrderFormVal({
+                                                    keyField: "name",
+                                                    val: e.target.value
+                                                }))}
                                                 inputVal={name.val} placeholder={"Иван"}
                                                 labelText={
                                                     "Ваше имя"
@@ -69,7 +86,10 @@ const Order = () => {
                                                         isEditing={address.isEditing}
                                                         formValue={address.val}
                                                         condValue={address.val}
-                                                        textChangeVal={e => dispatch(handleOrderFormVal({keyField: "address", val: e.target.value}))}
+                                                        textChangeVal={e => dispatch(handleOrderFormVal({
+                                                            keyField: "address",
+                                                            val: e.target.value
+                                                        }))}
                                                         handleEdit={() => {
                                                             dispatch(handleOrderFormEditing("address"))
                                                         }}
@@ -79,22 +99,31 @@ const Order = () => {
                                                         onInputBlur={() => {
                                                             dispatch(handleOrderFormEditing("address"))
                                                         }}
-                                                        setVal={val => dispatch(handleOrderFormVal({keyField: "address", val: val}))}
-                                                        changeVal={e => dispatch(handleOrderFormVal({keyField: "address", val: e.target.value}))}
+                                                        setVal={val => dispatch(handleOrderFormVal({
+                                                            keyField: "address",
+                                                            val: val
+                                                        }))}
+                                                        changeVal={e => dispatch(handleOrderFormVal({
+                                                            keyField: "address",
+                                                            val: e.target.value
+                                                        }))}
                                                     /> :
-                                                    <SelectInput defaultCurrent={restaurant} className={styles.selectRestaurant} labelText={"Выберите ресторан (обязательно)"}
-                                                        selectHandler={(selected) => {
-                                                            dispatch(handleSelectRestaurant(selected))
-                                                        }}
-                                                        items={["первый", "второй"]
-                                                    }/>
+                                                    <SelectInput defaultCurrent={restaurant}
+                                                                 className={styles.selectRestaurant}
+                                                                 labelText={"Выберите ресторан (обязательно)"}
+                                                                 selectHandler={(selected) => {
+                                                                     dispatch(handleSelectRestaurant(selected))
+                                                                 }}
+                                                                 items={["первый", "второй"]
+                                                                 }/>
 
                                             }
 
 
                                         </div>
-                                        <b onClick={() => dispatch(handleOrderPickup())} className={`${styles.wayOrderBtn} colorRed cur-pointer`}>
-                                            {isPickup? "Выбрать доставку": "Выбрать самовывоз"}
+                                        <b onClick={() => dispatch(handleOrderPickup())}
+                                           className={`${styles.wayOrderBtn} colorRed cur-pointer`}>
+                                            {isPickup ? "Выбрать доставку" : "Выбрать самовывоз"}
                                         </b>
                                     </div>
                                     <div className={`f-column gap-20 ${styles.orderOptions}`}>
@@ -163,8 +192,14 @@ const Order = () => {
                                                 className={styles.inputField}
                                                 postFix={"₽"}
                                                 grayBorderedClassName={styles.inputField}
-                                                setVal={val => dispatch(handleOrderFormVal({keyField: "name", val: val}))}
-                                                changeVal={e => dispatch(handleOrderFormVal({keyField: "name", val: e.target.value}))}
+                                                setVal={val => dispatch(handleOrderFormVal({
+                                                    keyField: "name",
+                                                    val: val
+                                                }))}
+                                                changeVal={e => dispatch(handleOrderFormVal({
+                                                    keyField: "name",
+                                                    val: e.target.value
+                                                }))}
                                                 inputVal={name.val} placeholder={"1000"}
                                                 inputClassName={styles.diffCashInput}
                                                 labelText={
@@ -174,7 +209,9 @@ const Order = () => {
                                     }
                                 </div>
                                 <div className="f-column gap-15">
-                                    <RedButton disabled={!(address.val.length > 0) && !(totalPrice > 0)} className={"pd-15"}>Оформить заказ на {formatNumberWithSpaces(totalPrice)} ₽</RedButton>
+                                    <RedButton disabled={!(address.val.length > 0) && !(totalPrice > 0)}
+                                               className={"pd-15"}>Оформить заказ
+                                        на {formatNumberWithSpaces(totalPrice)} ₽</RedButton>
                                     <div className={"w-100p d-f jc-center"}>
                                         <b className={`${styles.backCart}`}>Вернуться в корзину</b>
                                     </div>
@@ -190,7 +227,8 @@ const Order = () => {
                                 <div className="f-column gap-5">
                                     <div className="productList f-column gap-5">
                                         <div className={`${styles.part} ${styles.product} pd-15 d-f gap-10`}>
-                                            <div style={{backgroundImage: `url(${getImgPath("product.jpg")})`}} className={`bg-cover ${styles.image}`}></div>
+                                            <div style={{backgroundImage: `url(${getImgPath("product.jpg")})`}}
+                                                 className={`bg-cover ${styles.image}`}></div>
                                             <div className="f-column-betw f-1">
                                                 <div className="top">
                                                     <h4>Пельмени с говядиной</h4>
@@ -200,7 +238,8 @@ const Order = () => {
                                             </div>
                                         </div>
                                         <div className={`${styles.part} ${styles.product} pd-15 d-f gap-10`}>
-                                            <div style={{backgroundImage: `url(${getImgPath("product.jpg")})`}} className={`bg-cover ${styles.image}`}></div>
+                                            <div style={{backgroundImage: `url(${getImgPath("product.jpg")})`}}
+                                                 className={`bg-cover ${styles.image}`}></div>
                                             <div className="f-column-betw f-1">
                                                 <div className="top">
                                                     <h4>Пельмени с говядиной</h4>

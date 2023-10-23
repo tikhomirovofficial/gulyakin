@@ -1,3 +1,5 @@
+import {Supplement} from "./api.types";
+
 export type Product = {
     price: number
     imageUrl: string,
@@ -9,6 +11,7 @@ export type Product = {
 export type AdditiveProduct = Pick<Product, "name" | "imageUrl" |"price">
 
 export type ProductAdditiveData = {
+    id: number
     currentAdditive: number
-    additives: Array<AdditiveProduct>
+    additives: Array<Supplement>
 } & Product

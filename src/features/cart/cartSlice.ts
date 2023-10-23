@@ -1,6 +1,14 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {CartProduct} from "../../types/cart.types";
-import {AddToCartRequest, AddToCartResponse, CartProductItem, GetCartResponse, ProductRes} from "../../types/api.types";
+import {
+    AddToCartRequest,
+    AddToCartResponse,
+    CartProductDeleteRequest,
+    CartProductItem,
+    ChangeCountCartRequest,
+    ChangeCountCartResponse,
+    GetCartResponse,
+    ProductRes
+} from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {CartApi} from "../../http/api/cart.api";
@@ -41,21 +49,39 @@ export const addToCart = createAsyncThunk(
             ]
         }
         const res: AxiosResponse<AddToCartResponse> = await handleTokenRefreshedRequest(CartApi.AddProduct, productCartReq)
-        if(res.status) {
-            // dispatch(addToCart({
-            //     category: request.category,
-            //     composition: request.composition,
-            //     description: request.description,
-            //     id: request.id,
-            //     image: request.image,
-            //     price: request.price,
-            //     short_description: request.short_description,
-            //     supplements: request.supplements,
-            //     title: request.title,
-            //     weight: request.weight
-            // }))
+        return {
+            product: request,
+            data: res
         }
-        return res.data
+    }
+)
+
+export const editCountCart = createAsyncThunk(
+    'cart/edit',
+    async (request: Pick<ProductRes, "id"> & ChangeCountCartRequest, {dispatch}) => {
+        const reqData: ChangeCountCartRequest = {
+            cart_id: request.cart_id,
+            count: request.count
+        }
+        const res: AxiosResponse<ChangeCountCartResponse> = await handleTokenRefreshedRequest(CartApi.EditProductCount, reqData)
+
+        return {
+            count: request.count,
+            product_id: request.cart_id,
+            data: res
+        }
+    }
+)
+export const removeFromCart = createAsyncThunk(
+    'cart/remove',
+    async (request: CartProductDeleteRequest, {dispatch}) => {
+        const res: AxiosResponse<AddToCartResponse> = await handleTokenRefreshedRequest(CartApi.RemoveProduct, {
+            cart_id: request.cart_id
+        })
+        return {
+            res: res,
+            cart_id: request.cart_id
+        }
     }
 )
 
@@ -122,6 +148,9 @@ export const CartSlice = createSlice({
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
                 state.items = action.payload
+                state.totalPrice = action.payload.reduce((prev, cur) => {
+                    return prev + (cur.count * cur.product.price)
+                }, 0)
             }
         })
         builder.addCase(getCart.rejected, (state, action) => {
@@ -132,9 +161,60 @@ export const CartSlice = createSlice({
 
         })
         builder.addCase(addToCart.fulfilled, (state, action) => {
-            console.log(action.payload)
+            const product = action.payload.product
+            const res = action.payload.data
+            if (action.payload) {
+                const newState = [
+                    ...state.items,
+                    {
+                        id: res.data.list_id[0],
+                        product: {
+                            composition: product.composition,
+                            id: product.id,
+                            title: product.title,
+                            image: product.image,
+                            price: product.price,
+                            short_description: product.short_description,
+                        },
+                        supplements: product.supplements,
+                        count: 1
+                    }
+                ]
+                state.items = newState
+
+            }
         })
         builder.addCase(addToCart.rejected, (state, action) => {
+
+        })
+        builder.addCase(editCountCart.pending, (state, action) => {
+
+        })
+        builder.addCase(editCountCart.fulfilled, (state, action) => {
+            const cartProductId = action.payload.product_id
+            if (action.payload) {
+                const newState = state.items.map(item => {
+                    if (item.id === cartProductId) {
+                        item.count = action.payload.count
+                        return item
+                    }
+                    return item
+                })
+                state.items = newState
+
+            }
+        })
+        builder.addCase(editCountCart.rejected, (state, action) => {
+
+        })
+        builder.addCase(removeFromCart.fulfilled, (state, action) => {
+            state.items = state.items.filter(item => item.id !== action.payload.cart_id)
+
+        })
+        builder.addCase(removeFromCart.rejected, (state, action) => {
+
+        })
+        builder.addCase(removeFromCart.pending, (state, action) => {
 
         })
     }

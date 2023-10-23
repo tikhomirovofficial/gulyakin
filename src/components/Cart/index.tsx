@@ -9,9 +9,10 @@ import List from "../List";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {CartProduct} from "../../types/cart.types";
-import {minusProduct, plusProduct, removeProduct} from "../../features/cart/cartSlice";
+import {editCountCart, minusProduct, plusProduct, removeFromCart, removeProduct} from "../../features/cart/cartSlice";
 import {handleCartOpened} from "../../features/modals/modalsSlice";
 import {CartProductItem, Supplement} from "../../types/api.types";
+import {domen} from "../../http/instance/instances";
 
 
 type CartItemProps = {
@@ -24,11 +25,11 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, c
     return (
         <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
             <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
-                <div style={{backgroundImage: `url(${product.image})`}} className={`${styles.image} bg-cover`}></div>
+                <div style={{backgroundImage: `url("${domen}/${product.image}")`}} className={`${styles.image} bg-cover`}></div>
                 <div className="text f-column gap-5 f-1 al-self-center">
                     <div className={"f-column gap-5"}>
                         <b>{product.title}</b>
-                        <p>{product.short_description}</p>
+                        <p>{product.composition}</p>
                     </div>
                     {
                         canNotBeAdded ?
@@ -39,7 +40,9 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, c
 
                 </div>
                 <div className="h-100p">
-                    <div onClick={() => dispatch(removeProduct(id))} className="close w-content h-content">
+                    <div onClick={() => dispatch(removeFromCart({
+                        cart_id: id
+                    }))} className="close w-content h-content">
                         <MiniClose/>
                     </div>
                 </div>
@@ -58,10 +61,26 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, c
                             }
 
                             <div  className={"d-f al-center gap-5"}>
-                                <div onClick={() => dispatch(minusProduct(id))} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
+                                <div onClick={() => {
+                                    if(count > 1) {
+                                        dispatch(editCountCart({
+                                            cart_id: id,
+                                            count: count - 1,
+                                            id: product.id
+
+                                        }))
+                                    }
+                                }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
 
                                 <div className={styles.count}>{count}</div>
-                                <div onClick={() => dispatch(plusProduct(id))} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
+                                <div onClick={() => {
+                                    dispatch(editCountCart({
+                                        cart_id: id,
+                                        count: count + 1,
+                                        id: product.id
+
+                                    }))
+                                }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
 
                             </div>
                         </div>

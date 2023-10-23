@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import WindowBody from "../WhiteWrapper";
 import {CloseIcon, Geo} from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
@@ -11,6 +11,8 @@ import GrayBorderedBlock from "../../GrayBorderedBlock";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
 import {handleDeliveryVariant, handleDeliveryWayWindow} from "../../../features/modals/modalsSlice";
+import {handleOrderFormVal} from "../../../features/forms/formsSlice";
+import {useInput} from "../../../hooks/useInput";
 
 interface AddressItemProps {
     selected: boolean
@@ -78,16 +80,21 @@ const DeliveryVariant = () => {
             city: "Сургут, ул. Университетская, д. 9"
         }
     ])
-
-    useEffect(() => {
-
-    }, [])
+    const dispatch = useAppDispatch()
+    const {address} = useAppSelector(state => state.forms.orderForm)
+    const [addressInput, changeVal, setVal] = useInput(address.val)
 
     return (
         <>
             <div className="f-column gap-10">
                 <div className={"d-f w-100p p-rel"}>
-                    <InputWrapper className={"w-100p"} placeholder={"Сургут, ул. Университетская, д. 9"} labelText={
+                    <InputWrapper
+                        setVal={val => setVal(val)}
+                        changeVal={e => changeVal(e)}
+                        inputVal={addressInput}
+                        className={"w-100p"}
+                        placeholder={"Сургут, ул. Университетская, д. 9"}
+                        labelText={
                         <div className={"d-f al-center gap-5 svgRedStroke"}>
                             Город, улица и дом
                             <div className={"f-c-col w-content"}>
@@ -141,7 +148,13 @@ const DeliveryVariant = () => {
                     </div>
                 }/>
             </div>
-            <RedButton disabled={false} className={"pd-10-0"}>Указать адрес доставки</RedButton>
+            <RedButton onClick={() => {
+                dispatch(handleOrderFormVal({
+                    keyField: "address",
+                    val: addressInput
+                }))
+
+            }} disabled={addressInput.length == 0} className={"pd-10-0"}>Добавить адрес доставки</RedButton>
         </>
     )
 }
@@ -182,10 +195,14 @@ const DeliveryWay = () => {
     }
 
     return (
-        <ShadowWrapper>
+        <ShadowWrapper onClick={() => {
+            dispatch(handleDeliveryWayWindow())
+        }}>
             <SuccessWindow isOpened={false} title={"Ваш адрес успешно добавлен!"}/>
             <WindowBody className={`${styles.window} f-row-betw p-rel`}>
-                <div onClick={() => {dispatch(handleDeliveryWayWindow())}} className={"modalAbsoluteClose closeWrapper p-abs"}>
+                <div onClick={() => {
+                    dispatch(handleDeliveryWayWindow())
+                }} className={"modalAbsoluteClose closeWrapper p-abs"}>
                     <CloseIcon isDark={true}/>
                 </div>
                 <div className={`${styles.content} f-column-betw pd-30 gap-20`}>

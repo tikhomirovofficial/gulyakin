@@ -24,7 +24,7 @@ import {handleBooking} from "../../features/modals/modalsSlice";
  import useToken from "../../hooks/useToken";
 
 const Main: FC = () => {
-    const {categories, products} = useAppSelector(state => state)
+    const {categories, products, cart} = useAppSelector(state => state)
     const is_auth = useAuth()
     const token = useToken()
 
@@ -300,6 +300,8 @@ const Main: FC = () => {
                                                       renderItem={(product) =>
                                                           <Product title={product.title}
                                                                    id={product.id}
+                                                                   count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
+                                                                   inCart={cart.items.some(item => item.product.id === product.id)}
                                                                    image={product.image}
                                                                    composition={product.composition}
                                                                    weight={product.weight}

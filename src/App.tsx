@@ -10,7 +10,7 @@ import NewAddress from "./components/Windows/NewAddress";
 import {YMaps} from "@pbe/react-yandex-maps";
 import AppRoutes from "./router/AppRoutes";
 import Cart from "./components/Cart";
-import {setTotalPrice} from "./features/cart/cartSlice";
+import {getCart, setTotalPrice} from "./features/cart/cartSlice";
 import {ScrollToTop} from "./components/ServiceComponents";
 import {getUser} from "./features/profile/profileSlice";
 import useAuth from "./hooks/useAuth";
@@ -21,6 +21,8 @@ import Footer from "./components/Footer";
 import product from "./components/Catalog/Product";
 import {getProductByMarket} from "./features/products/productsSlice";
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
+import {addToStorage} from "./utils/LocalStorageExplorer";
+import order from "./pages/Order";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -39,27 +41,30 @@ function App() {
 
     const {items} = useAppSelector(state => state.cart)
     const products = useAppSelector(state => state.products.items)
+    const orderForm = useAppSelector(state => state.forms.orderForm)
     const profileData = useAppSelector(state => state.profile.data)
     const {market} = useAppSelector(state => state.main)
 
     useEffect(() => {
-        const totalProductPrice = items.reduce((prev, cur) => {
-            return prev + cur.product.price * cur.count
-        }, 0)
-        dispatch(setTotalPrice(totalProductPrice))
-    }, [items])
-
+        addToStorage("order_form", orderForm)
+    }, [orderForm])
 
     useEffect(() => {
-        if (is_auth) {
-            console.log("Запрос корзина")
-        }
-    }, [is_auth])
+        dispatch(setTotalPrice(
+            items.reduce((prev, cur) => {
+                return prev + (cur.count * cur.product.price) + (cur.supplements.reduce((p, c) => {
+                    return p + c.price
+                }, 0))
+            }, 0)
+        ))
+
+    }, [items])
 
     useEffect(() => {
         if(!products.length) {
             dispatch(getCategoriesByMarket({market_id: market}))
             dispatch(getProductByMarket({market_id: market}))
+            dispatch(getCart())
         }
     }, [])
 

@@ -34,7 +34,7 @@ const YourAddressWindow = () => {
 
 
     return (
-        <ShadowWrapper>
+        <ShadowWrapper onClick={() => dispatch(handleYourAddress())}>
             <WindowBody className={`${styles.window} f-column`}>
                 <div className="w-100p d-f jc-end">
                     <div onClick={() => dispatch(handleYourAddress())} className={"closeWrapper"}>

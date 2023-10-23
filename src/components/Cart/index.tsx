@@ -13,6 +13,7 @@ import {editCountCart, minusProduct, plusProduct, removeFromCart, removeProduct}
 import {handleCartOpened} from "../../features/modals/modalsSlice";
 import {CartProductItem, Supplement} from "../../types/api.types";
 import {domen} from "../../http/instance/instances";
+import {useNavigate} from "react-router-dom";
 
 
 type CartItemProps = {
@@ -125,6 +126,7 @@ const CartAdditiveItem: FC<Supplement> = ({id, price, short_description, title, 
 
 const Cart = () => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const {items, totalPrice} = useAppSelector(state => state.cart)
     const {cartOpened} = useAppSelector(state => state.modals)
     const [additivesOpened, setAdditivesOpened] = useState(false)
@@ -161,11 +163,11 @@ const Cart = () => {
 
 
     const handleToOrder = () => {
-
     }
 
     const handleToCatalog = () => {
-
+        handleCloseCart()
+        navigate("/")
     }
 
     useEffect(() => {
@@ -286,7 +288,7 @@ const Cart = () => {
                     {
                         items.length ?
                             <RedButton disabled={items.some(item => item.product.id < 0)} className={"w-100p pd-15"}>К оформлению</RedButton> :
-                            <RedButton disabled={items.some(item => item.product.id < 0)} className={"w-100p pd-15"}>Перейти в меню</RedButton>
+                            <RedButton onClick={handleToCatalog} disabled={items.some(item => item.product.id < 0)} className={"w-100p pd-15"}>Перейти в меню</RedButton>
                     }
 
                 </div>

@@ -9,8 +9,9 @@ import {HasClassName} from "../../../types/components.types";
 import {AdditiveProduct} from "../../../types/products.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
-import {handleProductAdditives, handleYourAddress} from "../../../features/modals/modalsSlice";
+import {handleLogin, handleProductAdditives, handleYourAddress} from "../../../features/modals/modalsSlice";
 import {addToCart} from "../../../features/cart/cartSlice";
+import useToken from "../../../hooks/useToken";
 
 type AdditiveItemProps = {
     selected: boolean,
@@ -48,26 +49,33 @@ const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, i
 const ProductAdditives = () => {
     const {additives, imageUrl, price, weight, name, description, id} = useAppSelector(state => state.modals.productAdditivesData)
     const dispatch = useAppDispatch()
+    const token = useToken()
     const {address} = useAppSelector(state => state.forms.orderForm)
     const {items} = useAppSelector(state => state.products)
     const [selectedAdditive, setSelectedAdditive] = useState(-1)
 
     const handleAddToCartClick = () => {
         dispatch(handleProductAdditives())
-        if(address.val.length > 0) {
-            const product = items.filter(item => item.id === id)[0]
-            dispatch(addToCart({
-                ...product,
-                supplements: [
-                    {
+        if(token) {
+            if(address.val.length > 0) {
+                const product = items.filter(item => item.id === id)[0]
+                dispatch(addToCart({
+                    ...product,
+                    supplements: [
+                        {
 
-                        ...product.supplements.filter(supplement => supplement.id === selectedAdditive)[0]
-                    }
-                ]
-            }))
-            return;
+                            ...product.supplements.filter(supplement => supplement.id === selectedAdditive)[0]
+                        }
+                    ]
+                }))
+                return;
+            }
+            dispatch(handleYourAddress())
+            return
         }
-        dispatch(handleYourAddress())
+        dispatch(handleLogin())
+
+
     }
     const additivePrice = selectedAdditive !== -1 ? additives.filter(supplement => supplement.id === selectedAdditive)[0].price : 0
 

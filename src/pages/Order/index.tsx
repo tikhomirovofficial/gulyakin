@@ -42,8 +42,6 @@ const Order = () => {
     const dispatch = useAppDispatch()
     return (
         <>
-            <Header/>
-            <LogosSection/>
             <div className={styles.order}>
                 <div className="wrapper">
                     <div className="orderContainer d-f jc-between gap-80">
@@ -279,7 +277,6 @@ const Order = () => {
 
                 </div>
             </div>
-            <Footer/>
         </>
     );
 };

@@ -13,6 +13,8 @@ import {editUser, removeAddress} from "../../features/profile/profileSlice";
 import {handleOrderFormEditing, handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
 import {HasClassName} from "../../types/components.types";
 import {TextField} from "../../components/Inputs/TextField";
+import {deleteCookie} from "../../utils/CookieUtil";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -20,6 +22,7 @@ const Profile = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
     const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const handleUserEdit = () => {
         dispatch(editUser({
@@ -27,6 +30,11 @@ const Profile = () => {
             email: email.val,
             dob: dob.val
         }))
+    }
+    const handleLogout = () => {
+        deleteCookie("tokens")
+        navigate("/")
+
     }
 
     return (
@@ -147,7 +155,7 @@ const Profile = () => {
                                         совершать покупки</p>
                             }
                         </div>
-                        <GrayButton className={`${styles.logoutBtn} w-content cur-pointer`}>Выйти</GrayButton>
+                        <GrayButton onClick={handleLogout} className={`${styles.logoutBtn} w-content cur-pointer`}>Выйти</GrayButton>
                     </div>
 
                 </div>

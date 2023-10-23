@@ -42,7 +42,6 @@ function App() {
     const {items} = useAppSelector(state => state.cart)
     const products = useAppSelector(state => state.products.items)
     const orderForm = useAppSelector(state => state.forms.orderForm)
-    const profileData = useAppSelector(state => state.profile.data)
     const {market} = useAppSelector(state => state.main)
 
     useEffect(() => {
@@ -64,6 +63,8 @@ function App() {
         if(!products.length) {
             dispatch(getCategoriesByMarket({market_id: market}))
             dispatch(getProductByMarket({market_id: market}))
+        }
+        if(is_auth) {
             dispatch(getCart())
         }
     }, [])

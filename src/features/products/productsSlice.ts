@@ -24,7 +24,7 @@ const initialState: ProductsSliceState = {
 export const getProductByMarket = createAsyncThunk(
     'product/by-market',
     async (request: GetProductsByMarketRequest, {dispatch}) => {
-        const res: AxiosResponse<GetProductsByMarketResponse> = await handleTokenRefreshedRequest(ProductsApi.ProductsByMarket, request)
+        const res: AxiosResponse<GetProductsByMarketResponse> = await ProductsApi.ProductsByMarket(request)
         return res.data.products
     }
 )

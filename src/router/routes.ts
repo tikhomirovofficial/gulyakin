@@ -27,17 +27,18 @@ export const routes: RoutesCollection = {
         {
             Component: ChosenRestaurant,
             path: "/restaurants/:id"
-        },
-        {
-            Component: Order,
-            path: "/order"
         }
+
 
     ],
     auth: [
         {
             Component: Profile,
             path: "/profile"
+        },
+        {
+            Component: Order,
+            path: "/order"
         }
     ],
     non_auth: [

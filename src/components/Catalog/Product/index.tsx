@@ -12,7 +12,7 @@ import {
     setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
 import {ProductRes, Supplement} from "../../../types/api.types";
-import {addToCart, editCountCart, setProductAfterLogin} from "../../../features/cart/cartSlice";
+import {addToCart, editCountCart, setProductAfterAddress, setProductAfterLogin} from "../../../features/cart/cartSlice";
 import useAuth from "../../../hooks/useAuth";
 import useToken from "../../../hooks/useToken";
 import {domain} from "../../../http/instance/instances";
@@ -39,53 +39,47 @@ const Product: FC<ProductProps & HasClassName> = ({
                                                   }) => {
     const dispatch = useAppDispatch()
 
-    // const [count, setCount] = useState<number>(count1)
-    // const [isInCart, setInCart] = useState<boolean>(inCart)
-    // const addCount = () => setCount(prev => prev + 1)
-    // const reduceCount = () => setCount(prev => {
-    //     if(prev > 1) {
-    //         return prev - 1
-    //     }
-    //     return prev
-    // })
     const token = useToken()
     const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const cart = useAppSelector(state => state.cart.items)
-    const handleAddToCart = () => {
-        if (supplements.length) {
-            dispatch(setProductAdditivesData({
-                id: id,
-                additives: supplements,
-                currentAdditive: 0,
-                description: composition,
-                imageUrl: domain + "/" + image || "",
-                name: title,
-                price: price,
-                weight: weight
+    const handleOpenAdditives = () => {
+        dispatch(setProductAdditivesData({
+            id: id,
+            additives: supplements,
+            currentAdditive: 0,
+            description: composition,
+            imageUrl: domain + "/" + image || "",
+            name: title,
+            price: price,
+            weight: weight
 
-            }))
-            dispatch(handleProductAdditives())
-            return;
-        }
+        }))
+        dispatch(handleProductAdditives())
+        return;
+    }
+    const handleAddToCart = () => {
+
+
         if (token) {
             if(address.val.length > 0 || restaurant !== -1) {
-                dispatch(addToCart({
-                    category: 1,
-                    composition,
-                    description: composition,
-                    id,
-                    image,
-                    price,
-                    short_description: "",
-                    supplements,
-                    title: title,
-                    weight
-
-                }))
-                return;
+                handleOpenAdditives()
+                // dispatch(addToCart({
+                //     category: 1,
+                //     composition,
+                //     description: composition,
+                //     id,
+                //     image,
+                //     price,
+                //     short_description: "",
+                //     supplements,
+                //     title: title,
+                //     weight
+                //
+                // }))
+            } else {
+                dispatch(setProductAfterAddress(id))
+                dispatch(handleYourAddress())
             }
-            dispatch(handleYourAddress())
-
             return;
         }
         dispatch(setProductAfterLogin(id))
@@ -93,7 +87,7 @@ const Product: FC<ProductProps & HasClassName> = ({
     }
 
     return (
-        <div className={`${styles.product} h-100p f-column-betw gap-15`}>
+        <div onClick={handleOpenAdditives} className={`${styles.product} cur-pointer h-100p f-column-betw gap-15`}>
             <div className="f-column gap-15">
                 <div className={`${styles.img} w-100p`}>
                     <img src={domain + "/" + image} alt=""/>
@@ -112,7 +106,7 @@ const Product: FC<ProductProps & HasClassName> = ({
 
 
             </div>
-            <div style={{minHeight: 37}} className="f-row-betw">
+            <div onClick={e => e.stopPropagation()} style={{minHeight: 37}} className="f-row-betw">
                 <h4>{price} ₽</h4>
                 {
                     inCart ?

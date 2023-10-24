@@ -15,13 +15,14 @@ import {
     handleOrderFormVal,
     handleOrderPaymentWay,
     handleOrderPickup,
-    handleOrderTime,
-    handleSelectRestaurant
+    handleOrderTime, handleProfileFormEditing, handleProfileFormVal,
+    handleSelectRestaurant, setOrderForm
 } from "../../features/forms/formsSlice";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {TextField} from "../../components/Inputs/TextField";
 import {getImgPath} from "../../utils/getAssetsPath";
 import {domain} from "../../http/instance/instances";
+import {getFromStorage} from "../../utils/LocalStorageExplorer";
 
 const orderTimes = ["18:30", "19:30"]
 
@@ -64,10 +65,16 @@ const Order = () => {
     } = useAppSelector(state => state.forms.orderForm)
 
     const dispatch = useAppDispatch()
+    const storageFromRest = getFromStorage('order_form')?.restaurant
     useEffect(() => {
         console.log(marketAddresses)
         console.log(restaurant)
         console.log(marketAddresses.findIndex(item => item.id == restaurant), "rest")
+        dispatch(handleOrderFormVal({
+            keyField: "name",
+            val: data.name
+        }))
+        console.log(getFromStorage('order_form')?.restaurant ? getFromStorage('order_form')?.restaurant : marketAddresses.length > 0 ?  marketAddresses.findIndex(item => item.id == restaurant) : -1)
     }, [])
     return (
         <>
@@ -80,25 +87,31 @@ const Order = () => {
                                 <div className="f-column gap-20">
                                     <div className="f-column gap-10">
                                         <div className="orderForm f-column gap-20">
-                                            <InputWrapper
+                                            <TextField
+                                                handleSave={() => {}}
                                                 className={styles.inputField}
-                                                grayBorderedClassName={styles.inputField}
-                                                setVal={val => dispatch(handleOrderFormVal({
-                                                    keyField: "name",
-                                                    val: val
-                                                }))}
-                                                changeVal={e => dispatch(handleOrderFormVal({
-                                                    keyField: "name",
-                                                    val: e.target.value
-                                                }))}
-                                                inputVal={name.val} placeholder={"Иван"}
-                                                labelText={
-                                                    "Ваше имя"
-                                                }/>
+                                                placeholder={"Иван"}
+                                                labelText={"Ваше имя"}
+                                                isEditing={name.isEditing}
+                                                formValue={name.val}
+                                                condValue={data.name}
+                                                handleEdit={() => {
+                                                    dispatch(handleOrderFormEditing("name"))
+                                                }}
+                                                onInputFocus={() => {
+                                                    dispatch(handleOrderFormEditing("name"))
+                                                }}
+                                                onInputBlur={() => {
+                                                    dispatch(handleOrderFormEditing("name"))
+                                                    dispatch(handleOrderFormVal({keyField: "name", val: data.name}))
+                                                }}
+                                                setVal={val => dispatch(handleOrderFormVal({keyField: "name", val: val}))}
+                                                changeVal={e => dispatch(handleOrderFormVal({keyField: "name", val: e.target.value}))}
+                                            />
                                             <InputWrapper disabled={true} inActive={true}
                                                           grayBorderedClassName={styles.inputField}
                                                           locked={true}
-                                                          inputVal={phone} placeholder={"Номер телефона"}
+                                                          inputVal={data.phone} placeholder={"Номер телефона"}
                                                           labelText={
                                                               "Номер телефона"
                                                           }/>
@@ -135,7 +148,7 @@ const Order = () => {
                                                             val: e.target.value
                                                         }))}
                                                     /> :
-                                                    <SelectInput defaultCurrent={marketAddresses.findIndex(item => item.id == restaurant)}
+                                                    <SelectInput defaultCurrent={marketAddresses.length > 0 ?  marketAddresses.findIndex(item => item.id == storageFromRest || restaurant) : 0}
                                                                  className={styles.selectRestaurant}
                                                                  labelText={"Выберите ресторан (обязательно)"}
                                                                  selectHandler={(selected) => {

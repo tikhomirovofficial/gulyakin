@@ -21,9 +21,10 @@ import Footer from "./components/Footer";
 import product from "./components/Catalog/Product";
 import {getProductByMarket} from "./features/products/productsSlice";
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
-import {addToStorage} from "./utils/LocalStorageExplorer";
+import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
 import order from "./pages/Order";
 import {getAddressesByMarketCity, getCities} from "./features/main/mainSlice";
+import {setOrderForm} from "./features/forms/formsSlice";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -46,7 +47,12 @@ function App() {
     const {market, cities, currentGeo} = useAppSelector(state => state.main)
 
     useEffect(() => {
-        addToStorage("order_form", orderForm)
+        if(orderForm?.restaurant != -1 || orderForm?.address.val.length > 0) {
+            addToStorage("order_form", {
+                restaurant: orderForm.restaurant,
+                address: orderForm.address.val
+            })
+        }
     }, [orderForm])
 
     useEffect(() => {
@@ -69,6 +75,16 @@ function App() {
         if(!cities.length) {
             dispatch(getCities())
         }
+        const gettedOrderForm = getFromStorage("order_form")
+        if (gettedOrderForm !== undefined && gettedOrderForm !== null) {
+            if(gettedOrderForm?.restaurant != -1 || gettedOrderForm?.address.length > 0) {
+                dispatch(setOrderForm({
+                    restaurant: gettedOrderForm.restaurant,
+                    address: gettedOrderForm.address
+                }))
+            }
+        }
+
     }, [])
 
     useEffect(() => {
@@ -84,6 +100,7 @@ function App() {
             }))
         }
     }, [cities])
+
     return (
         <>
             <ScrollToTop/>

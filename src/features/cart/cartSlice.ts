@@ -17,6 +17,7 @@ import {CartApi} from "../../http/api/cart.api";
 type CartSliceState = {
     items: Array<CartProductItem>,
     addProductAfterLogin: number | null,
+    addProductAfterAddress: number | null,
     totalPrice: number,
     cartCounts: Record<string,number>
 }
@@ -24,6 +25,7 @@ type CartSliceState = {
 const initialState: CartSliceState = {
     items: [],
     addProductAfterLogin: null,
+    addProductAfterAddress: null,
     totalPrice: 0,
     cartCounts: {}
 }
@@ -98,6 +100,9 @@ export const CartSlice = createSlice({
     reducers: {
         setProductAfterLogin: (state, action) => {
           state.addProductAfterLogin = action.payload
+        },
+        setProductAfterAddress: (state, action) => {
+            state.addProductAfterAddress = action.payload
         },
         addProduct: (state, action: PayloadAction<CartProductItem>) => {
 
@@ -239,7 +244,8 @@ export const {
     minusProduct,
     setTotalPrice,
     removeProduct,
-    setProductAfterLogin
+    setProductAfterLogin,
+    setProductAfterAddress
 } = CartSlice.actions
 
 

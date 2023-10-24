@@ -2,10 +2,10 @@ import axios from 'axios'
 import {getCookie} from "../../utils/CookieUtil";
 import {getTokens} from "../../utils/storeTokens";
 
-const isDev = true
+const isDev = false
 
 const devDomain = "http://dev.advafert.ru"
-const prodDomain = "http://vps.advafert.ru:5000"
+const prodDomain = "https://api.client.advafert.ru"
 export const domain = isDev ? devDomain : prodDomain
 const URL = domain + "/api"
 

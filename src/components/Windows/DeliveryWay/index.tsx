@@ -10,9 +10,10 @@ import {Map, YMaps} from "@pbe/react-yandex-maps";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
-import {handleDeliveryVariant, handleDeliveryWayWindow} from "../../../features/modals/modalsSlice";
+import {handleDeliveryVariant, handleDeliveryWayWindow, handleLogin} from "../../../features/modals/modalsSlice";
 import {handleOrderFormVal, handleSelectRestaurant} from "../../../features/forms/formsSlice";
 import {useInput} from "../../../hooks/useInput";
+import {addToCart, setProductAfterAddress} from "../../../features/cart/cartSlice";
 
 interface AddressItemProps {
     selected: boolean,
@@ -163,9 +164,23 @@ const DeliveryVariant = () => {
 const PickupVariant = () => {
     const [selectedAddress, setSelectedAddress] = useState(-1)
     const {addresses}= useAppSelector(state => state.main)
+    const products= useAppSelector(state => state.products)
+    const {addProductAfterAddress}= useAppSelector(state => state.cart)
     const dispatch = useAppDispatch()
-    const handleAddAdressPickup = () => {
+    const handleAddAddressPickup = () => {
         dispatch(handleSelectRestaurant(selectedAddress))
+        if(addProductAfterAddress !== null) {
+            const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress)[0]
+            if (matchedProduct?.id !== undefined) {
+                dispatch(addToCart({
+                    ...matchedProduct,
+                }))
+                dispatch(setProductAfterAddress(null))
+
+            }
+            dispatch(handleDeliveryWayWindow())
+
+        }
 
     }
     return (
@@ -176,7 +191,7 @@ const PickupVariant = () => {
                                  selected={item.id === selectedAddress}/>
                 ))}
             </div>
-            <RedButton onClick={handleAddAdressPickup} disabled={selectedAddress == -1} className={"pd-10-0"}>Выбрать</RedButton>
+            <RedButton onClick={handleAddAddressPickup} disabled={selectedAddress == -1} className={"pd-10-0"}>Выбрать</RedButton>
         </>
 
     )

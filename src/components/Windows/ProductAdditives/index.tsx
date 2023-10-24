@@ -10,7 +10,7 @@ import {AdditiveProduct} from "../../../types/products.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
 import {handleLogin, handleProductAdditives, handleYourAddress} from "../../../features/modals/modalsSlice";
-import {addToCart} from "../../../features/cart/cartSlice";
+import {addToCart, setProductAfterAddress} from "../../../features/cart/cartSlice";
 import useToken from "../../../hooks/useToken";
 
 type AdditiveItemProps = {
@@ -50,26 +50,21 @@ const ProductAdditives = () => {
     const {additives, imageUrl, price, weight, name, description, id} = useAppSelector(state => state.modals.productAdditivesData)
     const dispatch = useAppDispatch()
     const token = useToken()
-    const {address} = useAppSelector(state => state.forms.orderForm)
+    const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const {items} = useAppSelector(state => state.products)
     const [selectedAdditive, setSelectedAdditive] = useState(-1)
 
     const handleAddToCartClick = () => {
         dispatch(handleProductAdditives())
         if(token) {
-            if(address.val.length > 0) {
+            if(address.val.length > 0 || restaurant !== -1) {
                 const product = items.filter(item => item.id === id)[0]
                 dispatch(addToCart({
-                    ...product,
-                    supplements: [
-                        {
-
-                            ...product.supplements.filter(supplement => supplement.id === selectedAdditive)[0]
-                        }
-                    ]
+                    ...product
                 }))
                 return;
             }
+            dispatch(setProductAfterAddress(id))
             dispatch(handleYourAddress())
             return
         }
@@ -95,11 +90,11 @@ const ProductAdditives = () => {
                     </div>
                     <div className={`${styles.productAdditivesBar} f-column-betw gap-30`}>
                        <div className="top f-column gap-10">
-                           <div className={`${styles.titleBlock} d-f al-center gap-20`}>
+                           <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
                                 <h3>{name}</h3>
                                 <div className={styles.weight}>{weight} г</div>
                            </div>
-                           <p className={styles.description}>{description}</p>
+                           <p className={styles.description}>{description || "Описание не заполнено"}</p>
                        </div>
                         <div className={`${additives.length ? "f-1" : ""} content gap-10 f-column-betw`}>
                             {

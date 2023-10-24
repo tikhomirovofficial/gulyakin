@@ -52,7 +52,7 @@ const initialState: FormsSliceState = {
 
         }
     },
-    orderForm: getFromStorage("order_form") as OrderFormType || {
+    orderForm: {
         name: {
             isEditing:false,
             val: ""
@@ -61,7 +61,7 @@ const initialState: FormsSliceState = {
 
         time: "FAST",
         paymentWay: "CARD",
-        phone: "+7(900) 500-18-49",
+        phone: "",
         address: {
             isEditing: false,
             val: ""
@@ -185,6 +185,16 @@ export const formsSlice = createSlice({
                 isPickup: !state.orderForm.isPickup
             }
         },
+        setOrderForm: (state, action: PayloadAction<{restaurant: number, address: string}>) =>{
+          state.orderForm = {
+              ...state.orderForm,
+              restaurant: action.payload.restaurant,
+              address: {
+                  ...state.orderForm.address,
+                  val: action.payload.address
+              }
+          }
+        },
         handleSelectRestaurant: (state, action: PayloadAction<number>) => {
             state.orderForm = {
                 ...state.orderForm,
@@ -205,6 +215,7 @@ export const {
     handleOrderPaymentWay,
     handleOrderPickup,
     handleSelectRestaurant,
+    setOrderForm,
     setProfileForm,
 } = formsSlice.actions
 

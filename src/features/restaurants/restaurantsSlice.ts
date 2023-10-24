@@ -64,18 +64,23 @@ const initialState = {
         street: "ул. Энергетиков, д. 5",
         coords: [53.45, 30],
         logoIconSrc: getImgPath("/logos/logo_gulyakin.svg"),
-    }
+    },
+    selectedInPickup: -1
 }
 
 export const RestaurantsSlice = createSlice({
     name: "restaurants",
     initialState,
     reducers: {
-
+        setSelectedInPickup: (state, action: PayloadAction<number>) => {
+            state.selectedInPickup = action.payload
+        }
     }
 })
 
-export const {} = RestaurantsSlice.actions
+export const {
+    setSelectedInPickup
+} = RestaurantsSlice.actions
 
 
 export const restaurantsReducer = RestaurantsSlice.reducer

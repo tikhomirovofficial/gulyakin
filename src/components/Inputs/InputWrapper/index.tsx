@@ -4,7 +4,7 @@ import React, {
     FC,
     HTMLInputTypeAttribute,
     ReactNode,
-    SetStateAction,
+    SetStateAction, useEffect,
     useRef,
     useState
 } from 'react';
@@ -18,6 +18,7 @@ interface InputWrapper {
     grayBorderedClassName?: string,
     inputClassName?: string,
     inActive?: boolean,
+    maskPlaceholder?: string,
     disabled?: boolean,
     btn?: ReactNode,
     isFocused?: boolean,
@@ -49,6 +50,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                            className,
                                                            onInputBlur,
                                                            grayBorderedClassName,
+    maskPlaceholder,
                                                            inputId,
     inputType = "text",
                                                            labelText,
@@ -112,6 +114,9 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
             setVal("")
         }
     }
+    useEffect(() => {
+        console.log(maskPlaceholder)
+    })
     if(btn) {
         console.log(placeholder, `Фокус ${isFocusedState} Изменяется ${isChanging} Пустое ${inputVal === ""}`)
         return (
@@ -126,9 +131,13 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                 isTextArea ?  <textarea readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                                      value={inputVal || (isPhone ? "+7" : "")} onChange={textChangeVal} className={`${styles.textField} f-1`}
                                                      id={inputId}></textarea> :
-                                    <input ref={inputRef}  readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
-                                           value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.textField} f-1`}
-                                           id={inputId} type="text"/>
+                                    !mask && isChanging ?
+                                        <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                                               value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
+                                               id={inputId} type={inputType}/> :
+                                        <InputMask maskPlaceholder={maskPlaceholder} mask={mask || ""} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                                                   value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
+                                                   id={inputId} type="text"/>
 
                             }
                             {
@@ -196,7 +205,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
         <div className={`f-column gap-10 ${className}`}>
             {labelText ? <label className={`${styles.label} ${errText ? styles.errorTextColor : null}`}
                                 htmlFor={inputId}>{labelText}</label> : null}
-            <GrayBorderedBlock validError={errText} isFocused={isFocusedState} className={`d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
+            <GrayBorderedBlock validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                 {
                     isTextArea ?  <textarea readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                             value={inputVal || (isPhone ? "+7" : "")} onChange={textChangeVal} className={`${styles.textField} f-1`}
@@ -205,7 +214,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                         <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
                                id={inputId} type={inputType}/> :
-                            <InputMask mask={mask} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                            <InputMask maskPlaceholder={maskPlaceholder} mask={mask} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                    value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
                                    id={inputId} type="text"/>
 

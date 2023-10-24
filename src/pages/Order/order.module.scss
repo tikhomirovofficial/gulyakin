@@ -48,14 +48,16 @@
 .timeOrder {
   max-width: 24.2rem;
 }
+.orderDropdownWrapper {
+  padding: .5rem;
+}
 .inputSelectable {
   text-wrap: nowrap;
   border: 1px solid transparent;
   font-size: 1.4rem;
-  padding: .8rem 1.5rem;
+  padding: .8rem 1rem;
 }
 .orderSelect {
-  padding: 5px;
   svg {
     min-height: 10px;
     min-width: 10px;
@@ -83,6 +85,7 @@
   .product {
     .image {
       min-width: 7.5rem;
+      background-position: center;
       min-height: 7.5rem;
       max-width: 7.5rem;
       max-height: 7.5rem;
@@ -108,6 +111,9 @@
       border-bottom: 1px solid #E2E2E9;
     }
   }
+}
+.selectRestaurantItems {
+  font-size: 1.6rem;
 }
 .selectRestaurant {
   font-size: 1.6rem;

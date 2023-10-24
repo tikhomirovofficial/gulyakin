@@ -1,28 +1,26 @@
 import React, {FC, useEffect} from 'react';
-import Header from "../../components/Header";
 import styles from './order.module.scss'
-import LogosSection from "../../components/LogosSection";
 import InputWrapper from "../../components/Inputs/InputWrapper";
 import {PaymentCard, PaymentCash} from "../../icons";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import RedButton from "../../components/Buttons/RedButton";
 import RadioInput from "../../components/Inputs/RadioInput";
 import SelectInput from "../../components/Inputs/SelectInput";
-import Footer from "../../components/Footer";
 import {
     handleOrderCallNeeded,
     handleOrderFormEditing,
     handleOrderFormVal,
     handleOrderPaymentWay,
     handleOrderPickup,
-    handleOrderTime, handleProfileFormEditing, handleProfileFormVal,
-    handleSelectRestaurant, setOrderForm
+    handleOrderTime,
+    handleSelectRestaurant, sendOrder
 } from "../../features/forms/formsSlice";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {TextField} from "../../components/Inputs/TextField";
-import {getImgPath} from "../../utils/getAssetsPath";
 import {domain} from "../../http/instance/instances";
 import {getFromStorage} from "../../utils/LocalStorageExplorer";
+import {CreateOrderRequest} from "../../types/api.types";
+import {formatPhoneNumber} from "../../utils/formatePhone";
 
 const orderTimes = ["18:30", "19:30"]
 
@@ -66,6 +64,18 @@ const Order = () => {
 
     const dispatch = useAppDispatch()
     const storageFromRest = getFromStorage('order_form')?.restaurant
+
+    const handleCreateOrder = () => {
+        const req: CreateOrderRequest = {
+            delivery_type: 3,
+            is_call: callNeeded,
+            marekt_adress_id: restaurant,
+            pyment_type: paymentWay == "CARD" ? 1 : 2,
+            time_delivery: time == "FAST" ? "40 min" : time,
+        }
+        dispatch(sendOrder(req))
+    }
+
     useEffect(() => {
         console.log(marketAddresses)
         console.log(restaurant)
@@ -74,7 +84,7 @@ const Order = () => {
             keyField: "name",
             val: data.name
         }))
-        console.log(getFromStorage('order_form')?.restaurant ? getFromStorage('order_form')?.restaurant : marketAddresses.length > 0 ?  marketAddresses.findIndex(item => item.id == restaurant) : -1)
+        console.log(getFromStorage('order_form')?.restaurant ? getFromStorage('order_form')?.restaurant : marketAddresses.length > 0 ? marketAddresses.findIndex(item => item.id == restaurant) : -1)
     }, [])
     return (
         <>
@@ -87,31 +97,45 @@ const Order = () => {
                                 <div className="f-column gap-20">
                                     <div className="f-column gap-10">
                                         <div className="orderForm f-column gap-20">
-                                            <TextField
-                                                handleSave={() => {}}
-                                                className={styles.inputField}
+                                            <InputWrapper
+                                                setVal={val => dispatch(handleOrderFormVal({
+                                                    keyField: "name",
+                                                    val: val
+                                                }))}
+                                                changeVal={e => dispatch(handleOrderFormVal({
+                                                    keyField: "name",
+                                                    val: e.target.value
+                                                }))}
+                                                grayBorderedClassName={styles.inputField}
+                                                inputVal={name.val}
                                                 placeholder={"Иван"}
                                                 labelText={"Ваше имя"}
-                                                isEditing={name.isEditing}
-                                                formValue={name.val}
-                                                condValue={data.name}
-                                                handleEdit={() => {
-                                                    dispatch(handleOrderFormEditing("name"))
-                                                }}
-                                                onInputFocus={() => {
-                                                    dispatch(handleOrderFormEditing("name"))
-                                                }}
-                                                onInputBlur={() => {
-                                                    dispatch(handleOrderFormEditing("name"))
-                                                    dispatch(handleOrderFormVal({keyField: "name", val: data.name}))
-                                                }}
-                                                setVal={val => dispatch(handleOrderFormVal({keyField: "name", val: val}))}
-                                                changeVal={e => dispatch(handleOrderFormVal({keyField: "name", val: e.target.value}))}
                                             />
+                                            {/*<TextField*/}
+                                            {/*    handleSave={() => {}}*/}
+                                            {/*    className={styles.inputField}*/}
+                                            {/*    placeholder={"Иван"}*/}
+                                            {/*    labelText={"Ваше имя"}*/}
+                                            {/*    isEditing={name.isEditing}*/}
+                                            {/*    formValue={name.val}*/}
+                                            {/*    condValue={data.name}*/}
+                                            {/*    handleEdit={() => {*/}
+                                            {/*        dispatch(handleOrderFormEditing("name"))*/}
+                                            {/*    }}*/}
+                                            {/*    onInputFocus={() => {*/}
+                                            {/*        dispatch(handleOrderFormEditing("name"))*/}
+                                            {/*    }}*/}
+                                            {/*    onInputBlur={() => {*/}
+                                            {/*        dispatch(handleOrderFormEditing("name"))*/}
+                                            {/*        dispatch(handleOrderFormVal({keyField: "name", val: data.name}))*/}
+                                            {/*    }}*/}
+                                            {/*    setVal={val => dispatch(handleOrderFormVal({keyField: "name", val: val}))}*/}
+                                            {/*    changeVal={e => dispatch(handleOrderFormVal({keyField: "name", val: e.target.value}))}*/}
+                                            {/*/>*/}
                                             <InputWrapper disabled={true} inActive={true}
                                                           grayBorderedClassName={styles.inputField}
                                                           locked={true}
-                                                          inputVal={data.phone} placeholder={"Номер телефона"}
+                                                          inputVal={formatPhoneNumber(data.phone)} placeholder={"Номер телефона"}
                                                           labelText={
                                                               "Номер телефона"
                                                           }/>
@@ -148,22 +172,24 @@ const Order = () => {
                                                             val: e.target.value
                                                         }))}
                                                     /> :
-                                                    <SelectInput defaultCurrent={marketAddresses.length > 0 ?  marketAddresses.findIndex(item => item.id == storageFromRest || restaurant) : 0}
-                                                                 className={styles.selectRestaurant}
-                                                                 labelText={"Выберите ресторан (обязательно)"}
-                                                                 selectHandler={(selected) => {
-                                                                     const restaurantId = marketAddresses.filter((item, index) => index == selected)[0].id
-                                                                     dispatch(handleSelectRestaurant(restaurantId))
-                                                                 }}
-                                                                 items={marketAddresses.map(item => item.adress)}
+                                                    <SelectInput
+                                                        defaultCurrent={marketAddresses.length > 0 ? marketAddresses.findIndex(item => item.id == storageFromRest || restaurant) : 0}
+                                                        className={styles.selectRestaurant}
+                                                        classDropDown={styles.selectRestaurantItems}
+                                                        labelText={"Выберите ресторан (обязательно)"}
+                                                        selectHandler={(selected) => {
+                                                            const restaurantId = marketAddresses.filter((item, index) => index == selected)[0].id
+                                                            dispatch(handleSelectRestaurant(restaurantId))
+                                                        }}
+                                                        items={marketAddresses.map(item => item.adress)}
                                                     />
 
                                             }
 
 
                                         </div>
-                                        <b onClick={() => dispatch(handleOrderPickup())}
-                                           className={`${styles.wayOrderBtn} colorRed cur-pointer`}>
+                                        <b  onClick={() => dispatch(handleOrderPickup())}
+                                           className={`${styles.wayOrderBtn} d-n colorRed cur-pointer`}>
                                             {isPickup ? "Выбрать доставку" : "Выбрать самовывоз"}
                                         </b>
                                     </div>
@@ -175,12 +201,13 @@ const Order = () => {
                                                     <div
                                                         onClick={() => dispatch(handleOrderTime("FAST"))}
                                                         className={`${styles.inputSelectable} ${time === "FAST" ? "whiteSelectableSelected" : ""} f-1 whiteSelectable txt-center p-rel`}>
-                                                        <p>Через ~90 мин</p>
+                                                        <p>Через ~40 мин</p>
                                                     </div>
                                                     <SelectInput placeholder={"Другое время"} iconMiniArrow={{
                                                         height: 10,
                                                         width: 10
                                                     }} classDropDown={styles.orderSelect}
+                                                                 classDropDownWrapper={styles.orderDropdownWrapper}
                                                                  classNameBlock={`${styles.inputSelectable} ${styles.timeSelect} ${time !== "FAST" ? "whiteSelectableSelected" : ""} whiteSelectable gap-5 f-1`}
                                                                  selectHandler={(selected) => {
                                                                      dispatch(handleOrderTime(orderTimes[selected]))
@@ -222,7 +249,7 @@ const Order = () => {
                                             onClick={() => {
                                                 dispatch(handleOrderPaymentWay("CASH"))
                                             }}
-                                            className={`${styles.inputSelectable} ${paymentWay == "CASH" ? "whiteSelectableSelected" : ""} d-f al-center gap-5 whiteSelectable`}>
+                                            className={`${styles.inputSelectable} ${paymentWay == "CASH" ? "whiteSelectableSelected" : ""} d-n al-center gap-5 whiteSelectable`}>
                                             <PaymentCash/>
                                             <p>Наличными</p>
                                         </div>
@@ -250,7 +277,7 @@ const Order = () => {
                                     }
                                 </div>
                                 <div className="f-column gap-15">
-                                    <RedButton disabled={!(address.val.length > 0) && !(cart.totalPrice > 0)}
+                                    <RedButton onClick={handleCreateOrder} disabled={!(address.val.length > 0) && !(cart.totalPrice > 0)}
                                                className={"pd-15"}>Оформить заказ
                                         на {formatNumberWithSpaces(cart.totalPrice)} ₽</RedButton>
                                     <div className={"w-100p d-f jc-center"}>
@@ -288,13 +315,13 @@ const Order = () => {
                                             </div>
                                             <div className="f-row-betw">
                                                 <p>Доставка</p>
-                                                <p>100 ₽</p>
+                                                <p>0 ₽</p>
                                             </div>
                                         </div>
                                         <div className="totalInfo">
                                             <div className="f-row-betw">
                                                 <b>Сумма заказа</b>
-                                                <b>{formatNumberWithSpaces(cart.totalPrice + 100)} ₽</b>
+                                                <b>{formatNumberWithSpaces(cart.totalPrice)} ₽</b>
                                             </div>
 
                                         </div>

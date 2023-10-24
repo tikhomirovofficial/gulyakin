@@ -17,7 +17,7 @@ import {
     SendPaymentResponse
 } from "../../types/api.types";
 import {AxiosResponse} from "axios";
-import {api} from "../instance/instances";
+import authApi, {api} from "../instance/instances";
 import {PATHS} from "./path.api";
 import {ConvertDataToGetParams} from "../../utils/ConvertDataToGetParams";
 
@@ -39,7 +39,7 @@ export class OrderApi {
         return res;
     }
     static async Create(requestData: CreateOrderRequest): Promise<AxiosResponse<CreateOrderResponse>> {
-        const res: AxiosResponse<CreateOrderResponse> = await api.post(PATHS.CREATE_ORDER, {...requestData});
+        const res: AxiosResponse<CreateOrderResponse> = await authApi.post(PATHS.CREATE_ORDER, {...requestData});
         return res;
     }
     static async PaymentConfirmation(requestData: SendPaymentRequest): Promise<AxiosResponse<SendPaymentResponse>> {

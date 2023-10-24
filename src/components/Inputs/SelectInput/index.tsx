@@ -14,6 +14,7 @@ interface SelectInputWrapper {
     errText?: string,
     inputVal?: number | string,
     classDropDown?: string,
+    classDropDownWrapper?: string,
     iconMiniArrow?: IconProps,
     placeholder?: string,
 
@@ -28,6 +29,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
                                                                 isEmpty = true,
                                                                 placeholder,
                                                                 classDropDown,
+    classDropDownWrapper,
                                                                 iconMiniArrow = {
                                                                     height: 13,
                                                                     width: 13
@@ -80,7 +82,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
                         placeholder ?
                             <p>{placeholder}</p> :
                             <p className={"inactiveColor"}>{"Пусто"}</p> :
-                        <p>{items[selected]}</p>
+                        <p className={classDropDown}>{items[selected]}</p>
                 }
                 {
                     focused ? <ArrowMiniDown height={iconMiniArrow.height} width={iconMiniArrow.width}/> :
@@ -90,7 +92,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
 
                 {focused ?
                     <div ref={dropdownRef}
-                         className={`w-100p p-abs left-0 dropDown pd-20 ${classDropDown ? classDropDown : ""} `}>
+                         className={`w-100p p-abs left-0 dropDown pd-20 ${classDropDownWrapper ? classDropDownWrapper : ""} `}>
                         <DropdownList classNameItem={`f-row-betw`} className={"f-column gap-5 bg-white w-100p"}
                                       items={items} current={selected}
                                       selectHandler={(current) => handleSelected(current)}/>

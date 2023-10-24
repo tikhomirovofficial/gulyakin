@@ -15,6 +15,7 @@ import {HasClassName} from "../../types/components.types";
 import {TextField} from "../../components/Inputs/TextField";
 import {deleteCookie} from "../../utils/CookieUtil";
 import {useNavigate} from "react-router-dom";
+import {formatPhoneNumber} from "../../utils/formatePhone";
 
 
 
@@ -72,7 +73,7 @@ const Profile = () => {
 
                                 <InputWrapper disabled={true} inActive={true} grayBorderedClassName={styles.inputField}
                                               locked={true}
-                                              inputVal={data.phone} placeholder={"Номер телефона"}
+                                              inputVal={formatPhoneNumber(data.phone)} placeholder={"Номер телефона"}
                                               labelText={
                                                   "Номер телефона"
                                               }/>
@@ -80,7 +81,8 @@ const Profile = () => {
                                     handleSave={handleUserEdit}
                                     className={styles.inputField}
                                     placeholder={"Дата"}
-                                    mask={"99/99/99"}
+                                    mask={"99-99-9999"}
+                                    maskPlaceholder={"ДД-ММ-ГГГГ"}
                                     labelText={"Дата рождения"}
                                     isEditing={dob.isEditing}
                                     formValue={dob.val}

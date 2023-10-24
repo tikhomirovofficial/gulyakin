@@ -258,7 +258,7 @@ export type GetPaymentListResponse = {
 //Если тип доставки самовывоз, то передайте marekt_adress_id, а user_adress_id можете не передавать
 export type CreateOrderRequest = {
     user_adress_id?: number,
-    market_adress_id?: number,
+    marekt_adress_id?: number,
     is_call: boolean,
     time_delivery: string,
     delivery_type: number,

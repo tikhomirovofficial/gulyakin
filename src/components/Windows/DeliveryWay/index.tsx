@@ -6,14 +6,16 @@ import ShadowWrapper from "../ShadowWrapper";
 import styles from './deliveryWay.module.scss'
 import Switcher from "../../Switcher";
 import InputWrapper from "../../Inputs/InputWrapper";
-import {Map, YMaps} from "@pbe/react-yandex-maps";
+import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
-import {handleDeliveryVariant, handleDeliveryWayWindow, handleLogin} from "../../../features/modals/modalsSlice";
+import {handleDeliveryVariant, handleDeliveryWayWindow} from "../../../features/modals/modalsSlice";
 import {handleOrderFormVal, handleSelectRestaurant} from "../../../features/forms/formsSlice";
 import {useInput} from "../../../hooks/useInput";
 import {addToCart, setProductAfterAddress} from "../../../features/cart/cartSlice";
+import {getImgPath} from "../../../utils/getAssetsPath";
+import {setSelectedInPickup} from "../../../features/restaurants/restaurantsSlice";
 
 interface AddressItemProps {
     selected: boolean,
@@ -162,56 +164,64 @@ const DeliveryVariant = () => {
 }
 
 const PickupVariant = () => {
-    const [selectedAddress, setSelectedAddress] = useState(-1)
-    const {addresses}= useAppSelector(state => state.main)
-    const products= useAppSelector(state => state.products)
-    const {addProductAfterAddress}= useAppSelector(state => state.cart)
+    const {addresses} = useAppSelector(state => state.main)
+    const {addProductAfterAddress} = useAppSelector(state => state.cart)
+    const {selectedInPickup} = useAppSelector(state => state.restaurants)
+    const products = useAppSelector(state => state.products)
     const dispatch = useAppDispatch()
+
     const handleAddAddressPickup = () => {
-        dispatch(handleSelectRestaurant(selectedAddress))
-        if(addProductAfterAddress !== null) {
+        dispatch(handleSelectRestaurant(selectedInPickup))
+        if (addProductAfterAddress !== null) {
             const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress)[0]
             if (matchedProduct?.id !== undefined) {
                 dispatch(addToCart({
                     ...matchedProduct,
                 }))
                 dispatch(setProductAfterAddress(null))
-
             }
             dispatch(handleDeliveryWayWindow())
-
         }
-
     }
     return (
         <>
             <div className={`f-column gap-10 h-100p ${styles.addressesList}`}>
                 {addresses.map((item) => (
-                    <AddressItem text={item.adress} key={item.id} selectedHandle={() => setSelectedAddress(item.id)}
-                                 selected={item.id === selectedAddress}/>
+                    <AddressItem text={item.adress} key={item.id} selectedHandle={() => {
+                        dispatch(setSelectedInPickup(item.id))
+                    }}
+                                 selected={item.id === selectedInPickup}/>
                 ))}
             </div>
-            <RedButton onClick={handleAddAddressPickup} disabled={selectedAddress == -1} className={"pd-10-0"}>Выбрать</RedButton>
+            <RedButton onClick={handleAddAddressPickup} disabled={selectedInPickup == -1}
+                       className={"pd-10-0"}>Выбрать</RedButton>
         </>
 
     )
 }
+
+
 const DeliveryWay = () => {
     const dispatch = useAppDispatch()
     const {variant} = useAppSelector(state => state.modals.deliveryWay)
+    const {addresses} = useAppSelector(state => state.main)
+    const {selectedInPickup} = useAppSelector(state => state.restaurants)
+    const currentAddress = selectedInPickup !== -1 ? addresses.filter(item => item.id === selectedInPickup)[0] : addresses[0]
+
+    const closeDeliveryWay = () => {
+        dispatch(handleDeliveryWayWindow())
+        dispatch(setSelectedInPickup(-1))
+    }
     const handleDeliveryWay = (index: number) => {
         dispatch(handleDeliveryVariant(index))
+        dispatch(setSelectedInPickup(-1))
     }
 
     return (
-        <ShadowWrapper onClick={() => {
-            dispatch(handleDeliveryWayWindow())
-        }}>
+        <ShadowWrapper onClick={closeDeliveryWay}>
             <SuccessWindow isOpened={false} title={"Ваш адрес успешно добавлен!"}/>
             <WindowBody className={`${styles.window} f-row-betw p-rel`}>
-                <div onClick={() => {
-                    dispatch(handleDeliveryWayWindow())
-                }} className={"modalAbsoluteClose closeWrapper p-abs"}>
+                <div onClick={closeDeliveryWay} className={"modalAbsoluteClose closeWrapper p-abs"}>
                     <CloseIcon isDark={true}/>
                 </div>
                 <div className={`${styles.content} f-column-betw pd-30 gap-20`}>
@@ -231,7 +241,23 @@ const DeliveryWay = () => {
                 <div className={styles.map}>
                     <YMaps>
                         <Map className={"h-100p w-100p"}
-                             state={{center: [0, 9], zoom: 9}}>
+                             state={{
+                                 center: currentAddress !== null ? [currentAddress.long, currentAddress.lat] : [addresses[0].long, addresses[0].lat],
+                                 zoom: 15
+                             }}>
+                            {
+                                currentAddress !== null ?
+                                    <Placemark geometry={[currentAddress.long, currentAddress.lat]} options={
+                                        {
+                                            iconLayout: 'default#image', // Используем стандартный макет изображения
+                                            iconImageHref: getImgPath("/logos/logo_gulyakin.svg"), // Укажите URL вашей кастомной иконки
+                                            iconImageSize: [52, 52], // Размер вашей иконки
+                                            iconImageOffset: [0, 0],
+                                        }
+                                    }/> : null
+
+                            }
+
                         </Map>
                     </YMaps>
                 </div>

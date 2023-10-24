@@ -12,8 +12,8 @@ type TextFieldProps = {
     handleSave: () => void,
     handleEdit?: () => void,
 
-} & Pick<InputWrapper, "mask" | "placeholder" | "labelText" | "changeVal" | "setVal" | "onInputBlur" | "onInputFocus" | "isTextArea" | "textChangeVal"> & HasClassName
-export const TextField: FC<TextFieldProps> = ({isEditing, mask, textChangeVal, handleEdit, onInputBlur, isTextArea, onInputFocus, className, handleSave, condValue, changeVal, setVal,
+} & Pick<InputWrapper, "mask" | "maskPlaceholder" | "placeholder" | "labelText" | "changeVal" | "setVal" | "onInputBlur" | "onInputFocus" | "isTextArea" | "textChangeVal"> & HasClassName
+export const TextField: FC<TextFieldProps> = ({isEditing,maskPlaceholder, mask, textChangeVal, handleEdit, onInputBlur, isTextArea, onInputFocus, className, handleSave, condValue, changeVal, setVal,
   placeholder, labelText, formValue}) => {
 
 
@@ -50,6 +50,7 @@ export const TextField: FC<TextFieldProps> = ({isEditing, mask, textChangeVal, h
             isChanging={isEditing}
             setVal={setVal}
             changeVal={changeVal}
+            maskPlaceholder={maskPlaceholder}
             textChangeVal={textChangeVal}
             mask={mask || ""}
             disabled={!isEditing && !condIsEmpty && !canBeSaved}

@@ -213,11 +213,14 @@ const Main: FC = () => {
                                                         categories.category.map(item => (
                                                             <SwiperSlide key={item.id}
                                                                          className={"w-content cur-grabbing"}>
-                                                                <GrayBorderedBlock
-                                                                    clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)}
-                                                                    className={styles.item}>
-                                                                    {item.title}
-                                                                </GrayBorderedBlock>
+                                                                <a href={`/#${item.id}`}>
+                                                                    <GrayBorderedBlock
+                                                                        clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)}
+                                                                        className={styles.item}>
+                                                                        {item.title}
+                                                                    </GrayBorderedBlock>
+                                                                </a>
+
                                                             </SwiperSlide>
                                                         ))
                                                     }
@@ -308,7 +311,7 @@ const Main: FC = () => {
                                         {
                                             categories.category.map(category => (
                                                 <div className={`${styles.categoryBlock} f-column gap-20`}>
-                                                    <h2 className="sectionTitle">{category.title}</h2>
+                                                    <h2 id={`${category.id}`} className="sectionTitle">{category.title}</h2>
                                                     <List
                                                         listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
                                                         list={products.items.filter(product => product.category === category.id)}

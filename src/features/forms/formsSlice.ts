@@ -1,9 +1,21 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ProductAdditiveData} from "../../types/products.types";
 import {getImgPath} from "../../utils/getAssetsPath";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {withFieldType} from "../../utils/withFieldType";
 import {UserData} from "../../types/user.types";
+import {
+    AddToCartRequest,
+    AddToCartResponse,
+    CreateOrderRequest,
+    CreateOrderResponse,
+    ProductRes
+} from "../../types/api.types";
+import {AxiosResponse} from "axios";
+import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
+import {CartApi} from "../../http/api/cart.api";
+import {OrderApi} from "../../http/api/order.api";
+import {editCountCart} from "../cart/cartSlice";
 
 export type FieldType = {
     val: string,
@@ -77,6 +89,15 @@ type PayloadHandleProfileEditing =  PayloadAction<keyof ProfileFormType>
 
 type PayloadHandleOrder =  PayloadAction<FormChangeValByKey<OrderFormType>>
 type PayloadHandleOrderEditing =  PayloadAction<keyof OrderFormType>
+
+export const sendOrder = createAsyncThunk(
+    'order/send',
+    async (request: CreateOrderRequest, {dispatch}) => {
+        const res: AxiosResponse<CreateOrderResponse> = await handleTokenRefreshedRequest(OrderApi.Create, request)
+        return res
+
+    }
+)
 
 export const formsSlice = createSlice({
     name: "forms",
@@ -201,6 +222,17 @@ export const formsSlice = createSlice({
                 restaurant: action.payload
             }
         }
+    },
+    extraReducers: builder =>  {
+        builder.addCase(sendOrder.pending, (state, action) => {
+
+        })
+        builder.addCase(sendOrder.fulfilled, (state, action) => {
+            window.location.href = action.payload.data.payment_url
+        })
+        builder.addCase(sendOrder.rejected, (state, action) => {
+
+        })
     }
 })
 

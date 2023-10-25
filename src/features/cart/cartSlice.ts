@@ -19,7 +19,13 @@ type CartSliceState = {
     addProductAfterLogin: number | null,
     addProductAfterAddress: number | null,
     totalPrice: number,
-    cartCounts: Record<string,number>
+    cartAdded: boolean,
+    cartClassOpened: boolean
+    cartAddedPopupInfo: {
+        title: string
+        weight: number
+    }
+    cartCounts: Record<string, number>
 }
 
 const initialState: CartSliceState = {
@@ -27,7 +33,11 @@ const initialState: CartSliceState = {
     addProductAfterLogin: null,
     addProductAfterAddress: null,
     totalPrice: 0,
-    cartCounts: {}
+    cartCounts: {},
+    cartAdded: true,
+    cartClassOpened: false,
+    cartAddedPopupInfo: {title: "", weight: 0}
+
 }
 
 export const getCart = createAsyncThunk(
@@ -98,14 +108,39 @@ export const CartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
+        cartAddedOpen: state => {
+            state.cartAdded = true
+            state.cartClassOpened = true
+
+        },
+        setCartAddedPopupInfo: (state, action: PayloadAction<{
+            title: string,
+            weight: number
+        }>) => {
+            state.cartAddedPopupInfo = {
+                title: action.payload.title,
+                weight: action.payload.weight
+            }
+        },
+        resetCartAddedPopupInfo: state => {
+            state.cartAddedPopupInfo = {
+                title: "",
+                weight: 0
+            }
+        },
+        cartAddedClose: state => {
+            state.cartClassOpened = false
+            setTimeout(() => {
+                state.cartAdded = false
+            }, 300)
+        },
         setProductAfterLogin: (state, action) => {
-          state.addProductAfterLogin = action.payload
+            state.addProductAfterLogin = action.payload
         },
         setProductAfterAddress: (state, action) => {
             state.addProductAfterAddress = action.payload
         },
         addProduct: (state, action: PayloadAction<CartProductItem>) => {
-
             state.items = [
                 ...state.items,
                 action.payload
@@ -182,6 +217,7 @@ export const CartSlice = createSlice({
             const product = action.payload.product
             const res = action.payload.data
             if (action.payload) {
+
                 const newState = [
                     ...state.items,
                     {
@@ -199,6 +235,7 @@ export const CartSlice = createSlice({
                     }
                 ]
                 state.items = newState
+
 
             }
         })
@@ -221,6 +258,7 @@ export const CartSlice = createSlice({
                 state.items = newState
 
             }
+
         })
         builder.addCase(editCountCart.rejected, (state, action) => {
 
@@ -245,7 +283,11 @@ export const {
     setTotalPrice,
     removeProduct,
     setProductAfterLogin,
-    setProductAfterAddress
+    setProductAfterAddress,
+    cartAddedClose,
+    setCartAddedPopupInfo,
+    resetCartAddedPopupInfo,
+    cartAddedOpen
 } = CartSlice.actions
 
 

@@ -22,7 +22,7 @@ const initialState: ModalSliceState = {
     loginOpened: false,
     bookingOpened: false,
     yourAddress: false,
-    productAdditives: false,
+    productAdditives: true,
     cookiesAccepted: getFromStorage("cookie_accepted") || false,
     deliveryWay: {
         opened: false,

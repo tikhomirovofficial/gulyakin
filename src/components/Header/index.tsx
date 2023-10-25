@@ -15,13 +15,10 @@ import List from "../List";
 
 
 const Header = () => {
-    console.log(getFromStorage("city"))
     const dispatch = useAppDispatch()
 
-    const {totalPrice} = useAppSelector(state => state.cart)
+    const {totalPrice, cartClassOpened, cartAdded, cartAddedPopupInfo} = useAppSelector(state => state.cart)
     const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
-
-    const user = useAppSelector(state => state.profile)
     const token = useToken()
 
     const handleChangingGeo = () => dispatch(toggleChangingGeo())
@@ -148,10 +145,8 @@ const Header = () => {
                         </Link>
 
                     </nav>
-                    {
 
-                    }
-                    <div className={`${styles.right} d-f al-center gap-20`}>
+                    <div className={`${styles.right} d-f al-center gap-20 p-rel`}>
                         {
                             !token ?
                                 <div onClick={() => dispatch(handleLogin())}
@@ -169,6 +164,12 @@ const Header = () => {
                                         Кабинет
                                     </b>
                                 </Link>
+                        }
+                        {
+                            cartAdded ?     <div className={`${styles.addedPopup}  ${cartClassOpened ? styles.addedPopupOpened : ""} p-abs f-column gap-5 t-opacity-visible-transform-3`}>
+                                <p>В корзину добавлено:</p>
+                                <b>{cartAddedPopupInfo.title}, {cartAddedPopupInfo.weight} г</b>
+                            </div> : null
                         }
 
                         <div

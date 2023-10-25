@@ -1,16 +1,22 @@
 import React, {FC, useState} from 'react';
 import ShadowWrapper from "../ShadowWrapper";
 import WindowBody from "../WhiteWrapper";
-import {AddedAdditiveIcon, CancelCircleIcon, CloseIcon} from "../../../icons";
+import {AddedAdditiveIcon, CloseIcon} from "../../../icons";
 import styles from './productAdditives.module.scss'
 import RedButton from "../../Buttons/RedButton";
 import {getImgPath} from "../../../utils/getAssetsPath";
 import {HasClassName} from "../../../types/components.types";
 import {AdditiveProduct} from "../../../types/products.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import SuccessWindow from "../SuccessWindow";
 import {handleLogin, handleProductAdditives, handleYourAddress} from "../../../features/modals/modalsSlice";
-import {addToCart, setProductAfterAddress} from "../../../features/cart/cartSlice";
+import {
+    addToCart,
+    cartAddedClose,
+    cartAddedOpen,
+    resetCartAddedPopupInfo,
+    setCartAddedPopupInfo,
+    setProductAfterAddress
+} from "../../../features/cart/cartSlice";
 import useToken from "../../../hooks/useToken";
 
 type AdditiveItemProps = {
@@ -22,15 +28,26 @@ type AdditiveItemProps = {
     name: string
 
 } & AdditiveProduct
-const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, imageUrl = "", selected, className, isEmpty, price}) => {
+const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({
+                                                                name,
+                                                                addHandler,
+                                                                imageUrl = "",
+                                                                selected,
+                                                                className,
+                                                                isEmpty,
+                                                                price
+                                                            }) => {
     return (
-        <div onClick={addHandler} className={`${styles.item} ${selected ? styles.itemSelected : ""} f-column-betw gap-20 al-center txt-center p-rel`}>
+        <div onClick={addHandler}
+             className={`${styles.item} ${selected ? styles.itemSelected : ""} f-column-betw gap-20 al-center txt-center p-rel`}>
 
             <div className={styles.imageWrapper}>
                 {isEmpty ?
-                    <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}} className={`${styles.img} f-c-col`}>
+                    <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}}
+                         className={`${styles.img} f-c-col`}>
                     </div> :
-                    <div style={{backgroundImage: `url(${getImgPath('productAdditive.png')})`}} className={`${styles.img}`}>
+                    <div style={{backgroundImage: `url(${getImgPath('productAdditive.png')})`}}
+                         className={`${styles.img}`}>
                     </div>
                 }
 
@@ -47,7 +64,15 @@ const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({name, addHandler, i
     )
 }
 const ProductAdditives = () => {
-    const {additives, imageUrl, price, weight, name, description, id} = useAppSelector(state => state.modals.productAdditivesData)
+    const {
+        additives,
+        imageUrl,
+        price,
+        weight,
+        name,
+        description,
+        id
+    } = useAppSelector(state => state.modals.productAdditivesData)
     const dispatch = useAppDispatch()
     const token = useToken()
     const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
@@ -56,12 +81,24 @@ const ProductAdditives = () => {
 
     const handleAddToCartClick = () => {
         dispatch(handleProductAdditives())
-        if(token) {
-            if(address.val.length > 0 || restaurant !== -1) {
+        if (token) {
+            if (address.val.length > 0 || restaurant !== -1) {
                 const product = items.filter(item => item.id === id)[0]
                 dispatch(addToCart({
                     ...product
                 }))
+                dispatch(setCartAddedPopupInfo({
+                    title: name,
+                    weight
+                }))
+
+                dispatch(cartAddedOpen())
+                setTimeout(() => {
+                    dispatch(cartAddedClose())
+                    setTimeout(() => {
+                        dispatch(resetCartAddedPopupInfo())
+                    }, 300)
+                }, 2000)
                 return;
             }
             dispatch(setProductAfterAddress(id))
@@ -89,27 +126,31 @@ const ProductAdditives = () => {
 
                     </div>
                     <div className={`${styles.productAdditivesBar} f-column-betw gap-30`}>
-                       <div className="top f-column gap-10">
-                           <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
+                        <div className="top f-column gap-10">
+                            <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
                                 <h3>{name}</h3>
                                 <div className={styles.weight}>{weight} г</div>
-                           </div>
-                           <p className={styles.description}>{description || "Описание не заполнено"}</p>
-                       </div>
+                            </div>
+                            <p className={styles.description}>{description || "Описание не заполнено"}</p>
+                        </div>
                         <div className={`${additives.length ? "f-1" : ""} content gap-10 f-column-betw`}>
                             {
                                 additives.length ?
                                     <div className="additivesListBlock f-1 gap-10 f-column">
                                         <h4>Добавьте по вкусу</h4>
                                         <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
-                                            <AdditiveItem selected={selectedAdditive == -1} isEmpty={true} price={0} name={"Без соуса"} addHandler={() => {
+                                            <AdditiveItem selected={selectedAdditive == -1} isEmpty={true} price={0}
+                                                          name={"Без соуса"} addHandler={() => {
                                                 setSelectedAdditive(-1)
                                             }} imageUrl={''}/>
                                             {
                                                 additives.map(item => (
-                                                    <AdditiveItem isEmpty={false} imageUrl={item.image} selected={selectedAdditive == item.id} price={item.price} name={item.title} addHandler={() => {
-                                                        setSelectedAdditive(item.id)
-                                                    }}/>
+                                                    <AdditiveItem isEmpty={false} imageUrl={item.image}
+                                                                  selected={selectedAdditive == item.id}
+                                                                  price={item.price} name={item.title}
+                                                                  addHandler={() => {
+                                                                      setSelectedAdditive(item.id)
+                                                                  }}/>
                                                 ))
                                             }
                                         </div>
@@ -117,7 +158,8 @@ const ProductAdditives = () => {
 
                             }
 
-                            <RedButton onClick={handleAddToCartClick} disabled={false} className={"pd-10-0"}>Добавить в корзину за {price + additivePrice} ₽</RedButton>
+                            <RedButton onClick={handleAddToCartClick} disabled={false} className={"pd-10-0"}>Добавить в
+                                корзину за {price + additivePrice} ₽</RedButton>
                         </div>
 
                     </div>

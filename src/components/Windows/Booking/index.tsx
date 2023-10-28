@@ -9,8 +9,19 @@ import InputWrapper from "../../Inputs/InputWrapper";
 import {useAppDispatch} from "../../../app/hooks";
 import {handleBooking, handleLogin} from "../../../features/modals/modalsSlice";
 import RedButton from "../../Buttons/RedButton";
+const rests = [
+    {
+        id: 1,
+        name: "Первый"
+    },
+    {
+        id: 2,
+        name: "Второй"
+    }
+]
 const BookingWindow = () => {
     const dispatch = useAppDispatch()
+
     return (
         <ShadowWrapper onClick={() => dispatch(handleBooking())}>
             <WindowBody className={`${styles.window} f-column`}>
@@ -23,8 +34,8 @@ const BookingWindow = () => {
                     <div className="f-column gap-20">
                         <h2 >Бронирование столика</h2>
                         <div className="f-column">
-                            <SelectInput labelText={"Выберите ресторан (обязательно)"} selectHandler={(selected) => {
-                                console.log(selected)}}  items={["первый", "второй"]}/>
+                            <SelectInput defaultCurrent={2} labelText={"Выберите ресторан (обязательно)"} selectHandler={(selected) => {
+                                console.log(selected)}} optionsSelect={{byId: true, keyField:"name"}}  items={rests}/>
                         </div>
                         <div className="f-row-betw gap-20 flex-wrap">
                             <SelectInput defaultCurrent={1} className={"f-1"} labelText={"Время"} selectHandler={(selected) => {

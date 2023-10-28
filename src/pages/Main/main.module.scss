@@ -11,7 +11,7 @@
     z-index: 9999;
     visibility: hidden;
     opacity: 0;
-    height: 8.3rem;
+    height: fit-content;
     padding: 2rem 3rem;
     font-size: 1.6rem;
     border-radius: 7px;
@@ -232,6 +232,10 @@
   }
 
 }
+.searchedQuery {
+  font-size: 3.2rem;
+  margin: 2rem 0;
+}
 .menuCategories {
   position: sticky;
   z-index: 3;
@@ -333,14 +337,7 @@
     }
   }
 }
-.catalog {
-  .categoryBlock {
 
-  }
-  .catalogPartList {
-    gap: 2rem
-  }
-}
 .footer {
   color: white;
   margin-top: 10rem;

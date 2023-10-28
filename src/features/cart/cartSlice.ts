@@ -70,7 +70,7 @@ export const addToCart = createAsyncThunk(
         const res: AxiosResponse<AddToCartResponse> = await handleTokenRefreshedRequest(CartApi.AddProduct, productCartReq)
         return {
             product: request,
-            data: res
+            data: res.data
         }
     }
 )
@@ -87,7 +87,7 @@ export const editCountCart = createAsyncThunk(
         return {
             count: request.count,
             product_id: request.cart_id,
-            data: res
+            data: res.data
         }
     }
 )
@@ -221,7 +221,7 @@ export const CartSlice = createSlice({
                 const newState = [
                     ...state.items,
                     {
-                        id: res.data.list_id[0],
+                        id: res.list_id[0],
                         product: {
                             composition: product.composition,
                             id: product.id,

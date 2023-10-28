@@ -8,7 +8,7 @@ import DropdownList from "../../DropdownList";
 interface SelectInputWrapper {
     selectHandler: (val: number) => void,
     defaultCurrent?: number,
-    items: Array<string>
+    items: Array<any>
     isEmpty?: boolean
     isFocused?: boolean
     errText?: string,
@@ -17,7 +17,10 @@ interface SelectInputWrapper {
     classDropDownWrapper?: string,
     iconMiniArrow?: IconProps,
     placeholder?: string,
-
+    optionsSelect?: {
+        byId: boolean
+        keyField: string
+    } | null
     labelText?: ReactNode,
     classNameBlock?: string,
     onInputBlur?: () => void
@@ -29,7 +32,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
                                                                 isEmpty = true,
                                                                 placeholder,
                                                                 classDropDown,
-    classDropDownWrapper,
+                                                                classDropDownWrapper,
                                                                 iconMiniArrow = {
                                                                     height: 13,
                                                                     width: 13
@@ -37,6 +40,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
                                                                 defaultCurrent,
                                                                 classNameBlock,
                                                                 selectHandler,
+                                                                optionsSelect = null,
                                                                 isFocused,
                                                                 items,
                                                                 className,
@@ -56,7 +60,6 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
     }
 
     const handleClickOutside = (e: any) => {
-
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
             if (selectInputRef.current && !selectInputRef.current.contains(e.target)) {
                 setIsFocused(false)
@@ -64,7 +67,11 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
 
         }
     };
-
+    const findedById = optionsSelect?.byId ? items.filter(item => {
+        if (item?.id === selected) {
+            return item
+        }
+    })[0] || null : null
     useEffect(() => {
         document.addEventListener('click', handleClickOutside);
 
@@ -82,7 +89,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
                         placeholder ?
                             <p>{placeholder}</p> :
                             <p className={"inactiveColor"}>{"Пусто"}</p> :
-                        <p className={classDropDown}>{items[selected]}</p>
+                        <p className={classDropDown}>{!optionsSelect?.byId ? items[selected] : findedById !== null ? findedById[optionsSelect?.keyField] : selected}</p>
                 }
                 {
                     focused ? <ArrowMiniDown height={iconMiniArrow.height} width={iconMiniArrow.width}/> :
@@ -95,6 +102,10 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
                          className={`w-100p p-abs left-0 dropDown pd-20 ${classDropDownWrapper ? classDropDownWrapper : ""} `}>
                         <DropdownList classNameItem={`f-row-betw`} className={"f-column gap-5 bg-white w-100p"}
                                       items={items} current={selected}
+                                      optionsDropDown={{
+                                          keyField: optionsSelect?.keyField as string,
+                                          byId: optionsSelect?.byId as boolean
+                                      }}
                                       selectHandler={(current) => handleSelected(current)}/>
                     </div>
                     : null

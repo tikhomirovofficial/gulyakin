@@ -15,5 +15,11 @@ const Loader: FC<LoaderProps> = ({height= 100, width = 100}) => {
         </div>
     );
 };
-
+export const BigSpinner = () => {
+    return (
+        <div className={"d-f jc-center al-center"}>
+            <Loader/>
+        </div>
+    )
+}
 export default Loader;

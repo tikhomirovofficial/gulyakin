@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useDeferredValue, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import {ArrowMiniRightIcon, ArrowRight, Geo} from "../../icons";
 import styles from './main.module.scss'
@@ -6,8 +6,6 @@ import {getImgPath} from "../../utils/getAssetsPath";
 import GrayBorderedBlock from "../../components/GrayBorderedBlock";
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import SearchInput from "../../components/Inputs/SearchInput";
-import List from "../../components/List";
-import Product from "../../components/Catalog/Product";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {Swiper, SwiperProps, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
@@ -17,7 +15,8 @@ import {getUser} from "../../features/profile/profileSlice";
 import useAuth from "../../hooks/useAuth";
 import useToken from "../../hooks/useToken";
 import Preloader from "../../components/Preloader";
-import Loader from "../../components/Preloader";
+import {useInput} from "../../hooks/useInput";
+import Catalog from "../../components/Catalog";
 
 const Main: FC = () => {
     const {categories, products, cart} = useAppSelector(state => state)
@@ -30,6 +29,9 @@ const Main: FC = () => {
     const [sliderNeeded, setSliderNeeded] = useState(false)
     const [currentSlide, setCurrentSlide] = useState<number>(0)
     const [isEndSlider, setIsEndSlider] = useState(false)
+
+    const [searchVal, changeSearchVal, setSearchVal] = useInput("")
+    const deferredSearch = useDeferredValue(searchVal)
 
     const handleNext = () => {
         sliderCategories.current.swiper.slideNext();
@@ -142,12 +144,16 @@ const Main: FC = () => {
                                 <div className="left d-f gap-30">
                                     <Link to={"/restaurants"}>
                                         <GradientGrayBtn
-                                                         className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
+                                            className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
                                             <Geo/>
                                             <p>Рестораны на карте</p>
                                         </GradientGrayBtn>
                                     </Link>
-                                    <SearchInput className={styles.search}/>
+                                    <SearchInput
+                                        value={searchVal}
+                                        changeVal={changeSearchVal}
+                                        setVal={setSearchVal}
+                                        className={styles.search}/>
                                 </div>
                                 <div className={`${styles.orderTrigger} f-1  p-rel`}>
                                     <div className="p-abs w-100p h-100p top-0 left-0 d-f jc-center">
@@ -302,39 +308,14 @@ const Main: FC = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <div className={styles.catalog}>
-                                {!(products.items.length > 0) ?
-                                    <div className={"d-f jc-center al-center"}>
-                                        <Loader/>
-                                    </div> : <div className="block f-column gap-40">
-                                        {
-                                            categories.category.map(category => (
-                                                <div className={`${styles.categoryBlock} f-column gap-20`}>
-                                                    <h2 id={`${category.id}`} className="sectionTitle">{category.title}</h2>
-                                                    <List
-                                                        listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
-                                                        list={products.items.filter(product => product.category === category.id)}
-                                                        renderItem={(product) =>
-                                                            <Product title={product.title}
-                                                                     id={product.id}
-                                                                     count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
-                                                                     inCart={cart.items.some(item => item.product.id === product.id)}
-                                                                     image={product.image}
-                                                                     composition={product.composition}
-                                                                     weight={product.weight}
-                                                                     price={product.price} category={product.category}
-                                                                     description={product.description}
-                                                                     short_description={product.short_description}
-                                                                     supplements={product.supplements}/>
-                                                        }/>
-                                                </div>
-                                            ))
-                                        }
-
-
-                                    </div>
+                                {
+                                    deferredSearch.length > 0 ?
+                                        <div className={styles.searchedQuery}>Поиск по запросу: {deferredSearch}</div>
+                                        : null
                                 }
+
+                                <Catalog search={deferredSearch}/>
 
                             </div>
 

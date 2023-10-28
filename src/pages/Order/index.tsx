@@ -79,13 +79,14 @@ const Order = () => {
     useEffect(() => {
         console.log(marketAddresses)
         console.log(restaurant)
-        console.log(marketAddresses.findIndex(item => item.id == restaurant), "rest")
         dispatch(handleOrderFormVal({
             keyField: "name",
             val: data.name
         }))
         console.log(getFromStorage('order_form')?.restaurant ? getFromStorage('order_form')?.restaurant : marketAddresses.length > 0 ? marketAddresses.findIndex(item => item.id == restaurant) : -1)
+        console.log(marketAddresses.length > 0 ? restaurant : 0)
     }, [])
+
     return (
         <>
             <div className={styles.order}>
@@ -173,15 +174,18 @@ const Order = () => {
                                                         }))}
                                                     /> :
                                                     <SelectInput
-                                                        defaultCurrent={marketAddresses.length > 0 ? marketAddresses.findIndex(item => item.id == storageFromRest || restaurant) : 0}
+                                                        defaultCurrent={storageFromRest || restaurant}
                                                         className={styles.selectRestaurant}
                                                         classDropDown={styles.selectRestaurantItems}
                                                         labelText={"Выберите ресторан (обязательно)"}
                                                         selectHandler={(selected) => {
-                                                            const restaurantId = marketAddresses.filter((item, index) => index == selected)[0].id
-                                                            dispatch(handleSelectRestaurant(restaurantId))
+                                                            dispatch(handleSelectRestaurant(selected))
                                                         }}
-                                                        items={marketAddresses.map(item => item.adress)}
+                                                        optionsSelect={{
+                                                            byId: true,
+                                                            keyField: "adress"
+                                                        }}
+                                                        items={marketAddresses}
                                                     />
 
                                             }

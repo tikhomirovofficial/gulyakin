@@ -67,6 +67,19 @@
 .timeSelect {
   min-width: 12.5rem;
 }
+.productList{
+  max-height: 35vh;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+.productList::-webkit-scrollbar {
+  width: 3px;
+  background: #f1f1f1;
+}
+.productList::-webkit-scrollbar-thumb {
+  background: #c7c7c7;
+  border-radius: 30px;
+}
 .compositionOrder {
   padding: 3rem 4rem;
   max-width: 42rem;

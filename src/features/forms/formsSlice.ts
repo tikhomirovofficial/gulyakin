@@ -5,6 +5,8 @@ import {CreateOrderRequest, CreateOrderResponse} from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {OrderApi} from "../../http/api/order.api";
+import {validate} from "../../utils/forms/validator";
+import {profileRules} from "../../validator/forms.rules";
 
 export type FieldType = {
     val: string,
@@ -35,6 +37,12 @@ type FormsSliceState = {
     profileForm: ProfileFormType,
     orderForm: OrderFormType
 }
+export type Rule<FormType> = {
+    key: keyof FormType,
+    pattern?: RegExp,
+    err?: string
+}
+
 export type FormChangeValByKey<FormType> = {
     keyField: keyof FormType
     val: string
@@ -95,39 +103,55 @@ export const formsSlice = createSlice({
     initialState,
     reducers: {
         handleProfileFormVal: (state, action: PayloadHandleProfile) => {
-
             const key = action.payload.keyField
             const newVal = action.payload.val
 
-
-
-            state.profileForm = {
+            const newProfileFormData = {
                 ...state.profileForm,
                 [key]: {
                     ...state.profileForm[key],
                     val: newVal
                 }
             }
+
+            state.profileForm = newProfileFormData
+
+            state.profileErrors = validate<Omit<UserData, "phone">>({
+                dob: newProfileFormData.dob.val,
+                email: newProfileFormData.email.val,
+                name: newProfileFormData.name.val
+            }, profileRules)
+
+            if(state.profileErrsVisible) {
+                state.profileErrsVisible = false
+            }
         },
 
         setProfileForm: (state, action: PayloadAction<UserData>) => {
-            const {name, dob, email} = action.payload
+            const userData = action.payload
 
             state.profileForm = {
                 name: {
-                    val: name,
+                    val: userData.name,
                     isEditing: false
                 },
                 email: {
-                    val: email,
+                    val: userData.email,
                     isEditing: false
                 },
                 dob: {
-                    val: dob,
+                    val: userData.dob,
                     isEditing: false
                 }
 
             }
+
+        },
+        resetProfileErrors: (state) => {
+            state.profileErrors = {}
+        },
+        handleVisibleProfileErrors: (state, action: PayloadAction<boolean>) => {
+            state.profileErrsVisible = action.payload
         },
         handleOrderFormVal: (state, action: PayloadHandleOrder) => {
             const key = action.payload.keyField
@@ -233,7 +257,6 @@ export const formsSlice = createSlice({
 export const {
     handleProfileFormVal,
     handleProfileFormEditing,
-
     handleOrderFormVal,
     handleOrderFormEditing,
     handleOrderCallNeeded,
@@ -242,7 +265,9 @@ export const {
     handleOrderPickup,
     handleSelectRestaurant,
     setOrderForm,
+    resetProfileErrors,
     setProfileForm,
+    handleVisibleProfileErrors
 } = formsSlice.actions
 
 

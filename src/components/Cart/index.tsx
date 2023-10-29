@@ -12,16 +12,20 @@ import {handleCartOpened} from "../../features/modals/modalsSlice";
 import {CartProductItem, Supplement} from "../../types/api.types";
 import {domain} from "../../http/instance/instances";
 import {useNavigate} from "react-router-dom";
-import {CartProductSupplement, combinedArray} from "../../utils/combineProductsAndSupplement";
 
 
 type CartItemProps = {
     canNotBeAdded?: boolean,
     canBeChanged?: boolean,
 } & CartProductItem
-const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, count, supplements, product}) => {
+const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, supplements, product}) => {
     const dispatch = useAppDispatch()
-
+    const {items} = useAppSelector(state => state.products)
+    const supplementsPrice = supplements.length > 0 ? supplements.reduce((a, b) => {
+        return a + b.price
+    }, 0) : 0
+    
+    const canBeChanged = items.some(item => item.supplements.length > 0 && item.id === product.id)
     return (
         <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
             <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
@@ -30,7 +34,13 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, c
                 <div className="text f-column gap-5 f-1 al-self-center">
                     <div className={"f-column gap-5"}>
                         <b>{product.title}</b>
-                        <p>{product.composition}</p>
+                        <p>{product.composition || "Описания нет"}</p>
+                        {
+                            supplements.length > 0 ?
+                                <p>+ {supplements.map(item => item.title).join(", ")}</p>
+                                 : null
+                        }
+
                     </div>
                     {
                         canNotBeAdded ?
@@ -54,7 +64,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, canBeChanged, c
                     !canNotBeAdded ?
                         <>
                             <b className={styles.price}>
-                                {formatNumberWithSpaces(product.price * count)} ₽
+                                {formatNumberWithSpaces((product.price + supplementsPrice) * count)} ₽
                             </b>
                             <div className="d-f gap-20">
                                 {
@@ -135,7 +145,6 @@ const Cart = () => {
     const [additivesOpened, setAdditivesOpened] = useState(false)
     const [classAdditivesAdded, setClassAdditivesAdded] = useState(false)
     const [classOpened, setClassOpened] = useState(false)
-
 
 
     const handleOpenAdditives = () => {
@@ -314,7 +323,8 @@ const Cart = () => {
                     </div>
                     {
                         items.length ?
-                            <RedButton onClick={handleToOrder} disabled={items.some(item => item.product.id < 0)} className={"w-100p pd-15"}>К
+                            <RedButton onClick={handleToOrder} disabled={items.some(item => item.product.id < 0)}
+                                       className={"w-100p pd-15"}>К
                                 оформлению</RedButton> :
                             <RedButton onClick={handleToCatalog} disabled={items.some(item => item.product.id < 0)}
                                        className={"w-100p pd-15"}>Перейти в меню</RedButton>

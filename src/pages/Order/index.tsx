@@ -13,14 +13,16 @@ import {
     handleOrderPaymentWay,
     handleOrderPickup,
     handleOrderTime,
-    handleSelectRestaurant, sendOrder
+    handleSelectRestaurant,
+    sendOrder
 } from "../../features/forms/formsSlice";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {TextField} from "../../components/Inputs/TextField";
 import {domain} from "../../http/instance/instances";
 import {getFromStorage} from "../../utils/LocalStorageExplorer";
-import {CreateOrderRequest} from "../../types/api.types";
+import {CreateOrderRequest, Supplement} from "../../types/api.types";
 import {formatPhoneNumber} from "../../utils/formatePhone";
+import List from "../../components/List";
 
 const orderTimes = ["18:30", "19:30"]
 
@@ -31,18 +33,27 @@ type OrderItemProps = {
     composition: string,
     price: number,
     count: number
+    supplements?: Supplement[]
 }
-const OrderItem: FC<OrderItemProps> = ({image, id, title, count, price, composition}) => {
+const OrderItem: FC<OrderItemProps> = ({image, id, title, supplements = [], count, price, composition}) => {
+    const additivePrice = supplements.length > 0 ? supplements.reduce((a, b) => {
+        return a + b.price
+    }, 0) : 0
     return (
         <div className={`${styles.part} ${styles.product} pd-15 d-f gap-10`}>
             <div style={{backgroundImage: `url(${domain + "/" + image})`}}
                  className={`bg-cover ${styles.image}`}></div>
-            <div className="f-column-betw f-1">
-                <div className="top">
+            <div className="f-column-betw f-1 gap-5">
+                <div className="top f-column gap-5">
                     <h4>{title}</h4>
-                    <p>{composition}</p>
+                    <p>{composition || "Описание отсутствует"}</p>
+                    {
+                        supplements.length > 0 ?
+                            <p>+ {supplements.map(item => item.title).join(", ")}</p>
+                            : null
+                    }
                 </div>
-                <b className={styles.price}>{price} ₽</b>
+                <b className={styles.price}>{formatNumberWithSpaces((price + additivePrice) * count)} ₽</b>
             </div>
         </div>
     )
@@ -136,7 +147,8 @@ const Order = () => {
                                             <InputWrapper disabled={true} inActive={true}
                                                           grayBorderedClassName={styles.inputField}
                                                           locked={true}
-                                                          inputVal={formatPhoneNumber(data.phone)} placeholder={"Номер телефона"}
+                                                          inputVal={formatPhoneNumber(data.phone)}
+                                                          placeholder={"Номер телефона"}
                                                           labelText={
                                                               "Номер телефона"
                                                           }/>
@@ -192,7 +204,7 @@ const Order = () => {
 
 
                                         </div>
-                                        <b  onClick={() => dispatch(handleOrderPickup())}
+                                        <b onClick={() => dispatch(handleOrderPickup())}
                                            className={`${styles.wayOrderBtn} d-n colorRed cur-pointer`}>
                                             {isPickup ? "Выбрать доставку" : "Выбрать самовывоз"}
                                         </b>
@@ -281,7 +293,8 @@ const Order = () => {
                                     }
                                 </div>
                                 <div className="f-column gap-15">
-                                    <RedButton onClick={handleCreateOrder} disabled={!(address.val.length > 0) && !(cart.totalPrice > 0)}
+                                    <RedButton onClick={handleCreateOrder}
+                                               disabled={!(address.val.length > 0) && !(cart.totalPrice > 0)}
                                                className={"pd-15"}>Оформить заказ
                                         на {formatNumberWithSpaces(cart.totalPrice)} ₽</RedButton>
                                     <div className={"w-100p d-f jc-center"}>
@@ -297,20 +310,20 @@ const Order = () => {
                             <div className={`${styles.compositionOrder} bg-white f-column gap-20`}>
                                 <h3>Состав заказа</h3>
                                 <div className="f-column gap-5">
-                                    <div className="productList f-column gap-5">
-                                        {
-                                            cart.items.map(item => (
-                                                <OrderItem
-                                                    id={item.product.id}
-                                                    image={item.product.image}
-                                                    title={item.product.title}
-                                                    composition={item.product.composition}
-                                                    price={item.product.price}
-                                                    count={item.count}/>
-                                            ))
-                                        }
-
-                                    </div>
+                                    <List
+                                        listBlockClassname={`${styles.productList} f-column gap-5`}
+                                        list={cart.items}
+                                        renderItem={(item => (
+                                            <OrderItem
+                                                supplements={item.supplements}
+                                                id={item.product.id}
+                                                image={item.product.image}
+                                                title={item.product.title}
+                                                composition={item.product.composition}
+                                                price={item.product.price}
+                                                count={item.count}/>
+                                        ))}
+                                    />
                                     <div className={`${styles.info} ${styles.part} pd-15 f-column gap-10`}>
                                         <div className={`${styles.productsInfo} f-column gap-5`}>
                                             <div className="f-row-betw">

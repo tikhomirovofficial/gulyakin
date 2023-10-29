@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {Dispatch, FC, SetStateAction, useState} from 'react';
 import ShadowWrapper from "../ShadowWrapper";
 import WindowBody from "../WhiteWrapper";
 import {AddedAdditiveIcon, CheckedMark, CloseIcon} from "../../../icons";
@@ -69,12 +69,20 @@ type SupplementProps = {
     id: number,
     price: number,
     title: string
-    selected?: boolean
+    selected?: boolean,
+    setAddedSupplements: Dispatch<SetStateAction<Array<number>>>,
+    addedSupplementsIds: Array<number>
 }
 
-const SupplementItem: FC<SupplementProps> = ({id, price, title, selected}) => {
-    const [addedSupplements, setAddedSupplements] = useState<number[]>([1])
-
+const SupplementItem: FC<SupplementProps> = ({
+                                                 id,
+                                                 price,
+                                                 addedSupplementsIds,
+                                                 title,
+                                                 setAddedSupplements,
+                                                 selected
+                                             }) => {
+    const added = addedSupplementsIds.some(sup => sup === id)
     const addSupplement = (id: number) => {
         setAddedSupplements(prev => [...prev, id])
     }
@@ -83,7 +91,6 @@ const SupplementItem: FC<SupplementProps> = ({id, price, title, selected}) => {
     }
 
     const handleSupplement = (id: number) => {
-        const added = addedSupplements.some(sup => sup === id)
         if (added) {
             removeSupplement(id)
             return;
@@ -94,14 +101,13 @@ const SupplementItem: FC<SupplementProps> = ({id, price, title, selected}) => {
     return (
         <div className={`${styles.supplementItem}  f-row-betw`}>
             <div className="left d-f gap-10 al-end ">
-                <p>{id}</p>
-                <div className={`${styles.price}`}>+ 57 ₽</div>
+                <p>{title}</p>
+                <div className={`${styles.price}`}>+ {price} ₽</div>
             </div>
             <div onClick={() => handleSupplement(id)}
-                 className={`${styles.checkbox} ${addedSupplements.some(sup => sup === id) ? styles.checkboxSelected : ""} w-content h-content f-c-col`}>
+                 className={`${styles.checkbox} ${added ? styles.checkboxSelected : ""} w-content h-content f-c-col`}>
                 {
-                    addedSupplements.some(sup => sup === id) ?
-                        <CheckedMark stroke={"white"} height={10}/> : null
+                    added ? <CheckedMark stroke={"white"} height={10}/> : null
                 }
             </div>
         </div>
@@ -132,11 +138,13 @@ const ProductAdditives = () => {
         description,
         id
     } = useAppSelector(state => state.modals.productAdditivesData)
+
     const dispatch = useAppDispatch()
     const token = useToken()
     const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const {items} = useAppSelector(state => state.products)
-    const [selectedAdditive, setSelectedAdditive] = useState(-1)
+    const [addedSupplements, setAddedSupplements] = useState<number[]>([])
+
 
     const handleAddToCartClick = () => {
         dispatch(handleProductAdditives())
@@ -169,8 +177,13 @@ const ProductAdditives = () => {
 
 
     }
-    const additivePrice = selectedAdditive !== -1 ? additives.filter(supplement => supplement.id === selectedAdditive)[0].price : 0
 
+    const additivePrice = addedSupplements.length > 0 ? additives.reduce((a, b) => {
+        if(addedSupplements.some(sup => sup === b.id)) {
+            return a + b.price
+        }
+        return a
+    }, 0) : 0
 
     return (
         <ShadowWrapper onClick={() => dispatch(handleProductAdditives())}>
@@ -193,21 +206,23 @@ const ProductAdditives = () => {
                             </div>
                             <p className={styles.description}>{description || "Описание не заполнено"}</p>
                         </div>
-                        <div className={`${!additives.length ? "f-1" : ""} content gap-10 f-column-betw`}>
+                        <div className={`${additives.length ? "f-1" : ""} content gap-10 f-column-betw`}>
                             {
-                                !additives.length ?
+                                additives.length ?
                                     <div className="additivesListBlock f-1 gap-10 f-column">
                                         <h4>Дополнительно</h4>
                                         <List
                                             listBlockClassname={`${styles.supplementsList} f-column gap-10`}
-                                            list={sups}
+                                            list={additives}
                                             renderItem={
-                                            (item) => <SupplementItem
-                                                title={"Добавка"}
-                                                id={item.id}
-                                                price={50}
+                                                (item) => <SupplementItem
+                                                    addedSupplementsIds={addedSupplements}
+                                                    setAddedSupplements={setAddedSupplements}
+                                                    title={item.title}
+                                                    id={item.id}
+                                                    price={item.price}
 
-                                            />}
+                                                />}
                                         />
 
                                     </div> : null

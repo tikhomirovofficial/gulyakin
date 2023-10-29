@@ -9,7 +9,11 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import List from "../../components/List";
 import {handleNewAddress} from "../../features/modals/modalsSlice";
 import {deleteAddressUser, editUser, getAddressesUser} from "../../features/profile/profileSlice";
-import {handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
+import {
+    handleProfileFormEditing,
+    handleProfileFormVal,
+    handleVisibleProfileErrors
+} from "../../features/forms/formsSlice";
 import {TextField} from "../../components/Inputs/TextField";
 import {deleteCookie} from "../../utils/CookieUtil";
 import {useNavigate} from "react-router-dom";
@@ -19,7 +23,7 @@ import {formatPhoneNumber} from "../../utils/formatePhone";
 const Profile = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
     const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
-    const {profileErrors} = useAppSelector(state => state.forms)
+    const {profileErrors, profileErrsVisible} = useAppSelector(state => state.forms)
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -27,7 +31,7 @@ const Profile = () => {
     const handleUserEdit = () => {
         const hasErrs = Object.keys(profileErrors).length > 0
         if (hasErrs) {
-
+            dispatch(handleVisibleProfileErrors(true))
             return;
         }
         if (!hasErrs) {
@@ -100,6 +104,7 @@ const Profile = () => {
                                     isEditing={dob.isEditing}
                                     formValue={dob.val}
                                     condValue={data.dob}
+                                    errText={profileErrsVisible ? profileErrors["dob"] : ""}
                                     handleEdit={() => {
                                         dispatch(handleProfileFormEditing("dob"))
                                     }}
@@ -124,7 +129,7 @@ const Profile = () => {
                                     isEditing={email.isEditing}
                                     formValue={email.val}
                                     condValue={data.email}
-                                    errText={""}
+                                    errText={profileErrsVisible ? profileErrors["email"] : ""}
                                     handleEdit={() => {
                                         dispatch(handleProfileFormEditing("email"))
                                     }}

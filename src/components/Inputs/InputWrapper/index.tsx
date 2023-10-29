@@ -119,7 +119,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
             <div className={`d-f al-center gap-10`}>
                 <div className={`f-column gap-10 ${className}`}>
                     {labelText ? <label className={`${styles.label} ${errText ? styles.errorTextColor : null}`}
-                                        htmlFor={inputId}>{labelText}</label> : null}
+                                        htmlFor={inputId}>{errText ? errText : labelText}</label> : null}
                     <div className={`d-f ${isTextArea ? "" : "al-center"} gap-10`}>
 
                         <GrayBorderedBlock labelFor={inputId} disabled={inActive} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
@@ -129,10 +129,10 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                         id={inputId}></textarea> :
                                     !mask ?
                                         <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
-                                               value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
+                                               value={inputVal} onChange={changeVal} className={`${styles.input} ${errText ? styles.errorTextColor : ""} f-1 ${inputClassName || ""}`}
                                                id={inputId} type={inputType}/> :
                                         <InputMask mask={mask} maskPlaceholder={maskPlaceholder} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
-                                                   value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
+                                                   value={inputVal} onChange={changeVal} className={`${styles.input} ${errText ? styles.errorTextColor : ""} f-1 ${inputClassName || ""}`}
                                                    id={inputId} type="text"/>
 
                             }
@@ -200,7 +200,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
     return (
         <div className={`f-column gap-10 ${className}`}>
             {labelText ? <label className={`${styles.label} ${errText ? styles.errorTextColor : null}`}
-                                htmlFor={inputId}>{labelText}</label> : null}
+                               htmlFor={inputId}>{errText ? errText : labelText}</label> : null}
             <GrayBorderedBlock  labelFor={inputId} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                 {
                     isTextArea ?  <textarea readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}

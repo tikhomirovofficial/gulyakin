@@ -10,12 +10,15 @@ import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
-import {handleDeliveryVariant, handleDeliveryWayWindow} from "../../../features/modals/modalsSlice";
+import {handleDeliveryVariant, handleDeliveryWayWindow, handleNewAddress} from "../../../features/modals/modalsSlice";
 import {handleOrderFormVal, handleSelectRestaurant} from "../../../features/forms/formsSlice";
 import {useInput} from "../../../hooks/useInput";
 import {addToCart, setProductAfterAddress} from "../../../features/cart/cartSlice";
 import {getImgPath} from "../../../utils/getAssetsPath";
 import {setSelectedInPickup} from "../../../features/restaurants/restaurantsSlice";
+import {Address} from "../../../types/user.types";
+import {checkFilledValues} from "../../../utils/checkFilledValues";
+import {addAddressUser} from "../../../features/profile/profileSlice";
 
 interface AddressItemProps {
     selected: boolean,
@@ -23,6 +26,7 @@ interface AddressItemProps {
     disabled?: boolean,
     selectedHandle?: () => void
 }
+
 
 const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, disabled = false}) => {
     if (disabled) {
@@ -57,6 +61,9 @@ type SearchAddressItemProps = {
     address: string,
     city: string
 }
+type DeliveryWayCommonProps = {
+    addToCartWithAfterClose: () => void
+}
 const SearchAddressItem: FC<SearchAddressItemProps> = ({address, city}) => {
     return (
         <div className={`pd-10 ${styles.searchAddressItem} f-column gap-5`}>
@@ -65,7 +72,7 @@ const SearchAddressItem: FC<SearchAddressItemProps> = ({address, city}) => {
         </div>
     )
 }
-const DeliveryVariant = () => {
+const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) => {
     const [findedAddresses, setFindedAddressess] = useState<Array<SearchAddressItemProps>>([
         {
             address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
@@ -84,18 +91,53 @@ const DeliveryVariant = () => {
             city: "Сургут, ул. Университетская, д. 9"
         }
     ])
+    const {addProductAfterAddress} = useAppSelector(state => state.cart)
+    const products = useAppSelector(state => state.products)
     const dispatch = useAppDispatch()
+
+    const [formNewAddress, setFormNewAddress] = useState<Address>({
+        city: "",
+        code_door: "",
+        entrance: "",
+        flat: "",
+        floor: "",
+    })
+    const handleFormNewAddress = (key: keyof Address, val: string) => {
+        setFormNewAddress(prevState => {
+            prevState[key] = val
+            return {...prevState}
+        })
+    }
+
+    const handleAddAddress = () => {
+        dispatch(handleOrderFormVal({
+            keyField: "address",
+            val: addressInput
+        }))
+        dispatch(addAddressUser({
+            adress: formNewAddress.city,
+            apartment: Number(formNewAddress.flat),
+            door_code: Number(formNewAddress.code_door),
+            entrance: Number(formNewAddress.entrance),
+            floor: Number(formNewAddress.floor)
+        }))
+        addToCartWithAfterClose()
+    }
+
+    const isValidAddressData = checkFilledValues(formNewAddress, [])
+
     const {address} = useAppSelector(state => state.forms.orderForm)
     const [addressInput, changeVal, setVal] = useInput(address.val)
 
     return (
         <>
-            <div className="f-column gap-10">
+            <div className="f-column gap-10 f-1">
                 <div className={"d-f w-100p p-rel"}>
                     <InputWrapper
-                        setVal={val => setVal(val)}
-                        changeVal={e => changeVal(e)}
-                        inputVal={addressInput}
+                        setVal={val => handleFormNewAddress("city", val)}
+                        changeVal={(e) => handleFormNewAddress("city", e.currentTarget.value)}
+                        inputVal={formNewAddress.city}
+                        inputId={"address-input"}
                         className={"w-100p"}
                         placeholder={"Сургут, ул. Университетская, д. 9"}
                         labelText={
@@ -121,67 +163,59 @@ const DeliveryVariant = () => {
 
                 </div>
                 <div className="f-row-betw gap-20 flex-wrap">
-                    <InputWrapper className={styles.partInputBlock} placeholder={""} labelText={
-                        <div className={"d-f al-center gap-5 svgRedStroke"}>
-                            Подъезд
-                        </div>
-                    }/>
-                    <InputWrapper className={styles.partInputBlock} placeholder={""} labelText={
-                        <div className={"d-f al-center gap-5 svgRedStroke"}>
-                            Код двери
-                        </div>
-                    }/>
+                    <InputWrapper
+                        setVal={val => handleFormNewAddress("entrance", val)}
+                        changeVal={(e) => handleFormNewAddress("entrance", e.currentTarget.value)}
+                        inputVal={formNewAddress.entrance}
+                        inputId={"entrance-input"}
+                        className={styles.partInputBlock}
+                        placeholder={""}
+                        labelText={"Подъезд"}/>
+                    <InputWrapper
+                        setVal={val => handleFormNewAddress("code_door", val)}
+                        changeVal={(e) => handleFormNewAddress("code_door", e.currentTarget.value)}
+                        inputVal={formNewAddress.code_door}
+                        inputId={"code_door-input"}
+                        className={styles.partInputBlock}
+                        placeholder={""}
+                        labelText={"Код двери"}/>
 
                 </div>
                 <div className="f-row-betw gap-20 flex-wrap">
-                    <InputWrapper className={styles.partInputBlock} placeholder={""} labelText={
-                        <div className={"d-f al-center gap-5 svgRedStroke"}>
-                            Этаж
-                        </div>
-                    }/>
-                    <InputWrapper className={styles.partInputBlock} placeholder={""} labelText={
-                        <div className={"d-f al-center gap-5 svgRedStroke"}>
-                            Квартира
-                        </div>
-                    }/>
+                    <InputWrapper
+                        setVal={val => handleFormNewAddress("floor", val)}
+                        changeVal={(e) => handleFormNewAddress("floor", e.currentTarget.value)}
+                        inputVal={formNewAddress.floor}
+                        inputId={"floor-input"}
+                        className={styles.partInputBlock}
+                        placeholder={""}
+                        labelText={"Этаж"}/>
+                    <InputWrapper
+                        setVal={val => handleFormNewAddress("flat", val)}
+                        changeVal={(e) => handleFormNewAddress("flat", e.currentTarget.value)}
+                        inputVal={formNewAddress.flat}
+                        inputId={"flat-input"}
+                        className={styles.partInputBlock}
+                        placeholder={""}
+                        labelText={"Квартира"}/>
 
                 </div>
-                <InputWrapper placeholder={"Ваш комментарий..."} labelText={
-                    <div className={"d-f al-center gap-5 svgRedStroke"}>
-                        Комментарий
-                    </div>
-                }/>
             </div>
-            <RedButton onClick={() => {
-                dispatch(handleOrderFormVal({
-                    keyField: "address",
-                    val: addressInput
-                }))
-
-            }} disabled={addressInput.length == 0} className={"pd-10-0"}>Добавить</RedButton>
+            <RedButton onClick={handleAddAddress} disabled={!isValidAddressData} className={"pd-10-0"}>Добавить</RedButton>
         </>
     )
 }
 
-const PickupVariant = () => {
+const PickupVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) => {
     const {addresses} = useAppSelector(state => state.main)
-    const {addProductAfterAddress} = useAppSelector(state => state.cart)
     const {selectedInPickup} = useAppSelector(state => state.restaurants)
-    const products = useAppSelector(state => state.products)
+
     const dispatch = useAppDispatch()
+
 
     const handleAddAddressPickup = () => {
         dispatch(handleSelectRestaurant(selectedInPickup))
-        if (addProductAfterAddress !== null) {
-            const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress)[0]
-            if (matchedProduct?.id !== undefined) {
-                dispatch(addToCart({
-                    ...matchedProduct,
-                }))
-                dispatch(setProductAfterAddress(null))
-            }
-            dispatch(handleDeliveryWayWindow())
-        }
+        addToCartWithAfterClose()
     }
     return (
         <>
@@ -207,7 +241,20 @@ const DeliveryWay = () => {
     const {addresses} = useAppSelector(state => state.main)
     const {selectedInPickup} = useAppSelector(state => state.restaurants)
     const currentAddress = selectedInPickup !== -1 ? addresses.filter(item => item.id === selectedInPickup)[0] : addresses[0]
-
+    const {addProductAfterAddress} = useAppSelector(state => state.cart)
+    const products = useAppSelector(state => state.products)
+    const addToCartWithClose = () => {
+        if (addProductAfterAddress !== null) {
+            const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress)[0]
+            if (matchedProduct?.id !== undefined) {
+                dispatch(addToCart({
+                    ...matchedProduct,
+                }))
+                dispatch(setProductAfterAddress(null))
+            }
+            dispatch(handleDeliveryWayWindow())
+        }
+    }
     const closeDeliveryWay = () => {
         dispatch(handleDeliveryWayWindow())
         dispatch(setSelectedInPickup(-1))
@@ -232,8 +279,8 @@ const DeliveryWay = () => {
                     </div>
                     {
                         !variant ?
-                            <DeliveryVariant/> :
-                            <PickupVariant/>
+                            <DeliveryVariant addToCartWithAfterClose={addToCartWithClose}/> :
+                            <PickupVariant addToCartWithAfterClose={addToCartWithClose}/>
 
                     }
 

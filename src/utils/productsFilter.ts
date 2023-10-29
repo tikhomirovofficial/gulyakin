@@ -17,6 +17,5 @@ export function searchProducts(query: string, data: ReturnType<typeof getCombine
         }
 
     });
-    console.log(filtered)
     return filtered
 }

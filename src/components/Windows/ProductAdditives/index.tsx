@@ -131,7 +131,7 @@ const sups = [
 ]
 const ProductAdditives = () => {
     const {
-        additives,
+        additives = [],
         imageUrl,
         price,
         weight,
@@ -147,10 +147,11 @@ const ProductAdditives = () => {
     const cart = useAppSelector(state => state.cart.items)
     const saveMode = useAppSelector(state => state.modals.isChangingModeAdditives)
 
-    const [addedSupplements, setAddedSupplements] = useState<number[]>(additives.length > 0 ?
-        cart.filter(cartProd => cartProd.product.id === id)[0].supplements.map(cartSup => cartSup.id)
+    const [addedSupplements, setAddedSupplements] = useState<number[]>(additives?.length > 0 ?
+        cart.some(cartProd => cartProd.product.id === id) ?
+        cart.filter(cartProd => cartProd.product.id === id)[0]?.supplements.map(cartSup => cartSup.id) : []
     :[])
-
+    console.log(addedSupplements)
     const saveChangesAdditives = () => {
         alert("Сохраниь изменения")
     }
@@ -187,7 +188,7 @@ const ProductAdditives = () => {
 
     }
 
-    const additivePrice = addedSupplements.length > 0 ? additives.reduce((a, b) => {
+    const additivePrice = addedSupplements?.length > 0 ? additives.reduce((a, b) => {
         if(addedSupplements.some(sup => sup === b.id)) {
             return a + b.price
         }
@@ -215,9 +216,9 @@ const ProductAdditives = () => {
                             </div>
                             <p className={styles.description}>{description || "Описание не заполнено"}</p>
                         </div>
-                        <div className={`${additives.length ? "f-1" : ""} content gap-10 f-column-betw`}>
+                        <div className={`${additives?.length ? "f-1" : ""} content gap-10 f-column-betw`}>
                             {
-                                additives.length ?
+                                additives?.length ?
                                     <div className="additivesListBlock f-1 gap-10 f-column">
                                         <h4>Дополнительно</h4>
                                         <List

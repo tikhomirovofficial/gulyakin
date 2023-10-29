@@ -26,11 +26,18 @@ export type ProductRes = {
     supplements: Supplement[];
     composition: string;
 }
+export type DrinkItem = {
+    id: number,
+    title: string,
+    image: string
+}
 export type Combo = {
     old_price: number
     new_price: number
     products: Array<Pick<ProductRes, "id" | "title">>
+    drinks: Array<DrinkItem>
 } & Pick<ProductRes, "title" | "image" | "id">
+
 export type Category = {
     id: number;
     title: string;

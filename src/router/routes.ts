@@ -6,6 +6,7 @@ import Restaurants from "../pages/Restaurants";
 import ChosenRestaurant from "../pages/ChosenRestaurant";
 import Profile from "../pages/Profile";
 import Order from "../pages/Order";
+import WithOrder from "../pages/Order/withOrder";
 
 export interface RoutesCollection {
     auth: RoutesList,
@@ -37,7 +38,7 @@ export const routes: RoutesCollection = {
             path: "/profile"
         },
         {
-            Component: Order,
+            Component: WithOrder,
             path: "/order"
         }
     ],

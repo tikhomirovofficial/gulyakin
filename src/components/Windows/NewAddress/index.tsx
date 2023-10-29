@@ -9,10 +9,11 @@ import {handleNewAddress} from "../../../features/modals/modalsSlice";
 import RedButton from "../../Buttons/RedButton";
 import {Address} from "../../../types/user.types";
 import {checkFilledValues} from "../../../utils/checkFilledValues";
-import {addAddress} from "../../../features/profile/profileSlice";
+import {addAddress, addAddressUser} from "../../../features/profile/profileSlice";
 
 const NewAddressWindow = () => {
     const dispatch = useAppDispatch()
+
     const [formNewAddress, setFormNewAddress] = useState<Address>({
         city: "",
         code_door: "",
@@ -28,12 +29,17 @@ const NewAddressWindow = () => {
         })
     }
 
-    const isValidAddressData = checkFilledValues(formNewAddress, ["code_door"])
+    const isValidAddressData = checkFilledValues(formNewAddress, [])
 
     const handleAddAddress = () => {
-        dispatch(addAddress({
-            ...formNewAddress,
-            id: Date.now()
+        dispatch(addAddressUser({
+            adress: formNewAddress.city,
+            apartment: Number(formNewAddress.flat),
+            door_code: Number(formNewAddress.code_door),
+            entrance: Number(formNewAddress.entrance),
+            floor: Number(formNewAddress.floor)
+
+
         }))
         dispatch(handleNewAddress())
     }
@@ -50,6 +56,7 @@ const NewAddressWindow = () => {
                         <h2>Новый адрес</h2>
                         <div className="f-column gap-15">
                             <InputWrapper setVal={val => handleFormNewAddress("city", val)}
+                                          inputId={"address-input"}
                                           inputVal={formNewAddress.city}
                                           changeVal={(e) => handleFormNewAddress("city", e.currentTarget.value)}
                                           placeholder={"Сургут, ул. Университетская, д. 9"}
@@ -58,20 +65,24 @@ const NewAddressWindow = () => {
                         <div className="f-row-betw gap-20 flex-wrap">
                             <InputWrapper inputType={"number"} setVal={val => handleFormNewAddress("entrance", val)}
                                           inputVal={formNewAddress.entrance}
+                                          inputId={"entrance-input"}
                                           changeVal={(e) => handleFormNewAddress("entrance", e.currentTarget.value)}
                                           className={styles.shortInput} placeholder={"9"} labelText={"Подъезд"}/>
                             <InputWrapper inputType={"number"} setVal={val => handleFormNewAddress("code_door", val)}
                                           inputVal={formNewAddress.code_door}
+                                          inputId={"code_door-input"}
                                           changeVal={(e) => handleFormNewAddress("code_door", e.currentTarget.value)}
                                           className={styles.shortInput} placeholder={"345"} labelText={"Код двери"}/>
                         </div>
                         <div className="f-row-betw gap-20 flex-wrap">
                             <InputWrapper inputType={"number"} setVal={val => handleFormNewAddress("floor", val)}
                                           inputVal={formNewAddress.floor}
+                                          inputId={"floor-input"}
                                           changeVal={(e) => handleFormNewAddress("floor", e.currentTarget.value)}
                                           className={styles.shortInput} placeholder={"7"} labelText={"Этаж"}/>
                             <InputWrapper inputType={"number"} setVal={val => handleFormNewAddress("flat", val)}
                                           inputVal={formNewAddress.flat}
+                                          inputId={"flat-input"}
                                           changeVal={(e) => handleFormNewAddress("flat", e.currentTarget.value)}
                                           className={styles.shortInput} placeholder={"45"} labelText={"Квартира"}/>
                         </div>

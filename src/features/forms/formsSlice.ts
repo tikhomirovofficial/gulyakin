@@ -1,21 +1,10 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ProductAdditiveData} from "../../types/products.types";
-import {getImgPath} from "../../utils/getAssetsPath";
-import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {withFieldType} from "../../utils/withFieldType";
 import {UserData} from "../../types/user.types";
-import {
-    AddToCartRequest,
-    AddToCartResponse,
-    CreateOrderRequest,
-    CreateOrderResponse,
-    ProductRes
-} from "../../types/api.types";
+import {CreateOrderRequest, CreateOrderResponse} from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
-import {CartApi} from "../../http/api/cart.api";
 import {OrderApi} from "../../http/api/order.api";
-import {editCountCart} from "../cart/cartSlice";
 
 export type FieldType = {
     val: string,
@@ -28,9 +17,9 @@ type ProfileFormType = {
 }
 
 type OrderTime = "FAST" | string
-type OrderPaymentWay =  "CASH" | "CARD"
+type OrderPaymentWay = "CASH" | "CARD"
 
-type OrderFormType = Pick<ProfileFormType, "name"> &{
+type OrderFormType = Pick<ProfileFormType, "name"> & {
     time: OrderTime
     callNeeded: boolean,
     paymentWay: OrderPaymentWay,
@@ -41,6 +30,8 @@ type OrderFormType = Pick<ProfileFormType, "name"> &{
 }
 
 type FormsSliceState = {
+    profileErrors: Record<string, string>,
+    profileErrsVisible: boolean,
     profileForm: ProfileFormType,
     orderForm: OrderFormType
 }
@@ -50,6 +41,8 @@ export type FormChangeValByKey<FormType> = {
 }
 
 const initialState: FormsSliceState = {
+    profileErrors: {},
+    profileErrsVisible: false,
     profileForm: {
         name: {
             isEditing: false, val: ""
@@ -61,16 +54,14 @@ const initialState: FormsSliceState = {
         },
         email: {
             isEditing: false, val: ""
-
         }
     },
     orderForm: {
         name: {
-            isEditing:false,
+            isEditing: false,
             val: ""
         },
         callNeeded: false,
-
         time: "FAST",
         paymentWay: "CARD",
         phone: "",
@@ -83,12 +74,12 @@ const initialState: FormsSliceState = {
     }
 }
 
-type PayloadHandleProfile =  PayloadAction<FormChangeValByKey<ProfileFormType>>
-type PayloadHandleProfileEditing =  PayloadAction<keyof ProfileFormType>
+type PayloadHandleProfile = PayloadAction<FormChangeValByKey<ProfileFormType>>
+type PayloadHandleProfileEditing = PayloadAction<keyof ProfileFormType>
 
 
-type PayloadHandleOrder =  PayloadAction<FormChangeValByKey<OrderFormType>>
-type PayloadHandleOrderEditing =  PayloadAction<keyof OrderFormType>
+type PayloadHandleOrder = PayloadAction<FormChangeValByKey<OrderFormType>>
+type PayloadHandleOrderEditing = PayloadAction<keyof OrderFormType>
 
 export const sendOrder = createAsyncThunk(
     'order/send',
@@ -108,6 +99,8 @@ export const formsSlice = createSlice({
             const key = action.payload.keyField
             const newVal = action.payload.val
 
+
+
             state.profileForm = {
                 ...state.profileForm,
                 [key]: {
@@ -116,11 +109,12 @@ export const formsSlice = createSlice({
                 }
             }
         },
+
         setProfileForm: (state, action: PayloadAction<UserData>) => {
             const {name, dob, email} = action.payload
 
             state.profileForm = {
-                name:  {
+                name: {
                     val: name,
                     isEditing: false
                 },
@@ -206,15 +200,15 @@ export const formsSlice = createSlice({
                 isPickup: !state.orderForm.isPickup
             }
         },
-        setOrderForm: (state, action: PayloadAction<{restaurant: number, address: string}>) =>{
-          state.orderForm = {
-              ...state.orderForm,
-              restaurant: action.payload.restaurant,
-              address: {
-                  ...state.orderForm.address,
-                  val: action.payload.address
-              }
-          }
+        setOrderForm: (state, action: PayloadAction<{ restaurant: number, address: string }>) => {
+            state.orderForm = {
+                ...state.orderForm,
+                restaurant: action.payload.restaurant,
+                address: {
+                    ...state.orderForm.address,
+                    val: action.payload.address
+                }
+            }
         },
         handleSelectRestaurant: (state, action: PayloadAction<number>) => {
             state.orderForm = {
@@ -223,7 +217,7 @@ export const formsSlice = createSlice({
             }
         }
     },
-    extraReducers: builder =>  {
+    extraReducers: builder => {
         builder.addCase(sendOrder.pending, (state, action) => {
 
         })

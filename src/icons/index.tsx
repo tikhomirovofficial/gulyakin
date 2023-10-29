@@ -5,14 +5,15 @@ export interface IconProps {
     width?: number,
     height?: number,
     fill?: string
+    stroke?: string
 }
 
 
 
-export const CheckedMark: FC<IconProps> = ({width = 9, height = 7}) => {
+export const CheckedMark: FC<IconProps> = ({width = 9, height = 7, stroke = "#200E32" }) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 9 7" fill="none">
-            <path d="M1 3.373L3.374 5.746L8.12 1" stroke="#200E32" strokeWidth="1.5" strokeLinecap="round"
+            <path d="M1 3.373L3.374 5.746L8.12 1" stroke={stroke} strokeWidth="1.5" strokeLinecap="round"
                   stroke-linejoin="round"/>
         </svg>
     )

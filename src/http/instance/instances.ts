@@ -2,11 +2,16 @@ import axios from 'axios'
 import {getCookie} from "../../utils/CookieUtil";
 import {getTokens} from "../../utils/storeTokens";
 
-const isDev = false
+const currentDomain = 1
+const domains = [
+    "http://dev.advafert.ru",
+    "http://vps.advafert.ru:5000",
+    "https://api.client.advafert.ru"
+]
 
-const devDomain = "http://dev.advafert.ru"
-const prodDomain = "https://api.client.advafert.ru"
-export const domain = isDev ? devDomain : prodDomain
+
+
+export const domain = domains[currentDomain]
 const URL = domain + "/api"
 
 const authApi = axios.create({

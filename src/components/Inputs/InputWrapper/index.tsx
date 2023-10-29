@@ -4,7 +4,7 @@ import React, {
     FC,
     HTMLInputTypeAttribute,
     ReactNode,
-    SetStateAction, useEffect,
+    SetStateAction,
     useRef,
     useState
 } from 'react';
@@ -44,30 +44,29 @@ interface InputWrapper {
 const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                            isFocused,
                                                            isPhone,
-    inputClassName,
+                                                           inputClassName,
                                                            placeholder,
                                                            setVal,
                                                            className,
                                                            onInputBlur,
                                                            grayBorderedClassName,
-    maskPlaceholder,
                                                            inputId,
-    inputType = "text",
+                                                           inputType = "text",
                                                            labelText,
                                                            inputVal,
-    mask,
-    postFix,
-    onInputFocus,
-    isChanging= false,
-    locked = false,
-    isTextArea = false,
-    textChangeVal,
+                                                           mask,
+                                                           postFix,
+                                                           onInputFocus,
+                                                           isChanging= false,
+                                                           locked = false,
+                                                           isTextArea = false,
+                                                           textChangeVal,
                                                            changeVal,
-
-    inActive= false,
-    disabled = false,
+                        maskPlaceholder,
+                                                           inActive= false,
+                                                           disabled = false,
                                                            errText,
-    btn
+                                                           btn
                                                        }) => {
     const [isFocusedState, setIsFocusedState] = useState<boolean>(isFocused || false)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -114,9 +113,6 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
             setVal("")
         }
     }
-    useEffect(() => {
-        console.log(maskPlaceholder)
-    })
     if(btn) {
         console.log(placeholder, `Фокус ${isFocusedState} Изменяется ${isChanging} Пустое ${inputVal === ""}`)
         return (
@@ -126,16 +122,16 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                         htmlFor={inputId}>{labelText}</label> : null}
                     <div className={`d-f ${isTextArea ? "" : "al-center"} gap-10`}>
 
-                        <GrayBorderedBlock disabled={inActive} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
+                        <GrayBorderedBlock labelFor={inputId} disabled={inActive} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                             {
                                 isTextArea ?  <textarea readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
-                                                     value={inputVal || (isPhone ? "+7" : "")} onChange={textChangeVal} className={`${styles.textField} f-1`}
-                                                     id={inputId}></textarea> :
-                                    !mask && isChanging ?
+                                                        value={inputVal || (isPhone ? "+7" : "")} onChange={textChangeVal} className={`${styles.textField} f-1`}
+                                                        id={inputId}></textarea> :
+                                    !mask ?
                                         <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                                value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
                                                id={inputId} type={inputType}/> :
-                                        <InputMask maskPlaceholder={maskPlaceholder} mask={mask || ""} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                                        <InputMask mask={mask} maskPlaceholder={maskPlaceholder} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                                    value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
                                                    id={inputId} type="text"/>
 
@@ -156,8 +152,8 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                         {
 
                             !locked && (isFocusedState || ( isChanging)) ?<div onClick={handleResetInput} style={{width: "fit-content", height: "fit-content"}}>
-                            <CloseIcon/>
-                        </div> : null
+                                <CloseIcon/>
+                            </div> : null
                         }
 
                     </div>
@@ -205,18 +201,18 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
         <div className={`f-column gap-10 ${className}`}>
             {labelText ? <label className={`${styles.label} ${errText ? styles.errorTextColor : null}`}
                                 htmlFor={inputId}>{labelText}</label> : null}
-            <GrayBorderedBlock validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
+            <GrayBorderedBlock  labelFor={inputId} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                 {
                     isTextArea ?  <textarea readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                             value={inputVal || (isPhone ? "+7" : "")} onChange={textChangeVal} className={`${styles.textField} f-1`}
                                             id={inputId}></textarea> :
                         !mask ?
-                        <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
-                               value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
-                               id={inputId} type={inputType}/> :
-                            <InputMask maskPlaceholder={maskPlaceholder} mask={mask} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                            <input readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
                                    value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
-                                   id={inputId} type="text"/>
+                                   id={inputId} type={inputType}/> :
+                            <InputMask mask={mask} readOnly={disabled} placeholder={placeholder || ""} onBlur={handleBlur} onFocus={handleFocus}
+                                       value={inputVal} onChange={changeVal} className={`${styles.input} f-1 ${inputClassName || ""}`}
+                                       id={inputId} type="text"/>
 
                 }
                 {postFix ?

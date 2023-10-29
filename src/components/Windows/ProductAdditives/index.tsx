@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import ShadowWrapper from "../ShadowWrapper";
 import WindowBody from "../WhiteWrapper";
-import {AddedAdditiveIcon, CloseIcon} from "../../../icons";
+import {AddedAdditiveIcon, CheckedMark, CloseIcon} from "../../../icons";
 import styles from './productAdditives.module.scss'
 import RedButton from "../../Buttons/RedButton";
 import {getImgPath} from "../../../utils/getAssetsPath";
@@ -18,6 +18,7 @@ import {
     setProductAfterAddress
 } from "../../../features/cart/cartSlice";
 import useToken from "../../../hooks/useToken";
+import List from "../../List";
 
 type AdditiveItemProps = {
     selected: boolean,
@@ -63,6 +64,64 @@ const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({
         </div>
     )
 }
+
+type SupplementProps = {
+    id: number,
+    price: number,
+    title: string
+    selected?: boolean
+}
+
+const SupplementItem: FC<SupplementProps> = ({id, price, title, selected}) => {
+    const [addedSupplements, setAddedSupplements] = useState<number[]>([1])
+
+    const addSupplement = (id: number) => {
+        setAddedSupplements(prev => [...prev, id])
+    }
+    const removeSupplement = (id: number) => {
+        setAddedSupplements(prev => prev.filter(sup_id => sup_id !== id))
+    }
+
+    const handleSupplement = (id: number) => {
+        const added = addedSupplements.some(sup => sup === id)
+        if (added) {
+            removeSupplement(id)
+            return;
+        }
+        addSupplement(id)
+
+    }
+    return (
+        <div className={`${styles.supplementItem}  f-row-betw`}>
+            <div className="left d-f gap-10 al-end ">
+                <p>{id}</p>
+                <div className={`${styles.price}`}>+ 57 ₽</div>
+            </div>
+            <div onClick={() => handleSupplement(id)}
+                 className={`${styles.checkbox} ${addedSupplements.some(sup => sup === id) ? styles.checkboxSelected : ""} w-content h-content f-c-col`}>
+                {
+                    addedSupplements.some(sup => sup === id) ?
+                        <CheckedMark stroke={"white"} height={10}/> : null
+                }
+            </div>
+        </div>
+    );
+};
+
+const sups = [
+    {
+        id: 1
+    },
+    {
+        id: 2
+    },
+    {
+        id: 3
+    },
+    {
+        id: 4
+    }
+]
 const ProductAdditives = () => {
     const {
         additives,
@@ -82,7 +141,8 @@ const ProductAdditives = () => {
     const handleAddToCartClick = () => {
         dispatch(handleProductAdditives())
         if (token) {
-            if (address.val.length > 0 || restaurant !== -1) {
+            const deliveryIsDefined = address.val.length > 0 || restaurant !== -1
+            if (deliveryIsDefined) {
                 const product = items.filter(item => item.id === id)[0]
                 dispatch(addToCart({
                     ...product
@@ -125,7 +185,7 @@ const ProductAdditives = () => {
                     <div style={{backgroundImage: `url(${imageUrl})`}} className={`${styles.productImage}`}>
 
                     </div>
-                    <div className={`${styles.productAdditivesBar} f-column-betw gap-30`}>
+                    <div className={`${styles.productAdditivesBar} f-column-betw gap-10`}>
                         <div className="top f-column gap-10">
                             <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
                                 <h3>{name}</h3>
@@ -133,27 +193,23 @@ const ProductAdditives = () => {
                             </div>
                             <p className={styles.description}>{description || "Описание не заполнено"}</p>
                         </div>
-                        <div className={`${additives.length ? "f-1" : ""} content gap-10 f-column-betw`}>
+                        <div className={`${!additives.length ? "f-1" : ""} content gap-10 f-column-betw`}>
                             {
-                                additives.length ?
+                                !additives.length ?
                                     <div className="additivesListBlock f-1 gap-10 f-column">
-                                        <h4>Добавьте по вкусу</h4>
-                                        <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
-                                            <AdditiveItem selected={selectedAdditive == -1} isEmpty={true} price={0}
-                                                          name={"Без соуса"} addHandler={() => {
-                                                setSelectedAdditive(-1)
-                                            }} imageUrl={''}/>
-                                            {
-                                                additives.map(item => (
-                                                    <AdditiveItem isEmpty={false} imageUrl={item.image}
-                                                                  selected={selectedAdditive == item.id}
-                                                                  price={item.price} name={item.title}
-                                                                  addHandler={() => {
-                                                                      setSelectedAdditive(item.id)
-                                                                  }}/>
-                                                ))
-                                            }
-                                        </div>
+                                        <h4>Дополнительно</h4>
+                                        <List
+                                            listBlockClassname={`${styles.supplementsList} f-column gap-10`}
+                                            list={sups}
+                                            renderItem={
+                                            (item) => <SupplementItem
+                                                title={"Добавка"}
+                                                id={item.id}
+                                                price={50}
+
+                                            />}
+                                        />
+
                                     </div> : null
 
                             }

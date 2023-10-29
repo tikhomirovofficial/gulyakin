@@ -49,15 +49,24 @@ export class UserApi {
 
     static async AddAddress(requestData: AddressAddRequest): Promise<AxiosResponse<AddressAddResponse>> {
         const res: AxiosResponse<AddressAddResponse> = await authApi.post(PATHS.USER_ADDRESS_ADD, {...requestData});
+        if(!res.data) {
+            throw res
+        }
         return res;
     }
 
     static async Addresses(): Promise<AxiosResponse<UserAddressesResponse>> {
         const res: AxiosResponse<UserAddressesResponse> = await authApi.get(PATHS.USER_ADDRESS_GET);
+        if(!res.data) {
+            throw res
+        }
         return res;
     }
     static async DeleteAddress(requestData: DeleteUserAddressRequest): Promise<AxiosResponse<DeleteUserAddressResponse>> {
         const res: AxiosResponse<DeleteUserAddressResponse> = await authApi.post(PATHS.USER_ADDRESS_DEL, {...requestData});
+        if(!res.data) {
+            throw res
+        }
         return res;
     }
 

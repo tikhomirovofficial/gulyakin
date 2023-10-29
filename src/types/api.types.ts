@@ -55,19 +55,22 @@ export type RefreshResponse = Pick<JWT, "access">
 export type ChangeUserRequest = Omit<UserData, "phone">
 export type ChangeUserResponse = {user: UserData} & ResponseStatus
 
-export type AddressAddRequest = {
-    address: string
+export type AddressApiItem ={
+    id: number
+    adress: string,
+    entrance: number,
+    floor: number,
+    door_code: number
+    apartment: number
 }
-export type AddressAddResponse = ResponseStatus
+export type AddressAddRequest = Omit<AddressApiItem, "id">
+export type AddressAddResponse = ResponseStatus & Pick<AddressApiItem, "id">
 
 export type UserAddressesResponse = ResponseStatus & {
-   adress: Array<{
-       id: number,
-       address: string
-   }>
+   adress: Array<AddressApiItem>
 }
 export type DeleteUserAddressRequest = {
-    address_id: 1
+    adress_id: number
 }
 export type DeleteUserAddressResponse = ResponseStatus
 

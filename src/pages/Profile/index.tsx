@@ -1,36 +1,43 @@
-import React, {FC, useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import Header from "../../components/Header";
 import styles from './profile.module.scss'
-import LogosSection from "../../components/LogosSection";
 import InputWrapper from "../../components/Inputs/InputWrapper";
-import {DeleteIcon, EditIcon, PlusIncCircleIcon, SaveIcon} from "../../icons";
+import {DeleteIcon, PlusIncCircleIcon} from "../../icons";
 import GrayButton from "../../components/Buttons/GrayButton";
 import DarkBorderedButton from "../../components/Buttons/DarkBorderedButton";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import List from "../../components/List";
 import {handleNewAddress} from "../../features/modals/modalsSlice";
-import {editUser, removeAddress} from "../../features/profile/profileSlice";
-import {handleOrderFormEditing, handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
-import {HasClassName} from "../../types/components.types";
+import {deleteAddressUser, editUser, getAddressesUser} from "../../features/profile/profileSlice";
+import {handleProfileFormEditing, handleProfileFormVal} from "../../features/forms/formsSlice";
 import {TextField} from "../../components/Inputs/TextField";
 import {deleteCookie} from "../../utils/CookieUtil";
 import {useNavigate} from "react-router-dom";
 import {formatPhoneNumber} from "../../utils/formatePhone";
 
 
-
 const Profile = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
     const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
+    const {profileErrors} = useAppSelector(state => state.forms)
+
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
     const handleUserEdit = () => {
-        dispatch(editUser({
-            name: name.val,
-            email: email.val,
-            dob: dob.val
-        }))
+        const hasErrs = Object.keys(profileErrors).length > 0
+        if (hasErrs) {
+
+            return;
+        }
+        if (!hasErrs) {
+            dispatch(editUser({
+                name: name.val,
+                email: email.val,
+                dob: dob.val
+            }))
+        }
+
     }
     const handleLogout = () => {
         deleteCookie("tokens")
@@ -38,6 +45,9 @@ const Profile = () => {
 
     }
 
+    useEffect(() => {
+        dispatch(getAddressesUser())
+    }, [])
     return (
         <>
             <Header/>
@@ -68,7 +78,10 @@ const Profile = () => {
                                         dispatch(handleProfileFormVal({keyField: "name", val: data.name}))
                                     }}
                                     setVal={val => dispatch(handleProfileFormVal({keyField: "name", val: val}))}
-                                    changeVal={e => dispatch(handleProfileFormVal({keyField: "name", val: e.target.value}))}
+                                    changeVal={e => dispatch(handleProfileFormVal({
+                                        keyField: "name",
+                                        val: e.target.value
+                                    }))}
                                 />
 
                                 <InputWrapper disabled={true} inActive={true} grayBorderedClassName={styles.inputField}
@@ -98,7 +111,10 @@ const Profile = () => {
                                         dispatch(handleProfileFormVal({keyField: "dob", val: data.dob}))
                                     }}
                                     setVal={val => dispatch(handleProfileFormVal({keyField: "dob", val: val}))}
-                                    changeVal={e => dispatch(handleProfileFormVal({keyField: "dob", val: e.target.value}))}
+                                    changeVal={e => dispatch(handleProfileFormVal({
+                                        keyField: "dob",
+                                        val: e.target.value
+                                    }))}
                                 />
                                 <TextField
                                     handleSave={handleUserEdit}
@@ -108,6 +124,7 @@ const Profile = () => {
                                     isEditing={email.isEditing}
                                     formValue={email.val}
                                     condValue={data.email}
+                                    errText={""}
                                     handleEdit={() => {
                                         dispatch(handleProfileFormEditing("email"))
                                     }}
@@ -119,7 +136,10 @@ const Profile = () => {
                                         dispatch(handleProfileFormVal({keyField: "email", val: data.email}))
                                     }}
                                     setVal={val => dispatch(handleProfileFormVal({keyField: "email", val: val}))}
-                                    changeVal={e => dispatch(handleProfileFormVal({keyField: "email", val: e.target.value}))}
+                                    changeVal={e => dispatch(handleProfileFormVal({
+                                        keyField: "email",
+                                        val: e.target.value
+                                    }))}
                                 />
 
                             </div>
@@ -146,8 +166,10 @@ const Profile = () => {
                                                       <p>{city}</p>
                                                       <b>{city}</b>
                                                   </div>
-                                                  <div onClick={() => dispatch(removeAddress(id))}
-                                                       className="w-content f-c-col">
+                                                  <div onClick={() => dispatch(deleteAddressUser({
+                                                      adress_id: id
+                                                  }))}
+                                                       className="w-content cur-pointer f-c-col">
                                                       <DeleteIcon/>
                                                   </div>
 
@@ -158,7 +180,8 @@ const Profile = () => {
                                         совершать покупки</p>
                             }
                         </div>
-                        <GrayButton onClick={handleLogout} className={`${styles.logoutBtn} w-content cur-pointer`}>Выйти</GrayButton>
+                        <GrayButton onClick={handleLogout}
+                                    className={`${styles.logoutBtn} w-content cur-pointer`}>Выйти</GrayButton>
                     </div>
 
                 </div>

@@ -10,10 +10,11 @@ type TextFieldProps = {
     formValue: string,
     condValue: string,
     handleSave: () => void,
+
     handleEdit?: () => void,
 
-} & Pick<InputWrapper, "mask" | "errText" | "maskPlaceholder" | "placeholder" | "labelText" | "changeVal" | "setVal" | "onInputBlur" | "onInputFocus" | "isTextArea" | "textChangeVal"> & HasClassName
-export const TextField: FC<TextFieldProps> = ({isEditing,maskPlaceholder, mask, textChangeVal, handleEdit, onInputBlur, isTextArea, onInputFocus, className, handleSave, condValue, changeVal, setVal,
+} & Pick<InputWrapper, "mask" | "errText" | "maskPlaceholder" | "inputId"  | "placeholder" | "labelText" | "changeVal" | "setVal" | "onInputBlur" | "onInputFocus" | "isTextArea" | "textChangeVal"> & HasClassName
+export const TextField: FC<TextFieldProps> = ({isEditing, errText, maskPlaceholder, inputId, mask, textChangeVal, handleEdit, onInputBlur, isTextArea, onInputFocus, className, handleSave, condValue, changeVal, setVal,
   placeholder, labelText, formValue}) => {
 
 
@@ -33,6 +34,7 @@ export const TextField: FC<TextFieldProps> = ({isEditing,maskPlaceholder, mask, 
     const handleInputFocus = () => {
         if(editRef.current !== null) {
             const inputElement = editRef.current?.parentNode?.children[0] as HTMLInputElement
+            console.log(inputElement)
             inputElement.focus()
         }
     }
@@ -44,10 +46,10 @@ export const TextField: FC<TextFieldProps> = ({isEditing,maskPlaceholder, mask, 
         handleInputFocus()
     }
 
-
     return (
         <InputWrapper
             isChanging={isEditing}
+            inputId={inputId}
             setVal={setVal}
             changeVal={changeVal}
             maskPlaceholder={maskPlaceholder}
@@ -62,6 +64,8 @@ export const TextField: FC<TextFieldProps> = ({isEditing,maskPlaceholder, mask, 
             isTextArea={isTextArea}
             placeholder={placeholder}
             labelText={labelText}
+            errText={errText}
+
             btn={
                 editingOrEmpty || !formValueEqualsCond ?
                     <div onClick={canBeSaved ? handleSave : () => console.log("Nothing edited")}

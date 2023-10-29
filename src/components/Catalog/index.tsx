@@ -14,9 +14,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
     const {categories, products, cart} = useAppSelector(state => state)
     const isLoaded = categories.category.length  && products.items.length
 
-    const searchedData = useMemo(() => {
-        return searchProducts(search, getCombinedData(categories.category, products.items))
-    }, [products, search])
+    const searchedData = searchProducts(search, getCombinedData(categories.category, products.items))
     useEffect(() => {
     }, [search])
     return (
@@ -31,7 +29,9 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                         listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
                                         list={category?.products}
                                         renderItem={(product) =>
-                                            <Product title={product.title}
+                                            <Product
+                                                key={product.id}
+                                                title={product.title}
                                                      id={product.id}
                                                      count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
                                                      inCart={cart.items.some(item => item.product.id === product.id)}

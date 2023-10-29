@@ -19,7 +19,7 @@ import Header from "./components/Header";
 import LogosSection from "./components/LogosSection";
 import Footer from "./components/Footer";
 import product from "./components/Catalog/Product";
-import {getProductByMarket} from "./features/products/productsSlice";
+import {getCombosByMarket, getProductByMarket} from "./features/products/productsSlice";
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
 import order from "./pages/Order";
@@ -71,6 +71,7 @@ function App() {
         if(!products.length) {
             dispatch(getCategoriesByMarket({market_id: market}))
             dispatch(getProductByMarket({market_id: market}))
+            dispatch(getCombosByMarket({market_id: market}))
         }
         if(!cities.length) {
             dispatch(getCities())

@@ -26,7 +26,7 @@ export type ProductRes = {
     supplements: Supplement[];
     composition: string;
 }
-type Combo = {
+export type Combo = {
     old_price: number
     new_price: number
     products: Array<Pick<ProductRes, "id" | "title">>

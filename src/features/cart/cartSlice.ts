@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     AddToCartRequest,
-    AddToCartResponse,
+    AddToCartResponse, CartCountSupplementsRequest,
     CartProductDeleteRequest,
     CartProductItem,
     ChangeCountCartRequest,
@@ -88,6 +88,17 @@ export const editCountCart = createAsyncThunk(
             count: request.count,
             product_id: request.cart_id,
             data: res.data
+        }
+    }
+)
+export const editSupplementsCountCart = createAsyncThunk(
+    'cart/supplements/edit',
+    async (request: CartCountSupplementsRequest, {dispatch}) => {
+
+        const res: AxiosResponse<ChangeCountCartResponse> = await handleTokenRefreshedRequest(CartApi.EditSupplementsCount, request)
+        return {
+            cart_id: request.cart_id,
+            supplements: request.supplements
         }
     }
 )
@@ -261,6 +272,23 @@ export const CartSlice = createSlice({
 
         })
         builder.addCase(editCountCart.rejected, (state, action) => {
+
+        })
+        builder.addCase(editSupplementsCountCart.pending, (state, action) => {
+
+        })
+        builder.addCase(editSupplementsCountCart.fulfilled, (state, action) => {
+            state.items = state.items.map(cartItem => {
+                if(action.payload.cart_id === cartItem.id) {
+                    return {
+                        ...cartItem,
+                    }
+                }
+                return cartItem
+            })
+
+        })
+        builder.addCase(editSupplementsCountCart.rejected, (state, action) => {
 
         })
         builder.addCase(removeFromCart.fulfilled, (state, action) => {

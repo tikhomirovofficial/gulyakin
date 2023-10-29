@@ -19,6 +19,7 @@ import {
 } from "../../../features/cart/cartSlice";
 import useToken from "../../../hooks/useToken";
 import List from "../../List";
+import {domain} from "../../../http/instance/instances";
 
 type AdditiveItemProps = {
     selected: boolean,
@@ -143,8 +144,16 @@ const ProductAdditives = () => {
     const token = useToken()
     const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const {items} = useAppSelector(state => state.products)
-    const [addedSupplements, setAddedSupplements] = useState<number[]>([])
+    const cart = useAppSelector(state => state.cart.items)
+    const saveMode = useAppSelector(state => state.modals.isChangingModeAdditives)
 
+    const [addedSupplements, setAddedSupplements] = useState<number[]>(additives.length > 0 ?
+        cart.filter(cartProd => cartProd.product.id === id)[0].supplements.map(cartSup => cartSup.id)
+    :[])
+
+    const saveChangesAdditives = () => {
+        alert("Сохраниь изменения")
+    }
 
     const handleAddToCartClick = () => {
         dispatch(handleProductAdditives())
@@ -186,7 +195,7 @@ const ProductAdditives = () => {
     }, 0) : 0
 
     return (
-        <ShadowWrapper onClick={() => dispatch(handleProductAdditives())}>
+        <ShadowWrapper className={`${styles.additivesWindow} f-c-col p-fix h-100v w-100v`} onClick={() => dispatch(handleProductAdditives())}>
 
             <WindowBody className={`${styles.window} f-column`}>
                 <div className="w-100p d-f al-end jc-end">
@@ -195,7 +204,7 @@ const ProductAdditives = () => {
                     </div>
                 </div>
                 <div className="f-row-betw h-100p gap-40">
-                    <div style={{backgroundImage: `url(${imageUrl})`}} className={`${styles.productImage}`}>
+                    <div style={{backgroundImage: `url(${domain + imageUrl})`}} className={`${styles.productImage}`}>
 
                     </div>
                     <div className={`${styles.productAdditivesBar} f-column-betw gap-10`}>
@@ -229,8 +238,10 @@ const ProductAdditives = () => {
 
                             }
 
-                            <RedButton onClick={handleAddToCartClick} disabled={false} className={"pd-10-0"}>Добавить в
-                                корзину за {price + additivePrice} ₽</RedButton>
+                            <RedButton onClick={saveMode ? saveChangesAdditives : handleAddToCartClick} disabled={false} className={"pd-10-0"}>
+
+                                {!saveMode ?  `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
+                            </RedButton>
                         </div>
 
                     </div>

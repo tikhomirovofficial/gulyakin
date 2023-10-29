@@ -1,25 +1,24 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {
+    Combo,
+    GetCombosByMarketRequest,
+    GetCombosByMarketResponse,
     GetProductsByMarketRequest,
     GetProductsByMarketResponse,
-    GetUserDataResponse,
     ProductRes
 } from "../../types/api.types";
 import {AxiosResponse} from "axios";
-import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
-import {UserApi} from "../../http/api/user.api";
-import {setProfileForm} from "../forms/formsSlice";
 import {ProductsApi} from "../../http/api/products.api";
-import {getUser} from "../profile/profileSlice";
 
 
 type ProductsSliceState = {
     items: ProductRes[]
+    combos: Combo[]
 }
 
 const initialState: ProductsSliceState = {
-    items: []
+    items: [],
+    combos: []
 }
 export const getProductByMarket = createAsyncThunk(
     'product/by-market',
@@ -28,12 +27,17 @@ export const getProductByMarket = createAsyncThunk(
         return res.data.products
     }
 )
+export const getCombosByMarket = createAsyncThunk(
+    'combos/by-market',
+    async (request: GetCombosByMarketRequest, {dispatch}) => {
+        const res: AxiosResponse<GetCombosByMarketResponse> = await ProductsApi.CombosByMarket(request)
+        return res.data.combos
+    }
+)
 export const ProductsSlice = createSlice({
     name: "products",
     initialState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: builder => {
         builder.addCase(getProductByMarket.pending, (state, action) => {
 
@@ -46,12 +50,21 @@ export const ProductsSlice = createSlice({
         builder.addCase(getProductByMarket.rejected, (state, action) => {
 
         })
+        builder.addCase(getCombosByMarket.pending, (state, action) => {
+
+        })
+        builder.addCase(getCombosByMarket.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.combos = action.payload
+            }
+        })
+        builder.addCase(getCombosByMarket.rejected, (state, action) => {
+
+        })
     }
 })
 
-export const {
-
-} = ProductsSlice.actions
+export const {} = ProductsSlice.actions
 
 
 export const productsReducer = ProductsSlice.reducer

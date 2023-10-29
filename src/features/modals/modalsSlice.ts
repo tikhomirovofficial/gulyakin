@@ -14,6 +14,7 @@ type ModalSliceState = {
         variant: number
     },
     newAddress: boolean,
+    isChangingModeAdditives: boolean,
     productAdditivesData: ProductAdditiveData,
     cartOpened: boolean
 }
@@ -30,6 +31,7 @@ const initialState: ModalSliceState = {
     },
     cartOpened: false,
     newAddress: false,
+    isChangingModeAdditives: false,
     productAdditivesData: {
         id: 0,
         description: "",
@@ -56,6 +58,9 @@ export const ModalsSlice = createSlice({
                 addToStorage("cookie_accepted", true)
             }
         },
+        setChangingAdditivesMode: (state, action: PayloadAction<boolean>) => {
+            state.isChangingModeAdditives = action.payload
+        },
         handleBooking: (state) => {
             state.bookingOpened = !state.bookingOpened
         },
@@ -69,6 +74,9 @@ export const ModalsSlice = createSlice({
             state.yourAddress = !state.yourAddress
         },
         handleProductAdditives: state => {
+            if(state.productAdditives) {
+                state.isChangingModeAdditives = false
+            }
             state.productAdditives = !state.productAdditives
         },
         handleNewAddress: state => {
@@ -103,6 +111,7 @@ export const {
     handleDeliveryWayWindow,
     handleDeliveryVariant,
     handleNewAddress,
+    setChangingAdditivesMode,
     handleCartOpened,
 } = ModalsSlice.actions
 

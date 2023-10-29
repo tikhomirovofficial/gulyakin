@@ -8,7 +8,7 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {
     handleLogin,
     handleProductAdditives,
-    handleYourAddress,
+    handleYourAddress, setChangingAdditivesMode,
     setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
 import {ProductRes, Supplement} from "../../../types/api.types";
@@ -21,6 +21,7 @@ type ProductProps = {
     id: number,
     inCart?: boolean,
     count?: number,
+    sale?: number
     supplements?: Array<Supplement>
 } & ProductRes
 
@@ -32,6 +33,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                                                       id,
                                                       count = 0,
                                                       inCart = false,
+    sale,
                                                       className,
                                                       composition,
                                                       weight,
@@ -43,18 +45,39 @@ const Product: FC<ProductProps & HasClassName> = ({
     const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const cart = useAppSelector(state => state.cart.items)
     const handleOpenAdditives = () => {
+        const addedToCart = cart.some(item=> item.product.id === id)
+        if(addedToCart) {
+            if(supplements.length > 0) {
+                dispatch(setChangingAdditivesMode(true))
+                dispatch(setProductAdditivesData({
+                    id: id,
+                    additives: supplements,
+                    currentAdditive: 0,
+                    description: composition,
+                    imageUrl:  image || "",
+                    name: title,
+                    price: price,
+                    weight: weight
+
+                }))
+                dispatch(handleProductAdditives())
+            }
+            return;
+        }
         dispatch(setProductAdditivesData({
             id: id,
             additives: supplements,
             currentAdditive: 0,
             description: composition,
-            imageUrl: domain + "/" + image || "",
+            imageUrl:  image || "",
             name: title,
             price: price,
             weight: weight
 
         }))
         dispatch(handleProductAdditives())
+
+
         return;
     }
     const handleAddToCart = () => {
@@ -107,7 +130,17 @@ const Product: FC<ProductProps & HasClassName> = ({
 
             </div>
             <div onClick={e => e.stopPropagation()} style={{minHeight: 37}} className="f-row-betw">
-                <h4>{price} ₽</h4>
+                <div className={"d-f al-center gap-10"}>
+                    {sale ?
+                        <div className={`${styles.sale} p-rel`}>
+                            <div className={`${styles.line} p-abs`}></div>
+                            <b>{price}</b>
+                        </div> : null
+                    }
+
+                    <h4>{sale || price} ₽</h4>
+                </div>
+
                 {
                     inCart ?
                         <div className={"d-f al-center gap-5"}>
@@ -121,7 +154,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                                     }))
                                 }
 
-                            }} className={"cur-pointer f-c-col"}><MinusIcon/></div>
+                            }} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon/></div>
 
                             <div className={styles.count}>{count}</div>
                             <div onClick={() => {

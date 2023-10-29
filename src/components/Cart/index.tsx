@@ -8,10 +8,16 @@ import List from "../List";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {editCountCart, removeFromCart, removeProduct} from "../../features/cart/cartSlice";
-import {handleCartOpened} from "../../features/modals/modalsSlice";
+import {
+    handleCartOpened,
+    handleProductAdditives,
+    setChangingAdditivesMode,
+    setProductAdditivesData
+} from "../../features/modals/modalsSlice";
 import {CartProductItem, Supplement} from "../../types/api.types";
 import {domain} from "../../http/instance/instances";
 import {useNavigate} from "react-router-dom";
+import {ProductAdditiveData} from "../../types/products.types";
 
 
 type CartItemProps = {
@@ -21,10 +27,26 @@ type CartItemProps = {
 const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, supplements, product}) => {
     const dispatch = useAppDispatch()
     const {items} = useAppSelector(state => state.products)
+    const handleChange = () => {
+        const findedProduct = items.filter(item => item.id === product.id)[0]
+        dispatch(setChangingAdditivesMode(true))
+        dispatch(setProductAdditivesData({
+            id: findedProduct.id,
+            description: findedProduct.composition,
+            imageUrl: findedProduct.image,
+            name: findedProduct.title,
+            price: findedProduct.price,
+            weight: findedProduct.weight,
+            currentAdditive: 0,
+            additives: findedProduct.supplements,
+        }))
+        dispatch(handleProductAdditives())
+    }
+
     const supplementsPrice = supplements.length > 0 ? supplements.reduce((a, b) => {
         return a + b.price
     }, 0) : 0
-    
+
     const canBeChanged = items.some(item => item.supplements.length > 0 && item.id === product.id)
     return (
         <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
@@ -68,8 +90,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, suppleme
                             </b>
                             <div className="d-f gap-20">
                                 {
-                                    canBeChanged ? <div onClick={() => {
-                                    }} className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
+                                    canBeChanged ? <div onClick={handleChange} className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
                                 }
 
                                 <div className={"d-f al-center gap-5"}>

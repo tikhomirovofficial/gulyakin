@@ -249,7 +249,7 @@ const Main: FC = () => {
                         </div>
                         <div className="wrapper f-column gap-30 w-100p">
                             <div className={`${styles.oftenOrdered} f-column gap-10`}>
-                                <h3>Часто заказывают</h3>
+                                <h3>Комбо</h3>
                                 <div className={"f-row-betw"}>
                                     <div className={`${styles.item} p-rel d-f jc-end`}>
                                         <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}

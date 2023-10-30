@@ -85,3 +85,20 @@
     }
   }
 }
+@media (max-width: 480px) {
+  .section {
+    padding: 1.5rem 0;
+  }
+  .logos {
+
+    .item {
+      cursor: pointer;
+      width: 9rem;
+      height: 7rem;
+      svg {
+        max-width: 6.5rem;
+      }
+
+    }
+  }
+}

@@ -132,7 +132,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                     <img src={domain + "/" + image} alt=""/>
                 </div>
             </div>
-            <div className="f-column-betw gap-20 f-1">
+            <div className={`${styles.content} f-column-betw gap-20 f-1`}>
                 <div className={`${styles.textBlock} gap-5 f-1 f-column-betw`}>
                     <h3>{title}</h3>
                     <div className="d-f jc-between gap-25">

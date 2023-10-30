@@ -22,12 +22,14 @@ type MainSliceState = {
     currentGeo: {
         city: number
     }
+    isMobile: boolean
 }
 const initialState: MainSliceState = {
     market: 2,
     cities: [],
     changingGeo: false,
     addresses: [],
+    isMobile: false,
     askCityVisible: !(getFromStorage("city") !== undefined && getFromStorage("city") !== null),
     currentGeo: {
         city: getFromStorage("city") || 0
@@ -73,7 +75,10 @@ export const MainSlice = createSlice({
         },
         setMarket: (state, action: PayloadAction<number>) => {
             state.market = action.payload
-        }
+        },
+        setIsMobile: (state, action: PayloadAction<boolean>) => {
+            state.isMobile = action.payload
+        },
 
     },
     extraReducers: builder => {
@@ -101,7 +106,7 @@ export const MainSlice = createSlice({
     }
 })
 
-export const {setCurrentCity, toggleChangingGeo, toggleAskCityVisible, setMarket} = MainSlice.actions
+export const {setCurrentCity, setIsMobile, toggleChangingGeo, toggleAskCityVisible, setMarket} = MainSlice.actions
 
 
 export const mainReducer = MainSlice.reducer

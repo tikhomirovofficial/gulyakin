@@ -19,7 +19,7 @@ import {useInput} from "../../hooks/useInput";
 import Catalog from "../../components/Catalog";
 
 const Main: FC = () => {
-    const {categories, products, cart} = useAppSelector(state => state)
+    const {categories, products, cart, main} = useAppSelector(state => state)
     const is_auth = useAuth()
     const token = useToken()
 
@@ -142,13 +142,18 @@ const Main: FC = () => {
                         <div className="wrapper w-100p">
                             <div className={`${styles.restaurants} d-f jc-between gap-30`}>
                                 <div className="left d-f gap-30">
-                                    <Link to={"/restaurants"}>
-                                        <GradientGrayBtn
-                                            className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
-                                            <Geo/>
-                                            <p>Рестораны на карте</p>
-                                        </GradientGrayBtn>
-                                    </Link>
+                                    {
+                                        main.isMobile ? null :
+                                            <Link to={"/restaurants"}>
+                                                <GradientGrayBtn
+                                                    className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
+                                                    <Geo/>
+                                                    <p>Рестораны на карте</p>
+                                                </GradientGrayBtn>
+                                            </Link>
+
+                                    }
+
                                     <SearchInput
                                         value={searchVal}
                                         changeVal={changeSearchVal}
@@ -250,63 +255,86 @@ const Main: FC = () => {
                         <div className="wrapper f-column gap-30 w-100p">
                             <div className={`${styles.oftenOrdered} f-column gap-10`}>
                                 <h3>Комбо</h3>
-                                <div className={"f-row-betw"}>
-                                    <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                <Swiper
+                                    spaceBetween={19}
+                                    slidesPerView={"auto"}
+                                    breakpoints={{
+                                        640: {
+                                            spaceBetween: 29
+                                        },
+                                        1360: {
+                                            spaceBetween: 19
+                                        },
+
+                                    }}
+                                    className={"f-row-betw w-100p"}>
+
+                                    <SwiperSlide className={"w-content pd-10-0"}>
+                                        <div className={`${styles.item} p-rel d-f jc-end`}>
+                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+
+                                            </div>
+                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
+                                                <h4>Пельмени с говядиной</h4>
+                                                <p>от 319 ₽</p>
+                                            </div>
 
                                         </div>
-                                        <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                            <h4>Пельмени с говядиной</h4>
-                                            <p>от 319 ₽</p>
-                                        </div>
+                                    </SwiperSlide>
+                                    <SwiperSlide className={"w-content pd-10-0"}>
+                                        <div className={`${styles.item} p-rel d-f jc-end`}>
+                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
-                                    </div>
-                                    <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
-
-                                        </div>
-                                        <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                            <h4>Пельмени с говядиной</h4>
-                                            <p>от 319 ₽</p>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                            </div>
+                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
+                                                <h4>Пельмени с говядиной</h4>
+                                                <p>от 319 ₽</p>
+                                            </div>
 
                                         </div>
-                                        <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                            <h4>Пельмени с говядиной</h4>
-                                            <p>от 319 ₽</p>
-                                        </div>
+                                    </SwiperSlide>
+                                    <SwiperSlide className={"w-content pd-10-0"}>
+                                        <div className={`${styles.item} p-rel d-f jc-end`}>
+                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
-                                    </div>
-                                    <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
-
-                                        </div>
-                                        <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                            <h4>Пельмени с говядиной</h4>
-                                            <p>от 319 ₽</p>
-                                        </div>
-
-                                    </div>
-                                    <div className={`${styles.item} p-rel d-f jc-end`}>
-                                        <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                             className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                            </div>
+                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
+                                                <h4>Пельмени с говядиной</h4>
+                                                <p>от 319 ₽</p>
+                                            </div>
 
                                         </div>
-                                        <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                            <h4>Пельмени с говядиной</h4>
-                                            <p>от 319 ₽</p>
-                                        </div>
+                                    </SwiperSlide>
+                                    <SwiperSlide className={"w-content pd-10-0"}>
+                                        <div className={`${styles.item} p-rel d-f jc-end`}>
+                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
-                                    </div>
-                                </div>
+                                            </div>
+                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
+                                                <h4>Пельмени с говядиной</h4>
+                                                <p>от 319 ₽</p>
+                                            </div>
+
+                                        </div>
+                                    </SwiperSlide>
+                                    <SwiperSlide className={"w-content pd-10-0"}>
+                                        <div className={`${styles.item} p-rel d-f jc-end`}>
+                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
+                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+
+                                            </div>
+                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
+                                                <h4>Пельмени с говядиной</h4>
+                                                <p>от 319 ₽</p>
+                                            </div>
+
+                                        </div>
+                                    </SwiperSlide>
+                                </Swiper>
                             </div>
                             <div className={styles.catalog}>
                                 {

@@ -10,6 +10,13 @@ export interface IconProps {
 
 
 
+export const Burger: FC<IconProps> = ({width = 24, height = 24, stroke = "#434343" }) => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 24 24" fill="none">
+            <path d="M7.28307 19L20 19M19.9996 12L4 12M20 5L12.9719 5" stroke={stroke} stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+    )
+}
 export const CheckedMark: FC<IconProps> = ({width = 9, height = 7, stroke = "#200E32" }) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 9 7" fill="none">

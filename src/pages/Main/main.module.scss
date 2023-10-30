@@ -1,10 +1,13 @@
-.header {
+.header, .headerMobile {
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   background: white;
   z-index: 6;
+}
+.header {
+
   .addedPopup {
     width: 26.6rem;
     right: 0;
@@ -173,6 +176,15 @@
           }
         }
       }
+    }
+  }
+}
+.headerMobile {
+  .btnRests {
+    height: 4rem;
+    padding: 1.5rem;
+    p {
+      font-size: 1.3rem;
     }
   }
 }
@@ -382,4 +394,132 @@
     }
   }
 
+}
+@media (max-width: 1340px) {
+
+
+    .header {
+
+    .block {
+      gap: 2rem;
+    }
+    nav {
+      width: unset;
+      gap: 1.2rem;
+      justify-content: center;
+
+      .item {
+        font-size: 1.3rem;
+      }
+    }
+    .logoText {
+      min-width: 15rem;
+
+      p {
+        font-size: 1.4rem;
+      }
+    }
+    .right {
+      gap: 1.5rem;
+      b {
+        font-size: 1.4rem;
+      }
+
+    }
+  }
+  .main {
+    .block {
+      .oftenOrdered {
+        h3 {
+          font-size: 2.4rem;
+          font-weight: 400;
+        }
+        .item {
+          border-radius: 4px;
+          background: #F7F7F7;
+          max-height: 9.8rem;
+          height: 8.8rem;
+          width: 18.4rem;
+          overflow: hidden;
+          color: #494949;
+          box-shadow: 0px 4px 12px 0px rgba(56, 56, 56, 0.10);
+          .bg {
+            background-size: cover;
+            background-position-y: center;
+            background-position-x: -17rem;
+          }
+          .info {
+            font-size: 1.4rem;
+            width: 60%;
+            padding: 1.4rem 0;
+            align-self: center;
+
+          }
+          h4 {
+            font-size: 1.5rem;
+            line-height: 1;
+          }
+        }
+      }
+    }
+  }
+  .footer {
+
+    nav {
+
+      gap: 8rem;
+    }
+  }
+}
+@media (max-width: 1100px) {
+  .menuCategories {
+    top: 9rem;
+  }
+  .main {
+    .block {
+      .restaurants {
+        .btn {
+         display: none;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 820px) {
+  .main {
+    .block {
+      .restaurants {
+        .search {
+          width: 100%;
+        }
+        flex-direction: column;
+        .orderTrigger {
+          padding: .5rem;
+        }
+      }
+    }
+
+  }
+  .footer {
+    nav {
+      width: unset;
+      gap: 5rem;
+      justify-content: space-between;
+
+      .item {
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
+@media (max-width: 530px) {
+  nav {
+    flex-direction: column;
+  }
+  .navColumnContacts {
+    order: -1;
+  }
+  .navLogoColumn {
+    order: -1;
+  }
 }

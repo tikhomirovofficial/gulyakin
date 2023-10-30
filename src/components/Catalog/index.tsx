@@ -28,6 +28,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                 <List
                                     listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
                                     list={category?.products}
+                                    listItemClassname={styles.catalogProductWrapper}
                                     renderItem={(product) =>
                                         <Product
                                             key={product.id}
@@ -36,7 +37,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                             count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
                                             inCart={cart.items.some(item => item.product.id === product.id)}
                                             image={product.image}
-                                            composition={product.composition}
+                                            composition={product.composition || "Состав не заполнен"}
                                             weight={product.weight}
                                             price={product.price} category={product.category}
                                             description={product.description}

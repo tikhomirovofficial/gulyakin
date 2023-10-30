@@ -23,9 +23,11 @@ import {getCombosByMarket, getProductByMarket} from "./features/products/product
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
 import order from "./pages/Order";
-import {getAddressesByMarketCity, getCities} from "./features/main/mainSlice";
+import {getAddressesByMarketCity, getCities, setIsMobile} from "./features/main/mainSlice";
 import {setOrderForm} from "./features/forms/formsSlice";
+import HeaderMobile from "./components/Header/mobile";
 
+const MOBILE_WIDTH = 1100
 function App() {
     const dispatch = useAppDispatch()
     const token = useToken()
@@ -44,7 +46,24 @@ function App() {
     const {items} = useAppSelector(state => state.cart)
     const products = useAppSelector(state => state.products.items)
     const orderForm = useAppSelector(state => state.forms.orderForm)
-    const {market, cities, currentGeo} = useAppSelector(state => state.main)
+    const {market, cities, currentGeo, isMobile} = useAppSelector(state => state.main)
+
+    const handleResize = () => {
+        if (window.innerWidth <= MOBILE_WIDTH) {
+            dispatch(setIsMobile(true))
+            return;
+        }
+        dispatch(setIsMobile(false))
+
+    }
+
+
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            setTimeout(handleResize, 800)
+        })
+        handleResize()
+    }, [])
 
     useEffect(() => {
         if(orderForm?.restaurant != -1 || orderForm?.address.val.length > 0) {
@@ -106,7 +125,7 @@ function App() {
         <>
             <ScrollToTop/>
             <div className="App f-column jc-between">
-                <Header/>
+                {isMobile ? <HeaderMobile/> : <Header/>}
                 <LogosSection/>
                 <AppRoutes isAuth={false}/>
                 <Footer/>

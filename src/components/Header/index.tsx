@@ -35,7 +35,7 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className="wrapper">
-                <div className="block pd-30-0 f-row-betw gap-40">
+                <div className={`${styles.block} pd-30-0 f-row-betw gap-40`}>
                     <div className="left d-f al-center gap-35">
                         <Link to={"/"} className="">
                             <Logo/>

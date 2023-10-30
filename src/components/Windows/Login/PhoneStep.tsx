@@ -25,6 +25,7 @@ const LoginPhoneStep = () => {
     const handleSendPhone = async () => {
         try {
             setPhoneLoading(true)
+            setPhoneErr("")
             const {status} = await UserApi.Registration({
                 phone: extractDigits(phone)
             })
@@ -41,9 +42,10 @@ const LoginPhoneStep = () => {
                 setLoginStep(1)
             }
         }  catch (e: any) {
-            if(e?.code == "ERR_NETWORK") {
+            if(e?.code == "ERR_NETWORK" ||e?.code == "ERR_BAD_RESPONSE" || e?.response?.status == 500) {
                 setPhoneErr("Ошибка подключения к серверу")
             }
+            console.log(e)
         } finally {
             setPhoneLoading(false)
         }
@@ -72,10 +74,10 @@ const LoginPhoneStep = () => {
 
                             </div> : null
                     }
-                    {phoneErr.length ?
-                        <div className={`validationErr fw-7 ${styles.codeStatusCaption} `}>{phoneErr}</div>
-                        : null
-                    }
+                    {/*{phoneErr.length ?*/}
+                    {/*    <div className={`validationErr fw-7 ${styles.codeStatusCaption} `}>{phoneErr}</div>*/}
+                    {/*    : null*/}
+                    {/*}*/}
 
                 </div>
                 <div className="f-column gap-15">

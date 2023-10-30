@@ -18,6 +18,27 @@ const initialState = {
                     street: "ул. Энергетиков, д. 4",
                     coords: [53.45, 10],
                     id: 2
+                },
+                {
+                    cityArea: "Восточный район",
+                    canOnlineOrder: true,
+                    street: "ул. Энергетиков, д. 4",
+                    coords: [53.45, 10],
+                    id: 2
+                },
+                {
+                    cityArea: "Восточный район",
+                    canOnlineOrder: true,
+                    street: "ул. Энергетиков, д. 4",
+                    coords: [53.45, 10],
+                    id: 2
+                },
+                {
+                    cityArea: "Восточный район",
+                    canOnlineOrder: true,
+                    street: "ул. Энергетиков, д. 4",
+                    coords: [53.45, 10],
+                    id: 2
                 }
             ],
             logoIconSrc: getImgPath("/logos/logo_gulyakin.svg"),

@@ -58,19 +58,22 @@ const Restaurants: FC = () => {
                             </div>
                             <div className={`${styles.restContainer} wrapper w-100p`}>
                                 <div className={`of-hide w-100p  f-row-betw ${styles.restaurantsSection}`}>
-                                    <div className={styles.sideWrapper}>
-                                        {
-                                            restaurant.branches.map(item => (
-                                                <RestaurantItem link={"/restaurants/1"} street={item.street}
-                                                                canOnlineOrder={item.canOnlineOrder}
-                                                                cityArea={item.cityArea}/>
-                                            ))
-                                        }
+                                    <div className={`${styles.restaurantsContainer} f-column h-100p`}>
+                                        <div className={`${styles.sideWrapper} f-column wrapper`}>
+                                            {
+                                                restaurant.branches.map(item => (
+                                                    <RestaurantItem link={"/restaurants/1"} street={item.street}
+                                                                    canOnlineOrder={item.canOnlineOrder}
+                                                                    cityArea={item.cityArea}/>
+                                                ))
+                                            }
+                                        </div>
                                     </div>
+
 
                                     <div className={`${styles.map} h-100p f-1`}>
                                         <YMaps>
-                                            <Map className={"h-100p w-100p"}
+                                            <Map className={`${styles.mapContainer} h-100p w-100p`}
                                                  state={{center: restaurant.branches[0].coords, zoom: 9}}>
                                                 {
                                                     restaurant.branches.map(item => (

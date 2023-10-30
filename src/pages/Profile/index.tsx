@@ -54,7 +54,6 @@ const Profile = () => {
     }, [])
     return (
         <>
-            <Header/>
             <div className={styles.profile}>
                 <div className="wrapper">
                     <div className="profileBlock f-column gap-40">

@@ -252,7 +252,7 @@ const Main: FC = () => {
 
 
                         </div>
-                        <div className="wrapper f-column gap-30 w-100p">
+                        <div className={`wrapper ${styles.comboCatalogWrapper} f-column gap-30 w-100p`}>
                             <div className={`${styles.oftenOrdered} f-column gap-10`}>
                                 <h3>Комбо</h3>
                                 <Swiper

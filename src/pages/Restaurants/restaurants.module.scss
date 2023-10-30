@@ -1,162 +1,4 @@
-.header {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: white;
-  z-index: 6;
-  .logoText {
-    min-width: 25rem;
-    p {
-      font-size: 1.6rem;
-    }
 
-    .city {
-      color: #FB634D;
-      font-size: 1.6rem;
-    }
-    .geoPopup {
-      border-radius: 6px;
-      padding: 2rem 1.5rem;
-      width: 20rem;
-      left: -2rem;
-      b, p {
-        font-size: 1.6rem;
-      }
-      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
-      top: calc(100% + 1rem);
-    }
-    .selectCityItem {
-
-    }
-    .yourCity {
-      .btn {
-        font-size: 1.6rem;
-        padding: .4rem .4rem;
-        min-width: 7.5rem;
-      }
-    }
-
-  }
-
-  nav {
-    width: 66.1rem;
-
-    .item {
-      font-size: 1.4rem;
-
-
-      &::after {
-        visibility: hidden;
-        opacity: 0;
-        transition: .3s visibility, .3s opacity, .3s width;
-        content: "";
-        top: calc(100% + .3rem);
-        height: 2px;
-        width: 1px;
-        position: absolute;
-        background: black;
-        left: 0;
-
-      }
-      .text {
-        transition: .3s font-weight;
-        min-width: calc(100% + 1rem);
-      }
-
-      &:hover {
-        &::after {
-          visibility: visible;
-          opacity: 1;
-          width: calc(100% + .5rem);
-        }
-        .text {
-          font-weight: 700;
-        }
-
-      }
-    }
-  }
-
-  .right {
-    b {
-      font-size: 1.6rem;
-    }
-
-    .profileBtn {
-      transition: .2s color;
-      path {
-        transition: .2s fill;
-      }
-      svg {
-        transition: .2s transform;
-      }
-      &:hover {
-        color: #FB634D;
-        svg {
-          transform: scale(1.1);
-        }
-        path {
-          fill: #FB634D;
-        }
-
-      }
-    }
-
-    .cartBtn {
-      transition: .2s color;
-
-      svg {
-        path {
-          transition: .2s fill, .2s stroke, .2s transform;
-        }
-      }
-
-    }
-    .cartBtnUnfilled {
-      &:hover {
-        color: #FB634D;
-        svg {
-
-          path:nth-child(1) {
-            stroke: #FB634D;
-          }
-          path:nth-child(2) {
-            stroke: #FB634D;
-            transform: translateY(-3px);
-          }
-          path:nth-child(3), path:nth-child(4){
-            stroke: #FB634D;
-          }
-        }
-      }
-    }
-    .cartBtnFilled {
-      svg {
-        path:nth-child(1) {
-          fill: black;
-        }
-        path:nth-child(3), path:nth-child(4){
-          stroke: white;
-        }
-      }
-      &:hover {
-        color: #FB634D;
-        svg {
-
-          path:nth-child(1) {
-            fill: #FB634D;
-            stroke: #FB634D;
-          }
-          path:nth-child(2) {
-            stroke: #FB634D;
-            transform: translateY(-3px);
-          }
-        }
-      }
-    }
-  }
-}
 .promo {
   background: #FAFAFA;
 
@@ -231,7 +73,7 @@
     &::-webkit-scrollbar-thumb {
       background: #c7c7c7;
     }
-    width: 34rem;
+    min-width: 34rem;
     background: white;
     border-left: 2px solid #fafafa;
     border-top: 2px solid #fafafa;
@@ -319,5 +161,33 @@
     b {
       font-size: 1.6rem;
     }
+  }
+}
+@media (max-width: 1100px) {
+  .restaurantsMap {
+    max-width: unset !important;
+  }
+  .restContainer {
+    max-width: 100% !important;
+    padding: unset;
+  }
+  .restaurantsSection {
+    background: #FAFAFA;
+
+    .sideWrapper {
+
+      height: unset;
+      max-height: unset;
+      width: 100%;
+
+    }
+    .map {
+      height: 48rem;
+      flex: 1;
+      flex: unset;
+      width: 100%;
+    }
+    flex-direction: column-reverse;
+    width: 100%;
   }
 }

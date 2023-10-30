@@ -94,33 +94,47 @@ const Profile = () => {
                                               labelText={
                                                   "Номер телефона"
                                               }/>
-                                <TextField
-                                    handleSave={handleUserEdit}
-                                    className={styles.inputField}
-                                    placeholder={"Дата"}
-                                    mask={"99-99-9999"}
-                                    maskPlaceholder={"ДД-ММ-ГГГГ"}
-                                    labelText={"Дата рождения"}
-                                    isEditing={dob.isEditing}
-                                    formValue={dob.val}
-                                    condValue={data.dob}
-                                    errText={profileErrsVisible ? profileErrors["dob"] : ""}
-                                    handleEdit={() => {
-                                        dispatch(handleProfileFormEditing("dob"))
-                                    }}
-                                    onInputFocus={() => {
-                                        dispatch(handleProfileFormEditing("dob"))
-                                    }}
-                                    onInputBlur={() => {
-                                        dispatch(handleProfileFormEditing("dob"))
-                                        dispatch(handleProfileFormVal({keyField: "dob", val: data.dob}))
-                                    }}
-                                    setVal={val => dispatch(handleProfileFormVal({keyField: "dob", val: val}))}
-                                    changeVal={e => dispatch(handleProfileFormVal({
-                                        keyField: "dob",
-                                        val: e.target.value
-                                    }))}
-                                />
+
+                                {
+                                    data.dob.length == 0 ?
+                                        <TextField
+                                            handleSave={handleUserEdit}
+                                            className={styles.inputField}
+                                            placeholder={"Дата"}
+                                            mask={"99-99-9999"}
+                                            maskPlaceholder={"ДД-ММ-ГГГГ"}
+                                            labelText={"Дата рождения"}
+                                            isEditing={dob.isEditing}
+                                            formValue={dob.val}
+                                            condValue={data.dob}
+                                            errText={profileErrsVisible ? profileErrors["dob"] : ""}
+                                            handleEdit={() => {
+                                                dispatch(handleProfileFormEditing("dob"))
+                                            }}
+                                            onInputFocus={() => {
+                                                dispatch(handleProfileFormEditing("dob"))
+                                            }}
+                                            onInputBlur={() => {
+                                                dispatch(handleProfileFormEditing("dob"))
+                                                dispatch(handleProfileFormVal({keyField: "dob", val: data.dob}))
+                                            }}
+                                            setVal={val => dispatch(handleProfileFormVal({keyField: "dob", val: val}))}
+                                            changeVal={e => dispatch(handleProfileFormVal({
+                                                keyField: "dob",
+                                                val: e.target.value
+                                            }))}
+                                        /> :
+                                        <InputWrapper disabled={true}
+                                                      inActive={true}
+                                                      grayBorderedClassName={styles.inputField}
+                                                      locked={true}
+                                                      inputVal={data.dob}
+                                                      labelText={
+                                                          "Дата рождения"
+                                                      }/>
+
+                                }
+
                                 <TextField
                                     handleSave={handleUserEdit}
                                     className={styles.inputField}

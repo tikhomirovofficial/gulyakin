@@ -204,9 +204,7 @@ export const CartSlice = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(getCart.pending, (state, action) => {
 
-        })
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
                 state.items = action.payload.cart
@@ -217,13 +215,7 @@ export const CartSlice = createSlice({
             }
 
         })
-        builder.addCase(getCart.rejected, (state, action) => {
 
-        })
-        //ADD TO CART
-        builder.addCase(addToCart.pending, (state, action) => {
-
-        })
         builder.addCase(addToCart.fulfilled, (state, action) => {
             const product = action.payload.product
             const res = action.payload.data
@@ -250,12 +242,7 @@ export const CartSlice = createSlice({
 
             }
         })
-        builder.addCase(addToCart.rejected, (state, action) => {
 
-        })
-        builder.addCase(editCountCart.pending, (state, action) => {
-
-        })
         builder.addCase(editCountCart.fulfilled, (state, action) => {
             const cartProductId = action.payload.product_id
             if (action.payload) {
@@ -271,12 +258,7 @@ export const CartSlice = createSlice({
             }
 
         })
-        builder.addCase(editCountCart.rejected, (state, action) => {
 
-        })
-        builder.addCase(editSupplementsCountCart.pending, (state, action) => {
-
-        })
         builder.addCase(editSupplementsCountCart.fulfilled, (state, action) => {
             state.items = state.items.map(cartItem => {
                 if(action.payload.cart_id === cartItem.id) {
@@ -288,19 +270,12 @@ export const CartSlice = createSlice({
             })
 
         })
-        builder.addCase(editSupplementsCountCart.rejected, (state, action) => {
 
-        })
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
             state.items = state.items.filter(item => item.id !== action.payload.cart_id)
 
         })
-        builder.addCase(removeFromCart.rejected, (state, action) => {
 
-        })
-        builder.addCase(removeFromCart.pending, (state, action) => {
-
-        })
     }
 })
 

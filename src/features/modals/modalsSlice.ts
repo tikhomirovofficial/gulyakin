@@ -14,6 +14,7 @@ type ModalSliceState = {
         variant: number
     },
     newAddress: boolean,
+    mobileMenu: boolean
     isChangingModeAdditives: boolean,
     productAdditivesData: ProductAdditiveData,
     cartOpened: boolean
@@ -30,6 +31,7 @@ const initialState: ModalSliceState = {
         variant: 0
     },
     cartOpened: false,
+    mobileMenu: false,
     newAddress: false,
     isChangingModeAdditives: false,
     productAdditivesData: {
@@ -79,6 +81,9 @@ export const ModalsSlice = createSlice({
             }
             state.productAdditives = !state.productAdditives
         },
+        setMobileMenu: (state, action: PayloadAction<boolean>) => {
+          state.mobileMenu = action.payload
+        },
         handleNewAddress: state => {
           state.newAddress = !state.newAddress
         },
@@ -113,6 +118,7 @@ export const {
     handleNewAddress,
     setChangingAdditivesMode,
     handleCartOpened,
+    setMobileMenu,
 } = ModalsSlice.actions
 
 

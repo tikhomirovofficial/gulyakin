@@ -1,0 +1,49 @@
+.menu {
+  overflow-y: auto;
+  transform: translateY(-200vh);
+  background: rgba(5, 5, 5, 0.95);
+  backdrop-filter: blur(7.5px);
+  z-index: 15;
+  .closeWrapper {
+    padding-top: 2rem;
+  }
+  .header {
+    .menuSelectCity {
+      color: white;
+      path {
+        stroke: white;
+      }
+    }
+    .menuSelectPopup {
+      color: black;
+      z-index: 15;
+      background: white;
+      path {
+        stroke: black;
+      }
+    }
+
+    border-bottom: 1px solid #3C3C3C;
+  }
+  .navItem {
+    font-size: 1.8rem;
+    color: white;
+  }
+  .footer {
+    border-top: 1px solid #3C3C3C;
+    color: white;
+    font-size: 1.6rem;
+    .socialItem {
+      background: white;
+      height: 3rem;
+      width: 3rem;
+      border-radius: 50%;
+    }
+  }
+}
+.menu::-webkit-scrollbar {
+  display: none;
+}
+.menuOpened {
+  transform: unset;
+}

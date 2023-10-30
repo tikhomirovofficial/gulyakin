@@ -7,7 +7,7 @@ import GrayButton from "../Buttons/GrayButton";
 import DropdownList, {DropDownItem} from "../DropdownList";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
-import {handleCartOpened, handleLogin} from "../../features/modals/modalsSlice";
+import {handleCartOpened, handleLogin, setMobileMenu} from "../../features/modals/modalsSlice";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import useToken from "../../hooks/useToken";
@@ -16,11 +16,15 @@ import GradientGrayBtn from "../Buttons/GradientGrayButton";
 
 
 const HeaderMobile = () => {
+    const dispatch = useAppDispatch()
+    const handleOpen = () => {
+        dispatch(setMobileMenu(true))
+    }
     return (
         <header className={styles.headerMobile}>
             <div className="wrapper">
                 <div className={`${styles.block} pd-20-0 f-row-betw gap-40`}>
-                    <div className="left d-f al-center gap-35">
+                    <div className={`${styles.left} d-f al-center gap-35`}>
                         <Link to={"/"} className="">
                             <Logo/>
                         </Link>
@@ -33,7 +37,7 @@ const HeaderMobile = () => {
                         </Link>
 
                     </div>
-                    <div className="w-content h-content">
+                    <div onClick={handleOpen} className="w-content h-content">
                         <Burger height={30} width={30}/>
                     </div>
 

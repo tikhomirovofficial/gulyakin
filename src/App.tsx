@@ -26,6 +26,7 @@ import order from "./pages/Order";
 import {getAddressesByMarketCity, getCities, setIsMobile} from "./features/main/mainSlice";
 import {setOrderForm} from "./features/forms/formsSlice";
 import HeaderMobile from "./components/Header/mobile";
+import MenuMobile from "./components/MenuMobile";
 
 const MOBILE_WIDTH = 1100
 function App() {
@@ -129,6 +130,7 @@ function App() {
                 <LogosSection/>
                 <AppRoutes isAuth={false}/>
                 <Footer/>
+                <MenuMobile/>
                 {bookingOpened ? <BookingWindow/> : null}
                 {loginOpened ? <LoginWindow/> : null}
                 {yourAddress ? <YourAddressWindow/> : null}

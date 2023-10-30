@@ -185,9 +185,11 @@
     padding: 1.5rem;
     svg {
       height: 18px;
+      width: 17px;
     }
     p {
       font-size: 1.3rem;
+      text-wrap: nowrap;
     }
   }
 }
@@ -404,6 +406,9 @@
     .header {
 
     .block {
+      .left {
+        gap: 1rem;
+      }
       gap: 2rem;
     }
     nav {
@@ -527,7 +532,15 @@
   }
 }
 @media (max-width: 480px) {
+  .headerMobile {
 
+    .block {
+      .left {
+        gap: 20px;
+      }
+      gap: 0px;
+    }
+  }
   .main {
     .block {
       .oftenOrdered {
@@ -564,6 +577,7 @@
       margin: unset;
     }
     .block {
+
       .restaurants {
         gap: 1rem;
         .search {
@@ -578,6 +592,25 @@
           }
         }
       }
+    }
+  }
+  .footer {
+    .navLogoColumn {
+      margin-top: 5px;
+    }
+    .block {
+      gap: 2rem;
+    }
+    nav {
+      gap: 1.5rem;
+      padding-bottom: 2rem;
+      .socials {
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #303030;
+      }
+    }
+    .block {
+
     }
   }
 }

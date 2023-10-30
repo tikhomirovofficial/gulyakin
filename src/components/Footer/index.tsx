@@ -7,7 +7,7 @@ const Footer = () => {
     return (
         <footer className={`${styles.footer} pd-40-0`}>
             <div className="wrapper">
-                <div className="block gap-40 f-column">
+                <div className={`${styles.block} gap-40 f-column`}>
                     <nav className={"d-f jc-between flex-wrap"}>
                         <div className={`${styles.navColumn} ${styles.navLogoColumn} f-column gap-10`}>
                             <Logo className={styles.logo}/>

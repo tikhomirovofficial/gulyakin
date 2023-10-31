@@ -25,6 +25,23 @@
 
     border-bottom: 1px solid #3C3C3C;
   }
+  .menuLinkContainer {
+    border-bottom: 1px solid #3C3C3C;
+  }
+  .menuItemLink {
+    svg {
+      path {
+        fill: white;
+      }
+
+    }
+    b {
+      font-size: 1.6rem;
+      color: white;
+    }
+
+
+  }
   .navItem {
     font-size: 1.8rem;
     color: white;

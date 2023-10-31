@@ -1,17 +1,24 @@
 import React from 'react';
 import styles from './menuMobile.module.scss'
-import {Logo, MiniClose, ThinClose, VkIcon} from "../../icons";
+import {Logo, MiniClose, ProfileIcon, ThinClose, VkIcon} from "../../icons";
 import SelectCity from "../SelectCity";
 import {Link} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {setMobileMenu} from "../../features/modals/modalsSlice";
+import {handleLogin, setMobileMenu} from "../../features/modals/modalsSlice";
+import useToken from "../../hooks/useToken";
 
 const MenuMobile = () => {
     const dispatch = useAppDispatch()
     const {mobileMenu} = useAppSelector(state => state.modals)
+    const token = useToken()
     const handleClose = () => {
         dispatch(setMobileMenu(false))
     }
+    const login = () => {
+        handleClose()
+        dispatch(handleLogin())
+    }
+
     return (
         <div className={`${styles.menu} ${mobileMenu ? styles.menuOpened : ""} f-column p-fix top-0 left-0 h-100v w-100v t-transform-4`}>
             <div className={`${styles.header} f-03  w-100p pd-20-0`}>
@@ -30,33 +37,56 @@ const MenuMobile = () => {
 
 
             </div>
-            <div className="wrapper f-1 w-100p">
-                <div className="f-column jc-between h-100p gap-5 pd-20-0">
-                    <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                        О нас
-                    </Link>
-                    <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                        О нас
-                    </Link>
-                    <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                        О нас
-                    </Link>
-                    <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                        О нас
-                    </Link>
-                    <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                        О нас
-                    </Link>
-                    <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                        О нас
-                    </Link>
-                    <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                        О нас
-                    </Link>
-                    <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                        О нас
-                    </Link>
+            <div className={`h-100p f-1 w-100p f-column`}>
+                <div className={`w-100p ${styles.menuLinkContainer}`}>
+                    <div className="wrapper w-100p">
+                        <div className="f-column pd-20-0">
+                            {
+                                !token ? <div onClick={login} className={`${styles.menuItemLink} d-f al-center gap-10`}>
+                                    <ProfileIcon/>
+                                    <b>Кабинет</b>
+                                </div> :
+                                    <Link onClick={handleClose} to={"/profile"}>
+                                        <div className={`${styles.menuItemLink} d-f al-center gap-10`}>
+                                            <ProfileIcon/>
+                                            <b>Кабинет</b>
+                                        </div>
+                                    </Link>
+                            }
+
+                        </div>
+                    </div>
                 </div>
+
+                <div className="wrapper w-100p h-100p">
+                    <div className="f-column jc-between h-100p gap-5 pd-20-0">
+                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                            О нас
+                        </Link>
+                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                            О нас
+                        </Link>
+                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                            О нас
+                        </Link>
+                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                            О нас
+                        </Link>
+                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                            О нас
+                        </Link>
+                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                            О нас
+                        </Link>
+                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                            О нас
+                        </Link>
+                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                            О нас
+                        </Link>
+                    </div>
+                </div>
+
             </div>
             <div className={`${styles.footer} pd-20-0 f-4`}>
                 <div className="wrapper">

@@ -102,7 +102,7 @@ const Order = () => {
         <>
             <div className={styles.order}>
                 <div className="wrapper">
-                    <div className="orderContainer d-f jc-between gap-80">
+                    <div className={`${styles.orderContainer} d-f jc-between gap-80`}>
                         <div className="orderBlock f-column gap-40">
                             <div className={`${styles.form} f-column gap-25`}>
                                 <div className="sectionTitle">Заказ на {!isPickup ? "доставку" : "самовывоз"}</div>

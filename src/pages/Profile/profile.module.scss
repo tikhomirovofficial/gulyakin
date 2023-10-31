@@ -32,3 +32,18 @@
     }
   }
 }
+@media (max-width: 430px) {
+
+  .profile {
+    .form {
+      max-width: 100vw;
+      .inputField {
+        width: 80vw;
+      }
+    }
+    .addressesBlock {
+      max-width: 100vw;
+    }
+  }
+
+}

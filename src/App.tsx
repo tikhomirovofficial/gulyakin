@@ -131,7 +131,8 @@ function App() {
                 <LogosSection/>
                 <AppRoutes isAuth={false}/>
                 <Footer/>
-                <CartWidget/>
+
+                {isMobile ?  <CartWidget/> : null}
                 {isMobile ? <MenuMobile/> : null}
                 {bookingOpened ? <BookingWindow/> : null}
                 {loginOpened ? <LoginWindow/> : null}

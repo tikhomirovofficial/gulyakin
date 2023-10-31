@@ -13,6 +13,7 @@
     margin-top: 1.8rem;
   }
   .content {
+    overflow-y: auto;
     .listProducts {
       overflow-y: auto;
       max-height: 42vh;
@@ -41,6 +42,9 @@
       font-size: 2rem;
     }
 
+  }
+  .content::-webkit-scrollbar {
+    display: none;
   }
   .bottom {
     position: sticky;
@@ -226,9 +230,16 @@
     top: 0;
   }
 }
+@media (max-width: 620px) {
+  .cartBlock {
+    max-width: unset;
+    width: 100vw;
+  }
+}
 @media (max-width: 420px) {
   .widget {
     right: 3rem;
     bottom: 4rem;
   }
+
 }

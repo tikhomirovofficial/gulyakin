@@ -84,19 +84,6 @@ const Product: FC<ProductProps & HasClassName> = ({
         if (token) {
             if (address.val.length > 0 || restaurant !== -1) {
                 handleOpenAdditives()
-                // dispatch(addToCart({
-                //     category: 1,
-                //     composition,
-                //     description: composition,
-                //     id,
-                //     image,
-                //     price,
-                //     short_description: "",
-                //     supplements,
-                //     title: title,
-                //     weight
-                //
-                // }))
             } else {
                 dispatch(setProductAfterAddress(id))
                 dispatch(handleYourAddress())

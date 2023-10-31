@@ -28,7 +28,8 @@ type OrderFormType = Pick<ProfileFormType, "name"> & {
     address: FieldType,
     phone: string,
     isPickup: boolean,
-    restaurant: number
+    restaurant: number,
+    addressId: number,
 }
 
 type FormsSliceState = {
@@ -77,6 +78,7 @@ const initialState: FormsSliceState = {
             isEditing: false,
             val: ""
         },
+        addressId: -1,
         isPickup: true,
         restaurant: -1
     }
@@ -239,7 +241,14 @@ export const formsSlice = createSlice({
                 ...state.orderForm,
                 restaurant: action.payload
             }
-        }
+        },
+        handleSelectAddressId: (state, action: PayloadAction<number>) => {
+            state.orderForm = {
+                ...state.orderForm,
+                addressId: action.payload
+            }
+        },
+
     },
     extraReducers: builder => {
         builder.addCase(sendOrder.pending, (state, action) => {
@@ -264,6 +273,7 @@ export const {
     handleOrderPaymentWay,
     handleOrderPickup,
     handleSelectRestaurant,
+    handleSelectAddressId,
     setOrderForm,
     resetProfileErrors,
     setProfileForm,

@@ -12,7 +12,7 @@ import AppRoutes from "./router/AppRoutes";
 import Cart from "./components/Cart";
 import {getCart, setTotalPrice} from "./features/cart/cartSlice";
 import {ScrollToTop} from "./components/ServiceComponents";
-import {getUser} from "./features/profile/profileSlice";
+import {getAddressesUser, getUser} from "./features/profile/profileSlice";
 import useAuth from "./hooks/useAuth";
 import useToken from "./hooks/useToken";
 import Header from "./components/Header";
@@ -23,13 +23,14 @@ import {getCombosByMarket, getProductByMarket} from "./features/products/product
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
 import order from "./pages/Order";
-import {getAddressesByMarketCity, getCities, setIsMobile} from "./features/main/mainSlice";
+import {getAddressesByMarketCity, getCities, setIsMobile, setIsPhone} from "./features/main/mainSlice";
 import {setOrderForm} from "./features/forms/formsSlice";
 import HeaderMobile from "./components/Header/mobile";
 import MenuMobile from "./components/MenuMobile";
 import CartWidget from "./components/Cart/widget";
 
 const MOBILE_WIDTH = 1100
+const SMALL_WIDTH = 800
 function App() {
     const dispatch = useAppDispatch()
     const token = useToken()
@@ -42,7 +43,8 @@ function App() {
         cookiesAccepted,
         deliveryWay,
         productAdditives,
-        newAddress
+        newAddress,
+        bodyLocked
     } = useAppSelector(state => state.modals)
 
     const {items} = useAppSelector(state => state.cart)
@@ -51,14 +53,17 @@ function App() {
     const {market, cities, currentGeo, isMobile} = useAppSelector(state => state.main)
 
     const handleResize = () => {
-        if (window.innerWidth <= MOBILE_WIDTH) {
-            dispatch(setIsMobile(true))
-            return;
-        }
-        dispatch(setIsMobile(false))
-
+        dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))
+        dispatch(setIsPhone(window.innerWidth <= SMALL_WIDTH))
     }
 
+    // useEffect(() => {
+    //     if(bodyLocked) {
+    //         document.body.classList.add("of-y-hide")
+    //         return
+    //     }
+    //     document.body.classList.remove("of-y-hide")
+    // }, [bodyLocked])
 
     useEffect(() => {
         window.addEventListener('resize', () => {
@@ -112,6 +117,7 @@ function App() {
     useEffect(() => {
         if(token) {
             dispatch(getCart())
+            dispatch(getAddressesUser())
         }
     }, [token])
     useEffect(() => {
@@ -121,12 +127,12 @@ function App() {
                 siti_id: currentGeo.city
             }))
         }
-    }, [cities])
+    }, [cities, currentGeo.city])
 
     return (
         <>
             <ScrollToTop/>
-            <div className="App f-column jc-between">
+            <div className={`App f-column jc-between`}>
                 {isMobile ? <HeaderMobile/> : <Header/>}
                 <LogosSection/>
                 <AppRoutes isAuth={false}/>

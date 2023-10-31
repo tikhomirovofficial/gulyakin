@@ -86,7 +86,8 @@ const initialState = {
         coords: [53.45, 30],
         logoIconSrc: getImgPath("/logos/logo_gulyakin.svg"),
     },
-    selectedInPickup: -1
+    selectedInPickup: -1,
+    selectedInDelivery: -1,
 }
 
 export const RestaurantsSlice = createSlice({
@@ -95,12 +96,16 @@ export const RestaurantsSlice = createSlice({
     reducers: {
         setSelectedInPickup: (state, action: PayloadAction<number>) => {
             state.selectedInPickup = action.payload
+        },
+        setSelectedInDelivery: (state, action: PayloadAction<number>) => {
+            state.selectedInDelivery = action.payload
         }
     }
 })
 
 export const {
-    setSelectedInPickup
+    setSelectedInPickup,
+    setSelectedInDelivery
 } = RestaurantsSlice.actions
 
 

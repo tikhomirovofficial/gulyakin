@@ -31,24 +31,27 @@ const BookingWindow = () => {
                     </div>
                 </div>
                 <div className="f-column gap-30">
-                    <div className="f-column gap-20">
+                    <div className={`${styles.bookingForm} f-column gap-20`}>
                         <h2 >Бронирование столика</h2>
-                        <div className="f-column">
-                            <SelectInput defaultCurrent={2} labelText={"Выберите ресторан (обязательно)"} selectHandler={(selected) => {
-                                console.log(selected)}} optionsSelect={{byId: true, keyField:"name"}}  items={rests}/>
+                        <div className="f-column gap-20">
+                            <div className="f-column">
+                                <SelectInput defaultCurrent={2} labelText={"Выберите ресторан (обязательно)"} selectHandler={(selected) => {
+                                    console.log(selected)}} optionsSelect={{byId: true, keyField:"name"}}  items={rests}/>
+                            </div>
+                            <div className="f-row-betw gap-20 flex-wrap">
+                                <SelectInput defaultCurrent={1} className={"f-1"} labelText={"Время"} selectHandler={(selected) => {
+                                    console.log(selected)}}  items={["18:30", "19:30"]}/>
+                                <SelectInput defaultCurrent={0} className={"f-1"} labelText={"Количество гостей"} selectHandler={(selected) => {
+                                    console.log(selected)}}  items={["2", "3"]}/>
+                            </div>
+                            <div className="f-column gap-15">
+                                <InputWrapper placeholder={"Вячеслав"} labelText={"Ваше имя"} />
+                            </div>
+                            <div className="f-column gap-15">
+                                <InputWrapper placeholder={"+7"} labelText={"Номер телефона (обязательно)"} />
+                            </div>
                         </div>
-                        <div className="f-row-betw gap-20 flex-wrap">
-                            <SelectInput defaultCurrent={1} className={"f-1"} labelText={"Время"} selectHandler={(selected) => {
-                                console.log(selected)}}  items={["18:30", "19:30"]}/>
-                            <SelectInput defaultCurrent={0} className={"f-1"} labelText={"Количество гостей"} selectHandler={(selected) => {
-                                console.log(selected)}}  items={["2", "3"]}/>
-                        </div>
-                        <div className="f-column gap-15">
-                            <InputWrapper placeholder={"Вячеслав"} labelText={"Ваше имя"} />
-                        </div>
-                        <div className="f-column gap-15">
-                            <InputWrapper placeholder={"+7"} labelText={"Номер телефона (обязательно)"} />
-                        </div>
+
                     </div>
                     <div className="f-column gap-15">
                         <RedButton disabled={true} className={"pd-10-0"}>Забронировать</RedButton>

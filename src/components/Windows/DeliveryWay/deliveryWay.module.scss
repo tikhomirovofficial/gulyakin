@@ -67,3 +67,47 @@
 .partInputBlock {
   max-width: 16.6rem;
 }
+
+@media (max-width: 800px) {
+  .window {
+    height: 100vh;
+    border-radius: unset;
+    max-height: unset;
+  }
+  .content {
+    width: 100%;
+  }
+  .map {
+    overflow-y: auto;
+    max-height: 20rem;
+
+    min-height: 20rem;
+    .mapContainer {
+      min-height: 20rem;
+    }
+  }
+  .partInputBlock {
+    max-width: 100%;
+    min-width: 20.6rem;
+    flex: .45;
+  }
+  .map::-webkit-scrollbar {
+    display: none;
+  }
+  .deliveryWayForm {
+    overflow-y: auto;
+  }
+  .deliveryWayForm::-webkit-scrollbar {
+    display: none;
+  }
+}
+@media (max-width: 493px) {
+  .inputParts {
+    flex-direction: column
+  }
+  .partInputBlock {
+    flex: 1;
+    min-width: 100%
+  }
+
+}

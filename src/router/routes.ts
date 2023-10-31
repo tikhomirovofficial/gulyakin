@@ -38,7 +38,7 @@ export const routes: RoutesCollection = {
             path: "/profile"
         },
         {
-            Component: WithOrder,
+            Component: Order,
             path: "/order"
         }
     ],

@@ -108,6 +108,7 @@
       border-radius: 4px;
     }
 
+
     h4, .price {
       font-size: 1.6rem;
     }
@@ -145,27 +146,60 @@
 
   }
   .compositionOrder {
-    max-width: 37.1rem;
-    min-width: 35rem;
+    max-width: 34rem;
+    min-width: 34rem;
   }
 }
 @media (max-width: 840px) {
   .orderContainer {
+    gap: 2rem;
     .leftContent {
-      width: 100%;
+      //width: 100%;
     }
     .form {
       .inputField {
-        max-width: unset;
-        width: 80vw;
+        //width: 100%;
       }
     }
   }
   .compositionOrder {
-    max-width: 34rem;
+    padding: 2rem;
+    //max-width: 34rem;
   }
   .selectRestaurant {
     font-size: 1.6rem;
-    max-width: 80vw;
+    //max-width: 80vw;
+  }
+}
+@media (max-width: 410px) {
+  .orderContainer {
+    gap: 2rem;
+    .leftContent {
+      width: 80vw;
+    }
+    .form {
+      .inputField {
+        width: 80vw;
+
+      }
+    }
+  }
+  .compositionOrder {
+    padding: 2rem;
+    max-width: unset;
+    width: 80vw;
+    min-width: unset;
+    .product {
+      .image {
+        min-height: 6rem;
+        min-width: 6rem;
+        max-height: 6rem;
+        max-width: 6rem;
+      }
+    }
+  }
+  .selectRestaurant {
+    font-size: 1.6rem;
+    width: 80vw;
   }
 }

@@ -161,7 +161,7 @@ const LoginCodeStep = () => {
                                     onBlur={() => setCurrentDigit(null)} onFocus={() => setCurrentDigit(index)}
                                     className={styles.codeInput} onChange={(e) => handleChangeCodes(e, index)}
                                     value={digit}
-                                    type="text"/></GrayBorderedBlock>
+                                    type="number"/></GrayBorderedBlock>
                             ))
                         }
 

@@ -22,3 +22,29 @@
 
 
 }
+@media (max-width: 480px) {
+  .whiteBlock {
+    border-radius: 1.5rem;
+    overflow-y: scroll;
+    padding: 2rem 3rem;
+    width: 100%;
+    max-width: 90vw;
+    min-height: 25rem;
+    .closeWrapper {
+      top: 2.4rem;
+      right: 3.2rem;
+      height: fit-content;
+    }
+    h2 {
+      font-size: 2.8rem;
+    }
+    p, label, b {
+      font-size: 1.6rem;
+    }
+    input {
+      font-size: 1.6rem;
+    }
+
+
+  }
+}

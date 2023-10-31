@@ -11,15 +11,16 @@ import {addToStorage} from "../../utils/LocalStorageExplorer";
 import {HasClassName} from "../../types/components.types";
 
 type SelectCityProps = {
-    classNamePopup?: string
+    classNamePopup?: string,
+    askGeoPopupClass?: string
 }
-const SelectCity: FC<HasClassName & SelectCityProps> = ({className, classNamePopup}) => {
+const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupClass, classNamePopup}) => {
     const dispatch = useAppDispatch()
     const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
     const handleChangingGeo = () => dispatch(toggleChangingGeo())
     const handleAskCity = () => {
         dispatch(toggleAskCityVisible())
-        addToStorage("city", currentGeo.city)
+        addToStorage("city_accepted", currentGeo.city)
     }
 
     const handleNotYourCity = () => {
@@ -47,7 +48,7 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({className, classNamePop
                 </div>
                 {
                     askCityVisible ? <div
-                        className={`${styles.geoPopup} ${styles.yourCity} f-column gap-15 p-abs bg-white`}>
+                        className={`${styles.geoPopup} ${styles.yourCity} ${askGeoPopupClass || ""} f-column gap-15 p-abs bg-white`}>
                         <b className={"txt-center"}>Это ваш город?</b>
                         <div className="d-f gap-5 jc-around">
                             <RedButton onClick={handleAskCity} className={styles.btn}>Да</RedButton>

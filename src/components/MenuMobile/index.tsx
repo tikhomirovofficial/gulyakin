@@ -24,8 +24,11 @@ const MenuMobile = () => {
             <div className={`${styles.header} f-03  w-100p pd-20-0`}>
                 <div className="wrapper w-100p d-f jc-between ">
                     <div className="f-column gap-20">
-                        <Logo fill={"white"}/>
-                        <SelectCity classNamePopup={styles.menuSelectPopup} className={styles.menuSelectCity}/>
+                        <Link onClick={handleClose} to={"/"}>
+                            <Logo fill={"white"}/>
+                        </Link>
+
+                        <SelectCity askGeoPopupClass={styles.askGeo} classNamePopup={styles.menuSelectPopup} className={styles.menuSelectCity}/>
                     </div>
                     <div className={`${styles.closeWrapper} w-content d-f`}>
                         <div onClick={handleClose} className="w-content h-content">
@@ -59,30 +62,30 @@ const MenuMobile = () => {
                 </div>
 
                 <div className="wrapper w-100p h-100p">
-                    <div className="f-column jc-between h-100p gap-5 pd-20-0">
+                    <div className="f-column jc-between h-100p gap-10 pd-20-0">
                         <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
                             О нас
                         </Link>
                         <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                            О нас
+                            Каталог
                         </Link>
                         <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                            О нас
+                            Контакты
                         </Link>
                         <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                            О нас
+                            Вакансии
                         </Link>
                         <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                            О нас
+                            Инвестиции
                         </Link>
                         <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                            О нас
+                            Предложить помещение
                         </Link>
                         <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                            О нас
+                            Поставщикам
                         </Link>
                         <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
-                            О нас
+                            Помощь
                         </Link>
                     </div>
                 </div>

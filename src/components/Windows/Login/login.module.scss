@@ -28,3 +28,8 @@
     font-size: 4.6rem;
   }
 }
+@media (max-width: 480px) {
+  .window {
+    min-width: unset;
+  }
+}

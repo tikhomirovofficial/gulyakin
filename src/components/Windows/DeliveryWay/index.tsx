@@ -21,6 +21,7 @@ import {checkFilledValues} from "../../../utils/checkFilledValues";
 import {addAddressUser} from "../../../features/profile/profileSlice";
 import {AddressByMarketCity} from "../../../types/api.types";
 import {deleteSeconds} from "../../../utils/deleteSecondsInTime";
+import useCartAdd from "../../../hooks/useCartAdd";
 
 interface AddressItemProps {
     selected: boolean,
@@ -217,7 +218,7 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) 
                 </div>
             </div>
             <RedButton onClick={handleAddAddress} disabled={!isValidAddressData}
-                       className={"pd-10-0"}>Добавить</RedButton>
+                       className={`pd-10-0 ${styles.deliveryBtn}`}>Добавить</RedButton>
         </>
     )
 }
@@ -232,6 +233,7 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterCl
         }
         dispatch(setSelectedInDelivery(-1))
     }
+
     const handleAddAddressDelivery = () => {
         dispatch(handleSelectAddressId(selectedInDelivery))
         addToCartWithAfterClose()
@@ -249,7 +251,7 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterCl
                 }
                 <b onClick={handleToNewAddress} className={"colorRed"}>Добавить адрес</b>
             </div>
-            <RedButton disabled={selectedInDelivery == -1} onClick={handleAddAddressDelivery} className={"pd-10-0"}>Выбрать</RedButton>
+            <RedButton disabled={selectedInDelivery == -1} onClick={handleAddAddressDelivery} className={`pd-10-0 ${styles.deliveryBtn}`}>Выбрать</RedButton>
         </>
     )
 
@@ -286,6 +288,8 @@ const PickupVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) =>
 
 const DeliveryWay = () => {
     const dispatch = useAppDispatch()
+    const handleAddedPopup = useCartAdd()
+
     const {variant} = useAppSelector(state => state.modals.deliveryWay)
     const {addresses, isPhone} = useAppSelector(state => state.main)
     const profileAddresses = useAppSelector(state => state.profile.addresses)
@@ -324,6 +328,7 @@ const DeliveryWay = () => {
                 dispatch(addToCart({
                     ...matchedProduct,
                 }))
+                handleAddedPopup(matchedProduct.title, matchedProduct.weight)
                 dispatch(setProductAfterAddress(null))
             }
             dispatch(handleDeliveryWayWindow())

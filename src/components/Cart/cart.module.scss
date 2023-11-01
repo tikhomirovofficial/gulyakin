@@ -209,15 +209,23 @@
     font-size: 1.6rem;
   }
 }
+.widgetBar {
+  right: 4rem;
+  bottom: 7rem;
+  z-index: 4;
+}
+.addedPopupWrapper {
+  top: -100%;
+  z-index: 4;
+  right: 0;
+  transform: translateX(-50%);
+}
 .widget {
   height: 5.6rem;
   width: 5.6rem;
   background: white;
-  z-index: 4;
   border-radius: 50%;
   filter: drop-shadow(0px 4px 12px rgba(56, 56, 56, 0.25));
-  right: 5rem;
-  bottom: 7rem;
   .count {
     min-width: 2.1rem;
     text-align: center;
@@ -238,7 +246,7 @@
 }
 @media (max-width: 420px) {
   .widget {
-    right: 3rem;
+    right: 1rem;
   }
 
 }

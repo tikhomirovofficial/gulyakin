@@ -64,6 +64,7 @@
 }
 
 
+
 .partInputBlock {
   max-width: 16.6rem;
 }
@@ -73,6 +74,10 @@
     height: 100vh;
     border-radius: unset;
     max-height: unset;
+  }
+  .deliveryBtn {
+    position: sticky;
+    bottom: 0;
   }
   .content {
     width: 100%;

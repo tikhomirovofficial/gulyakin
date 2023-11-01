@@ -23,6 +23,7 @@ import {getFromStorage} from "../../utils/LocalStorageExplorer";
 import {CreateOrderRequest, Supplement} from "../../types/api.types";
 import {formatPhoneNumber} from "../../utils/formatePhone";
 import List from "../../components/List";
+import {handleCartOpened} from "../../features/modals/modalsSlice";
 
 const orderTimes = ["18:30", "19:30"]
 
@@ -86,16 +87,13 @@ const Order = () => {
         }
         dispatch(sendOrder(req))
     }
+    const handleCart = () => dispatch(handleCartOpened())
 
     useEffect(() => {
-        console.log(marketAddresses)
-        console.log(restaurant)
         dispatch(handleOrderFormVal({
             keyField: "name",
             val: data.name
         }))
-        console.log(getFromStorage('order_form')?.restaurant ? getFromStorage('order_form')?.restaurant : marketAddresses.length > 0 ? marketAddresses.findIndex(item => item.id == restaurant) : -1)
-        console.log(marketAddresses.length > 0 ? restaurant : 0)
     }, [])
 
     return (
@@ -298,7 +296,7 @@ const Order = () => {
                                                className={"pd-15"}>Оформить заказ
                                         на {formatNumberWithSpaces(cart.totalPrice)} ₽</RedButton>
                                     <div className={"w-100p d-f jc-center"}>
-                                        <b className={`${styles.backCart}`}>Вернуться в корзину</b>
+                                        <b onClick={handleCart} className={`${styles.backCart}`}>Вернуться в корзину</b>
                                     </div>
 
                                 </div>

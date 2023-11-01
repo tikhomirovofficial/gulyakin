@@ -28,6 +28,7 @@ import {setOrderForm} from "./features/forms/formsSlice";
 import HeaderMobile from "./components/Header/mobile";
 import MenuMobile from "./components/MenuMobile";
 import CartWidget from "./components/Cart/widget";
+import AddedPopup from "./components/AddedPopup";
 
 const MOBILE_WIDTH = 1100
 const SMALL_WIDTH = 800
@@ -137,7 +138,6 @@ function App() {
                 <LogosSection/>
                 <AppRoutes isAuth={false}/>
                 <Footer/>
-
                 {isMobile ?  <CartWidget/> : null}
                 {isMobile ? <MenuMobile/> : null}
                 {bookingOpened ? <BookingWindow/> : null}

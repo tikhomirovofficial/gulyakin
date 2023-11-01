@@ -13,6 +13,7 @@ import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import useToken from "../../hooks/useToken";
 import List from "../List";
 import SelectCity from "../SelectCity";
+import AddedPopup from "../AddedPopup";
 
 
 const Header = () => {
@@ -21,7 +22,7 @@ const Header = () => {
     const {totalPrice, cartClassOpened, cartAdded, cartAddedPopupInfo} = useAppSelector(state => state.cart)
     const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
     const token = useToken()
-
+    const handleCart = () => dispatch(handleCartOpened())
 
 
     return (
@@ -106,15 +107,9 @@ const Header = () => {
                                     </b>
                                 </Link>
                         }
-                        {
-                            cartAdded ?     <div className={`${styles.addedPopup}  ${cartClassOpened ? styles.addedPopupOpened : ""} p-abs f-column gap-5 t-opacity-visible-transform-3`}>
-                                <p>В корзину добавлено:</p>
-                                <b>{cartAddedPopupInfo.title}, {cartAddedPopupInfo.weight} г</b>
-                            </div> : null
-                        }
-
+                        <AddedPopup/>
                         <div
-                            onClick={() => dispatch(handleCartOpened())}
+                            onClick={handleCart}
                             className={`${styles.cartBtnFilled} ${styles.cartBtn} gap-5 btn d-f al-center cur-pointer`}>
                             <CartIcon height={22} width={22}/>
                             <b>

@@ -20,6 +20,7 @@ import {
 import useToken from "../../../hooks/useToken";
 import List from "../../List";
 import {domain} from "../../../http/instance/instances";
+import useCartAdd from "../../../hooks/useCartAdd";
 
 type AdditiveItemProps = {
     selected: boolean,
@@ -142,6 +143,7 @@ const ProductAdditives = () => {
 
     const dispatch = useAppDispatch()
     const token = useToken()
+    const handleAddedPopup = useCartAdd()
     const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const {items} = useAppSelector(state => state.products)
     const cart = useAppSelector(state => state.cart.items)
@@ -151,6 +153,7 @@ const ProductAdditives = () => {
         cart.some(cartProd => cartProd.product.id === id) ?
         cart.filter(cartProd => cartProd.product.id === id)[0]?.supplements.map(cartSup => cartSup.id) : []
     :[])
+
     console.log(addedSupplements)
     const saveChangesAdditives = () => {
         alert("Сохраниь изменения")
@@ -165,18 +168,7 @@ const ProductAdditives = () => {
                 dispatch(addToCart({
                     ...product
                 }))
-                dispatch(setCartAddedPopupInfo({
-                    title: name,
-                    weight
-                }))
-
-                dispatch(cartAddedOpen())
-                setTimeout(() => {
-                    dispatch(cartAddedClose())
-                    setTimeout(() => {
-                        dispatch(resetCartAddedPopupInfo())
-                    }, 300)
-                }, 2000)
+                handleAddedPopup(name, weight)
                 return;
             }
             dispatch(setProductAfterAddress(id))

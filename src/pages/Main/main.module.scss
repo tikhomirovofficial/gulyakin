@@ -9,6 +9,7 @@
 .addedPopup {
   width: 26.6rem;
   right: 0;
+  transform: translateX(200vw);
   z-index: 9999;
   visibility: visible;
   opacity: 0;
@@ -23,6 +24,7 @@
 .addedPopupOpened {
   opacity: 1;
   visibility: visible;
+  transform: unset;
 }
 .header {
 
@@ -482,10 +484,8 @@
   }
 }
 @media (max-width: 1100px) {
-  .addedPopup {
-    position: unset;
-    right: -5rem;
-    bottom: 5rem;
+  .addedPopupOpened {
+    transform: translateY(-100%);
   }
   .menuCategories {
     top: 9rem;

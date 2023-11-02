@@ -8,7 +8,7 @@ import {useAppDispatch} from "../../../app/hooks";
 import {handleNewAddress} from "../../../features/modals/modalsSlice";
 import RedButton from "../../Buttons/RedButton";
 import {Address} from "../../../types/user.types";
-import {checkFilledValues} from "../../../utils/checkFilledValues";
+import {checkFilledValues} from "../../../utils/forms/checkFilledValues";
 import {addAddress, addAddressUser} from "../../../features/profile/profileSlice";
 
 const NewAddressWindow = () => {

@@ -114,7 +114,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
         }
     }
     if(btn) {
-        console.log(placeholder, `Фокус ${isFocusedState} Изменяется ${isChanging} Пустое ${inputVal === ""}`)
+
         return (
             <div className={`d-f al-center gap-10`}>
                 <div className={`f-column gap-10 ${className}`}>

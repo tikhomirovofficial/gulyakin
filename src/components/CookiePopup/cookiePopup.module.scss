@@ -33,5 +33,9 @@
 @media (max-width: 1100px) {
   .cookiePopup {
     width: 90vw;
+    svg {
+      height: 1rem;
+      width: 1rem;
+    }
   }
 }

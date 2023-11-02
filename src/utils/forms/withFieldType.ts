@@ -1,4 +1,4 @@
-import {FieldType} from "../features/forms/formsSlice";
+import {FieldType} from "../../features/forms/formsSlice";
 
 export const withFieldType = (field: any, callback: (fieldObject: FieldType) => any) =>{
     const isObject = typeof field == "object"

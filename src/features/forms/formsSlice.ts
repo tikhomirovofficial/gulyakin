@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {withFieldType} from "../../utils/withFieldType";
+import {withFieldType} from "../../utils/forms/withFieldType";
 import {UserData} from "../../types/user.types";
 import {CreateOrderRequest, CreateOrderResponse} from "../../types/api.types";
 import {AxiosResponse} from "axios";
@@ -42,6 +42,7 @@ export type Rule<FormType> = {
     key: keyof FormType,
     pattern?: RegExp,
     err?: string
+    canBeEmpty?: boolean
 }
 
 export type FormChangeValByKey<FormType> = {

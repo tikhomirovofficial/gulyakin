@@ -170,7 +170,7 @@ export const ProfileSlice = createSlice({
             state.isLoading = false
         })
         builder.addCase(getAddressesUser.fulfilled, (state, action) => {
-            console.log(action.payload)
+
             if(action.payload) {
                 state.addresses = [...action.payload.map(item => {
                     return {

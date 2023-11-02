@@ -120,7 +120,6 @@ const LoginCodeStep = () => {
                     }
 
                 } catch (e: any) {
-                    console.log(e)
                     setCodeErr("Неверный код")
                 } finally {
                     setCodeLoading(false)

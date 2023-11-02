@@ -46,7 +46,6 @@ const DropdownList: FC<DropdownListProps & HasClassName> = ({
         if(isByIdMode) {
             const keyField = optionsDropDown.keyField
             const findedByIdItem = items?.filter(dropItem => dropItem?.id === current)[0]
-            console.log(findedByIdItem, current)
             if(findedByIdItem) {
                 if(Object.hasOwn(findedByIdItem, keyField)) {
                     return findedByIdItem[keyField]
@@ -58,7 +57,6 @@ const DropdownList: FC<DropdownListProps & HasClassName> = ({
         return null
     }
 
-    console.log(textSelected())
     return (
         <List listBlockClassname={className} list={items}
               renderItem={(item, index) => <DropDownItem selectHandler={() =>  selectHandler(optionsDropDown?.byId ? item?.id : index)}

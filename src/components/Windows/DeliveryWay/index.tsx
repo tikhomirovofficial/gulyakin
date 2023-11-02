@@ -17,7 +17,7 @@ import {addToCart, setProductAfterAddress} from "../../../features/cart/cartSlic
 import {getImgPath} from "../../../utils/getAssetsPath";
 import {setSelectedInDelivery, setSelectedInPickup} from "../../../features/restaurants/restaurantsSlice";
 import {Address} from "../../../types/user.types";
-import {checkFilledValues} from "../../../utils/checkFilledValues";
+import {checkFilledValues} from "../../../utils/forms/checkFilledValues";
 import {addAddressUser} from "../../../features/profile/profileSlice";
 import {AddressByMarketCity} from "../../../types/api.types";
 import {deleteSeconds} from "../../../utils/deleteSecondsInTime";
@@ -238,7 +238,7 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterCl
         dispatch(handleSelectAddressId(selectedInDelivery))
         addToCartWithAfterClose()
     }
-    console.log(addresses)
+
     return (
         <>
             <div className={`f-column gap-10 h-100p ${styles.addressesList}`}>

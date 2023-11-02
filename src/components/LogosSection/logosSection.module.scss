@@ -16,6 +16,45 @@
     }
 
   }
+  .selectedNeededStroke {
+    background: #FB634D;
+    svg {
+      path {
+        stroke: white;
+      }
+    }
+  }
+  .selectedNeededFill {
+    background: #FB634D;
+    svg {
+      path {
+        fill: white;
+      }
+    }
+  }
+  .selectedNeededIFood {
+    background: #FB634D;
+    svg {
+      g {
+        path {
+          fill: white;
+          stroke: white;
+        }
+      }
+
+    }
+  }
+  .selectedNeededGusto {
+    background: #FB634D;
+    svg {
+      g {
+        path {
+          fill: white;
+        }
+      }
+
+    }
+  }
   .neededStroke {
     &:hover {
       background: #FB634D;

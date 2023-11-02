@@ -17,7 +17,7 @@ import {
 import {TextField} from "../../components/Inputs/TextField";
 import {deleteCookie} from "../../utils/CookieUtil";
 import {useNavigate} from "react-router-dom";
-import {formatPhoneNumber} from "../../utils/formatePhone";
+import {formatPhoneNumber} from "../../utils/forms/formatePhone";
 
 
 const Profile = () => {

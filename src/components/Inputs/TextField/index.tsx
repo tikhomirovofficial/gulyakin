@@ -34,7 +34,6 @@ export const TextField: FC<TextFieldProps> = ({isEditing, errText, maskPlacehold
     const handleInputFocus = () => {
         if(editRef.current !== null) {
             const inputElement = editRef.current?.parentNode?.children[0] as HTMLInputElement
-            console.log(inputElement)
             inputElement.focus()
         }
     }

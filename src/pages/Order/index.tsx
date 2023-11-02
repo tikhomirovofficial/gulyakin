@@ -21,7 +21,7 @@ import {TextField} from "../../components/Inputs/TextField";
 import {domain} from "../../http/instance/instances";
 import {getFromStorage} from "../../utils/LocalStorageExplorer";
 import {CreateOrderRequest, Supplement} from "../../types/api.types";
-import {formatPhoneNumber} from "../../utils/formatePhone";
+import {formatPhoneNumber} from "../../utils/forms/formatePhone";
 import List from "../../components/List";
 import {handleCartOpened} from "../../features/modals/modalsSlice";
 

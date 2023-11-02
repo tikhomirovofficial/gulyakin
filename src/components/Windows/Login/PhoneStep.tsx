@@ -45,7 +45,6 @@ const LoginPhoneStep = () => {
             if(e?.code == "ERR_NETWORK" ||e?.code == "ERR_BAD_RESPONSE" || e?.response?.status == 500) {
                 setPhoneErr("Ошибка подключения к серверу")
             }
-            console.log(e)
         } finally {
             setPhoneLoading(false)
         }

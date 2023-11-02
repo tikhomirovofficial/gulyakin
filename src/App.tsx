@@ -7,31 +7,28 @@ import ProductAdditives from "./components/Windows/ProductAdditives";
 import CookiePopup from "./components/CookiePopup";
 import DeliveryWay from "./components/Windows/DeliveryWay";
 import NewAddress from "./components/Windows/NewAddress";
-import {YMaps} from "@pbe/react-yandex-maps";
 import AppRoutes from "./router/AppRoutes";
 import Cart from "./components/Cart";
 import {getCart, setTotalPrice} from "./features/cart/cartSlice";
 import {ScrollToTop} from "./components/ServiceComponents";
-import {getAddressesUser, getUser} from "./features/profile/profileSlice";
-import useAuth from "./hooks/useAuth";
+import {getAddressesUser} from "./features/profile/profileSlice";
 import useToken from "./hooks/useToken";
 import Header from "./components/Header";
 import LogosSection from "./components/LogosSection";
 import Footer from "./components/Footer";
-import product from "./components/Catalog/Product";
 import {getCombosByMarket, getProductByMarket} from "./features/products/productsSlice";
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
-import order from "./pages/Order";
 import {getAddressesByMarketCity, getCities, setIsMobile, setIsPhone} from "./features/main/mainSlice";
 import {setOrderForm} from "./features/forms/formsSlice";
 import HeaderMobile from "./components/Header/mobile";
 import MenuMobile from "./components/MenuMobile";
 import CartWidget from "./components/Cart/widget";
-import AddedPopup from "./components/AddedPopup";
+import {isDateValid} from "./utils/forms/dataValidation";
 
 const MOBILE_WIDTH = 1100
 const SMALL_WIDTH = 800
+
 function App() {
     const dispatch = useAppDispatch()
     const token = useToken()
@@ -51,20 +48,13 @@ function App() {
     const {items} = useAppSelector(state => state.cart)
     const products = useAppSelector(state => state.products.items)
     const orderForm = useAppSelector(state => state.forms.orderForm)
-    const {market, cities, currentGeo, isMobile} = useAppSelector(state => state.main)
+    const {market, cities, currentGeo, isMobile, markets} = useAppSelector(state => state.main)
 
     const handleResize = () => {
         dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))
         dispatch(setIsPhone(window.innerWidth <= SMALL_WIDTH))
     }
 
-    // useEffect(() => {
-    //     if(bodyLocked) {
-    //         document.body.classList.add("of-y-hide")
-    //         return
-    //     }
-    //     document.body.classList.remove("of-y-hide")
-    // }, [bodyLocked])
 
     useEffect(() => {
         window.addEventListener('resize', () => {
@@ -74,7 +64,7 @@ function App() {
     }, [])
 
     useEffect(() => {
-        if(orderForm?.restaurant != -1 || orderForm?.address.val.length > 0) {
+        if (orderForm?.restaurant != -1 || orderForm?.address.val.length > 0) {
             addToStorage("order_form", {
                 restaurant: orderForm.restaurant,
                 address: orderForm.address.val
@@ -95,17 +85,17 @@ function App() {
 
 
     useEffect(() => {
-        if(!products.length) {
-            dispatch(getCategoriesByMarket({market_id: market}))
-            dispatch(getProductByMarket({market_id: market}))
-            dispatch(getCombosByMarket({market_id: market}))
-        }
-        if(!cities.length) {
+
+        dispatch(getCategoriesByMarket({market_id: market}))
+        dispatch(getProductByMarket({market_id: market}))
+        dispatch(getCombosByMarket({market_id: market}))
+
+        if (!cities.length) {
             dispatch(getCities())
         }
         const gettedOrderForm = getFromStorage("order_form")
         if (gettedOrderForm !== undefined && gettedOrderForm !== null) {
-            if(gettedOrderForm?.restaurant != -1 || gettedOrderForm?.address.length > 0) {
+            if (gettedOrderForm?.restaurant != -1 || gettedOrderForm?.address.length > 0) {
                 dispatch(setOrderForm({
                     restaurant: gettedOrderForm.restaurant,
                     address: gettedOrderForm.address
@@ -113,22 +103,23 @@ function App() {
             }
         }
 
-    }, [])
+    }, [market])
 
     useEffect(() => {
-        if(token) {
+        if (token) {
             dispatch(getCart())
             dispatch(getAddressesUser())
         }
     }, [token])
+
     useEffect(() => {
-        if(cities.length > 0) {
+        if (cities.length > 0) {
             dispatch(getAddressesByMarketCity({
                 market_id: market,
                 siti_id: currentGeo.city
             }))
         }
-    }, [cities, currentGeo.city])
+    }, [cities, currentGeo.city, market])
 
     return (
         <>
@@ -138,7 +129,7 @@ function App() {
                 <LogosSection/>
                 <AppRoutes isAuth={false}/>
                 <Footer/>
-                {isMobile ?  <CartWidget/> : null}
+                {isMobile ? <CartWidget/> : null}
                 {isMobile ? <MenuMobile/> : null}
                 {bookingOpened ? <BookingWindow/> : null}
                 {loginOpened ? <LoginWindow/> : null}

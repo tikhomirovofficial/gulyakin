@@ -9,7 +9,10 @@ import {
 } from "../../types/api.types";
 import {AddressesApi} from "../../http/api/addresses.api";
 
-
+type Market = {
+    title: string,
+    id: number
+}
 type MainSliceState = {
     market: number,
     cities: Array<{
@@ -23,10 +26,12 @@ type MainSliceState = {
         city: number
     }
     isMobile: boolean
-    isPhone: boolean
+    isPhone: boolean,
+    markets: Array<Market>
+
 }
 const initialState: MainSliceState = {
-    market: 2,
+    market: getFromStorage('market') || -1,
     cities: [],
     changingGeo: false,
     addresses: [],
@@ -35,7 +40,21 @@ const initialState: MainSliceState = {
     askCityVisible: !(getFromStorage("city_accepted") !== undefined && getFromStorage("city_accepted") !== null),
     currentGeo: {
         city: getFromStorage("city") || 0
-    }
+    },
+    markets: [
+        {
+            id: 2,
+            title: "Гулякин"
+        },
+        {
+            id: 3,
+            title: "Гуленьки Пельменная"
+        },
+        {
+            id: 4,
+            title: "Гуленьки блинная"
+        }
+    ]
 }
 export const getCities = createAsyncThunk(
     'cities/get',

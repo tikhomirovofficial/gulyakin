@@ -154,7 +154,6 @@ const ProductAdditives = () => {
         cart.filter(cartProd => cartProd.product.id === id)[0]?.supplements.map(cartSup => cartSup.id) : []
     :[])
 
-    console.log(addedSupplements)
     const saveChangesAdditives = () => {
         alert("Сохраниь изменения")
     }

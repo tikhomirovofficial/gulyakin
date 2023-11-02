@@ -7,6 +7,7 @@ import ChosenRestaurant from "../pages/ChosenRestaurant";
 import Profile from "../pages/Profile";
 import Order from "../pages/Order";
 import WithOrder from "../pages/Order/withOrder";
+import {BaseRedirect} from "../components/ServiceComponents";
 
 export interface RoutesCollection {
     auth: RoutesList,
@@ -14,20 +15,26 @@ export interface RoutesCollection {
     non_auth: RoutesList
 }
 
+const BASE_PATH =  "/market/:id"
+
 
 export const routes: RoutesCollection = {
     public: [
         {
+            Component: BaseRedirect,
+          path: "/"
+        },
+        {
             Component: Main,
-            path: "/"
+            path: BASE_PATH
         },
         {
             Component: Restaurants,
-            path: "/restaurants"
+            path: BASE_PATH + "/restaurants"
         },
         {
             Component: ChosenRestaurant,
-            path: "/restaurants/:id"
+            path: BASE_PATH + "/restaurants/:id"
         }
 
 
@@ -39,7 +46,7 @@ export const routes: RoutesCollection = {
         },
         {
             Component: Order,
-            path: "/order"
+            path: BASE_PATH + "/order"
         }
     ],
     non_auth: [

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import {Navigate, useLocation} from 'react-router-dom';
 
 export const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -12,3 +12,10 @@ export const ScrollToTop = () => {
     }, [pathname]);
     return null;
 };
+
+export const BaseRedirect = () => {
+    const firstMarketId = 1
+    return (
+        <Navigate to={"/market/" + firstMarketId}/>
+    )
+}

@@ -412,11 +412,11 @@ const DeliveryWay = () => {
                             <YMaps>
                                 <Map className={"h-100p w-100p"}
                                      state={{
-                                         center: currentAddress !== null ? [currentAddress.long, currentAddress.lat] : [addresses[0].long, addresses[0].lat],
+                                         center: getMapCenter(),
                                          zoom: 15
                                      }}>
                                     {
-                                        currentAddress !== null ?
+                                        currentAddress !== null && currentAddress !== undefined ?
                                             <Placemark geometry={[currentAddress.long, currentAddress.lat]} options={
                                                 {
                                                     iconLayout: 'default#image', // Используем стандартный макет изображения

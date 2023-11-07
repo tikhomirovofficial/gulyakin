@@ -1,5 +1,5 @@
 import {
-    AddressAddResponse,
+    AddressAddResponse, AddToCartComboRequest, AddToCartComboResponse,
     AddToCartRequest, AddToCartResponse,
     CartCountSupplementsRequest,
     CartCountSupplementsResponse,
@@ -16,6 +16,13 @@ import {PATHS} from "./path.api";
 export class CartApi {
     static async AddProduct(requestData: AddToCartRequest): Promise<AxiosResponse<AddToCartResponse>> {
         const res: AxiosResponse<AddToCartResponse> = await authApi.post(PATHS.ADD_TO_CART, {...requestData});
+        if(!res.data) {
+            throw res
+        }
+        return res;
+    }
+    static async AddCombo(requestData: AddToCartComboRequest): Promise<AxiosResponse<AddToCartComboResponse>> {
+        const res: AxiosResponse<AddToCartComboResponse> = await authApi.post(PATHS.ADD_TO_CART_COMBO, {...requestData});
         if(!res.data) {
             throw res
         }

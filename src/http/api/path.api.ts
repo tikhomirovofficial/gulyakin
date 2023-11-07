@@ -19,6 +19,7 @@ export const PATHS = {
     MARKET_ADDRESS_INFO: "/market/adress/info",
 
     ADD_TO_CART: "/cart/add",
+    ADD_TO_CART_COMBO: "/cart/add/combo",
     VIEW_CART: "/cart/list",
     EDIT_CART_ITEM: "/cart/edit",
     EDIT_CART_SUPPLEMENTS: "/cart/edit/supplements",

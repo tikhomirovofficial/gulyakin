@@ -9,18 +9,13 @@ import {HasClassName} from "../../../types/components.types";
 import {AdditiveProduct} from "../../../types/products.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {handleLogin, handleProductAdditives, handleYourAddress} from "../../../features/modals/modalsSlice";
-import {
-    addToCart,
-    cartAddedClose,
-    cartAddedOpen,
-    resetCartAddedPopupInfo,
-    setCartAddedPopupInfo,
-    setProductAfterAddress
-} from "../../../features/cart/cartSlice";
+import {addToCart, editSupplementsCountCart, setProductAfterAddress} from "../../../features/cart/cartSlice";
 import useToken from "../../../hooks/useToken";
 import List from "../../List";
 import {domain} from "../../../http/instance/instances";
 import useCartAdd from "../../../hooks/useCartAdd";
+import {CartCountSupplementsRequest, ProductRes} from "../../../types/api.types";
+import {arraysEqual} from "../../../utils/arrayEquals";
 
 type AdditiveItemProps = {
     selected: boolean,
@@ -138,7 +133,8 @@ const ProductAdditives = () => {
         weight,
         name,
         description,
-        id
+        id,
+        cart_id
     } = useAppSelector(state => state.modals.productAdditivesData)
 
     const dispatch = useAppDispatch()
@@ -151,11 +147,43 @@ const ProductAdditives = () => {
 
     const [addedSupplements, setAddedSupplements] = useState<number[]>(additives?.length > 0 ?
         cart.some(cartProd => cartProd.product.id === id) ?
-        cart.filter(cartProd => cartProd.product.id === id)[0]?.supplements.map(cartSup => cartSup.id) : []
-    :[])
+            cart.filter(cartProd => cartProd.product.id === id)[0]?.supplements.map(cartSup => cartSup.id) : []
+        : [])
 
     const saveChangesAdditives = () => {
-        alert("Сохраниь изменения")
+        const supplementsThisProduct = cart.filter(cartProd => cartProd.product.id === id)[0]?.supplements
+        const supplementsIdsProduct = supplementsThisProduct?.map(item => {
+            return item.id
+        })
+        const addedEqualsCart = arraysEqual(supplementsIdsProduct, addedSupplements)
+
+        if(addedEqualsCart) {
+            dispatch(handleProductAdditives())
+            return;
+        }
+
+        const changedData: CartCountSupplementsRequest = {
+            supplements: supplementsThisProduct.map(item => {
+                const cartId = cart_id !== undefined ? cart_id : -1
+                const addedIncludesId =  addedSupplements.includes(item.id)
+                return {
+                    cart_id: cartId,
+                    supplements_id: id,
+                    added: addedIncludesId
+                }
+            })
+
+        }
+
+        dispatch(editSupplementsCountCart(changedData))
+    }
+
+    const getAddedSupplements = (product: ProductRes) => {
+        return product.supplements.filter(item => {
+            if(addedSupplements.includes(item.id)) {
+                return item
+            }
+        })
     }
 
     const handleAddToCartClick = () => {
@@ -165,7 +193,8 @@ const ProductAdditives = () => {
             if (deliveryIsDefined) {
                 const product = items.filter(item => item.id === id)[0]
                 dispatch(addToCart({
-                    ...product
+                    ...product,
+                    supplements: getAddedSupplements(product)
                 }))
                 handleAddedPopup(name, weight)
                 return;
@@ -176,18 +205,18 @@ const ProductAdditives = () => {
         }
         dispatch(handleLogin())
 
-
     }
 
     const additivePrice = addedSupplements?.length > 0 ? additives.reduce((a, b) => {
-        if(addedSupplements.some(sup => sup === b.id)) {
+        if (addedSupplements.some(sup => sup === b.id)) {
             return a + b.price
         }
         return a
     }, 0) : 0
 
     return (
-        <ShadowWrapper className={`${styles.additivesWindow} f-c-col p-fix h-100v w-100v`} onClick={() => dispatch(handleProductAdditives())}>
+        <ShadowWrapper className={`${styles.additivesWindow} f-c-col p-fix h-100v w-100v`}
+                       onClick={() => dispatch(handleProductAdditives())}>
 
             <WindowBody className={`${styles.window} f-column`}>
                 <div className="w-100p d-f al-end jc-end">
@@ -230,9 +259,10 @@ const ProductAdditives = () => {
 
                             }
 
-                            <RedButton onClick={saveMode ? saveChangesAdditives : handleAddToCartClick} disabled={false} className={"pd-10-0"}>
+                            <RedButton onClick={saveMode ? saveChangesAdditives : handleAddToCartClick} disabled={false}
+                                       className={"pd-10-0"}>
 
-                                {!saveMode ?  `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
+                                {!saveMode ? `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
                             </RedButton>
                         </div>
 

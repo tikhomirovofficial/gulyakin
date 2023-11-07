@@ -200,6 +200,17 @@ export type AddToCartItem = {
     }>
     count: number
 }
+export type AddToCartCombo = {
+    id: number,
+    selected_product: number,
+    count: number
+}
+export type AddToCartComboRequest = {
+    combo: AddToCartItem[]
+}
+export type AddToCartComboResponse = AddToCartResponse
+
+
 export type AddToCartRequest = {
     products: AddToCartItem[]
 }
@@ -238,12 +249,12 @@ export type CartCountSupplementsRequest = {
     supplements: Array<{
         cart_id: number,
         supplements_id: number
-        count: number
+        added: boolean
     }>
-    cart_id: number,
-    count: number
 }
-export type CartCountSupplementsResponse = ResponseStatus
+export type CartCountSupplementsResponse = {
+    supplements_list: Array<Supplement>
+} & ResponseStatus
 
 
 export type CartProductDeleteRequest = {

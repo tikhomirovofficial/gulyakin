@@ -17,7 +17,6 @@ import {
 import {CartProductItem, Supplement} from "../../types/api.types";
 import {domain} from "../../http/instance/instances";
 import {useNavigate} from "react-router-dom";
-import {ProductAdditiveData} from "../../types/products.types";
 
 
 type CartItemProps = {
@@ -33,6 +32,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, suppleme
         dispatch(setProductAdditivesData({
             id: findedProduct.id,
             description: findedProduct.composition,
+            cart_id: id,
             imageUrl: findedProduct.image,
             name: findedProduct.title,
             price: findedProduct.price,
@@ -60,7 +60,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, suppleme
                         {
                             supplements.length > 0 ?
                                 <p>+ {supplements.map(item => item.title).join(", ")}</p>
-                                 : null
+                                : null
                         }
 
                     </div>
@@ -90,7 +90,8 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, suppleme
                             </b>
                             <div className="d-f gap-20">
                                 {
-                                    canBeChanged ? <div onClick={handleChange} className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
+                                    canBeChanged ? <div onClick={handleChange}
+                                                        className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
                                 }
 
                                 <div className={"d-f al-center gap-5"}>

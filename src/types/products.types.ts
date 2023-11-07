@@ -12,6 +12,7 @@ export type AdditiveProduct = Pick<Product, "name" | "imageUrl" |"price">
 
 export type ProductAdditiveData = {
     id: number
-    currentAdditive: number
+    currentAdditive: number,
+    cart_id?: number,
     additives: Array<Supplement>
 } & Product

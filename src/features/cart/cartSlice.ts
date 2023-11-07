@@ -1,7 +1,8 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
+    AddToCartComboRequest, AddToCartComboResponse,
     AddToCartRequest,
-    AddToCartResponse, CartCountSupplementsRequest,
+    AddToCartResponse, CartCountSupplementsRequest, CartCountSupplementsResponse,
     CartProductDeleteRequest,
     CartProductItem,
     ChangeCountCartRequest,
@@ -74,7 +75,17 @@ export const addToCart = createAsyncThunk(
         }
     }
 )
+export const addToCartCombo = createAsyncThunk(
+    'cart/add/combo',
+    async (request: AddToCartComboRequest, {dispatch}) => {
 
+        const res: AxiosResponse<AddToCartComboResponse> = await handleTokenRefreshedRequest(CartApi.AddCombo, request)
+        return {
+            combo: request,
+            data: res.data
+        }
+    }
+)
 export const editCountCart = createAsyncThunk(
     'cart/edit',
     async (request: Pick<ProductRes, "id"> & ChangeCountCartRequest, {dispatch}) => {
@@ -95,10 +106,10 @@ export const editSupplementsCountCart = createAsyncThunk(
     'cart/supplements/edit',
     async (request: CartCountSupplementsRequest, {dispatch}) => {
 
-        const res: AxiosResponse<ChangeCountCartResponse> = await handleTokenRefreshedRequest(CartApi.EditSupplementsCount, request)
+        const res: AxiosResponse<CartCountSupplementsResponse> = await handleTokenRefreshedRequest(CartApi.EditSupplementsCount, request)
         return {
-            cart_id: request.cart_id,
-            supplements: request.supplements
+            cart_id: request.supplements[0].cart_id,
+            supplements_list: res.data.supplements_list
         }
     }
 )
@@ -242,6 +253,9 @@ export const CartSlice = createSlice({
 
             }
         })
+        builder.addCase(addToCartCombo.fulfilled, (state, action) => {
+
+        })
 
         builder.addCase(editCountCart.fulfilled, (state, action) => {
             const cartProductId = action.payload.product_id
@@ -264,6 +278,7 @@ export const CartSlice = createSlice({
                 if(action.payload.cart_id === cartItem.id) {
                     return {
                         ...cartItem,
+                        supplements: action.payload.supplements_list
                     }
                 }
                 return cartItem

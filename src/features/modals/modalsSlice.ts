@@ -111,7 +111,7 @@ export const ModalsSlice = createSlice({
         },
         setProductAdditivesData: (state, action: PayloadAction<ProductAdditiveData>) => {
             state.productAdditivesData = action.payload
-        }
+        },
 
     }
 })

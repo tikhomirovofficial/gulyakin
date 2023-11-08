@@ -6,6 +6,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import {marketComponents, MarketItem} from "./markets";
 import {setMarket} from "../../features/main/mainSlice";
+import {resetOrderForm} from "../../utils/common/resetOrderForm";
+import {setOrderForm} from "../../features/forms/formsSlice";
 
 const LogoItem: FC<Pick<MarketItem, "forMarketId">> = ({forMarketId}) => {
     const dispatch = useAppDispatch()
@@ -23,6 +25,10 @@ const LogoItem: FC<Pick<MarketItem, "forMarketId">> = ({forMarketId}) => {
         const classNameSelected = gettedMarket.selectedClassName
         const handleToMarket = () => {
             dispatch(setMarket(forMarketId))
+            dispatch(setOrderForm({
+                address: "", restaurant: -1
+            }))
+            resetOrderForm()
         }
 
         return (

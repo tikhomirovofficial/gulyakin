@@ -23,7 +23,7 @@ export const PATHS = {
     VIEW_CART: "/cart/list",
     EDIT_CART_ITEM: "/cart/edit",
     EDIT_CART_SUPPLEMENTS: "/cart/edit/supplements",
-    DELETE_CART_ITEM: "/cart/delete",
+    DELETE_CART_ITEM: "/cart/delete/",
 
     DELIVERY_OPTIONS: "/order/delivery/list",
     PAYMENT_OPTIONS: "/order/payment/list",

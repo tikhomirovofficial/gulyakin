@@ -151,11 +151,12 @@ const ProductAdditives = () => {
         : [])
 
     const saveChangesAdditives = () => {
-        const supplementsThisProduct = cart.filter(cartProd => cartProd.product.id === id)[0]?.supplements
-        const supplementsIdsProduct = supplementsThisProduct?.map(item => {
-            return item.id
-        })
-        const addedEqualsCart = arraysEqual(supplementsIdsProduct, addedSupplements)
+        const supplementsThisCartProd = cart.filter(cartProd => cartProd.product.id === id)[0]?.supplements
+
+        const supplementsIdsCartProd = supplementsThisCartProd?.map(item => {return item.id})
+        const supplementsIdsProduct = additives?.map(item => {return item.id})
+
+        const addedEqualsCart = arraysEqual(supplementsIdsCartProd, addedSupplements)
 
         if(addedEqualsCart) {
             dispatch(handleProductAdditives())
@@ -163,12 +164,12 @@ const ProductAdditives = () => {
         }
 
         const changedData: CartCountSupplementsRequest = {
-            supplements: supplementsThisProduct.map(item => {
+            supplements: supplementsIdsProduct.map(item => {
                 const cartId = cart_id !== undefined ? cart_id : -1
-                const addedIncludesId =  addedSupplements.includes(item.id)
+                const addedIncludesId = addedSupplements.includes(item)
                 return {
                     cart_id: cartId,
-                    supplements_id: id,
+                    supplements_id: item,
                     added: addedIncludesId
                 }
             })
@@ -176,6 +177,7 @@ const ProductAdditives = () => {
         }
 
         dispatch(editSupplementsCountCart(changedData))
+        dispatch(handleProductAdditives())
     }
 
     const getAddedSupplements = (product: ProductRes) => {

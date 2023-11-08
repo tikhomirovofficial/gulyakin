@@ -17,6 +17,7 @@ import useToken from "../../hooks/useToken";
 import Preloader from "../../components/Preloader";
 import {useInput} from "../../hooks/useInput";
 import Catalog from "../../components/Catalog";
+import {domain} from "../../http/instance/instances";
 
 const Main: FC = () => {
     const {categories, products, cart, main} = useAppSelector(state => state)
@@ -268,20 +269,24 @@ const Main: FC = () => {
 
                                     }}
                                     className={"f-row-betw w-100p"}>
+                                    {
+                                        products.combos.map(item => (
+                                            <SwiperSlide className={"w-content pd-10-0"}>
+                                                <div className={`${styles.item} p-rel d-f jc-end`}>
+                                                    <div style={{backgroundImage: `url(${domain}/${item.image})`}}
+                                                         className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
 
-                                    <SwiperSlide className={"w-content pd-10-0"}>
-                                        <div className={`${styles.item} p-rel d-f jc-end`}>
-                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
+                                                    </div>
+                                                    <div className={`${styles.info} f-column gap-5 p-rel`}>
+                                                        <h4>{item.title}</h4>
+                                                        <p>{item.new_price} ₽</p>
+                                                    </div>
 
-                                            </div>
-                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                                <h4>Пельмени с говядиной</h4>
-                                                <p>от 319 ₽</p>
-                                            </div>
+                                                </div>
+                                            </SwiperSlide>
+                                        ))
+                                    }
 
-                                        </div>
-                                    </SwiperSlide>
                                     <SwiperSlide className={"w-content pd-10-0"}>
                                         <div className={`${styles.item} p-rel d-f jc-end`}>
                                             <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}

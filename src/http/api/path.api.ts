@@ -14,6 +14,7 @@ export const PATHS = {
     MARKET_ADDRESSES_BY_CITY: "/market/adress/market/siti",
     MARKET_INFO: "/market/info",
     MARKET_CATEGORIES: "/product/category",
+    MARKET_SOUSES: "/product/souse",
     MARKET_COMBOS: "/product/combo",
     MARKET_PRODUCT_OF_THE_DAY: "/product/day",
     MARKET_ADDRESS_INFO: "/market/adress/info",

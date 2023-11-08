@@ -337,7 +337,9 @@
         width: 24.4rem;
         overflow: hidden;
         color: #494949;
-        box-shadow: 0px 4px 12px 0px rgba(56, 56, 56, 0.10);
+        box-shadow: 0px 0px 12px 0px rgba(56, 56, 56, 0.10);
+        transition: .3s box-shadow;
+        cursor: pointer;
         .bg {
           background-size: cover;
           width: 10rem;
@@ -361,6 +363,9 @@
         h4 {
           font-size: 1.6rem;
           line-height: 1;
+        }
+        &:hover {
+          box-shadow: 0px 4px 12px 0px rgba(56, 56, 56, 0.10);
         }
       }
     }

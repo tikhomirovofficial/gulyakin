@@ -6,8 +6,13 @@ import {Combo} from "../../../types/api.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import useToken from "../../../hooks/useToken";
 import useCartAdd from "../../../hooks/useCartAdd";
-import {handleLogin, handleProductAdditives, handleYourAddress} from "../../../features/modals/modalsSlice";
-import {addToCart, setProductAfterAddress} from "../../../features/cart/cartSlice";
+import {
+    handleLogin,
+    handleProductAdditives,
+    handleYourAddress,
+    setChangingAdditivesMode, setProductAdditivesData
+} from "../../../features/modals/modalsSlice";
+import {addToCart, setProductAfterAddress, setProductAfterLogin} from "../../../features/cart/cartSlice";
 
 type ComboProps = {
 
@@ -16,9 +21,26 @@ const ComboItem: FC<ComboProps> = (item) => {
     const dispatch = useAppDispatch()
     const token = useToken()
     const handleAddedPopup = useCartAdd()
+    const cartItems = useAppSelector(state => state.cart.items)
+    const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
+    const {isMobile} = useAppSelector(state => state.main)
+    const cart = useAppSelector(state => state.cart.items)
 
-    const handleAddCombo= () => {
-        dispatch(handleProductAdditives())
+    const isInCart = cartItems.some(cartItem => cartItem.product.id === item.id && cartItem.is_combo)
+
+    //TODO СОЗДАТЬ ПРОВЕРКУ ЯВЛЯЕТСЯ ЛИ ТОВАР КОМБО ПРИ ДОБАВЛЕНИИ ПОСЛЕ ЛОГИНА ИЛИ ПОСЛЕ АДРЕСА
+    const handleAddCombo = () => {
+        if (token) {
+            if (address.val.length > 0 || restaurant !== -1) {
+                alert("open")
+            } else {
+                //dispatch(setProductAfterAddress(item.id))
+                dispatch(handleYourAddress())
+            }
+            return;
+        }
+        //dispatch(setProductAfterLogin(id))
+        dispatch(handleLogin())
     }
     return (
         <div onClick={handleAddCombo} className={`${styles.item} p-rel d-f jc-end gap-15`}>
@@ -29,10 +51,13 @@ const ComboItem: FC<ComboProps> = (item) => {
                 <h4>{item.title}</h4>
                 <p>{item.new_price} ₽</p>
             </div>
-            <div className={`d-f al-center p-abs gap-5 ${styles.addedIconBlock} t-opacity-visible-3`}>
-                <b className={"colorRed"}>Добавлен</b>
-                <AddedAdditiveIcon width={18} height={18}/>
-            </div>
+            {
+                isInCart ? <div className={`d-f al-center p-abs gap-5 ${styles.addedIconBlock} t-opacity-visible-3`}>
+                    <b className={"colorRed"}>Добавлен</b>
+                    <AddedAdditiveIcon width={18} height={18}/>
+                </div> : null
+            }
+
 
         </div>
     );

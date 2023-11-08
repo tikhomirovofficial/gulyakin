@@ -6,6 +6,7 @@ import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {RestaurantItemType} from "../../types/restaurants.types";
 import {Link} from "react-router-dom";
+import {getImgPath} from "../../utils/getAssetsPath";
 
 const logosIsMax = true
 
@@ -33,8 +34,13 @@ const RestaurantItem: FC<RestaurantItemProps> = ({cityArea, street, link, canOnl
 
 const Restaurants: FC = () => {
     const dispatch = useAppDispatch()
-    const restaurant = useAppSelector(state => state.restaurants.list.filter(item => item.id === 1)[0])
-
+    const {addresses, currentGeo, cities} = useAppSelector(state => state.main)
+    const getAddressesCoords = () => {
+        if (addresses.length > 0) {
+            return [addresses[0].long, addresses[0].lat]
+        }
+        return [0, 0]
+    }
 
     return (
         <>
@@ -53,7 +59,8 @@ const Restaurants: FC = () => {
                         <div className="f-column gap-20">
                             <div className="wrapper w-100p">
                                 <div className="sectionTitle">
-                                    {restaurant.branches.length} кафе Гулякин в Сургуте
+                                    {addresses.length} кафе в
+                                    городе {cities.length > 0 ? cities.filter(city => city.id === currentGeo.city)[0]?.name : ""}
                                 </div>
                             </div>
                             <div className={`${styles.restContainer} wrapper w-100p`}>
@@ -61,10 +68,11 @@ const Restaurants: FC = () => {
                                     <div className={`${styles.restaurantsContainer} f-column h-100p`}>
                                         <div className={`${styles.sideWrapper} f-column wrapper`}>
                                             {
-                                                restaurant.branches.map(item => (
-                                                    <RestaurantItem link={"/restaurants/1"} street={item.street}
-                                                                    canOnlineOrder={item.canOnlineOrder}
-                                                                    cityArea={item.cityArea}/>
+                                                addresses.map(item => (
+                                                    <RestaurantItem link={`/restaurants/${item.id}`}
+                                                                    street={item.adress}
+                                                                    canOnlineOrder={true}
+                                                                    cityArea={""}/>
                                                 ))
                                             }
                                         </div>
@@ -74,13 +82,13 @@ const Restaurants: FC = () => {
                                     <div className={`${styles.map} h-100p f-1`}>
                                         <YMaps>
                                             <Map className={`${styles.mapContainer} h-100p w-100p`}
-                                                 state={{center: restaurant.branches[0].coords, zoom: 9}}>
+                                                 state={{center: getAddressesCoords(), zoom: 9}}>
                                                 {
-                                                    restaurant.branches.map(item => (
-                                                        <Placemark geometry={item.coords} options={
+                                                    addresses.map(item => (
+                                                        <Placemark geometry={[item.long, item.lat]} options={
                                                             {
                                                                 iconLayout: 'default#image', // Используем стандартный макет изображения
-                                                                iconImageHref: restaurant.logoIconSrc, // Укажите URL вашей кастомной иконки
+                                                                iconImageHref: getImgPath("/logos/logo_gulyakin.svg"), // Укажите URL вашей кастомной иконки
                                                                 iconImageSize: [52, 52], // Размер вашей иконки
                                                                 iconImageOffset: [0, 0],
                                                             }

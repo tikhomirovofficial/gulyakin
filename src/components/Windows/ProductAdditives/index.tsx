@@ -30,7 +30,7 @@ const ProductAdditives = () => {
     const saveMode = useAppSelector(state => state.modals.isChangingModeAdditives)
 
     const [addedSupplements, setAddedSupplements] = useState<number[]>(getFromCartAddedSupplements(cart, id, additives))
-    const [addProduct, saveProduct, getAddedSupplementsObjs] = useProduct(id, addedSupplements)
+    const [addProduct, saveProduct] = useProduct(id, addedSupplements)
     const additivePrice = getSupplementsTotalPrice(addedSupplements, additives)
 
     return (

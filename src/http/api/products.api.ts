@@ -4,7 +4,7 @@ import {
     GetCombosByMarketRequest,
     GetCombosByMarketResponse, GetProductDayByMarketRequest, GetProductDayByMarketResponse,
     GetProductsByMarketRequest,
-    GetProductsByMarketResponse
+    GetProductsByMarketResponse, GetSousesRequest, GetSousesResponse
 } from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import {api} from "../instance/instances";
@@ -14,6 +14,10 @@ import {ConvertDataToGetParams} from "../../utils/ConvertDataToGetParams";
 export class ProductsApi {
     static async ProductsByMarket(requestData: GetProductsByMarketRequest): Promise<AxiosResponse<GetProductsByMarketResponse>> {
         const res: AxiosResponse<GetProductsByMarketResponse> = await api.get(PATHS.PRODUCT_BY_MARKET, {params: requestData});
+        return res;
+    }
+    static async Souses(requestData: GetSousesRequest): Promise<AxiosResponse<GetSousesResponse>> {
+        const res: AxiosResponse<GetSousesResponse> = await api.get(PATHS.MARKET_SOUSES, {params: requestData});
         return res;
     }
 

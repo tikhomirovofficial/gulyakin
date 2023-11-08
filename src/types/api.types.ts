@@ -1,5 +1,6 @@
 import {UserData} from "./user.types";
 import {ResponseStatus} from "./common.types";
+import {RestaurantDetails} from "./restaurants.types";
 
 export type JWT = {
     access?: string,
@@ -11,6 +12,7 @@ export interface Supplement {
     title: string;
     short_description: string;
     image: string;
+    supplement_in_cart_id?: number,
     price: number;
 }
 
@@ -100,27 +102,11 @@ export type GetByCityAddressesResponse = ResponseStatus & {
 }
 
 export type GetAddressInfoRequest = {
-    adress_id: 1
+    adress_id: number
 }
 export type GetAddressInfoResponse = {
-    data: {
-        id: number;
-        adress: string;
-        market: {
-            id: number;
-            name: string;
-            short_description: string;
-            description: string;
-            link: string;
-        };
-        long: number;
-        lat: number;
-        work_with: string;
-        works_until: string;
-        timeaone: string;
-        image: string[];
-    }
-} & ResponseStatus
+    data: RestaurantDetails
+}
 
 export type GetCitiesResponse = {
     siti: Array<{
@@ -151,6 +137,13 @@ export type GetProductsByMarketRequest = {
 }
 export type GetProductsByMarketResponse = {
     products: ProductRes[];
+} & ResponseStatus
+
+export type GetSousesRequest = {
+
+}
+export type GetSousesResponse = {
+
 } & ResponseStatus
 
 
@@ -221,6 +214,7 @@ export type AddToCartResponse = {
 } & ResponseStatus
 
 export type CartProductItem = {
+    is_combo: boolean,
     id: number,
     product: {
         id: number
@@ -246,9 +240,10 @@ export type ChangeCountCartRequest = {
 export type ChangeCountCartResponse = ResponseStatus
 
 export type CartCountSupplementsRequest = {
+    cart_id: number,
     supplements: Array<{
-        cart_id: number,
-        supplements_id: number
+        supplements_id: number,
+        supplement_in_cart_id: number,
         added: boolean
     }>
 }

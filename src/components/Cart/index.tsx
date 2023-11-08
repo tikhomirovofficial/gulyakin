@@ -292,6 +292,7 @@ const Cart = () => {
                                 list={items}
                                 renderItem={(item) => (
                                     <CartItem
+                                        is_combo={item.is_combo}
                                         supplements={item.supplements}
                                         id={item.id}
                                         count={item.count}

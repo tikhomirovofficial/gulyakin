@@ -5,3 +5,22 @@ export type RestaurantItemType = {
     street: string,
     coords: Array<number>
 }
+
+export type MarketInfo = {
+    id: number,
+    name: string,
+    short_description: string,
+    description: string,
+    link: string
+}
+export type RestaurantDetails = {
+    id: number,
+    adress: string,
+    market: MarketInfo,
+    long: number,
+    lat: number,
+    work_with: number,
+    works_until: number,
+    timeaone: number,
+    image: string[]
+}

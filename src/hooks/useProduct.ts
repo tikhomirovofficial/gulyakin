@@ -22,11 +22,12 @@ const UseProduct = (product_id: number, addedSupplements: number[]) => {
         const cart_id = cartProduct.id
 
         const supplementsThisCartProd = cartProduct?.supplements
+        const supplementsThisProduct  = thisProduct.supplements
 
         const supplementsIdsCartProd = supplementsThisCartProd?.map(item => {
             return item.id
         })
-        const supplementsIdsProduct = thisProduct.supplements?.map(item => {
+        const supplementsIdsProduct = supplementsThisProduct?.map(item => {
             return item.id
         })
 
@@ -38,12 +39,16 @@ const UseProduct = (product_id: number, addedSupplements: number[]) => {
         }
 
         const changedData: CartCountSupplementsRequest = {
+            cart_id: cart_id !== undefined ? cart_id : -1,
             supplements: supplementsIdsProduct.map(item => {
-                const cartId = cart_id !== undefined ? cart_id : -1
+
                 const addedIncludesId = addedSupplements.includes(item)
+                const thisSupplementProduct = supplementsThisProduct.filter(sup => sup.id === item)[0]
+                const supplementCartId = thisSupplementProduct?.supplement_in_cart_id
                 return {
-                    cart_id: cartId,
+
                     supplements_id: item,
+                    supplement_in_cart_id: supplementCartId !== undefined ? supplementCartId : 0,
                     added: addedIncludesId
                 }
             })

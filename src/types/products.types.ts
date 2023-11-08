@@ -16,3 +16,7 @@ export type ProductAdditiveData = {
     cart_id?: number,
     additives: Array<Supplement>
 } & Product
+
+export type ComboAdditiveData = {
+    combo_id: number
+}

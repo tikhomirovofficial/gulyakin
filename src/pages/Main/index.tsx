@@ -1,6 +1,6 @@
 import React, {FC, useDeferredValue, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
-import {ArrowMiniRightIcon, ArrowRight, Geo} from "../../icons";
+import {AddedAdditiveIcon, ArrowMiniRightIcon, ArrowRight, Geo} from "../../icons";
 import styles from './main.module.scss'
 import {getImgPath} from "../../utils/getAssetsPath";
 import GrayBorderedBlock from "../../components/GrayBorderedBlock";
@@ -18,6 +18,7 @@ import Preloader from "../../components/Preloader";
 import {useInput} from "../../hooks/useInput";
 import Catalog from "../../components/Catalog";
 import {domain} from "../../http/instance/instances";
+import Combo from "../../components/Catalog/Combo";
 
 const Main: FC = () => {
     const {categories, products, cart, main} = useAppSelector(state => state)
@@ -272,73 +273,10 @@ const Main: FC = () => {
                                     {
                                         products.combos.map(item => (
                                             <SwiperSlide className={"w-content pd-10-0"}>
-                                                <div className={`${styles.item} p-rel d-f jc-end`}>
-                                                    <div style={{backgroundImage: `url(${domain}/${item.image})`}}
-                                                         className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
-
-                                                    </div>
-                                                    <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                                        <h4>{item.title}</h4>
-                                                        <p>{item.new_price} ₽</p>
-                                                    </div>
-
-                                                </div>
+                                               <Combo {...item}/>
                                             </SwiperSlide>
                                         ))
                                     }
-
-                                    <SwiperSlide className={"w-content pd-10-0"}>
-                                        <div className={`${styles.item} p-rel d-f jc-end`}>
-                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
-
-                                            </div>
-                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                                <h4>Пельмени с говядиной</h4>
-                                                <p>от 319 ₽</p>
-                                            </div>
-
-                                        </div>
-                                    </SwiperSlide>
-                                    <SwiperSlide className={"w-content pd-10-0"}>
-                                        <div className={`${styles.item} p-rel d-f jc-end`}>
-                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
-
-                                            </div>
-                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                                <h4>Пельмени с говядиной</h4>
-                                                <p>от 319 ₽</p>
-                                            </div>
-
-                                        </div>
-                                    </SwiperSlide>
-                                    <SwiperSlide className={"w-content pd-10-0"}>
-                                        <div className={`${styles.item} p-rel d-f jc-end`}>
-                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
-
-                                            </div>
-                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                                <h4>Пельмени с говядиной</h4>
-                                                <p>от 319 ₽</p>
-                                            </div>
-
-                                        </div>
-                                    </SwiperSlide>
-                                    <SwiperSlide className={"w-content pd-10-0"}>
-                                        <div className={`${styles.item} p-rel d-f jc-end`}>
-                                            <div style={{backgroundImage: `url(${getImgPath('pelmeni_often.png')})`}}
-                                                 className={`${styles.bg} bg-cover p-abs h-100p w-100p top-0 left-0`}>
-
-                                            </div>
-                                            <div className={`${styles.info} f-column gap-5 p-rel`}>
-                                                <h4>Пельмени с говядиной</h4>
-                                                <p>от 319 ₽</p>
-                                            </div>
-
-                                        </div>
-                                    </SwiperSlide>
                                 </Swiper>
                             </div>
                             <div className={styles.catalog}>
@@ -351,15 +289,10 @@ const Main: FC = () => {
                                 <Catalog search={deferredSearch}/>
 
                             </div>
-
-
                         </div>
-
                     </div>
                 </div>
-
             </div>
-
         </>
 
     );

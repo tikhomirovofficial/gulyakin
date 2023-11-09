@@ -107,7 +107,7 @@ const LoginCodeStep = () => {
                     authApi.defaults.headers["Authorization"] = `Bearer ${access}`
 
                     if (productAfterLogin !== null) {
-                        const matchedProduct = products.items.filter(item => item.id == productAfterLogin)[0]
+                        const matchedProduct = products.items.filter(item => item.id == productAfterLogin?.id)[0]
                         if (matchedProduct?.id !== undefined) {
                             dispatch(addToCart({
                                 ...matchedProduct,

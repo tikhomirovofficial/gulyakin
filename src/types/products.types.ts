@@ -14,6 +14,7 @@ export type ProductAdditiveData = {
     id: number
     currentAdditive: number,
     cart_id?: number,
+    is_combo: boolean,
     additives: Array<Supplement>
 } & Product
 

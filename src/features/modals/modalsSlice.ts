@@ -42,6 +42,7 @@ const initialState: ModalSliceState = {
         imageUrl: "",
         name: "",
         price: 0,
+        is_combo: false,
         weight: 0,
         currentAdditive: 0,
         additives: [

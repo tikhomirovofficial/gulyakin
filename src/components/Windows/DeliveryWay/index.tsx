@@ -323,7 +323,7 @@ const DeliveryWay = () => {
     const products = useAppSelector(state => state.products)
     const addToCartWithClose = () => {
         if (addProductAfterAddress !== null) {
-            const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress)[0]
+            const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress.id)[0]
             if (matchedProduct?.id !== undefined) {
                 dispatch(addToCart({
                     ...matchedProduct,

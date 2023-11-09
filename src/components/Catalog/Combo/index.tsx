@@ -13,37 +13,22 @@ import {
     setChangingAdditivesMode, setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
 import {addToCart, setProductAfterAddress, setProductAfterLogin} from "../../../features/cart/cartSlice";
+import useCombo from "../../../hooks/useCombo";
 
 type ComboProps = {
 
 } & Combo
 const ComboItem: FC<ComboProps> = (item) => {
-    const dispatch = useAppDispatch()
-    const token = useToken()
-    const handleAddedPopup = useCartAdd()
     const cartItems = useAppSelector(state => state.cart.items)
-    const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
-    const {isMobile} = useAppSelector(state => state.main)
-    const cart = useAppSelector(state => state.cart.items)
-
     const isInCart = cartItems.some(cartItem => cartItem.product.id === item.id && cartItem.is_combo)
 
     //TODO СОЗДАТЬ ПРОВЕРКУ ЯВЛЯЕТСЯ ЛИ ТОВАР КОМБО ПРИ ДОБАВЛЕНИИ ПОСЛЕ ЛОГИНА ИЛИ ПОСЛЕ АДРЕСА
-    const handleAddCombo = () => {
-        if (token) {
-            if (address.val.length > 0 || restaurant !== -1) {
-                alert("open")
-            } else {
-                //dispatch(setProductAfterAddress(item.id))
-                dispatch(handleYourAddress())
-            }
-            return;
-        }
-        //dispatch(setProductAfterLogin(id))
-        dispatch(handleLogin())
-    }
+    const [_, openComboWindow] = useCombo(item.id)
+
+
+
     return (
-        <div onClick={handleAddCombo} className={`${styles.item} p-rel d-f jc-end gap-15`}>
+        <div onClick={openComboWindow} className={`${styles.item} p-rel d-f jc-end gap-15`}>
             <div style={{backgroundImage: `url(${domain}/${item.image})`}}
                  className={`${styles.bg} bg-cover`}>
             </div>

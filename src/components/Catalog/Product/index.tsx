@@ -44,61 +44,40 @@ const Product: FC<ProductProps & HasClassName> = ({
     const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const {isMobile} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart.items)
-    const handleOpenAdditives = () => {
-        const addedToCart = cart.some(item => item.product.id === id)
-        if (addedToCart) {
-            if (supplements.length > 0) {
-                dispatch(setChangingAdditivesMode(true))
-                dispatch(setProductAdditivesData({
-                    id: id,
-                    additives: supplements,
-                    currentAdditive: 0,
-                    description: composition,
-                    imageUrl: image || "",
-                    name: title,
-                    price: price,
-                    weight: weight
-
-                }))
-                dispatch(handleProductAdditives())
-            }
-            return;
-        }
+    const handleSetAdditivesData = () => {
         dispatch(setProductAdditivesData({
             id: id,
             additives: supplements,
             currentAdditive: 0,
             description: composition,
             imageUrl: image || "",
+            is_combo: false,
             name: title,
             price: price,
             weight: weight
 
         }))
         dispatch(handleProductAdditives())
-
-
-        return;
     }
-    const handleAddToCart = () => {
-        if (token) {
-            if (address.val.length > 0 || restaurant !== -1) {
-                handleOpenAdditives()
-            } else {
-                dispatch(setProductAfterAddress(id))
-                dispatch(handleYourAddress())
+    const handleOpenAdditives = () => {
+        const addedToCart = cart.some(item => item.product.id === id)
+        if (addedToCart) {
+            const hasSupplements = supplements.length > 0
+            if (hasSupplements) {
+                dispatch(setChangingAdditivesMode(true))
+                handleSetAdditivesData()
             }
             return;
         }
-        dispatch(setProductAfterLogin(id))
-        dispatch(handleLogin())
+        handleSetAdditivesData()
+        return;
     }
+
     const handlePlusProduct = () => {
         dispatch(editCountCart({
             cart_id: cart.filter(item => item.product.id === id)[0].id,
             count: count + 1,
             id: id
-
         }))
     }
     const handleMinusProduct = () => {
@@ -107,7 +86,6 @@ const Product: FC<ProductProps & HasClassName> = ({
                 cart_id: cart.filter(item => item.product.id === id)[0].id,
                 count: count - 1,
                 id: id
-
             }))
         }
     }
@@ -123,7 +101,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                 <div className={`${styles.textBlock} gap-5 f-1 f-column-betw`}>
                     <h3>{title}</h3>
                     <div className="d-f jc-between gap-25">
-                        <p >{composition}</p>
+                        <p>{composition}</p>
                         {isMobile ? null :
                             <div className={`${styles.weight} txt-right`}>{weight} г</div>
                         }
@@ -148,13 +126,14 @@ const Product: FC<ProductProps & HasClassName> = ({
                     {
                         inCart ?
                             <div className={"d-f al-center gap-5"}>
-                                <div onClick={handleMinusProduct} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon/></div>
+                                <div onClick={handleMinusProduct} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon/>
+                                </div>
                                 <div className={styles.count}>{count}</div>
                                 <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon/></div>
 
                             </div>
                             :
-                            <RedButton onClick={handleAddToCart} className={`${styles.btn} `}>
+                            <RedButton onClick={handleOpenAdditives} className={`${styles.btn} `}>
                                 {!isMobile ? " В корзину" : `${sale || price} ₽`}
 
                             </RedButton>

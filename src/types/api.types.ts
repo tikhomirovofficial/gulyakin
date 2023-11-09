@@ -199,7 +199,7 @@ export type AddToCartCombo = {
     count: number
 }
 export type AddToCartComboRequest = {
-    combo: AddToCartItem[]
+    combo: AddToCartCombo[]
 }
 export type AddToCartComboResponse = AddToCartResponse
 

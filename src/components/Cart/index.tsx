@@ -31,6 +31,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, suppleme
         dispatch(setChangingAdditivesMode(true))
         dispatch(setProductAdditivesData({
             id: findedProduct.id,
+            is_combo: false,
             description: findedProduct.composition,
             cart_id: id,
             imageUrl: findedProduct.image,

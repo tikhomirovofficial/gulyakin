@@ -15,10 +15,15 @@ import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {CartApi} from "../../http/api/cart.api";
 
 
+type DefferedAddingProduct = {
+    id: number,
+    is_combo: boolean
+} | null
+
 type CartSliceState = {
     items: Array<CartProductItem>,
-    addProductAfterLogin: number | null,
-    addProductAfterAddress: number | null,
+    addProductAfterLogin: DefferedAddingProduct,
+    addProductAfterAddress: DefferedAddingProduct,
     totalPrice: number,
     cartAdded: boolean,
     cartClassOpened: boolean
@@ -156,10 +161,10 @@ export const CartSlice = createSlice({
                 state.cartAdded = false
             }, 300)
         },
-        setProductAfterLogin: (state, action) => {
+        setProductAfterLogin: (state, action: PayloadAction<DefferedAddingProduct>) => {
             state.addProductAfterLogin = action.payload
         },
-        setProductAfterAddress: (state, action) => {
+        setProductAfterAddress: (state, action: PayloadAction<DefferedAddingProduct>) => {
             state.addProductAfterAddress = action.payload
         },
         addProduct: (state, action: PayloadAction<CartProductItem>) => {

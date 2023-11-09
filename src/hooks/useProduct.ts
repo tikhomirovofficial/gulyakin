@@ -1,12 +1,17 @@
 import {arraysEqual} from "../utils/arrayEquals";
 import {handleLogin, handleProductAdditives, handleYourAddress} from "../features/modals/modalsSlice";
 import {CartCountSupplementsRequest} from "../types/api.types";
-import {addToCart, editSupplementsCountCart, setProductAfterAddress} from "../features/cart/cartSlice";
+import {
+    addToCart,
+    editSupplementsCountCart,
+    setProductAfterAddress,
+    setProductAfterLogin
+} from "../features/cart/cartSlice";
 import {useAppDispatch, useAppSelector} from "../app/hooks";
 import useToken from "./useToken";
 import useCartAdd from "./useCartAdd";
 
-const UseProduct = (product_id: number, addedSupplements: number[]) => {
+const useProduct = (product_id: number, addedSupplements: number[]) => {
     const dispatch = useAppDispatch()
     const token = useToken()
     const handleAddedPopup = useCartAdd()
@@ -18,11 +23,11 @@ const UseProduct = (product_id: number, addedSupplements: number[]) => {
     const thisProduct = items.filter(prodItem => prodItem.id === product_id)[0]
 
     const saveChangesAdditives = () => {
-        const cartProduct = cart.filter(item => item.product.id === product_id)[0]
+        const cartProduct = cart.filter(item => item.product.id === product_id && !item.is_combo)[0]
         const cart_id = cartProduct.id
 
         const supplementsThisCartProd = cartProduct?.supplements
-        const supplementsThisProduct  = thisProduct.supplements
+        const supplementsThisProduct = thisProduct.supplements
 
         const supplementsIdsCartProd = supplementsThisCartProd?.map(item => {
             return item.id
@@ -41,7 +46,6 @@ const UseProduct = (product_id: number, addedSupplements: number[]) => {
         const changedData: CartCountSupplementsRequest = {
             cart_id: cart_id !== undefined ? cart_id : -1,
             supplements: supplementsIdsProduct.map(item => {
-
                 const addedIncludesId = addedSupplements.includes(item)
                 const thisSupplementProduct = supplementsThisProduct.filter(sup => sup.id === item)[0]
                 const supplementCartId = thisSupplementProduct?.supplement_in_cart_id
@@ -68,6 +72,7 @@ const UseProduct = (product_id: number, addedSupplements: number[]) => {
     }
 
     const handleAddToCartClick = () => {
+        const productDefferedData = {id: product_id, is_combo: false}
         dispatch(handleProductAdditives())
         if (token) {
             const deliveryIsDefined = address.val.length > 0 || restaurant !== -1
@@ -80,10 +85,11 @@ const UseProduct = (product_id: number, addedSupplements: number[]) => {
                 handleAddedPopup(thisProduct.title, thisProduct.weight)
                 return;
             }
-            dispatch(setProductAfterAddress(product_id))
+            dispatch(setProductAfterAddress(productDefferedData))
             dispatch(handleYourAddress())
             return
         }
+        dispatch(setProductAfterLogin(productDefferedData))
         dispatch(handleLogin())
 
     }
@@ -94,4 +100,4 @@ const UseProduct = (product_id: number, addedSupplements: number[]) => {
     ]
 };
 
-export default UseProduct;
+export default useProduct;

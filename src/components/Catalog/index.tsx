@@ -35,7 +35,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                             title={product.title}
                                             id={product.id}
                                             count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
-                                            inCart={cart.items.some(item => item.product.id === product.id)}
+                                            inCart={cart.items.some(item => item.product.id === product.id && !item.is_combo)}
                                             image={product.image}
                                             composition={product.composition || "Состав не заполнен"}
                                             weight={product.weight}

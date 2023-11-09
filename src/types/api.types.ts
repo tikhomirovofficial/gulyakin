@@ -35,7 +35,8 @@ export type DrinkItem = {
 }
 export type ComboFields = {
     old_price?: number
-    price?: number
+    price: number,
+    weight: number,
     products?: Array<Pick<ProductRes, "id" | "title">>
     drinks?: Array<DrinkItem>
 }
@@ -225,7 +226,12 @@ export type CartProductItem = {
         image: string
         price: number
         composition: string
-
+        products?: string[]
+        drinks?: string[]
+        selected_product?: {
+            id: number,
+            title: string
+        }
     }
     count: number
     supplements: Array<Supplement>

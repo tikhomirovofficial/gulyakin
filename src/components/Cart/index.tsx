@@ -1,167 +1,15 @@
-import React, {FC, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import ShadowWrapper from "../Windows/ShadowWrapper";
-import {CloseIcon, InfoCircle, MiniClose, MinusIcon, PlusIcon} from "../../icons";
+import {CloseIcon, InfoCircle} from "../../icons";
 import styles from './cart.module.scss'
 import RedButton from "../Buttons/RedButton";
 import {getImgPath} from "../../utils/getAssetsPath";
-import List from "../List";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
-import {editCountCart, removeFromCart, removeProduct} from "../../features/cart/cartSlice";
-import {
-    handleCartOpened,
-    handleProductAdditives,
-    setChangingAdditivesMode,
-    setProductAdditivesData
-} from "../../features/modals/modalsSlice";
-import {CartProductItem, Supplement} from "../../types/api.types";
-import {domain} from "../../http/instance/instances";
+import {handleCartOpened} from "../../features/modals/modalsSlice";
 import {useNavigate} from "react-router-dom";
-
-
-type CartItemProps = {
-    canNotBeAdded?: boolean,
-    canBeChanged?: boolean,
-} & CartProductItem
-const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, supplements, product}) => {
-    const dispatch = useAppDispatch()
-    const {items} = useAppSelector(state => state.products)
-    const handleChange = () => {
-        const findedProduct = items.filter(item => product !== undefined ? item.id === product.id : null)[0]
-        dispatch(setChangingAdditivesMode(true))
-        dispatch(setProductAdditivesData({
-            id: findedProduct.id,
-            is_combo: false,
-            description: findedProduct.composition,
-            cart_id: id,
-            imageUrl: findedProduct.image,
-            name: findedProduct.title,
-            price: findedProduct.price,
-            weight: findedProduct.weight,
-            currentAdditive: 0,
-            additives: findedProduct.supplements,
-        }))
-        dispatch(handleProductAdditives())
-    }
-
-    const supplementsPrice = supplements.length > 0 ? supplements.reduce((a, b) => {
-        return a + b.price
-    }, 0) : 0
-
-    const canBeChanged = product !== undefined ? items.some(item => item.supplements.length > 0 && item.id === product.id) : null
-    return (
-        product !== undefined ?
-            <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
-                <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
-                    <div style={{backgroundImage: `url("${domain}/${product.image}")`}}
-                         className={`${styles.image} bg-cover`}></div>
-                    <div className="text f-column gap-5 f-1 al-self-center">
-                        <div className={"f-column gap-5"}>
-                            <b>{product.title}</b>
-                            <p>{product.composition || "Описания нет"}</p>
-                            {
-                                supplements.length > 0 ?
-                                    <p>+ {supplements.map(item => item.title).join(", ")}</p>
-                                    : null
-                            }
-
-                        </div>
-                        {
-                            canNotBeAdded ?
-                                <div className={`${styles.error} colorError`}>
-                                    Не можем добавить к заказу. Замените на другое блюдо.
-                                </div> : null
-                        }
-
-                    </div>
-                    <div className="h-100p">
-                        <div onClick={() => dispatch(removeFromCart({
-                            cart_id: id
-                        }))} className="close cur-pointer w-content h-content">
-                            <MiniClose/>
-                        </div>
-                    </div>
-
-                </div>
-                <div className={`${styles.itemBottom} f-row-betw`}>
-                    {
-                        !canNotBeAdded ?
-                            <>
-                                <b className={styles.price}>
-                                    {formatNumberWithSpaces((product.price + supplementsPrice) * count)} ₽
-                                </b>
-                                <div className="d-f gap-20">
-                                    {
-                                        canBeChanged ? <div onClick={handleChange}
-                                                            className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
-                                    }
-
-                                    <div className={"d-f al-center gap-5"}>
-                                        <div onClick={() => {
-                                            if (count > 1) {
-                                                dispatch(editCountCart({
-                                                    cart_id: id,
-                                                    count: count - 1,
-                                                    id: product.id
-
-                                                }))
-                                            }
-                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/>
-                                        </div>
-
-                                        <div className={styles.count}>{count}</div>
-                                        <div onClick={() => {
-                                            dispatch(editCountCart({
-                                                cart_id: id,
-                                                count: count + 1,
-                                                id: product.id
-                                            }))
-                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </> :
-                            <div className="w-100p jc-end d-f">
-                                <div onClick={() => dispatch(removeProduct(id))}
-                                     className={`colorRed cur-pointer ${styles.delete}`}>Удалить
-                                </div>
-                            </div>
-                    }
-
-                </div>
-            </div> : null
-    )
-}
-
-const CartAdditiveItem: FC<Supplement> = ({id, price, short_description, title, image}) => {
-    return (
-        <div className={`${styles.additiveItem} f-row-betw gap-30`}>
-            <div className="d-f al-center gap-10">
-                <img src={getImgPath("productAdditive.png")} alt=""/>
-                <div className="f-column">
-                    <p>{title}</p>
-                    <b>{price} ₽</b>
-                </div>
-            </div>
-            {
-                0 ?
-                    <div className={"d-f al-center gap-5"}>
-                        <div onClick={() => {
-                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
-
-                        <div className={styles.count}>{0}</div>
-                        <div onClick={() => {
-                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
-
-                    </div> :
-                    <div className={`${styles.add} colorRed cur-pointer`}>Добавить</div>
-            }
-
-        </div>
-    )
-}
+import CartAdditiveItem from "./CartAdditiveItem";
+import CartList from "./CartList";
 
 
 const Cart = () => {
@@ -171,7 +19,6 @@ const Cart = () => {
     const [additivesOpened, setAdditivesOpened] = useState(false)
     const [classAdditivesAdded, setClassAdditivesAdded] = useState(false)
     const [classOpened, setClassOpened] = useState(false)
-
 
     const handleOpenAdditives = () => {
         setAdditivesOpened(true)
@@ -288,37 +135,9 @@ const Cart = () => {
                                         </div>
 
                                     </div>
-                                    : null
+                                : null
                             }
-
-                            <List
-                                listBlockClassname={`${styles.listProducts} f-column gap-5`}
-                                list={items}
-                                renderItem={(item) => {
-                                    const isCombo = item.is_combo
-                                    if (item.product) {
-                                        return (
-                                            <CartItem
-                                                is_combo={item.is_combo}
-                                                supplements={item.supplements}
-                                                id={item.id}
-                                                count={item.count}
-                                                key={item.id}
-                                                canNotBeAdded={item.id < 0}
-                                                product={{
-                                                    composition: item.product.composition,
-                                                    id: item.product.id,
-                                                    image: item.product.image,
-                                                    price: item.product.price,
-                                                    short_description: item.product.short_description,
-                                                    title: item.product.title
-                                                }}
-                                            />
-                                        )
-                                    }
-
-                                }}
-                            />
+                            <CartList/>
 
                         </div>
                         {

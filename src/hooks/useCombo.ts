@@ -61,7 +61,7 @@ const useCombo = (combo_id: number) => {
             is_combo: true,
             name: thisCombo.title,
             price: thisCombo.price || 0,
-            weight: 0
+            weight: thisCombo.weight
 
         }))
         dispatch(handleProductAdditives())

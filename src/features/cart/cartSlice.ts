@@ -223,11 +223,12 @@ export const CartSlice = createSlice({
 
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
-
                 state.items = action.payload.cart
-                state.totalPrice = action.payload.cart.reduce((prev, cur) => {
+                const resultPrice = action.payload.cart.reduce((prev, cur) => {
+                    //console.log(prev + (cur.count * cur.product.price))
                     return prev + (cur.count * cur.product.price)
                 }, 0)
+                state.totalPrice = resultPrice
                 state.cartCounts = action.payload.sup_counts
             }
 

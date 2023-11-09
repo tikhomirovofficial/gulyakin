@@ -78,10 +78,14 @@ function App() {
                 const curProduct = cur.product
                 const cartProductDefined = curProduct !== undefined
                 const cartProductHasSupplements = cur.supplements !== undefined
-                if(cartProductDefined && cartProductHasSupplements) {
-                    return prev + (cur.count * curProduct.price) + (cur.supplements.reduce((p, c) => {
-                        return p + c.price
-                    }, 0))
+                if(cartProductDefined) {
+                    if(cartProductHasSupplements) {
+                        return prev + (cur.count * curProduct.price) + (cur.supplements.reduce((p, c) => {
+                            return p + c.price
+                        }, 0))
+                    }
+                    return prev + (cur.count * curProduct.price)
+
                 }
                 return prev
 

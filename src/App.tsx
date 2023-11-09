@@ -75,9 +75,16 @@ function App() {
     useEffect(() => {
         dispatch(setTotalPrice(
             items.reduce((prev, cur) => {
-                return prev + (cur.count * cur.product.price) + (cur.supplements.reduce((p, c) => {
-                    return p + c.price
-                }, 0))
+                const curProduct = cur.product
+                const cartProductDefined = curProduct !== undefined
+                const cartProductHasSupplements = cur.supplements !== undefined
+                if(cartProductDefined && cartProductHasSupplements) {
+                    return prev + (cur.count * curProduct.price) + (cur.supplements.reduce((p, c) => {
+                        return p + c.price
+                    }, 0))
+                }
+                return prev
+
             }, 0)
         ))
 

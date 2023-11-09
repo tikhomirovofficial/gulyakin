@@ -27,7 +27,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, suppleme
     const dispatch = useAppDispatch()
     const {items} = useAppSelector(state => state.products)
     const handleChange = () => {
-        const findedProduct = items.filter(item => item.id === product.id)[0]
+        const findedProduct = items.filter(item => product !== undefined ? item.id === product.id : null)[0]
         dispatch(setChangingAdditivesMode(true))
         dispatch(setProductAdditivesData({
             id: findedProduct.id,
@@ -48,87 +48,90 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, id, count, suppleme
         return a + b.price
     }, 0) : 0
 
-    const canBeChanged = items.some(item => item.supplements.length > 0 && item.id === product.id)
+    const canBeChanged = product !== undefined ? items.some(item => item.supplements.length > 0 && item.id === product.id) : null
     return (
-        <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
-            <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
-                <div style={{backgroundImage: `url("${domain}/${product.image}")`}}
-                     className={`${styles.image} bg-cover`}></div>
-                <div className="text f-column gap-5 f-1 al-self-center">
-                    <div className={"f-column gap-5"}>
-                        <b>{product.title}</b>
-                        <p>{product.composition || "Описания нет"}</p>
+        product !== undefined ?
+            <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
+                <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
+                    <div style={{backgroundImage: `url("${domain}/${product.image}")`}}
+                         className={`${styles.image} bg-cover`}></div>
+                    <div className="text f-column gap-5 f-1 al-self-center">
+                        <div className={"f-column gap-5"}>
+                            <b>{product.title}</b>
+                            <p>{product.composition || "Описания нет"}</p>
+                            {
+                                supplements.length > 0 ?
+                                    <p>+ {supplements.map(item => item.title).join(", ")}</p>
+                                    : null
+                            }
+
+                        </div>
                         {
-                            supplements.length > 0 ?
-                                <p>+ {supplements.map(item => item.title).join(", ")}</p>
-                                : null
+                            canNotBeAdded ?
+                                <div className={`${styles.error} colorError`}>
+                                    Не можем добавить к заказу. Замените на другое блюдо.
+                                </div> : null
                         }
 
                     </div>
+                    <div className="h-100p">
+                        <div onClick={() => dispatch(removeFromCart({
+                            cart_id: id
+                        }))} className="close cur-pointer w-content h-content">
+                            <MiniClose/>
+                        </div>
+                    </div>
+
+                </div>
+                <div className={`${styles.itemBottom} f-row-betw`}>
                     {
-                        canNotBeAdded ?
-                            <div className={`${styles.error} colorError`}>
-                                Не можем добавить к заказу. Замените на другое блюдо.
-                            </div> : null
+                        !canNotBeAdded ?
+                            <>
+                                <b className={styles.price}>
+                                    {formatNumberWithSpaces((product.price + supplementsPrice) * count)} ₽
+                                </b>
+                                <div className="d-f gap-20">
+                                    {
+                                        canBeChanged ? <div onClick={handleChange}
+                                                            className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
+                                    }
+
+                                    <div className={"d-f al-center gap-5"}>
+                                        <div onClick={() => {
+                                            if (count > 1) {
+                                                dispatch(editCountCart({
+                                                    cart_id: id,
+                                                    count: count - 1,
+                                                    id: product.id
+
+                                                }))
+                                            }
+                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/>
+                                        </div>
+
+                                        <div className={styles.count}>{count}</div>
+                                        <div onClick={() => {
+                                            dispatch(editCountCart({
+                                                cart_id: id,
+                                                count: count + 1,
+                                                id: product.id
+                                            }))
+                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </> :
+                            <div className="w-100p jc-end d-f">
+                                <div onClick={() => dispatch(removeProduct(id))}
+                                     className={`colorRed cur-pointer ${styles.delete}`}>Удалить
+                                </div>
+                            </div>
                     }
 
                 </div>
-                <div className="h-100p">
-                    <div onClick={() => dispatch(removeFromCart({
-                        cart_id: id
-                    }))} className="close cur-pointer w-content h-content">
-                        <MiniClose/>
-                    </div>
-                </div>
-
-            </div>
-            <div className={`${styles.itemBottom} f-row-betw`}>
-                {
-                    !canNotBeAdded ?
-                        <>
-                            <b className={styles.price}>
-                                {formatNumberWithSpaces((product.price + supplementsPrice) * count)} ₽
-                            </b>
-                            <div className="d-f gap-20">
-                                {
-                                    canBeChanged ? <div onClick={handleChange}
-                                                        className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
-                                }
-
-                                <div className={"d-f al-center gap-5"}>
-                                    <div onClick={() => {
-                                        if (count > 1) {
-                                            dispatch(editCountCart({
-                                                cart_id: id,
-                                                count: count - 1,
-                                                id: product.id
-
-                                            }))
-                                        }
-                                    }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
-
-                                    <div className={styles.count}>{count}</div>
-                                    <div onClick={() => {
-                                        dispatch(editCountCart({
-                                            cart_id: id,
-                                            count: count + 1,
-                                            id: product.id
-                                        }))
-                                    }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
-
-                                </div>
-                            </div>
-
-                        </> :
-                        <div className="w-100p jc-end d-f">
-                            <div onClick={() => dispatch(removeProduct(id))}
-                                 className={`colorRed cur-pointer ${styles.delete}`}>Удалить
-                            </div>
-                        </div>
-                }
-
-            </div>
-        </div>
+            </div> : null
     )
 }
 
@@ -261,7 +264,7 @@ const Cart = () => {
                                 }
                             </h2>
                             {
-                                items.some(item => item.product.id == -1) ?
+                                items.some(item => item.product !== undefined ? item.product.id == -1 : null) ?
                                     <div className={`${styles.info} d-f al-center gap-10`}>
                                         <InfoCircle className={styles.infoIcon} height={18} width={18}/>
                                         <p>
@@ -291,24 +294,30 @@ const Cart = () => {
                             <List
                                 listBlockClassname={`${styles.listProducts} f-column gap-5`}
                                 list={items}
-                                renderItem={(item) => (
-                                    <CartItem
-                                        is_combo={item.is_combo}
-                                        supplements={item.supplements}
-                                        id={item.id}
-                                        count={item.count}
-                                        key={item.id}
-                                        canNotBeAdded={item.id < 0}
-                                        product={{
-                                            composition: item.product.composition,
-                                            id: item.product.id,
-                                            image: item.product.image,
-                                            price: item.product.price,
-                                            short_description: item.product.short_description,
-                                            title: item.product.title
-                                        }}
-                                    />
-                                )}
+                                renderItem={(item) => {
+                                    const isCombo = item.is_combo
+                                    if (item.product) {
+                                        return (
+                                            <CartItem
+                                                is_combo={item.is_combo}
+                                                supplements={item.supplements}
+                                                id={item.id}
+                                                count={item.count}
+                                                key={item.id}
+                                                canNotBeAdded={item.id < 0}
+                                                product={{
+                                                    composition: item.product.composition,
+                                                    id: item.product.id,
+                                                    image: item.product.image,
+                                                    price: item.product.price,
+                                                    short_description: item.product.short_description,
+                                                    title: item.product.title
+                                                }}
+                                            />
+                                        )
+                                    }
+
+                                }}
                             />
 
                         </div>
@@ -347,10 +356,12 @@ const Cart = () => {
                     </div>
                     {
                         items.length ?
-                            <RedButton onClick={handleToOrder} disabled={items.some(item => item.product.id < 0)}
+                            <RedButton onClick={handleToOrder}
+                                       disabled={items.some(item => item.product !== undefined && item.product.id < 0)}
                                        className={"w-100p pd-15"}>К
                                 оформлению</RedButton> :
-                            <RedButton onClick={handleToCatalog} disabled={items.some(item => item.product.id < 0)}
+                            <RedButton onClick={handleToCatalog}
+                                       disabled={items.some(item => item.product !== undefined && item.product.id < 0)}
                                        className={"w-100p pd-15"}>Перейти в меню</RedButton>
                     }
 

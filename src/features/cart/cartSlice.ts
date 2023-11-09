@@ -223,6 +223,7 @@ export const CartSlice = createSlice({
 
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
+
                 state.items = action.payload.cart
                 state.totalPrice = action.payload.cart.reduce((prev, cur) => {
                     return prev + (cur.count * cur.product.price)
@@ -260,7 +261,8 @@ export const CartSlice = createSlice({
             }
         })
         builder.addCase(addToCartCombo.fulfilled, (state, action) => {
-
+            const combo = action.payload.combo.combo
+            console.log(combo)
         })
 
         builder.addCase(editCountCart.fulfilled, (state, action) => {

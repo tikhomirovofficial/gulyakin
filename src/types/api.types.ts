@@ -33,12 +33,13 @@ export type DrinkItem = {
     title: string,
     image: string
 }
-export type Combo = {
-    old_price: number
-    new_price: number
-    products: Array<Pick<ProductRes, "id" | "title">>
-    drinks: Array<DrinkItem>
-} & Pick<ProductRes, "title" | "image" | "id">
+export type ComboFields = {
+    old_price?: number
+    price?: number
+    products?: Array<Pick<ProductRes, "id" | "title">>
+    drinks?: Array<DrinkItem>
+}
+export type Combo = ComboFields & Pick<ProductRes, "title" | "image" | "id">
 
 export type Category = {
     id: number;
@@ -213,6 +214,7 @@ export type AddToCartResponse = {
 
 } & ResponseStatus
 
+
 export type CartProductItem = {
     is_combo: boolean,
     id: number,
@@ -223,6 +225,7 @@ export type CartProductItem = {
         image: string
         price: number
         composition: string
+
     }
     count: number
     supplements: Array<Supplement>

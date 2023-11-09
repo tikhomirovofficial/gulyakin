@@ -23,7 +23,7 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
     const thisProduct = items.filter(prodItem => prodItem.id === product_id)[0]
 
     const saveChangesAdditives = () => {
-        const cartProduct = cart.filter(item => item.product.id === product_id && !item.is_combo)[0]
+        const cartProduct = cart.filter(item => item?.product !== undefined ? item.product.id === product_id && !item.is_combo : null)[0]
         const cart_id = cartProduct.id
 
         const supplementsThisCartProd = cartProduct?.supplements

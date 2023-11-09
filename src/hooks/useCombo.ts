@@ -23,7 +23,9 @@ const useCombo = (combo_id: number) => {
     const thisCombo = combos.filter(prodItem => prodItem.id === combo_id)[0]
 
     const handleAddToCart = () => {
+        handleSetAdditivesData()
         dispatch(handleProductAdditives())
+        const comboDefferedData = {id: combo_id, is_combo: true}
         if (token) {
             const deliveryIsDefined = address.val.length > 0 || restaurant !== -1
             if (deliveryIsDefined) {
@@ -31,7 +33,7 @@ const useCombo = (combo_id: number) => {
                     combo: [
                         {
                             id: combo_id,
-                            selected_product: 0,
+                            selected_product: 2,
                             count: 1
                         }
                     ]
@@ -41,10 +43,11 @@ const useCombo = (combo_id: number) => {
                 handleAddedPopup(thisCombo.title, 0)
                 return;
             }
-            dispatch(setProductAfterAddress({id: combo_id, is_combo: true}))
+            dispatch(setProductAfterAddress(comboDefferedData))
             dispatch(handleYourAddress())
             return
         }
+        dispatch(setProductAfterAddress(comboDefferedData))
         dispatch(handleLogin())
 
     }
@@ -57,7 +60,7 @@ const useCombo = (combo_id: number) => {
             imageUrl: thisCombo.image || "",
             is_combo: true,
             name: thisCombo.title,
-            price: thisCombo.new_price,
+            price: thisCombo.price || 0,
             weight: 0
 
         }))

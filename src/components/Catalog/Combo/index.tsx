@@ -34,7 +34,7 @@ const ComboItem: FC<ComboProps> = (item) => {
             </div>
             <div className={`${styles.info} f-column gap-5 p-rel`}>
                 <h4>{item.title}</h4>
-                <p>{item.new_price} ₽</p>
+                <p>{item.price} ₽</p>
             </div>
             {
                 isInCart ? <div className={`d-f al-center p-abs gap-5 ${styles.addedIconBlock} t-opacity-visible-3`}>

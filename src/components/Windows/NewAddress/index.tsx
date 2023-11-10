@@ -33,12 +33,15 @@ const NewAddressWindow = () => {
 
     const handleAddAddress = () => {
         dispatch(addAddressUser({
-            adress: formNewAddress.city,
-            apartment: Number(formNewAddress.flat),
-            door_code: Number(formNewAddress.code_door),
-            entrance: Number(formNewAddress.entrance),
-            floor: Number(formNewAddress.floor)
 
+            addressData: {
+                adress: formNewAddress.city,
+                apartment: Number(formNewAddress.flat),
+                door_code: Number(formNewAddress.code_door),
+                entrance: Number(formNewAddress.entrance),
+                floor: Number(formNewAddress.floor)
+            },
+            order: false
 
         }))
         dispatch(handleNewAddress())

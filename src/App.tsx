@@ -64,10 +64,12 @@ function App() {
     }, [])
 
     useEffect(() => {
-        if (orderForm?.restaurant != -1 || orderForm?.address.val.length > 0) {
+        if (orderForm?.restaurant != -1 || orderForm?.addressId != -1) {
             addToStorage("order_form", {
                 restaurant: orderForm.restaurant,
-                address: orderForm.address.val
+                address: orderForm.address.val,
+                addressId: orderForm.addressId
+
             })
         }
     }, [orderForm])
@@ -106,10 +108,13 @@ function App() {
         }
         const gettedOrderForm = getFromStorage("order_form")
         if (gettedOrderForm !== undefined && gettedOrderForm !== null) {
-            if (gettedOrderForm?.restaurant != -1 || gettedOrderForm?.address.length > 0) {
+            const restaurantId = gettedOrderForm?.restaurant
+            const addressId = gettedOrderForm?.addressId
+            if (restaurantId != -1 || addressId != -1 ) {
                 dispatch(setOrderForm({
                     restaurant: gettedOrderForm.restaurant,
-                    address: gettedOrderForm.address
+                    address: gettedOrderForm.address,
+                    addressId: gettedOrderForm.addressId
                 }))
             }
         }

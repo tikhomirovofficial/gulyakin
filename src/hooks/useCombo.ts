@@ -23,7 +23,7 @@ const useCombo = (combo_id: number): HookComboReturnType  => {
     const token = useToken()
     const handleAddedPopup = useCartAdd()
 
-    const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
+    const {addressId, restaurant} = useAppSelector(state => state.forms.orderForm)
     const {combos} = useAppSelector(state => state.products)
     const cart = useAppSelector(state => state.cart.items)
 
@@ -35,7 +35,7 @@ const useCombo = (combo_id: number): HookComboReturnType  => {
         dispatch(handleProductAdditives())
         const comboDefferedData = {id: combo_id, is_combo: true, selected_product: selectedProduct}
         if (token) {
-            const deliveryIsDefined = address.val.length > 0 || restaurant !== -1
+            const deliveryIsDefined = addressId || restaurant !== -1
             if (deliveryIsDefined) {
                 const comboAddRequest: AddToCartComboRequest = {
                     combo: [

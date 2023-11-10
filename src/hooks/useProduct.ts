@@ -16,7 +16,7 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
     const token = useToken()
     const handleAddedPopup = useCartAdd()
 
-    const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
+    const {addressId, restaurant} = useAppSelector(state => state.forms.orderForm)
     const {items} = useAppSelector(state => state.products)
     const cart = useAppSelector(state => state.cart.items)
 
@@ -74,7 +74,7 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
         const productDefferedData = {id: product_id, is_combo: false, supplements: addedSupplements}
         dispatch(handleProductAdditives())
         if (token) {
-            const deliveryIsDefined = address.val.length > 0 || restaurant !== -1
+            const deliveryIsDefined = addressId !== -1 || restaurant !== -1
             if (deliveryIsDefined) {
                 const product = items.filter(item => item.id === product_id)[0]
                 dispatch(addToCart({

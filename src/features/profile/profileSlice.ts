@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Address, UserData} from "../../types/user.types";
 import {UserApi} from "../../http/api/user.api";
-import {setProfileForm} from "../forms/formsSlice";
+import {handleSelectAddressId, setProfileForm} from "../forms/formsSlice";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {
     AddressAddRequest, AddressAddResponse,
@@ -57,8 +57,15 @@ export const getAddressesUser = createAsyncThunk(
 )
 export const addAddressUser = createAsyncThunk(
     'user/address/add',
-    async (request: AddressAddRequest, {dispatch}) => {
-        const res: AxiosResponse<AddressAddResponse> = await handleTokenRefreshedRequest(UserApi.AddAddress, request)
+    async (request: {
+        addressData: AddressAddRequest,
+        order: boolean
+    }, {dispatch}) => {
+        const res: AxiosResponse<AddressAddResponse> = await handleTokenRefreshedRequest(UserApi.AddAddress, request.addressData)
+
+        if(request.order) {
+            dispatch(handleSelectAddressId(res.data.id))
+        }
         return {
             id: res.data.id,
             ...request
@@ -153,11 +160,11 @@ export const ProfileSlice = createSlice({
             if(action.payload) {
                 state.addresses = [...state.addresses, {
                     id: action.payload.id,
-                    city: action.payload.adress,
-                    flat: action.payload.apartment,
-                    code_door: action.payload.apartment,
-                    entrance: action.payload.entrance,
-                    floor: action.payload.floor
+                    city: action.payload.addressData.adress,
+                    flat: action.payload.addressData.apartment,
+                    code_door: action.payload.addressData.apartment,
+                    entrance: action.payload.addressData.entrance,
+                    floor: action.payload.addressData.floor
                 }]
             }
             state.isLoading = false

@@ -80,7 +80,7 @@ const initialState: FormsSliceState = {
             val: ""
         },
         addressId: -1,
-        isPickup: true,
+        isPickup: false,
         restaurant: -1
     }
 }
@@ -173,6 +173,12 @@ export const formsSlice = createSlice({
             })
 
         },
+        setDeliveryVariant: (state, action) => {
+          state.orderForm = {
+              ...state.orderForm,
+              isPickup: action.payload
+          }
+        },
         handleOrderFormEditing: (state, action: PayloadHandleOrderEditing) => {
             const key = action.payload
             const field = state.orderForm[key]
@@ -227,26 +233,30 @@ export const formsSlice = createSlice({
                 isPickup: !state.orderForm.isPickup
             }
         },
-        setOrderForm: (state, action: PayloadAction<{ restaurant: number, address: string }>) => {
+        setOrderForm: (state, action: PayloadAction<{ restaurant: number, address: string, addressId: number }>) => {
             state.orderForm = {
                 ...state.orderForm,
                 restaurant: action.payload.restaurant,
+                addressId: action.payload.addressId,
                 address: {
                     ...state.orderForm.address,
                     val: action.payload.address
-                }
+                },
+                isPickup: action.payload.restaurant > action.payload.addressId
             }
         },
         handleSelectRestaurant: (state, action: PayloadAction<number>) => {
             state.orderForm = {
                 ...state.orderForm,
-                restaurant: action.payload
+                restaurant: action.payload,
+                isPickup: true
             }
         },
         handleSelectAddressId: (state, action: PayloadAction<number>) => {
             state.orderForm = {
                 ...state.orderForm,
-                addressId: action.payload
+                addressId: action.payload,
+                isPickup: false
             }
         },
 
@@ -277,6 +287,7 @@ export const {
     handleSelectAddressId,
     setOrderForm,
     resetProfileErrors,
+    setDeliveryVariant,
     setProfileForm,
     handleVisibleProfileErrors
 } = formsSlice.actions

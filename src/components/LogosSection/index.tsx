@@ -26,7 +26,8 @@ const LogoItem: FC<Pick<MarketItem, "forMarketId">> = ({forMarketId}) => {
         const handleToMarket = () => {
             dispatch(setMarket(forMarketId))
             dispatch(setOrderForm({
-                address: "", restaurant: -1
+                address: "", restaurant: -1,
+                addressId: -1
             }))
             resetOrderForm()
         }

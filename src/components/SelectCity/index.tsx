@@ -69,7 +69,8 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupC
                                 <DropDownItem key={item.id}
                                               selectHandler={() =>  {
                                                   dispatch(setOrderForm({
-                                                      address: "", restaurant: -1
+                                                      address: "", restaurant: -1,
+                                                      addressId: -1
                                                   }))
                                                   resetOrderForm()
                                                   dispatch(setCurrentCity(item.id))

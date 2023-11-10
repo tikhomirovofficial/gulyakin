@@ -6,7 +6,7 @@ import {
     CartProductDeleteRequest,
     CartProductDeleteResponse,
     ChangeCountCartRequest,
-    ChangeCountCartResponse,
+    ChangeCountCartResponse, EditCartComboRequest, EditCartComboResponse,
     GetCartResponse
 } from "../../types/api.types";
 import {AxiosResponse} from "axios";
@@ -23,6 +23,13 @@ export class CartApi {
     }
     static async AddCombo(requestData: AddToCartComboRequest): Promise<AxiosResponse<AddToCartComboResponse>> {
         const res: AxiosResponse<AddToCartComboResponse> = await authApi.post(PATHS.ADD_TO_CART_COMBO, {...requestData});
+        if(!res.data) {
+            throw res
+        }
+        return res;
+    }
+    static async EditCombo(requestData: EditCartComboRequest): Promise<AxiosResponse<EditCartComboResponse>> {
+        const res: AxiosResponse<EditCartComboResponse> = await authApi.post(PATHS.EDIT_CART_COMBO, {...requestData});
         if(!res.data) {
             throw res
         }

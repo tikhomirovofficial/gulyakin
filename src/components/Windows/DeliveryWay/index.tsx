@@ -13,7 +13,7 @@ import SuccessWindow from "../SuccessWindow";
 import {handleDeliveryVariant, handleDeliveryWayWindow} from "../../../features/modals/modalsSlice";
 import {handleOrderFormVal, handleSelectAddressId, handleSelectRestaurant} from "../../../features/forms/formsSlice";
 import {useInput} from "../../../hooks/useInput";
-import {addToCart, setProductAfterAddress} from "../../../features/cart/cartSlice";
+import {addToCart, addToCartCombo, setProductAfterAddress} from "../../../features/cart/cartSlice";
 import {getImgPath} from "../../../utils/getAssetsPath";
 import {setSelectedInDelivery, setSelectedInPickup} from "../../../features/restaurants/restaurantsSlice";
 import {Address} from "../../../types/user.types";
@@ -323,15 +323,45 @@ const DeliveryWay = () => {
     const products = useAppSelector(state => state.products)
     const addToCartWithClose = () => {
         if (addProductAfterAddress !== null) {
-            const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress.id)[0]
-            if (matchedProduct?.id !== undefined) {
-                dispatch(addToCart({
-                    ...matchedProduct,
-                }))
-                handleAddedPopup(matchedProduct.title, matchedProduct.weight)
-                dispatch(setProductAfterAddress(null))
+            if(!addProductAfterAddress.is_combo) {
+                const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress.id)[0]
+                if (matchedProduct?.id !== undefined) {
+                    const addProductSups = addProductAfterAddress.supplements
+                    const addProductSupsDefined = addProductSups !== undefined
+                    dispatch(addToCart({
+                        ...matchedProduct,
+                        supplements: addProductSupsDefined ? addProductSups?.map(supId => {
+                            return matchedProduct.supplements.filter(sup => sup.id === supId)[0]
+                        }) : []
+                    }))
+                    handleAddedPopup(matchedProduct.title, matchedProduct.weight)
+
+                }
+            } else {
+                const matchedCombo = products.combos.filter(item => item.id == addProductAfterAddress.id)[0]
+                if (matchedCombo?.id !== undefined) {
+                    dispatch(addToCartCombo({
+                        combo: [
+                            {
+                                count: 1,
+                                id: matchedCombo.id,
+                                selected_product: addProductAfterAddress.selected_product || 1
+
+                            }
+                        ],
+                        combo_prod: {
+                            ...matchedCombo
+                        },
+
+
+                    }))
+                    handleAddedPopup(matchedCombo.title, matchedCombo.weight)
+
+                }
             }
+            dispatch(setProductAfterAddress(null))
             dispatch(handleDeliveryWayWindow())
+
         }
     }
 

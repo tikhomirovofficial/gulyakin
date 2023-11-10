@@ -72,7 +72,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
         return null
     }
     const canBeChanged = getCanBeChanged()
-
+    console.log(product.products)
     return (
         product !== undefined ?
             <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>

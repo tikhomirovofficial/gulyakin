@@ -6,7 +6,7 @@ import {
     CartProductDeleteRequest,
     CartProductItem,
     ChangeCountCartRequest,
-    ChangeCountCartResponse,
+    ChangeCountCartResponse, EditCartComboRequest, EditCartComboResponse,
     GetCartResponse,
     ProductRes
 } from "../../types/api.types";
@@ -18,6 +18,8 @@ import {CartApi} from "../../http/api/cart.api";
 type DefferedAddingProduct = {
     id: number,
     is_combo: boolean
+    selected_product?: number
+    supplements?: number[]
 } | null
 
 type CartSliceState = {
@@ -88,6 +90,16 @@ export const addToCartCombo = createAsyncThunk(
         return {
             combo: request.combo,
             combo_prod: request.combo_prod,
+            data: res.data
+        }
+    }
+)
+export const editCartCombo = createAsyncThunk(
+    'cart/edit/combo',
+    async (request: EditCartComboRequest, {dispatch}) => {
+
+        const res: AxiosResponse<EditCartComboResponse> = await handleTokenRefreshedRequest(CartApi.EditCombo, {combos: request.combos})
+        return {
             data: res.data
         }
     }
@@ -265,7 +277,7 @@ export const CartSlice = createSlice({
             const comboFromReq = action.payload.combo[0]
             const selectedProductId = comboFromReq.selected_product
             const compositionFromProds =  comboProduct.products?.map(item => item.title).join(', ') || ""
-            console.log(comboProduct)
+
             const newState: CartProductItem[] = [
                 ...state.items,
                 {
@@ -291,6 +303,15 @@ export const CartSlice = createSlice({
                 }
             ]
             state.items = newState
+        })
+        builder.addCase(editCartCombo.fulfilled, (state, action) => {
+            const editedCombo = action.payload.data.combo[0]
+            state.items = state.items.map(item => {
+                if(item.id === editedCombo.id && item.is_combo) {
+                    return editedCombo
+                }
+                return item
+            })
         })
 
         builder.addCase(editCountCart.fulfilled, (state, action) => {

@@ -8,10 +8,11 @@ import {
     handleYourAddress,
     setChangingAdditivesMode, setProductAdditivesData
 } from "../features/modals/modalsSlice";
-import {addToCart, addToCartCombo, setProductAfterAddress} from "../features/cart/cartSlice";
-import {AddToCartCombo, AddToCartComboRequest, Combo} from "../types/api.types";
+import {addToCart, addToCartCombo, editCartCombo, setProductAfterAddress} from "../features/cart/cartSlice";
+import {AddToCartCombo, AddToCartComboRequest, CartProductItem, Combo, EditCartComboRequest} from "../types/api.types";
 
-const useCombo = (combo_id: number): [(selectedProduct: number) => void, () => void, Combo] => {
+type HookComboReturnType = [(selectedProduct: number) => void, (selectedProduct: number) => void, () => void, Combo, CartProductItem]
+const useCombo = (combo_id: number): HookComboReturnType  => {
     const dispatch = useAppDispatch()
     const token = useToken()
     const handleAddedPopup = useCartAdd()
@@ -21,11 +22,12 @@ const useCombo = (combo_id: number): [(selectedProduct: number) => void, () => v
     const cart = useAppSelector(state => state.cart.items)
 
     const thisCombo = combos.filter(prodItem => prodItem.id === combo_id)[0]
+    const thisComboCart = cart.filter(combo => combo.is_combo && combo.product.id === combo_id)[0] || null
 
     const handleAddToCart = (selectedProduct: number) => {
         handleSetAdditivesData()
         dispatch(handleProductAdditives())
-        const comboDefferedData = {id: combo_id, is_combo: true}
+        const comboDefferedData = {id: combo_id, is_combo: true, selected_product: selectedProduct}
         if (token) {
             const deliveryIsDefined = address.val.length > 0 || restaurant !== -1
             if (deliveryIsDefined) {
@@ -69,6 +71,19 @@ const useCombo = (combo_id: number): [(selectedProduct: number) => void, () => v
         }))
         dispatch(handleProductAdditives())
     }
+    const handleEditCombo = (selectedProduct: number) => {
+        const comboEditRequest: EditCartComboRequest = {
+            combos: [
+                {
+                    id: combo_id,
+                    selected_product: selectedProduct,
+                    count: thisComboCart?.count || 1
+                }
+            ],
+            combo_id
+        }
+        dispatch(editCartCombo(comboEditRequest))
+    }
     const handleOpenComboWindow = () => {
         const addedToCart = cart.some(item => item.product.id === combo_id && item.is_combo)
         if (addedToCart) {
@@ -79,7 +94,7 @@ const useCombo = (combo_id: number): [(selectedProduct: number) => void, () => v
         handleSetAdditivesData()
         return;
     }
-    return [handleAddToCart, handleOpenComboWindow, thisCombo]
+    return [handleAddToCart, handleEditCombo, handleOpenComboWindow, thisCombo, thisComboCart]
 };
 
 export default useCombo;

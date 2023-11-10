@@ -21,6 +21,7 @@ export const PATHS = {
 
     ADD_TO_CART: "/cart/add",
     ADD_TO_CART_COMBO: "/cart/add/combo",
+    EDIT_CART_COMBO: "/cart/edit/combo",
     VIEW_CART: "/cart/list",
     EDIT_CART_ITEM: "/cart/edit",
     EDIT_CART_SUPPLEMENTS: "/cart/edit/supplements",

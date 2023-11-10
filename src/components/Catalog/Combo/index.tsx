@@ -23,7 +23,7 @@ const ComboItem: FC<ComboProps> = (item) => {
     const isInCart = cartItems.some(cartItem => cartItem.product.id === item.id && cartItem.is_combo)
 
     //TODO СОЗДАТЬ ПРОВЕРКУ ЯВЛЯЕТСЯ ЛИ ТОВАР КОМБО ПРИ ДОБАВЛЕНИИ ПОСЛЕ ЛОГИНА ИЛИ ПОСЛЕ АДРЕСА
-    const [_, openComboWindow] = useCombo(item.id)
+    const [_, __,openComboWindow] = useCombo(item.id)
 
     return (
         <div onClick={openComboWindow} className={`${styles.item} p-rel d-f jc-end gap-15`}>

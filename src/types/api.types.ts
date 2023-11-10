@@ -205,7 +205,13 @@ export type AddToCartComboRequest = {
     combo_prod: Combo
 }
 export type AddToCartComboResponse = AddToCartResponse
-
+export type EditCartComboRequest = {
+    combos: AddToCartCombo[]
+    combo_id: number
+}
+export type EditCartComboResponse = {
+    combo: CartProductItem[]
+} & ResponseStatus
 
 export type AddToCartRequest = {
     products: AddToCartItem[]

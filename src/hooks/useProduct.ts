@@ -72,7 +72,7 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
     }
 
     const handleAddToCartClick = () => {
-        const productDefferedData = {id: product_id, is_combo: false}
+        const productDefferedData = {id: product_id, is_combo: false, supplements: addedSupplements}
         dispatch(handleProductAdditives())
         if (token) {
             const deliveryIsDefined = address.val.length > 0 || restaurant !== -1

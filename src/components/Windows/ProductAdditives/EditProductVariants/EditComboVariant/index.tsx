@@ -9,7 +9,6 @@ import {useAppDispatch, useAppSelector} from "../../../../../app/hooks";
 import {handleProductAdditives} from "../../../../../features/modals/modalsSlice";
 import useCombo from "../../../../../hooks/useCombo";
 import AdditiveItem from "../../AdditiveItem";
-import combo from "../../../../Catalog/Combo";
 import {getImgPath} from "../../../../../utils/getAssetsPath";
 
 const EditComboVariant = () => {
@@ -24,13 +23,30 @@ const EditComboVariant = () => {
     } = useAppSelector(state => state.modals.productAdditivesData)
     //ТОЛЬКО ДЛЯ КОМБО
     const dispatch = useAppDispatch()
-    const [addCombo, _, thisCombo] = useCombo(id)
-    const cart = useAppSelector(state => state.cart.items)
+    const [addCombo, editCombo, _, thisCombo, thisComboCart] = useCombo(id)
     const saveMode = useAppSelector(state => state.modals.isChangingModeAdditives)
-    const [addedDrink, setAddedDrink] = useState(thisCombo?.drinks !== undefined ? thisCombo.drinks[0].id : -1)
+
+    const getAddedDrink = () => {
+        const comboDrinks = thisCombo?.drinks
+        if (thisComboCart) {
+            const selectedDrinkId = thisComboCart.product.selected_product?.id
+            if(selectedDrinkId !== undefined) {
+                return selectedDrinkId
+            }
+        }
+        const drinksDefined = comboDrinks !== undefined
+        if (drinksDefined) {
+            return comboDrinks[0].id
+        }
+        return -1
+    }
+    const [addedDrink, setAddedDrink] = useState(getAddedDrink())
 
     const handleAddCombo = () => {
         addCombo(addedDrink)
+    }
+    const handleEditCombo = () => {
+        editCombo(addedDrink)
     }
     const handleProductWindow = () => dispatch(handleProductAdditives())
 
@@ -70,7 +86,10 @@ const EditComboVariant = () => {
                                     <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
                                         {
                                             thisCombo.drinks?.map(drink => (
-                                                <AdditiveItem imageUrl={getImgPath("compot.png")} selected={addedDrink === drink.id} addHandler={() => setAddedDrink(drink.id)} price={0} name={"pepsi cola"}/>
+                                                <AdditiveItem imageUrl={getImgPath("compot.png")}
+                                                              selected={addedDrink === drink.id}
+                                                              addHandler={() => setAddedDrink(drink.id)} price={0}
+                                                              name={"pepsi cola"}/>
                                             ))
                                         }
                                     </div>
@@ -78,8 +97,7 @@ const EditComboVariant = () => {
                             </div>
                         </div>
                         <div className={`${styles.additivesBtnWrapper} d-f al-end f-1 w-100p`}>
-                            <RedButton onClick={!saveMode ? handleAddCombo : () => {
-                            }} disabled={false}
+                            <RedButton onClick={!saveMode ? handleAddCombo : handleEditCombo} disabled={false}
                                        className={`${styles.additivesBtn} pd-10-0`}>
 
                                 {!saveMode ? `Добавить в корзину за ${price} ₽` : "Сохранить"}

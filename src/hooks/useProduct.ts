@@ -11,7 +11,7 @@ import {useAppDispatch, useAppSelector} from "../app/hooks";
 import useToken from "./useToken";
 import useCartAdd from "./useCartAdd";
 
-const useProduct = (product_id: number, addedSupplements: number[]) => {
+const useProduct = (product_id: number, addedSupplements: number[], neededWindow: boolean = true) => {
     const dispatch = useAppDispatch()
     const token = useToken()
     const handleAddedPopup = useCartAdd()
@@ -21,6 +21,11 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
     const cart = useAppSelector(state => state.cart.items)
 
     const thisProduct = items.filter(prodItem => prodItem.id === product_id)[0]
+    const handleWindowProduct = () => {
+        if(neededWindow) {
+            dispatch(handleProductAdditives())
+        }
+    }
 
     const saveChangesAdditives = () => {
         const cartProduct = cart.filter(item => item?.product !== undefined ? item.product.id === product_id && !item.is_combo : null)[0]
@@ -39,7 +44,7 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
         const addedEqualsCart = arraysEqual(supplementsIdsCartProd, addedSupplements)
 
         if (addedEqualsCart) {
-            dispatch(handleProductAdditives())
+            handleWindowProduct()
             return;
         }
 
@@ -59,7 +64,7 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
         }
 
         dispatch(editSupplementsCountCart(changedData))
-        dispatch(handleProductAdditives())
+        handleWindowProduct()
     }
 
     const getAddedSupplements = () => {
@@ -72,7 +77,7 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
 
     const handleAddToCartClick = () => {
         const productDefferedData = {id: product_id, is_combo: false, supplements: addedSupplements}
-        dispatch(handleProductAdditives())
+        handleWindowProduct()
         if (token) {
             const deliveryIsDefined = addressId !== -1 || restaurant !== -1
             if (deliveryIsDefined) {

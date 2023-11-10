@@ -4,7 +4,7 @@ import {
     GetCombosByMarketRequest,
     GetCombosByMarketResponse,
     GetProductsByMarketRequest,
-    GetProductsByMarketResponse,
+    GetProductsByMarketResponse, GetSousesRequest, GetSousesResponse,
     ProductRes
 } from "../../types/api.types";
 import {AxiosResponse} from "axios";
@@ -14,11 +14,13 @@ import {ProductsApi} from "../../http/api/products.api";
 type ProductsSliceState = {
     items: ProductRes[]
     combos: Combo[]
+    souse: ProductRes[]
 }
 
 const initialState: ProductsSliceState = {
     items: [],
-    combos: []
+    combos: [],
+    souse: []
 }
 export const getProductByMarket = createAsyncThunk(
     'product/by-market',
@@ -34,32 +36,32 @@ export const getCombosByMarket = createAsyncThunk(
         return res.data.combos
     }
 )
+export const getSouses = createAsyncThunk(
+    'souses/by-market',
+    async (_, {dispatch}) => {
+        const res: AxiosResponse<GetSousesResponse> = await ProductsApi.Souses()
+        return res.data.souse
+    }
+)
 export const ProductsSlice = createSlice({
     name: "products",
     initialState,
     reducers: {},
     extraReducers: builder => {
-        builder.addCase(getProductByMarket.pending, (state, action) => {
-
-        })
         builder.addCase(getProductByMarket.fulfilled, (state, action) => {
             if (action.payload) {
                 state.items = action.payload
             }
-        })
-        builder.addCase(getProductByMarket.rejected, (state, action) => {
-
-        })
-        builder.addCase(getCombosByMarket.pending, (state, action) => {
-
         })
         builder.addCase(getCombosByMarket.fulfilled, (state, action) => {
             if (action.payload) {
                 state.combos = action.payload
             }
         })
-        builder.addCase(getCombosByMarket.rejected, (state, action) => {
-
+        builder.addCase(getSouses.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.souse = action.payload
+            }
         })
     }
 })

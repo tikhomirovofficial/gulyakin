@@ -81,7 +81,7 @@ const useCombo = (combo_id: number): HookComboReturnType  => {
         const comboEditRequest: EditCartComboRequest = {
             combos: [
                 {
-                    id: combo_id,
+                    id: thisComboCart?.id,
                     selected_product: selectedProduct,
                     count: thisComboCart?.count || 1
                 }
@@ -89,6 +89,7 @@ const useCombo = (combo_id: number): HookComboReturnType  => {
             combo_id
         }
         dispatch(editCartCombo(comboEditRequest))
+        dispatch(handleProductAdditives())
     }
     const handleOpenComboWindow = () => {
         const addedToCart = cart.some(item => item.product.id === combo_id && item.is_combo)

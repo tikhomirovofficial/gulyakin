@@ -16,7 +16,7 @@ import useToken from "./hooks/useToken";
 import Header from "./components/Header";
 import LogosSection from "./components/LogosSection";
 import Footer from "./components/Footer";
-import {getCombosByMarket, getProductByMarket} from "./features/products/productsSlice";
+import {getCombosByMarket, getProductByMarket, getSouses} from "./features/products/productsSlice";
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
 import {getAddressesByMarketCity, getCities, setIsMobile, setIsPhone} from "./features/main/mainSlice";
@@ -102,6 +102,7 @@ function App() {
         dispatch(getCategoriesByMarket({market_id: market}))
         dispatch(getProductByMarket({market_id: market}))
         dispatch(getCombosByMarket({market_id: market}))
+        dispatch(getSouses())
 
         if (!cities.length) {
             dispatch(getCities())

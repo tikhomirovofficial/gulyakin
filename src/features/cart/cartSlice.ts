@@ -305,7 +305,8 @@ export const CartSlice = createSlice({
             state.items = newState
         })
         builder.addCase(editCartCombo.fulfilled, (state, action) => {
-            const editedCombo = action.payload.data.combo[0]
+            const editedCombo = action.payload.data.product[0]
+            console.log(editedCombo)
             state.items = state.items.map(item => {
                 if(item.id === editedCombo.id && item.is_combo) {
                     return editedCombo

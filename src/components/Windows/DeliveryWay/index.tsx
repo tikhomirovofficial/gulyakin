@@ -394,7 +394,7 @@ const DeliveryWay = () => {
                         <div className="f-column gap-5">
                             <h2>{!variant ? "Новый адрес" : "Самовывоз"}</h2>
                             {
-                                profileAddresses.length  && !deliveryFromProfile ? <b onClick={handleAddressFromProfile} className={"colorRed"}>Выбрать существующий</b> : null
+                                profileAddresses.length  && !variant && !deliveryFromProfile ? <b onClick={handleAddressFromProfile} className={"colorRed"}>Выбрать существующий</b> : null
                             }
 
                         </div>

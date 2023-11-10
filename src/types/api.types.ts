@@ -145,7 +145,7 @@ export type GetSousesRequest = {
 
 }
 export type GetSousesResponse = {
-
+    souse: ProductRes[]
 } & ResponseStatus
 
 
@@ -210,7 +210,7 @@ export type EditCartComboRequest = {
     combo_id: number
 }
 export type EditCartComboResponse = {
-    combo: CartProductItem[]
+    product: CartProductItem[]
 } & ResponseStatus
 
 export type AddToCartRequest = {

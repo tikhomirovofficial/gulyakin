@@ -4,6 +4,7 @@ import {HasClassName} from "../../../../types/components.types";
 import styles from "../productAdditives.module.scss";
 import {getImgPath} from "../../../../utils/getAssetsPath";
 import {AddedAdditiveIcon} from "../../../../icons";
+import {domain} from "../../../../http/instance/instances";
 
 type AdditiveItemProps = {
     selected: boolean,
@@ -30,7 +31,7 @@ const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({
                     <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}}
                          className={`${styles.img} f-c-col`}>
                     </div> :
-                    <div style={{backgroundImage: `url(${imageUrl})`}}
+                    <div style={{backgroundImage: `url(${domain}/${imageUrl})`}}
                          className={`${styles.img}`}>
                     </div>
                 }

@@ -16,6 +16,7 @@ const Cart = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const {items, totalPrice} = useAppSelector(state => state.cart)
+    const {souse} = useAppSelector(state => state.products)
     const [additivesOpened, setAdditivesOpened] = useState(false)
     const [classAdditivesAdded, setClassAdditivesAdded] = useState(false)
     const [classOpened, setClassOpened] = useState(false)
@@ -81,14 +82,17 @@ const Cart = () => {
                                 className={`${styles.cartAdditivesBar} bg-white p-abs left-0 w-100p pd-30 f-column gap-15`}>
                                 <h3>Соусы для ваших блюд</h3>
                                 <div className={`${styles.additivesList} f-column gap-10`}>
-                                    <CartAdditiveItem short_description={"добавка"} id={1} price={49}
-                                                      image={getImgPath("productAdditive.png")} title={"Сырный соус"}/>
-                                    <CartAdditiveItem short_description={"добавка"} id={2} price={69}
-                                                      image={getImgPath("productAdditive.png")} title={"Сырный соус"}/>
-                                    <CartAdditiveItem short_description={"добавка"} id={3} price={39}
-                                                      image={getImgPath("productAdditive.png")} title={"Сырный соус"}/>
-                                    <CartAdditiveItem short_description={"добавка"} id={4} price={69}
-                                                      image={getImgPath("productAdditive.png")} title={"Сырный соус"}/>
+                                    {
+                                        souse.map(item => {
+                                            const inCartSouse = items.filter(prod => prod.product.id === item.id && !prod.is_combo)[0]
+                                            return <CartAdditiveItem count={inCartSouse?.count || 0}
+                                                                     inCart={inCartSouse !== undefined}
+                                                                     short_description={item.short_description || ""}
+                                                                     id={item.id} price={item.price}
+                                                                     image={item.image} title={item.title}/>
+                                        })
+                                    }
+
                                 </div>
                             </div>
                         </div> : null
@@ -135,7 +139,7 @@ const Cart = () => {
                                         </div>
 
                                     </div>
-                                : null
+                                    : null
                             }
                             <CartList/>
 

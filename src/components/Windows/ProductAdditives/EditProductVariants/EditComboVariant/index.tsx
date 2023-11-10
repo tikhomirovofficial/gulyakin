@@ -86,10 +86,10 @@ const EditComboVariant = () => {
                                     <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
                                         {
                                             thisCombo.drinks?.map(drink => (
-                                                <AdditiveItem imageUrl={getImgPath("compot.png")}
+                                                <AdditiveItem imageUrl={drink.image}
                                                               selected={addedDrink === drink.id}
                                                               addHandler={() => setAddedDrink(drink.id)} price={0}
-                                                              name={"pepsi cola"}/>
+                                                              name={drink.title}/>
                                             ))
                                         }
                                     </div>

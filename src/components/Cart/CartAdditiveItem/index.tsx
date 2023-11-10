@@ -3,29 +3,53 @@ import {Supplement} from "../../../types/api.types";
 import styles from "../cart.module.scss";
 import {getImgPath} from "../../../utils/getAssetsPath";
 import {MinusIcon, PlusIcon} from "../../../icons";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {domain} from "../../../http/instance/instances";
+import useProduct from "../../../hooks/useProduct";
+import {editCountCart} from "../../../features/cart/cartSlice";
 
-const CartAdditiveItem: FC<Supplement> = ({id, price, short_description, title, image}) => {
+type CartAdditiveItemProps = Supplement & {
+    count: number,
+    inCart: boolean
+}
+const CartAdditiveItem: FC<CartAdditiveItemProps> = ({id, price, inCart, short_description, title, count, image}) => {
+    const [addSouse] = useProduct(id, [], false)
+    const cart = useAppSelector(state => state.cart.items)
+    const dispatch = useAppDispatch()
+    const handlePlusProduct = () => {
+        dispatch(editCountCart({
+            cart_id: cart.filter(item => item.product.id === id && !item.is_combo)[0].id,
+            count: count + 1,
+            id: id
+        }))
+    }
+    const handleMinusProduct = () => {
+        if (count > 1) {
+            dispatch(editCountCart({
+                cart_id: cart.filter(item => item.product.id === id && !item.is_combo)[0].id,
+                count: count - 1,
+                id: id
+            }))
+        }
+    }
     return (
-        <div className={`${styles.additiveItem} f-row-betw gap-30`}>
+        <div key={id} className={`${styles.additiveItem} f-row-betw gap-30`}>
             <div className="d-f al-center gap-10">
-                <img src={getImgPath("productAdditive.png")} alt=""/>
+                <img width={50} height={50} src={domain + image} alt=""/>
                 <div className="f-column">
                     <p>{title}</p>
                     <b>{price} ₽</b>
                 </div>
             </div>
             {
-                0 ?
+                inCart ?
                     <div className={"d-f al-center gap-5"}>
-                        <div onClick={() => {
-                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
-
-                        <div className={styles.count}>{0}</div>
-                        <div onClick={() => {
-                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
+                        <div onClick={handleMinusProduct} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
+                        <div className={styles.count}>{count}</div>
+                        <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
 
                     </div> :
-                    <div className={`${styles.add} colorRed cur-pointer`}>Добавить</div>
+                    <div onClick={addSouse} className={`${styles.add} colorRed cur-pointer`}>Добавить</div>
             }
 
         </div>

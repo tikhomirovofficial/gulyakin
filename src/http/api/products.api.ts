@@ -16,8 +16,8 @@ export class ProductsApi {
         const res: AxiosResponse<GetProductsByMarketResponse> = await api.get(PATHS.PRODUCT_BY_MARKET, {params: requestData});
         return res;
     }
-    static async Souses(requestData: GetSousesRequest): Promise<AxiosResponse<GetSousesResponse>> {
-        const res: AxiosResponse<GetSousesResponse> = await api.get(PATHS.MARKET_SOUSES, {params: requestData});
+    static async Souses(): Promise<AxiosResponse<GetSousesResponse>> {
+        const res: AxiosResponse<GetSousesResponse> = await api.get(PATHS.MARKET_SOUSES);
         return res;
     }
 

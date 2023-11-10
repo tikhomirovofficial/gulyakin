@@ -294,7 +294,8 @@ export type CreateOrderRequest = {
     is_call: boolean,
     time_delivery: string,
     delivery_type: number,
-    pyment_type: number
+    pyment_type: number,
+    change_with?: number
 }
 
 export type CreateOrderResponse = {

@@ -89,7 +89,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
                         placeholder ?
                             <p>{placeholder}</p> :
                             <p className={"inactiveColor"}>{"Пусто"}</p> :
-                        <p className={classDropDown}>{!optionsSelect?.byId ? items[selected] : findedById !== null ? findedById[optionsSelect?.keyField] : selected}</p>
+                        <p className={classDropDown}>{!optionsSelect?.byId ? items[selected] : findedById !== null ? findedById[optionsSelect?.keyField] : items.length > 0 ? items[0][optionsSelect?.keyField] : "Выбрать"}</p>
                 }
                 {
                     focused ? <ArrowMiniDown height={iconMiniArrow.height} width={iconMiniArrow.width}/> :

@@ -19,7 +19,14 @@ import Footer from "./components/Footer";
 import {getCombosByMarket, getProductByMarket, getSouses} from "./features/products/productsSlice";
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
-import {getAddressesByMarketCity, getCities, setIsMobile, setIsPhone} from "./features/main/mainSlice";
+import {
+    getAddressesByMarketCity,
+    getCities,
+    getDeliveries,
+    getPayments,
+    setIsMobile,
+    setIsPhone
+} from "./features/main/mainSlice";
 import {setOrderForm} from "./features/forms/formsSlice";
 import HeaderMobile from "./components/Header/mobile";
 import MenuMobile from "./components/MenuMobile";
@@ -61,6 +68,8 @@ function App() {
             setTimeout(handleResize, 800)
         })
         handleResize()
+        dispatch(getDeliveries())
+        dispatch(getPayments())
     }, [])
 
     useEffect(() => {

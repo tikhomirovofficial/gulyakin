@@ -21,25 +21,25 @@ export const marketComponents: MarketItem[] = [
     {
         ComponentLogo: FoodHallLogo,
         className: `${styles.item} ${styles.neededFill} f-c-col`,
-        forMarketId: 2,
+        forMarketId: 5,
         selectedClassName: styles.selectedNeededFill
     },
     {
         ComponentLogo: GulenkiPelmeniLogo,
         className: `${styles.item} ${styles.neededFill} f-c-col `,
-        forMarketId: 3,
+        forMarketId: 2,
         selectedClassName: styles.selectedNeededFill
     },
     {
         ComponentLogo: FoodPancakesLogo,
         className: `${styles.item} ${styles.neededFill} f-c-col `,
-        forMarketId: 4,
+        forMarketId: 3,
         selectedClassName: styles.selectedNeededFill
     },
     {
         ComponentLogo: IFoodLogo,
         className: `${styles.item} ${styles.neededFill} ${styles.neededIfood} f-c-col `,
-        forMarketId: 5,
+        forMarketId: 4,
         selectedClassName: `${styles.selectedNeededIFood} ${styles.selectedNeededIFood}`
     },
     {

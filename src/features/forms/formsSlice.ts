@@ -249,6 +249,7 @@ export const formsSlice = createSlice({
             state.orderForm = {
                 ...state.orderForm,
                 restaurant: action.payload,
+                addressId: -1,
                 isPickup: true
             }
         },
@@ -256,6 +257,7 @@ export const formsSlice = createSlice({
             state.orderForm = {
                 ...state.orderForm,
                 addressId: action.payload,
+                restaurant: -1,
                 isPickup: false
             }
         },
@@ -266,7 +268,11 @@ export const formsSlice = createSlice({
 
         })
         builder.addCase(sendOrder.fulfilled, (state, action) => {
-            window.location.href = action.payload.data.payment_url
+            const redirectHref = action.payload.data.payment_url
+            if(redirectHref !== undefined) {
+                window.location.href = action.payload.data.payment_url
+            }
+
         })
         builder.addCase(sendOrder.rejected, (state, action) => {
 

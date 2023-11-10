@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import styles from './order.module.scss'
 import InputWrapper from "../../components/Inputs/InputWrapper";
 import {PaymentCard, PaymentCash} from "../../icons";
@@ -8,22 +8,22 @@ import RadioInput from "../../components/Inputs/RadioInput";
 import SelectInput from "../../components/Inputs/SelectInput";
 import {
     handleOrderCallNeeded,
-    handleOrderFormEditing,
     handleOrderFormVal,
     handleOrderPaymentWay,
     handleOrderPickup,
     handleOrderTime,
+    handleSelectAddressId,
     handleSelectRestaurant,
     sendOrder
 } from "../../features/forms/formsSlice";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
-import {TextField} from "../../components/Inputs/TextField";
 import {domain} from "../../http/instance/instances";
 import {getFromStorage} from "../../utils/LocalStorageExplorer";
 import {CreateOrderRequest, Supplement} from "../../types/api.types";
 import {formatPhoneNumber} from "../../utils/forms/formatePhone";
 import List from "../../components/List";
-import {handleCartOpened} from "../../features/modals/modalsSlice";
+import {handleCartOpened, handleNewAddress} from "../../features/modals/modalsSlice";
+import {useInput} from "../../hooks/useInput";
 
 const orderTimes = ["18:30", "19:30"]
 
@@ -63,6 +63,9 @@ const Order = () => {
     const {data, addresses} = useAppSelector(state => state.profile)
     const marketAddresses = useAppSelector(state => state.main.addresses)
     const cart = useAppSelector(state => state.cart)
+    const [changeSum, setChangeSum, setStateSum] = useInput("")
+
+
     const {
         name,
         callNeeded,
@@ -71,19 +74,31 @@ const Order = () => {
         address,
         phone,
         isPickup,
-        restaurant
+        restaurant,
+        addressId
     } = useAppSelector(state => state.forms.orderForm)
 
+    const [deliveryPrice, setDeliveryPrice] = useState(isPickup ? 0 : 100)
+
     const dispatch = useAppDispatch()
-    const storageFromRest = getFromStorage('order_form')?.restaurant
+    const restFromStorage = getFromStorage('order_form')?.restaurant
+    const addressFromStorage = getFromStorage('order_form')?.addressId
 
     const handleCreateOrder = () => {
+        const paymentTypeOrder =  paymentWay == "CARD" ? 1 : 2
+        const timeDeliveryOrder = time == "FAST" ? "40 min" : time
+        const deliveryTypeOrder = isPickup ? 3 : 2
+        const changeWith = paymentWay == "CASH" ? Number(changeSum) : undefined
+        const userAddressId = !isPickup ? addressId : undefined
+
         const req: CreateOrderRequest = {
-            delivery_type: 3,
+            delivery_type: deliveryTypeOrder,
             is_call: callNeeded,
             marekt_adress_id: restaurant,
-            pyment_type: paymentWay == "CARD" ? 1 : 2,
-            time_delivery: time == "FAST" ? "40 min" : time,
+            pyment_type: paymentTypeOrder,
+            time_delivery: timeDeliveryOrder,
+            change_with: changeWith,
+            user_adress_id: userAddressId
         }
         dispatch(sendOrder(req))
     }
@@ -95,7 +110,44 @@ const Order = () => {
             val: data.name
         }))
     }, [])
+   //console.log(marketAddresses.length > 0 ? marketAddresses[0].id : -1)
+    const getCurrentPickupAddress = () => {
+        if(restFromStorage !== -1) {
+            return restFromStorage
+        }
+        if(restaurant !== -1) {
+            return restaurant
+        }
+        if(marketAddresses.length > 0) {
+            return marketAddresses[0].id
+        }
+        return 0
+    }
+    const getCurrentDeliveryAddress = () => {
+        if(addressFromStorage !== -1) {
+            return addressFromStorage
+        }
+        if(addressId !== -1) {
+            return addressId
+        }
+        if(addresses.length > 0) {
+            return addresses[0].id
+        }
+        return 0
+    }
+    const handleChangeDeliveryType = () => {
+        dispatch(handleOrderPickup())
+        console.log(getCurrentDeliveryAddress(), getCurrentPickupAddress())
+        if(!isPickup) {
+            alert("на самовывоз")
+            dispatch(handleSelectRestaurant(getCurrentPickupAddress()))
+        } else {
+            alert("на доставку")
+            dispatch(handleSelectAddressId(getCurrentDeliveryAddress()))
 
+        }
+
+    }
     return (
         <>
             <div className={styles.order}>
@@ -121,27 +173,7 @@ const Order = () => {
                                                 placeholder={"Иван"}
                                                 labelText={"Ваше имя"}
                                             />
-                                            {/*<TextField*/}
-                                            {/*    handleSave={() => {}}*/}
-                                            {/*    className={styles.inputField}*/}
-                                            {/*    placeholder={"Иван"}*/}
-                                            {/*    labelText={"Ваше имя"}*/}
-                                            {/*    isEditing={name.isEditing}*/}
-                                            {/*    formValue={name.val}*/}
-                                            {/*    condValue={data.name}*/}
-                                            {/*    handleEdit={() => {*/}
-                                            {/*        dispatch(handleOrderFormEditing("name"))*/}
-                                            {/*    }}*/}
-                                            {/*    onInputFocus={() => {*/}
-                                            {/*        dispatch(handleOrderFormEditing("name"))*/}
-                                            {/*    }}*/}
-                                            {/*    onInputBlur={() => {*/}
-                                            {/*        dispatch(handleOrderFormEditing("name"))*/}
-                                            {/*        dispatch(handleOrderFormVal({keyField: "name", val: data.name}))*/}
-                                            {/*    }}*/}
-                                            {/*    setVal={val => dispatch(handleOrderFormVal({keyField: "name", val: val}))}*/}
-                                            {/*    changeVal={e => dispatch(handleOrderFormVal({keyField: "name", val: e.target.value}))}*/}
-                                            {/*/>*/}
+
                                             <InputWrapper disabled={true} inActive={true}
                                                           grayBorderedClassName={styles.inputField}
                                                           locked={true}
@@ -152,39 +184,28 @@ const Order = () => {
                                                           }/>
                                             {
                                                 !isPickup ?
-                                                    <TextField
-                                                        handleSave={() => alert("Сохраняем")}
-                                                        className={`${styles.inputField} ${styles.textAreaField}`}
-                                                        placeholder={"Адрес"}
-                                                        labelText={"Адрес доставки"}
-                                                        isTextArea={true}
-                                                        isEditing={address.isEditing}
-                                                        formValue={address.val}
-                                                        condValue={address.val}
-                                                        textChangeVal={e => dispatch(handleOrderFormVal({
-                                                            keyField: "address",
-                                                            val: e.target.value
-                                                        }))}
-                                                        handleEdit={() => {
-                                                            dispatch(handleOrderFormEditing("address"))
-                                                        }}
-                                                        onInputFocus={() => {
-                                                            dispatch(handleOrderFormEditing("address"))
-                                                        }}
-                                                        onInputBlur={() => {
-                                                            dispatch(handleOrderFormEditing("address"))
-                                                        }}
-                                                        setVal={val => dispatch(handleOrderFormVal({
-                                                            keyField: "address",
-                                                            val: val
-                                                        }))}
-                                                        changeVal={e => dispatch(handleOrderFormVal({
-                                                            keyField: "address",
-                                                            val: e.target.value
-                                                        }))}
-                                                    /> :
+                                                    <>
+                                                        {
+                                                            addresses.length ?
+                                                                <SelectInput
+                                                                    defaultCurrent={addressId || addressFromStorage}
+                                                                    className={styles.selectRestaurant}
+                                                                    classDropDown={styles.selectRestaurantItems}
+                                                                    labelText={"Выбор адреса доставки"}
+                                                                    selectHandler={(selected) => {
+                                                                        dispatch(handleSelectAddressId(selected))
+                                                                    }}
+                                                                    optionsSelect={{
+                                                                        byId: true,
+                                                                        keyField: "city"
+                                                                    }}
+                                                                    items={addresses}
+                                                                /> : null
+                                                        }
+                                                    </>
+                                                     :
                                                     <SelectInput
-                                                        defaultCurrent={storageFromRest || restaurant}
+                                                        defaultCurrent={getCurrentPickupAddress()}
                                                         className={styles.selectRestaurant}
                                                         classDropDown={styles.selectRestaurantItems}
                                                         labelText={"Выберите ресторан (обязательно)"}
@@ -202,8 +223,8 @@ const Order = () => {
 
 
                                         </div>
-                                        <b onClick={() => dispatch(handleOrderPickup())}
-                                           className={`${styles.wayOrderBtn} d-n colorRed cur-pointer`}>
+                                        <b onClick={handleChangeDeliveryType}
+                                           className={`${styles.wayOrderBtn} d-f colorRed cur-pointer`}>
                                             {isPickup ? "Выбрать доставку" : "Выбрать самовывоз"}
                                         </b>
                                     </div>
@@ -263,7 +284,7 @@ const Order = () => {
                                             onClick={() => {
                                                 dispatch(handleOrderPaymentWay("CASH"))
                                             }}
-                                            className={`${styles.inputSelectable} ${paymentWay == "CASH" ? "whiteSelectableSelected" : ""} d-n al-center gap-5 whiteSelectable`}>
+                                            className={`${styles.inputSelectable} ${paymentWay == "CASH" ? "whiteSelectableSelected" : ""} d-f al-center gap-5 whiteSelectable`}>
                                             <PaymentCash/>
                                             <p>Наличными</p>
                                         </div>
@@ -273,16 +294,11 @@ const Order = () => {
                                             <InputWrapper
                                                 className={styles.inputField}
                                                 postFix={"₽"}
+                                                inputType={"number"}
                                                 grayBorderedClassName={styles.inputField}
-                                                setVal={val => dispatch(handleOrderFormVal({
-                                                    keyField: "name",
-                                                    val: val
-                                                }))}
-                                                changeVal={e => dispatch(handleOrderFormVal({
-                                                    keyField: "name",
-                                                    val: e.target.value
-                                                }))}
-                                                inputVal={name.val} placeholder={"1000"}
+                                                setVal={(val) => setStateSum(val)}
+                                                changeVal={(sum) => setChangeSum(sum)}
+                                                inputVal={changeSum} placeholder={"1000"}
                                                 inputClassName={styles.diffCashInput}
                                                 labelText={
                                                     "Сдача с"
@@ -294,7 +310,7 @@ const Order = () => {
                                     <RedButton onClick={handleCreateOrder}
                                                disabled={!(address.val.length > 0) && !(cart.totalPrice > 0)}
                                                className={"pd-15"}>Оформить заказ
-                                        на {formatNumberWithSpaces(cart.totalPrice)} ₽</RedButton>
+                                        на {formatNumberWithSpaces(cart.totalPrice + deliveryPrice)} ₽</RedButton>
                                     <div className={"w-100p d-f jc-center"}>
                                         <b onClick={handleCart} className={`${styles.backCart}`}>Вернуться в корзину</b>
                                     </div>
@@ -326,17 +342,17 @@ const Order = () => {
                                         <div className={`${styles.productsInfo} f-column gap-5`}>
                                             <div className="f-row-betw">
                                                 <p>{cart.items.length} товаров</p>
-                                                <p>{formatNumberWithSpaces(cart.totalPrice)} ₽</p>
+                                                <p>{formatNumberWithSpaces(cart.totalPrice )} ₽</p>
                                             </div>
                                             <div className="f-row-betw">
                                                 <p>Доставка</p>
-                                                <p>0 ₽</p>
+                                                <p>{deliveryPrice} ₽</p>
                                             </div>
                                         </div>
                                         <div className="totalInfo">
                                             <div className="f-row-betw">
                                                 <b>Сумма заказа</b>
-                                                <b>{formatNumberWithSpaces(cart.totalPrice)} ₽</b>
+                                                <b>{formatNumberWithSpaces(cart.totalPrice + deliveryPrice)} ₽</b>
                                             </div>
 
                                         </div>
@@ -348,8 +364,6 @@ const Order = () => {
                         </div>
 
                     </div>
-
-
                 </div>
             </div>
         </>

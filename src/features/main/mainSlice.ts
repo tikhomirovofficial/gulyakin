@@ -5,11 +5,16 @@ import {
     AddressByMarketCity,
     GetAddressesByMarketCityRequest,
     GetAddressesByMarketCityResponse,
-    GetCitiesResponse
+    GetCitiesResponse, GetDeliveryListResponse, GetPaymentListResponse
 } from "../../types/api.types";
 import {AddressesApi} from "../../http/api/addresses.api";
+import {OrderApi} from "../../http/api/order.api";
 
 type Market = {
+    title: string,
+    id: number
+}
+type VariantType = {
     title: string,
     id: number
 }
@@ -28,6 +33,8 @@ type MainSliceState = {
     isMobile: boolean
     isPhone: boolean,
     markets: Array<Market>
+    payments: VariantType[],
+    deliveryTypes: VariantType[]
 
 }
 const initialState: MainSliceState = {
@@ -41,18 +48,40 @@ const initialState: MainSliceState = {
     currentGeo: {
         city: getFromStorage("city") || 0
     },
+    payments: [],
+    deliveryTypes: [],
     markets: [
         {
             id: 2,
-            title: "Гулякин"
-        },
-        {
-            id: 3,
             title: "Гуленьки Пельменная"
         },
         {
+            id: 3,
+            title: "Гуленьки Блинная"
+        },
+        {
             id: 4,
-            title: "Гуленьки блинная"
+            title: "IFOOD"
+        },
+        {
+            id: 5,
+            title: "Фудхолл"
+        },
+        {
+            id: 6,
+            title: "Воробушек"
+        },
+        {
+            id: 7,
+            title: "GUSTO"
+        },
+        {
+            id: 8,
+            title: "Креветочная"
+        },
+        {
+            id: 9,
+            title: "Гулибули"
         }
     ]
 }
@@ -69,6 +98,22 @@ export const getCities = createAsyncThunk(
         return {
             cities: []
         }
+
+    }
+)
+export const getDeliveries = createAsyncThunk(
+    'deliveries/get',
+    async (_, {dispatch}) => {
+        const res: AxiosResponse<GetDeliveryListResponse> = await OrderApi.DeliveriesWays()
+        return res.data.delivery_list
+
+    }
+)
+export const getPayments = createAsyncThunk(
+    'payments/get',
+    async (_, {dispatch}) => {
+        const res: AxiosResponse<GetPaymentListResponse> = await OrderApi.PaymentsWays()
+        return res.data.payment_list
 
     }
 )
@@ -115,21 +160,16 @@ export const MainSlice = createSlice({
                 state.currentGeo.city = action.payload.cities[0].id
             }
         })
-        builder.addCase(getCities.rejected, (state, action) => {
-
-        })
-        builder.addCase(getCities.pending, (state, action) => {
-
-        })
         builder.addCase(getAddressesByMarketCity.fulfilled, (state, action) => {
             state.addresses = action.payload
         })
-        builder.addCase(getAddressesByMarketCity.rejected, (state, action) => {
-
+        builder.addCase(getDeliveries.fulfilled, (state, action) => {
+            state.deliveryTypes = action.payload
         })
-        builder.addCase(getAddressesByMarketCity.pending, (state, action) => {
-
+        builder.addCase(getPayments.fulfilled, (state, action) => {
+            state.payments = action.payload
         })
+
     }
 })
 

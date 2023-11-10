@@ -65,8 +65,8 @@ const Product: FC<ProductProps & HasClassName> = ({
             const hasSupplements = supplements.length > 0
             if (hasSupplements) {
                 dispatch(setChangingAdditivesMode(true))
-                handleSetAdditivesData()
             }
+            handleSetAdditivesData()
             return;
         }
         handleSetAdditivesData()

@@ -28,7 +28,7 @@ export type ProductRes = {
     supplements: Supplement[];
     composition: string;
 }
-export type DrinkItem = {
+export type AdditiveItem = {
     id: number,
     title: string,
     image: string
@@ -37,8 +37,8 @@ export type ComboFields = {
     old_price?: number
     price: number,
     weight: number,
-    products?: Array<Pick<ProductRes, "id" | "title">>
-    drinks?: Array<DrinkItem>
+    products?: Array<AdditiveItem>
+    drinks?: Array<AdditiveItem>
 }
 export type Combo = ComboFields & Pick<ProductRes, "title" | "image" | "id">
 
@@ -202,6 +202,7 @@ export type AddToCartCombo = {
 }
 export type AddToCartComboRequest = {
     combo: AddToCartCombo[]
+    combo_prod: Combo
 }
 export type AddToCartComboResponse = AddToCartResponse
 
@@ -226,8 +227,8 @@ export type CartProductItem = {
         image: string
         price: number
         composition: string
-        products?: string[]
-        drinks?: string[]
+        products?: AdditiveItem[]
+        drinks?: AdditiveItem[]
         selected_product?: {
             id: number,
             title: string

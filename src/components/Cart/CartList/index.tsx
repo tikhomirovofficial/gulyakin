@@ -43,7 +43,7 @@ const CartList = () => {
                         canNotBeAdded={item.id < 0}
                         product={{
                             products: item.product?.products,
-                            composition: item.product.composition || "",
+                            composition: item.product?.products !== undefined ? item.product.products.join(', ') : "" || "",
                             id: item.product.id,
                             image: item.product.image,
                             price: item.product.price,

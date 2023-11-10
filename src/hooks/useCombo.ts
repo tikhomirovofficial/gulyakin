@@ -9,9 +9,9 @@ import {
     setChangingAdditivesMode, setProductAdditivesData
 } from "../features/modals/modalsSlice";
 import {addToCart, addToCartCombo, setProductAfterAddress} from "../features/cart/cartSlice";
-import {AddToCartCombo, AddToCartComboRequest} from "../types/api.types";
+import {AddToCartCombo, AddToCartComboRequest, Combo} from "../types/api.types";
 
-const useCombo = (combo_id: number) => {
+const useCombo = (combo_id: number): [(selectedProduct: number) => void, () => void, Combo] => {
     const dispatch = useAppDispatch()
     const token = useToken()
     const handleAddedPopup = useCartAdd()
@@ -22,7 +22,7 @@ const useCombo = (combo_id: number) => {
 
     const thisCombo = combos.filter(prodItem => prodItem.id === combo_id)[0]
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (selectedProduct: number) => {
         handleSetAdditivesData()
         dispatch(handleProductAdditives())
         const comboDefferedData = {id: combo_id, is_combo: true}
@@ -33,22 +33,25 @@ const useCombo = (combo_id: number) => {
                     combo: [
                         {
                             id: combo_id,
-                            selected_product: 2,
+                            selected_product: selectedProduct,
                             count: 1
                         }
-                    ]
-
+                    ],
+                    combo_prod: thisCombo
                 }
                 dispatch(addToCartCombo(comboAddRequest))
-                handleAddedPopup(thisCombo.title, 0)
+                handleAddedPopup(thisCombo.title, thisCombo.weight)
+                dispatch(handleProductAdditives())
                 return;
             }
             dispatch(setProductAfterAddress(comboDefferedData))
             dispatch(handleYourAddress())
+            dispatch(handleProductAdditives())
             return
         }
         dispatch(setProductAfterAddress(comboDefferedData))
         dispatch(handleLogin())
+        dispatch(handleProductAdditives())
 
     }
     const handleSetAdditivesData = () => {
@@ -56,7 +59,7 @@ const useCombo = (combo_id: number) => {
             id: combo_id,
             additives: [],
             currentAdditive: 0,
-            description: "Пусто",
+            description: thisCombo.products?.map(item => item.title).join(', ') || "Описания нет",
             imageUrl: thisCombo.image || "",
             is_combo: true,
             name: thisCombo.title,
@@ -76,7 +79,7 @@ const useCombo = (combo_id: number) => {
         handleSetAdditivesData()
         return;
     }
-    return [handleAddToCart, handleOpenComboWindow]
+    return [handleAddToCart, handleOpenComboWindow, thisCombo]
 };
 
 export default useCombo;

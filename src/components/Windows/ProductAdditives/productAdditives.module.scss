@@ -6,6 +6,7 @@
   max-height: 60rem;
   height: 100%;
   max-width: 108rem;
+  padding-bottom: 0;
   width: 100%;
   color: #434343;
 }
@@ -16,6 +17,10 @@
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.additiveTitle {
+
+}
 .additiveList {
   overflow-y: auto;
   max-height: 28rem;
@@ -23,11 +28,10 @@
     cursor: pointer;
     background: #F7F7F7;
     border-radius: 4px;
-    height: 15.5rem;
     width: 10.5rem;
+    min-height: 13.8rem;
     transition: .3s border;
     border: 1px solid transparent;
-    max-height: 15.5rem;
     max-width: 10.5rem;
     padding: 1.5rem 1.6rem;
     .imageWrapper {
@@ -37,8 +41,8 @@
     .addedIconBlock {
       visibility: hidden;
       opacity: 0;
-      right: 1rem;
-      top: 1rem;
+      right: .7rem;
+      top: .7rem;
     }
 
     .img {
@@ -72,10 +76,15 @@
   background: #c7c7c7;
 }
 .productAdditivesBar {
-  max-width: 42rem;
   height: 100%;
   padding: 0 2.5rem;
   width: 100%;
+  .listItem {
+    span {
+      font-size: 2rem;
+    }
+    color: black
+  }
   .weight {
     color: #C0C0C0;
     font-size: 1.4rem;
@@ -122,9 +131,61 @@
   overflow-y: auto;
   padding-right: .6rem;
 }
+
 .supplementsList::-webkit-scrollbar {
   width: 4px;
 }
 .supplementsList::-webkit-scrollbar-thumb {
   background: #e0e0e0;
+}
+.additivesContainer {
+  padding-bottom: 2rem;
+}
+.additivesBtnWrapper {
+  padding: 0 2.5rem;
+
+}
+.additivesBtn {
+  width: 100%;
+}
+.additivesBarContainer {
+  max-width: 42rem;
+  width: 100%;
+}
+@media (max-width: 1100px) {
+  .window {
+    border-radius: unset;
+    height: 100vh;
+    width: 100vw;
+    max-width: unset;
+    max-height: unset;
+  }
+  .additivesContainer {
+    gap: 0;
+    flex-direction: column;
+  }
+  .productImage {
+    height: 20%;
+    max-height: 40rem;
+    min-height: 16rem;
+    width: 100%;
+  }
+  .productAdditivesBar {
+    max-width: unset;
+    padding: 0;
+  }
+  .additivesBtnWrapper {
+    position: sticky;
+    background: white;
+    padding-bottom: 1.6rem !important;
+    bottom: 0;
+  }
+  .additivesBarContainer {
+    width: 100%;
+    flex: 1;
+    max-width: unset;
+  }
+  .additivesBtnWrapper {
+    padding: 0;
+  }
 }

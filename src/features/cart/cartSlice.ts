@@ -84,9 +84,10 @@ export const addToCartCombo = createAsyncThunk(
     'cart/add/combo',
     async (request: AddToCartComboRequest, {dispatch}) => {
 
-        const res: AxiosResponse<AddToCartComboResponse> = await handleTokenRefreshedRequest(CartApi.AddCombo, request)
+        const res: AxiosResponse<AddToCartComboResponse> = await handleTokenRefreshedRequest(CartApi.AddCombo, {combo: request.combo})
         return {
-            combo: request,
+            combo: request.combo,
+            combo_prod: request.combo_prod,
             data: res.data
         }
     }
@@ -238,7 +239,6 @@ export const CartSlice = createSlice({
             const product = action.payload.product
             const res = action.payload.data
             if (action.payload) {
-
                 const newState = [
                     ...state.items,
                     {
@@ -257,13 +257,40 @@ export const CartSlice = createSlice({
                     }
                 ]
                 state.items = newState
-
-
             }
         })
         builder.addCase(addToCartCombo.fulfilled, (state, action) => {
-            const combo = action.payload.combo.combo
-            console.log(combo)
+            const comboRes = action.payload.data
+            const comboProduct = action.payload.combo_prod
+            const comboFromReq = action.payload.combo[0]
+            const selectedProductId = comboFromReq.selected_product
+            const compositionFromProds =  comboProduct.products?.map(item => item.title).join(', ') || ""
+            console.log(comboProduct)
+            const newState: CartProductItem[] = [
+                ...state.items,
+                {
+                    count: 1,
+                    id: comboRes.list_id[0],
+                    is_combo: true,
+                    product: {
+                        composition: compositionFromProds,
+                        drinks: comboProduct.drinks,
+                        id: comboProduct.id,
+                        image: comboProduct.image,
+                        price: comboProduct.price,
+                        products: comboProduct.products,
+                        selected_product: {
+                            id: selectedProductId,
+                            title: comboProduct.drinks?.filter(item => item.id === selectedProductId)[0].title || ""
+                        },
+                        short_description: "",
+                        title: comboProduct.title
+
+                    },
+                    supplements: []
+                }
+            ]
+            state.items = newState
         })
 
         builder.addCase(editCountCart.fulfilled, (state, action) => {

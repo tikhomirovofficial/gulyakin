@@ -25,8 +25,6 @@ const ComboItem: FC<ComboProps> = (item) => {
     //TODO СОЗДАТЬ ПРОВЕРКУ ЯВЛЯЕТСЯ ЛИ ТОВАР КОМБО ПРИ ДОБАВЛЕНИИ ПОСЛЕ ЛОГИНА ИЛИ ПОСЛЕ АДРЕСА
     const [_, openComboWindow] = useCombo(item.id)
 
-
-
     return (
         <div onClick={openComboWindow} className={`${styles.item} p-rel d-f jc-end gap-15`}>
             <div style={{backgroundImage: `url(${domain}/${item.image})`}}

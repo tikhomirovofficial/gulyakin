@@ -9,7 +9,6 @@ type AdditiveItemProps = {
     selected: boolean,
     addHandler: () => void
     isEmpty?: boolean,
-    price: number,
     imageUrl?: string,
     name: string
 
@@ -21,18 +20,17 @@ const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({
                                                                 selected,
                                                                 className,
                                                                 isEmpty,
-                                                                price
                                                             }) => {
     return (
         <div onClick={addHandler}
-             className={`${styles.item} ${selected ? styles.itemSelected : ""} f-column-betw gap-20 al-center txt-center p-rel`}>
+             className={`${styles.item} ${selected ? styles.itemSelected : ""} f-column-betw gap-10 al-center txt-center p-rel`}>
 
             <div className={styles.imageWrapper}>
                 {isEmpty ?
                     <div style={{backgroundImage: `url(${getImgPath('additive_plashka.png')})`}}
                          className={`${styles.img} f-c-col`}>
                     </div> :
-                    <div style={{backgroundImage: `url(${getImgPath('productAdditive.png')})`}}
+                    <div style={{backgroundImage: `url(${imageUrl})`}}
                          className={`${styles.img}`}>
                     </div>
                 }
@@ -40,8 +38,8 @@ const AdditiveItem: FC<HasClassName & AdditiveItemProps> = ({
             </div>
 
             <div className={"f-column"}>
-                <p>{isEmpty ? "Без соуса" : name}</p>
-                <b>{isEmpty ? "Бесплатно" : `${price} ₽`}</b>
+                <b>{isEmpty ? "Без напитка" : name}</b>
+                {/*<b>{isEmpty ? "Бесплатно" : `${price} ₽`}</b>*/}
             </div>
             <div className={`f-c-col p-abs ${styles.addedIconBlock} t-opacity-visible-3`}>
                 <AddedAdditiveIcon width={15} height={15}/>

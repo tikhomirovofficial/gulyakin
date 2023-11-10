@@ -62,27 +62,31 @@ const EditProductVariant = () => {
                         <CloseIcon isDark={true}/>
                     </div>
                 </div>
-                <div className="f-row-betw h-100p gap-40">
+                <div className={`${styles.additivesContainer} f-row-betw h-100p gap-40`}>
                     <div style={{backgroundImage: `url(${domain + imageUrl})`}}
                          className={`${styles.productImage}`}></div>
-                    <div className={`${styles.productAdditivesBar} f-column-betw gap-10`}>
-                        <div className="top f-column gap-10">
-                            <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
-                                <h3>{name}</h3>
-                                <div className={styles.weight}>{weight} г</div>
+                    <div className={`${styles.additivesBarContainer} f-column-betw gap-20 h-100p`}>
+                        <div className={`${styles.productAdditivesBar} f-column-betw gap-10`}>
+                            <div className="top f-column gap-10">
+                                <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
+                                    <h3>{name}</h3>
+                                    <div className={styles.weight}>{weight} г</div>
+                                </div>
+                                <p className={styles.description}>{description || "Описание не заполнено"}</p>
                             </div>
-                            <p className={styles.description}>{description || "Описание не заполнено"}</p>
+                            <div className={`${additives?.length ? "f-1" : ""} content gap-10 f-column-betw`}>
+                                <RenderSupplementsList/>
+                            </div>
                         </div>
-                        <div className={`${additives?.length ? "f-1" : ""} content gap-10 f-column-betw`}>
-                            <RenderSupplementsList/>
+                        <div className={`${styles.additivesBtnWrapper} d-f al-end f-1 w-100p`}>
                             <RedButton onClick={saveMode ? saveProduct : addProduct} disabled={false}
-                                       className={"pd-10-0"}>
+                                       className={`${styles.additivesBtn} pd-10-0`}>
 
                                 {!saveMode ? `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
                             </RedButton>
                         </div>
-
                     </div>
+
                 </div>
             </WindowBody>
         </ShadowWrapper>

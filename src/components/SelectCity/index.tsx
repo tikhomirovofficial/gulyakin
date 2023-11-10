@@ -9,6 +9,8 @@ import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../fea
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {addToStorage} from "../../utils/LocalStorageExplorer";
 import {HasClassName} from "../../types/components.types";
+import {setOrderForm} from "../../features/forms/formsSlice";
+import {resetOrderForm} from "../../utils/common/resetOrderForm";
 
 type SelectCityProps = {
     classNamePopup?: string,
@@ -66,6 +68,10 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupC
                             renderItem={(item) =>
                                 <DropDownItem key={item.id}
                                               selectHandler={() =>  {
+                                                  dispatch(setOrderForm({
+                                                      address: "", restaurant: -1
+                                                  }))
+                                                  resetOrderForm()
                                                   dispatch(setCurrentCity(item.id))
                                                   handleChangingGeo()
                                               }}

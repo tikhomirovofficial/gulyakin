@@ -23,7 +23,7 @@
 }
 .additiveList {
   overflow-y: auto;
-  max-height: 28rem;
+  max-height: 25rem;
   .item {
     cursor: pointer;
     background: #F7F7F7;
@@ -161,7 +161,7 @@
     max-height: unset;
   }
   .additivesContainer {
-    gap: 0;
+    gap: 10px;
     flex-direction: column;
   }
   .productImage {

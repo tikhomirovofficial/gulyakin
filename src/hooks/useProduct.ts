@@ -50,7 +50,6 @@ const useProduct = (product_id: number, addedSupplements: number[]) => {
                 const thisSupplementProduct = supplementsThisProduct.filter(sup => sup.id === item)[0]
                 const supplementCartId = thisSupplementProduct?.supplement_in_cart_id
                 return {
-
                     supplements_id: item,
                     supplement_in_cart_id: supplementCartId !== undefined ? supplementCartId : 0,
                     added: addedIncludesId

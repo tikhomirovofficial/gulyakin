@@ -8,7 +8,13 @@ import {
     handleYourAddress,
     setChangingAdditivesMode, setProductAdditivesData
 } from "../features/modals/modalsSlice";
-import {addToCart, addToCartCombo, editCartCombo, setProductAfterAddress} from "../features/cart/cartSlice";
+import {
+    addToCart,
+    addToCartCombo,
+    editCartCombo,
+    setProductAfterAddress,
+    setProductAfterLogin
+} from "../features/cart/cartSlice";
 import {AddToCartCombo, AddToCartComboRequest, CartProductItem, Combo, EditCartComboRequest} from "../types/api.types";
 
 type HookComboReturnType = [(selectedProduct: number) => void, (selectedProduct: number) => void, () => void, Combo, CartProductItem]
@@ -51,7 +57,7 @@ const useCombo = (combo_id: number): HookComboReturnType  => {
             dispatch(handleProductAdditives())
             return
         }
-        dispatch(setProductAfterAddress(comboDefferedData))
+        dispatch(setProductAfterLogin(comboDefferedData))
         dispatch(handleLogin())
         dispatch(handleProductAdditives())
 

@@ -82,7 +82,7 @@ const Restaurants: FC = () => {
                                     <div className={`${styles.map} h-100p f-1`}>
                                         <YMaps>
                                             <Map className={`${styles.mapContainer} h-100p w-100p`}
-                                                 state={{center: getAddressesCoords(), zoom: 9}}>
+                                                 state={{center: getAddressesCoords(), zoom: 12}}>
                                                 {
                                                     addresses.map(item => (
                                                         <Placemark geometry={[item.long, item.lat]} options={

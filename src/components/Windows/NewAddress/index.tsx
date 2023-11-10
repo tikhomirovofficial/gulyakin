@@ -51,7 +51,7 @@ const NewAddressWindow = () => {
                         <CloseIcon isDark={true}/>
                     </div>
                 </div>
-                <div className="f-column gap-30">
+                <div className="f-column-betw h-100p gap-30">
                     <div className="f-column gap-20">
                         <h2>Новый адрес</h2>
                         <div className="f-column gap-15">
@@ -88,7 +88,7 @@ const NewAddressWindow = () => {
                         </div>
                     </div>
                     <RedButton onClick={handleAddAddress} disabled={!isValidAddressData}
-                               className={"pd-10-0"}>Добавить</RedButton>
+                               className={`${styles.newAddressBtn} pd-10-0`}>Добавить</RedButton>
 
 
                 </div>

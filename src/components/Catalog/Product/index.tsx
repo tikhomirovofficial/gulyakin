@@ -60,7 +60,7 @@ const Product: FC<ProductProps & HasClassName> = ({
         dispatch(handleProductAdditives())
     }
     const handleOpenAdditives = () => {
-        const addedToCart = cart.some(item => item.product.id === id)
+        const addedToCart = cart.some(item => item.product.id === id && !item.is_combo)
         if (addedToCart) {
             const hasSupplements = supplements.length > 0
             if (hasSupplements) {
@@ -75,7 +75,7 @@ const Product: FC<ProductProps & HasClassName> = ({
 
     const handlePlusProduct = () => {
         dispatch(editCountCart({
-            cart_id: cart.filter(item => item.product.id === id)[0].id,
+            cart_id: cart.filter(item => item.product.id === id && !item.is_combo)[0].id,
             count: count + 1,
             id: id
         }))
@@ -83,7 +83,7 @@ const Product: FC<ProductProps & HasClassName> = ({
     const handleMinusProduct = () => {
         if (count > 1) {
             dispatch(editCountCart({
-                cart_id: cart.filter(item => item.product.id === id)[0].id,
+                cart_id: cart.filter(item => item.product.id === id && !item.is_combo)[0].id,
                 count: count - 1,
                 id: id
             }))

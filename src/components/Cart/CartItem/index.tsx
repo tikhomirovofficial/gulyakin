@@ -41,7 +41,6 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
 
         }
         const findedCombo = combos.filter(item => item.id === product.id)[0]
-        console.log(product.id)
         dispatch(setProductAdditivesData({
             id: findedCombo.id,
             is_combo: is_combo,
@@ -72,7 +71,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
         return null
     }
     const canBeChanged = getCanBeChanged()
-    console.log(product.products)
+
     return (
         product !== undefined ?
             <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>

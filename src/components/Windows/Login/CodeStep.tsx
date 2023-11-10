@@ -6,13 +6,19 @@ import {extractDigits} from "../../../utils/normalizePhone";
 import {withChangeCodeArr} from "../../../utils/forms/withChangeCodeArr";
 import {storeTokens} from "../../../utils/storeTokens";
 import authApi from "../../../http/instance/instances";
-import {handleLogin} from "../../../features/modals/modalsSlice";
+import {handleLogin, handleYourAddress} from "../../../features/modals/modalsSlice";
 import styles from "./login.module.scss";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import {Preloader} from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
 import {LoginContext, LoginContextType} from "./index";
-import {addToCart} from "../../../features/cart/cartSlice";
+import {
+    addToCart,
+    addToCartCombo,
+    setProductAfterAddress,
+    setProductAfterLogin
+} from "../../../features/cart/cartSlice";
+import useCartAdd from "../../../hooks/useCartAdd";
 
 const LoginCodeStep = () => {
     const navigate = useNavigate()
@@ -38,6 +44,8 @@ const LoginCodeStep = () => {
     const productAfterLogin = useAppSelector(state => state.cart.addProductAfterLogin)
     const products = useAppSelector(state => state.products)
     const dispatch = useAppDispatch()
+
+    const handleAddedPopup = useCartAdd()
 
     const handleSendPhone = async () => {
         try {
@@ -107,12 +115,44 @@ const LoginCodeStep = () => {
                     authApi.defaults.headers["Authorization"] = `Bearer ${access}`
 
                     if (productAfterLogin !== null) {
-                        const matchedProduct = products.items.filter(item => item.id == productAfterLogin?.id)[0]
-                        if (matchedProduct?.id !== undefined) {
-                            dispatch(addToCart({
-                                ...matchedProduct,
-                            }))
-                        }
+                        dispatch(setProductAfterAddress(productAfterLogin))
+                        dispatch(handleYourAddress())
+                        // if(!productAfterLogin.is_combo) {
+                        //     const matchedProduct = products.items.filter(item => item.id == productAfterLogin.id)[0]
+                        //     if (matchedProduct?.id !== undefined) {
+                        //         const addProductSups = productAfterLogin.supplements
+                        //         const addProductSupsDefined = addProductSups !== undefined
+                        //         dispatch(addToCart({
+                        //             ...matchedProduct,
+                        //             supplements: addProductSupsDefined ? addProductSups?.map(supId => {
+                        //                 return matchedProduct.supplements.filter(sup => sup.id === supId)[0]
+                        //             }) : []
+                        //         }))
+                        //         handleAddedPopup(matchedProduct.title, matchedProduct.weight)
+                        //
+                        //     }
+                        // } else {
+                        //     const matchedCombo = products.combos.filter(item => item.id == productAfterLogin.id)[0]
+                        //     if (matchedCombo?.id !== undefined) {
+                        //         dispatch(addToCartCombo({
+                        //             combo: [
+                        //                 {
+                        //                     count: 1,
+                        //                     id: matchedCombo.id,
+                        //                     selected_product: productAfterLogin.selected_product || 1
+                        //
+                        //                 }
+                        //             ],
+                        //             combo_prod: {
+                        //                 ...matchedCombo
+                        //             },
+                        //
+                        //
+                        //         }))
+                        //         handleAddedPopup(matchedCombo.title, matchedCombo.weight)
+                        //     }
+                        // }
+
                         dispatch(handleLogin())
                     } else {
                         dispatch(handleLogin())

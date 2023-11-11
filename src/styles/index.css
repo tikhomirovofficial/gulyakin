@@ -113,6 +113,7 @@ body::-webkit-scrollbar-thumb {
 .p-inputwrapper-filled {
     border: unset;
     outline: unset;
+    box-shadow: unset;
 }
 @media (max-width: 598px) {
     .p-datepicker {

@@ -411,7 +411,7 @@ const DeliveryWay = () => {
                             <Map className={`${styles.mapContainer} h-100p w-100p`}
                                  state={{
                                      center: getMapCenter(),
-                                     zoom: 12
+                                     zoom: 14
                                  }}>
                                 {
                                     currentAddress !== null && currentAddress !== undefined ?
@@ -458,7 +458,7 @@ const DeliveryWay = () => {
                                                     iconLayout: 'default#image', // Используем стандартный макет изображения
                                                     iconImageHref: logo, // Укажите URL вашей кастомной иконки
                                                     iconImageSize: [52, 52], // Размер вашей иконки
-                                                    iconImageOffset: [0, 0],
+                                                    iconImageOffset: [-26, -52],
                                                 }
                                             }/> : null
 

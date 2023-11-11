@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ShadowWrapper from "../ShadowWrapper";
 import WindowBody from "../WhiteWrapper";
 import {CloseIcon} from "../../../icons";
@@ -8,9 +8,10 @@ import InputWrapper from "../../Inputs/InputWrapper";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {handleBooking} from "../../../features/modals/modalsSlice";
 import RedButton from "../../Buttons/RedButton";
-import {handleBookingForm} from "../../../features/forms/formsSlice";
+import {handleBookingForm, setBookingForm} from "../../../features/forms/formsSlice";
 import {getAvailableTimes} from "../../../utils/avaliableTimes";
 import CalendarInput from "../../Inputs/CalendarInput";
+import {formatPhoneNumber} from "../../../utils/forms/formatePhone";
 
 const times = getAvailableTimes()
 const countGuests = [
@@ -30,6 +31,26 @@ const BookingWindow = () => {
     const dispatch = useAppDispatch()
     const {bookingAddresses} = useAppSelector(state => state.main)
     const {bookingForm} = useAppSelector(state => state.forms)
+    const {profile} = useAppSelector(state => state)
+
+    useEffect(() => {
+        const defaultAddress = bookingAddresses.length ? bookingAddresses[0].id : 0
+        console.log(defaultAddress)
+        const dateNow = new Date()
+        dispatch(setBookingForm({
+            adress: defaultAddress,
+            count_guest: Number(countGuests[0]),
+            name: profile.data.name || "",
+            phone: profile.data.phone.length ? formatPhoneNumber(profile.data.phone) : "",
+            time: times[0],
+            date: `${dateNow.getDate()}.${dateNow.getMonth() + 1}.${dateNow.getFullYear()}`
+        }))
+    }, [bookingAddresses])
+
+    const sendBookingCreate = () => {
+
+    }
+
     return (
         <ShadowWrapper onClick={() => dispatch(handleBooking())}>
             <WindowBody className={`${styles.window} f-column`}>
@@ -43,11 +64,18 @@ const BookingWindow = () => {
                         <h2>Бронирование столика</h2>
                         <div className="f-column gap-20">
                             <div className="f-column gap-10">
-                                <CalendarInput/>
+                                <CalendarInput setCalendarVal={(val) => {
+                                    console.log(val)
+                                    dispatch(handleBookingForm({
+                                        keyField: "date",
+                                        val: `${val.getDate()}.${val.getMonth() + 1}.${val.getFullYear()}`
+                                    }))
+                                }} val={new Date(bookingForm.date)}/>
                             </div>
                             <div className="f-column">
+                                <div>{bookingForm.adress}</div>
                                 <SelectInput
-                                    defaultCurrent={bookingAddresses.length > 0 ? bookingAddresses[0].id || -1 : -1}
+                                    defaultCurrent={bookingForm.adress}
                                     labelText={"Выберите ресторан (обязательно)"}
                                     classDropDownWrapper={`${styles.inputSelect} miniScrollbar`}
                                     selectHandler={(selected) => {
@@ -89,6 +117,7 @@ const BookingWindow = () => {
                                                   keyField: "name",
                                                   val: e.target.value
                                               }))}
+                                              inputVal={bookingForm.name}
                                               placeholder={"Вячеслав"} labelText={"Ваше имя"}/>
                             </div>
                             <div className="f-column gap-15">

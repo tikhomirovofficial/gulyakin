@@ -359,6 +359,7 @@ export type GetBookingsResponse = {
 export type BookingCreateRequest = {
     adress: number,
     time: string,
+    date: string,
     count_guest: number,
     name: string,
     phone: string

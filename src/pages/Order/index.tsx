@@ -172,6 +172,9 @@ const Order = () => {
             if(!isPickup && (addressId == 0 || addressId == -1)) {
                 return true
             }
+            if(isPickup && (restaurant == 0 || restaurant == -1)) {
+                return true
+            }
             return false
         }
         return true

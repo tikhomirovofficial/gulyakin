@@ -94,7 +94,8 @@ const initialState: FormsSliceState = {
         phone: "",
         adress: -1,
         count_guest: 1,
-        time: ""
+        time: "",
+        date: ""
 
     }
 }
@@ -159,6 +160,9 @@ export const formsSlice = createSlice({
               ...state.orderForm,
               success: action.payload
           }
+        },
+        setBookingForm: (state, action: PayloadAction<BookingFormType>) => {
+          state.bookingForm = action.payload
         },
         setProfileForm: (state, action: PayloadAction<UserData>) => {
             const userData = action.payload
@@ -328,6 +332,7 @@ export const formsSlice = createSlice({
 export const {
     handleProfileFormVal,
     handleProfileFormEditing,
+    setBookingForm,
     handleOrderFormVal,
     handleOrderFormEditing,
     handleOrderCallNeeded,

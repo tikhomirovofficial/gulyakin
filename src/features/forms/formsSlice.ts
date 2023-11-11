@@ -7,6 +7,7 @@ import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {OrderApi} from "../../http/api/order.api";
 import {validate} from "../../utils/forms/validator";
 import {profileRules} from "../../validator/forms.rules";
+import {resetOrderForm} from "../../utils/common/resetOrderForm";
 
 export type FieldType = {
     val: string,
@@ -30,6 +31,8 @@ type OrderFormType = Pick<ProfileFormType, "name"> & {
     isPickup: boolean,
     restaurant: number,
     addressId: number,
+    success: boolean,
+    error: string
 }
 
 type FormsSliceState = {
@@ -81,7 +84,9 @@ const initialState: FormsSliceState = {
         },
         addressId: -1,
         isPickup: false,
-        restaurant: -1
+        restaurant: -1,
+        success: false,
+        error: ""
     }
 }
 
@@ -129,7 +134,12 @@ export const formsSlice = createSlice({
                 state.profileErrsVisible = false
             }
         },
-
+        setOrderSuccess: (state, action) => {
+          state.orderForm = {
+              ...state.orderForm,
+              success: action.payload
+          }
+        },
         setProfileForm: (state, action: PayloadAction<UserData>) => {
             const userData = action.payload
 
@@ -226,6 +236,12 @@ export const formsSlice = createSlice({
                 callNeeded: !state.orderForm.callNeeded
             }
         },
+        setOrderError: (state, action) => {
+            state.orderForm = {
+                ...state.orderForm,
+                error: action.payload
+            }
+        },
         handleOrderPickup: (state) => {
 
             state.orderForm = {
@@ -270,12 +286,24 @@ export const formsSlice = createSlice({
         builder.addCase(sendOrder.fulfilled, (state, action) => {
             const redirectHref = action.payload.data.payment_url
             if(redirectHref !== undefined) {
+                resetOrderForm()
                 window.location.href = action.payload.data.payment_url
+                return;
             }
+            state.orderForm = {
+                ...state.orderForm,
+                addressId: -1,
+                restaurant: -1,
+                success: true
+            }
+            resetOrderForm()
 
         })
         builder.addCase(sendOrder.rejected, (state, action) => {
-
+            state.orderForm = {
+                ...state.orderForm,
+                error: "Ошибка оформления заказа"
+            }
         })
     }
 })
@@ -294,6 +322,8 @@ export const {
     setOrderForm,
     resetProfileErrors,
     setDeliveryVariant,
+    setOrderSuccess,
+    setOrderError,
     setProfileForm,
     handleVisibleProfileErrors
 } = formsSlice.actions

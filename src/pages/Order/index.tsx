@@ -14,7 +14,7 @@ import {
     handleOrderTime,
     handleSelectAddressId,
     handleSelectRestaurant,
-    sendOrder
+    sendOrder, setOrderError, setOrderSuccess
 } from "../../features/forms/formsSlice";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {domain} from "../../http/instance/instances";
@@ -24,9 +24,12 @@ import {formatPhoneNumber} from "../../utils/forms/formatePhone";
 import List from "../../components/List";
 import {handleCartOpened, handleNewAddress} from "../../features/modals/modalsSlice";
 import {useInput} from "../../hooks/useInput";
+import SuccessWindow from "../../components/Windows/SuccessWindow";
+import {getAvailableTimes} from "../../utils/avaliableTimes";
 
-const orderTimes = ["18:30", "19:30"]
+const orderTimes = getAvailableTimes()
 
+console.log(getAvailableTimes())
 type OrderItemProps = {
     id: number,
     image: string,
@@ -60,11 +63,11 @@ const OrderItem: FC<OrderItemProps> = ({image, id, title, supplements = [], coun
     )
 }
 const Order = () => {
+    const dispatch = useAppDispatch()
     const {data, addresses} = useAppSelector(state => state.profile)
     const marketAddresses = useAppSelector(state => state.main.addresses)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
-
 
     const {
         name,
@@ -72,19 +75,27 @@ const Order = () => {
         time,
         paymentWay,
         address,
+        error,
         phone,
         isPickup,
         restaurant,
+        success,
         addressId
     } = useAppSelector(state => state.forms.orderForm)
 
     const [deliveryPrice, setDeliveryPrice] = useState(isPickup ? 0 : 100)
-
-    const dispatch = useAppDispatch()
     const restFromStorage = getFromStorage('order_form')?.restaurant
     const addressFromStorage = getFromStorage('order_form')?.addressId
 
+    const closeSuccess = () => {
+        setOrderSuccess(false)
+        window.location.href = '/profile'
+    }
+
     const handleCreateOrder = () => {
+        if(error.length) {
+            setOrderError("")
+        }
         const paymentTypeOrder =  paymentWay == "CARD" ? 1 : 2
         const timeDeliveryOrder = time == "FAST" ? "40 min" : time
         const deliveryTypeOrder = isPickup ? 3 : 2
@@ -110,6 +121,14 @@ const Order = () => {
             val: data.name
         }))
     }, [])
+    useEffect(() => {
+        if(isPickup) {
+            setDeliveryPrice(0)
+            return;
+        }
+        setDeliveryPrice(100)
+    }, [isPickup])
+
    //console.log(marketAddresses.length > 0 ? marketAddresses[0].id : -1)
     const getCurrentPickupAddress = () => {
         if(restFromStorage !== -1) {
@@ -139,13 +158,22 @@ const Order = () => {
         dispatch(handleOrderPickup())
         console.log(getCurrentDeliveryAddress(), getCurrentPickupAddress())
         if(!isPickup) {
-            alert("на самовывоз")
             dispatch(handleSelectRestaurant(getCurrentPickupAddress()))
         } else {
-            alert("на доставку")
             dispatch(handleSelectAddressId(getCurrentDeliveryAddress()))
 
         }
+
+    }
+    const getDisabledBtn = () => {
+        if(cart.totalPrice !== 0) {
+            // Если вдруг не указан айди адреса, но выбрана доставка
+            if(!isPickup && (addressId == 0 || addressId == -1)) {
+                return true
+            }
+            return false
+        }
+        return true
 
     }
     return (
@@ -307,10 +335,17 @@ const Order = () => {
                                     }
                                 </div>
                                 <div className="f-column gap-15">
-                                    <RedButton onClick={handleCreateOrder}
-                                               disabled={!(address.val.length > 0) && !(cart.totalPrice > 0)}
-                                               className={"pd-15"}>Оформить заказ
-                                        на {formatNumberWithSpaces(cart.totalPrice + deliveryPrice)} ₽</RedButton>
+                                    <div className="f-column gap-5">
+                                        {
+                                            error.length ?      <p style={{fontSize: 16}} className={"colorError"}>{error}</p> : null
+                                        }
+
+                                        <RedButton onClick={handleCreateOrder}
+                                                   disabled={getDisabledBtn()}
+                                                   className={"pd-15"}>Оформить заказ
+                                            на {formatNumberWithSpaces(cart.totalPrice + deliveryPrice)} ₽</RedButton>
+                                    </div>
+
                                     <div className={"w-100p d-f jc-center"}>
                                         <b onClick={handleCart} className={`${styles.backCart}`}>Вернуться в корзину</b>
                                     </div>
@@ -366,6 +401,11 @@ const Order = () => {
                     </div>
                 </div>
             </div>
+            <SuccessWindow
+                bottomContent={<RedButton onClick={closeSuccess} className={"pd-10 w-100p"}>Принять</RedButton>}
+                closeHandle={closeSuccess}
+                isOpened={success}
+                title={"Успешно заказано!"}/>
         </>
     );
 };

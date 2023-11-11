@@ -35,7 +35,7 @@ const useCombo = (combo_id: number): HookComboReturnType  => {
         dispatch(handleProductAdditives())
         const comboDefferedData = {id: combo_id, is_combo: true, selected_product: selectedProduct}
         if (token) {
-            const deliveryIsDefined = addressId || restaurant !== -1
+            const deliveryIsDefined = addressId !== -1 || restaurant !== -1
             if (deliveryIsDefined) {
                 const comboAddRequest: AddToCartComboRequest = {
                     combo: [

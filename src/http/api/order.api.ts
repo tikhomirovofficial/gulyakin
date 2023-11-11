@@ -40,6 +40,9 @@ export class OrderApi {
     }
     static async Create(requestData: CreateOrderRequest): Promise<AxiosResponse<CreateOrderResponse>> {
         const res: AxiosResponse<CreateOrderResponse> = await authApi.post(PATHS.CREATE_ORDER, {...requestData});
+        if(!res.data) {
+            throw res
+        }
         return res;
     }
     static async PaymentConfirmation(requestData: SendPaymentRequest): Promise<AxiosResponse<SendPaymentResponse>> {

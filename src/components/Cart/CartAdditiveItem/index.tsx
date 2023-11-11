@@ -7,13 +7,14 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {domain} from "../../../http/instance/instances";
 import useProduct from "../../../hooks/useProduct";
 import {editCountCart} from "../../../features/cart/cartSlice";
+import useSouse from "../../../hooks/useSouse";
 
 type CartAdditiveItemProps = Supplement & {
     count: number,
     inCart: boolean
 }
 const CartAdditiveItem: FC<CartAdditiveItemProps> = ({id, price, inCart, short_description, title, count, image}) => {
-    const [addSouse] = useProduct(id, [], false)
+    const [addSouse] = useSouse(id)
     const cart = useAppSelector(state => state.cart.items)
     const dispatch = useAppDispatch()
     const handlePlusProduct = () => {

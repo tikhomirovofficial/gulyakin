@@ -384,7 +384,7 @@ const DeliveryWay = () => {
 
     return (
         <ShadowWrapper onClick={closeDeliveryWay}>
-            <SuccessWindow isOpened={false} title={"Ваш адрес успешно добавлен!"}/>
+            <SuccessWindow closeHandle={() => {}} isOpened={false} title={"Ваш адрес успешно добавлен!"}/>
             <WindowBody className={`${styles.window} f-row-betw p-rel`}>
                 <div onClick={closeDeliveryWay} className={"modalAbsoluteClose closeWrapper p-abs"}>
                     <CloseIcon isDark={true}/>

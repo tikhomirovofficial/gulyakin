@@ -68,11 +68,15 @@ const useProduct = (product_id: number, addedSupplements: number[], neededWindow
     }
 
     const getAddedSupplements = () => {
-        return thisProduct.supplements.filter(item => {
-            if (addedSupplements.includes(item.id)) {
-                return item
-            }
-        })
+        if(thisProduct?.supplements !== undefined) {
+            return thisProduct.supplements.filter(item => {
+                if (addedSupplements.includes(item.id)) {
+                    return item
+                }
+            })
+        }
+        return []
+
     }
 
     const handleAddToCartClick = () => {

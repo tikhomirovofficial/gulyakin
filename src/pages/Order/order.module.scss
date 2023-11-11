@@ -53,12 +53,17 @@
 }
 .orderDropdownWrapper {
   padding: .5rem;
+  overflow-y: auto;
+  max-height: 16rem;
 }
 .inputSelectable {
   text-wrap: nowrap;
   border: 1px solid transparent;
   font-size: 1.4rem;
   padding: .8rem 1rem;
+}
+.orderSelectDrop {
+  background: blue;
 }
 .orderSelect {
   svg {

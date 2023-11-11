@@ -5,18 +5,27 @@ function generateTimeArray() {
     const startHour = currentHour < 9 ? 9 : currentHour;
     let startMinute = currentHour === 9 && currentMinute < 30 ? 30 : 0;
 
+    // Добавляем минимальное следующее время, если текущее время имеет минуты меньше 30
+    if (currentMinute < 30) {
+        const formattedNextHour = (startHour + 1).toString().padStart(2, "0");
+        return [`${formattedNextHour}:00`, `${formattedNextHour}:30`, ...generateRemainingTimes(startHour + 1)];
+    }
+
+    return generateRemainingTimes(startHour);
+}
+
+function generateRemainingTimes(startHour: number) {
     const times = [];
     for (let hour = startHour; hour <= 22; hour++) {
-        for (let minute = startMinute; minute < 60; minute += 30) {
+        for (let minute = 0; minute < 60; minute += 30) {
             const formattedHour = hour.toString().padStart(2, "0");
             const formattedMinute = minute.toString().padStart(2, "0");
             times.push(`${formattedHour}:${formattedMinute}`);
         }
-        startMinute = 0; // Reset startMinute for the next hour
     }
-
     return times;
 }
+
 
 
 export function getAvailableTimes() {

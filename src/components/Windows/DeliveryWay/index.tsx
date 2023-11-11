@@ -22,6 +22,8 @@ import {addAddressUser} from "../../../features/profile/profileSlice";
 import {AddressByMarketCity} from "../../../types/api.types";
 import {deleteSeconds} from "../../../utils/deleteSecondsInTime";
 import useCartAdd from "../../../hooks/useCartAdd";
+import { marketComponents } from '../../LogosSection/markets';
+import useMarketLogo from "../../../hooks/useMarketLogo";
 
 interface AddressItemProps {
     selected: boolean,
@@ -294,11 +296,12 @@ const DeliveryWay = () => {
     const handleAddedPopup = useCartAdd()
 
     const {variant} = useAppSelector(state => state.modals.deliveryWay)
-    const {addresses, isPhone} = useAppSelector(state => state.main)
+    const {addresses, isPhone, market} = useAppSelector(state => state.main)
     const profileAddresses = useAppSelector(state => state.profile.addresses)
     const {selectedInPickup} = useAppSelector(state => state.restaurants)
     const [currentAddress, setCurrentAddress] = useState<AddressByMarketCity | null>(null)
     const [deliveryFromProfile, setDeliveryFromProfile] = useState(false)
+    const logo = useMarketLogo()
 
     const getCurrentAddress = () => {
         if (addresses.length > 0) {
@@ -408,16 +411,16 @@ const DeliveryWay = () => {
                             <Map className={`${styles.mapContainer} h-100p w-100p`}
                                  state={{
                                      center: getMapCenter(),
-                                     zoom: 15
+                                     zoom: 12
                                  }}>
                                 {
                                     currentAddress !== null && currentAddress !== undefined ?
                                         <Placemark geometry={[currentAddress.long, currentAddress.lat]} options={
                                             {
                                                 iconLayout: 'default#image', // Используем стандартный макет изображения
-                                                iconImageHref: getImgPath("/logos/logo_gulyakin.svg"), // Укажите URL вашей кастомной иконки
+                                                iconImageHref: logo, // Укажите URL вашей кастомной иконки
                                                 iconImageSize: [52, 52], // Размер вашей иконки
-                                                iconImageOffset: [20, 20],
+                                                iconImageOffset: [-26, -52],
                                             }
                                         }/> : null
 
@@ -453,7 +456,7 @@ const DeliveryWay = () => {
                                             <Placemark geometry={[currentAddress.long, currentAddress.lat]} options={
                                                 {
                                                     iconLayout: 'default#image', // Используем стандартный макет изображения
-                                                    iconImageHref: getImgPath("/logos/logo_gulyakin.svg"), // Укажите URL вашей кастомной иконки
+                                                    iconImageHref: logo, // Укажите URL вашей кастомной иконки
                                                     iconImageSize: [52, 52], // Размер вашей иконки
                                                     iconImageOffset: [0, 0],
                                                 }

@@ -2,9 +2,9 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {AxiosResponse} from "axios";
 import {
-    AddressByMarketCity,
+    AddressByMarketCity, BookingCreateRequest, BookingCreateResponse,
     GetAddressesByMarketCityRequest,
-    GetAddressesByMarketCityResponse,
+    GetAddressesByMarketCityResponse, GetBookingsRequest, GetBookingsResponse,
     GetCitiesResponse, GetDeliveryListResponse, GetPaymentListResponse
 } from "../../types/api.types";
 import {AddressesApi} from "../../http/api/addresses.api";
@@ -17,6 +17,10 @@ type Market = {
 type VariantType = {
     title: string,
     id: number
+}
+type AddressType = {
+    id: number,
+    adress: string
 }
 type MainSliceState = {
     market: number,
@@ -34,7 +38,9 @@ type MainSliceState = {
     isPhone: boolean,
     markets: Array<Market>
     payments: VariantType[],
-    deliveryTypes: VariantType[]
+    deliveryTypes: VariantType[],
+    bookingAddresses: AddressType[],
+    bookingSuccess: boolean
 
 }
 const initialState: MainSliceState = {
@@ -50,6 +56,8 @@ const initialState: MainSliceState = {
     },
     payments: [],
     deliveryTypes: [],
+    bookingAddresses: [],
+    bookingSuccess: false,
     markets: [
         {
             id: 2,
@@ -109,6 +117,22 @@ export const getDeliveries = createAsyncThunk(
 
     }
 )
+export const getBookings = createAsyncThunk(
+    'bookings/get',
+    async (request: GetBookingsRequest, {dispatch}) => {
+        const res: AxiosResponse<GetBookingsResponse> = await AddressesApi.Bookings(request)
+        return res.data.booking
+
+    }
+)
+export const createBooking = createAsyncThunk(
+    'booking/create',
+    async (request: BookingCreateRequest, {dispatch}) => {
+        const res: AxiosResponse<BookingCreateResponse> = await AddressesApi.CreateBooking(request)
+        return res.data
+
+    }
+)
 export const getPayments = createAsyncThunk(
     'payments/get',
     async (_, {dispatch}) => {
@@ -151,6 +175,9 @@ export const MainSlice = createSlice({
         setIsPhone: (state, action: PayloadAction<boolean>) => {
             state.isPhone = action.payload
         },
+        setIsBookingsSuccess: (state, action: PayloadAction<boolean>) => {
+            state.bookingSuccess = action.payload
+        }
 
     },
     extraReducers: builder => {
@@ -165,6 +192,12 @@ export const MainSlice = createSlice({
         })
         builder.addCase(getDeliveries.fulfilled, (state, action) => {
             state.deliveryTypes = action.payload
+        })
+        builder.addCase(getBookings.fulfilled, (state, action) => {
+            state.bookingAddresses = action.payload
+        })
+        builder.addCase(createBooking.fulfilled, (state, action) => {
+            state.bookingSuccess = true
         })
         builder.addCase(getPayments.fulfilled, (state, action) => {
             state.payments = action.payload

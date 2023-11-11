@@ -19,6 +19,9 @@ export const PATHS = {
     MARKET_PRODUCT_OF_THE_DAY: "/product/day",
     MARKET_ADDRESS_INFO: "/market/adress/info",
 
+    BOOKINGS_LIST: "/booking/list",
+    BOOKING_CREATE: "/booking/create",
+
     ADD_TO_CART: "/cart/add",
     ADD_TO_CART_COMBO: "/cart/add/combo",
     EDIT_CART_COMBO: "/cart/edit/combo",

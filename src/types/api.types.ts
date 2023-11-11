@@ -344,3 +344,23 @@ export type GetOrderResponse = {
 export type GetHistoryOrdersResponse = {
     order: GetOrderItem[]
 } & ResponseStatus
+
+export type GetBookingsRequest = {
+    siti_id: number
+}
+
+export type GetBookingsResponse = {
+    booking: Array<{
+        id: number,
+        adress: string
+    }>
+} & ResponseStatus
+
+export type BookingCreateRequest = {
+    adress: number,
+    time: string,
+    count_guest: number,
+    name: string,
+    phone: string
+}
+export type BookingCreateResponse = ResponseStatus

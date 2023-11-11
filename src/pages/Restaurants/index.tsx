@@ -7,6 +7,8 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {RestaurantItemType} from "../../types/restaurants.types";
 import {Link} from "react-router-dom";
 import {getImgPath} from "../../utils/getAssetsPath";
+import {marketComponents} from "../../components/LogosSection/markets";
+import useMarketLogo from "../../hooks/useMarketLogo";
 
 const logosIsMax = true
 
@@ -33,8 +35,8 @@ const RestaurantItem: FC<RestaurantItemProps> = ({cityArea, street, link, canOnl
 }
 
 const Restaurants: FC = () => {
-    const dispatch = useAppDispatch()
-    const {addresses, currentGeo, cities} = useAppSelector(state => state.main)
+    const {addresses, currentGeo, cities, market} = useAppSelector(state => state.main)
+    const logo = useMarketLogo()
     const getAddressesCoords = () => {
         if (addresses.length > 0) {
             return [addresses[0].long, addresses[0].lat]
@@ -82,15 +84,15 @@ const Restaurants: FC = () => {
                                     <div className={`${styles.map} h-100p f-1`}>
                                         <YMaps>
                                             <Map className={`${styles.mapContainer} h-100p w-100p`}
-                                                 state={{center: getAddressesCoords(), zoom: 12}}>
+                                                 state={{center: getAddressesCoords(), zoom: 16}}>
                                                 {
                                                     addresses.map(item => (
                                                         <Placemark geometry={[item.long, item.lat]} options={
                                                             {
                                                                 iconLayout: 'default#image', // Используем стандартный макет изображения
-                                                                iconImageHref: getImgPath("/logos/logo_gulyakin.svg"), // Укажите URL вашей кастомной иконки
+                                                                iconImageHref: logo, // Укажите URL вашей кастомной иконки
                                                                 iconImageSize: [52, 52], // Размер вашей иконки
-                                                                iconImageOffset: [0, 0],
+                                                                iconImageOffset: [-26, -52],
                                                             }
                                                         }/>
                                                     ))

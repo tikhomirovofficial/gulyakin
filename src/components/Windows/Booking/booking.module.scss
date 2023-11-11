@@ -10,6 +10,11 @@
     display: none;
   }
 }
+
+.inputSelect {
+  max-height: 16rem;
+  overflow-y: auto;
+}
 @media (max-width: 500px) {
   .window {
     height: 100vh;

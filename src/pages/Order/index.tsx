@@ -219,7 +219,7 @@ const Order = () => {
                                                                 <SelectInput
                                                                     defaultCurrent={addressId || addressFromStorage}
                                                                     className={styles.selectRestaurant}
-                                                                    classDropDown={styles.selectRestaurantItems}
+                                                                    classDropDown={`miniScrollbar ${styles.selectRestaurantItems}`}
                                                                     labelText={"Выбор адреса доставки"}
                                                                     selectHandler={(selected) => {
                                                                         dispatch(handleSelectAddressId(selected))
@@ -236,7 +236,7 @@ const Order = () => {
                                                     <SelectInput
                                                         defaultCurrent={getCurrentPickupAddress()}
                                                         className={styles.selectRestaurant}
-                                                        classDropDown={styles.selectRestaurantItems}
+                                                        classDropDown={`miniScrollbar ${styles.selectRestaurantItems}`}
                                                         labelText={"Выберите ресторан (обязательно)"}
                                                         selectHandler={(selected) => {
                                                             dispatch(handleSelectRestaurant(selected))
@@ -271,7 +271,7 @@ const Order = () => {
                                                         height: 10,
                                                         width: 10
                                                     }} classDropDown={styles.orderSelect}
-                                                                 classDropDownWrapper={styles.orderDropdownWrapper}
+                                                                 classDropDownWrapper={`miniScrollBar ${styles.orderDropdownWrapper}`}
                                                                  classNameBlock={`${styles.inputSelectable} ${styles.timeSelect} ${time !== "FAST" ? "whiteSelectableSelected" : ""} whiteSelectable gap-5 f-1`}
                                                                  selectHandler={(selected) => {
                                                                      dispatch(handleOrderTime(orderTimes[selected]))
@@ -324,7 +324,8 @@ const Order = () => {
                                                 className={styles.inputField}
                                                 postFix={"₽"}
                                                 inputType={"number"}
-                                                grayBorderedClassName={styles.inputField}
+                                                inputId={"changeWith"}
+                                                grayBorderedClassName={`${styles.inputField} ${styles.inputChangeWith}`}
                                                 setVal={(val) => setStateSum(val)}
                                                 changeVal={(sum) => setChangeSum(sum)}
                                                 inputVal={changeSum} placeholder={"1000"}
@@ -343,7 +344,7 @@ const Order = () => {
 
                                         <RedButton onClick={handleCreateOrder}
                                                    disabled={getDisabledBtn()}
-                                                   className={"pd-15"}>Оформить заказ
+                                                   className={`pd-15 ${styles.createOrderBtn}`}>Оформить заказ
                                             на {formatNumberWithSpaces(cart.totalPrice + deliveryPrice)} ₽</RedButton>
                                     </div>
 

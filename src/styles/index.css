@@ -77,6 +77,51 @@ body::-webkit-scrollbar-thumb {
 .inputField {
     height: 5.6rem;
 }
+/* styles.css */
+.p-datepicker-calendar td{
+    background-color: #fff; /* Замените этот цвет на ваш пользовательский цвет фона */
+    color: #232222; /* Замените этот цвет на ваш пользовательский цвет текста */
+    font-size: 1.4rem;
+    padding: .6rem;
+    /* Добавьте другие пользовательские стили, как необходимо */
+
+}
+.p-datepicker-today span {
+    font-size: 1.4rem;
+}
+.p-datepicker-month {
+    font-size: 1.6rem;
+    margin-right: 1rem;
+}
+.p-datepicker-year{
+    font-size: 1.6rem;
+}
+.p-datepicker-header {
+    border-bottom: unset !important;
+}
+.p-datepicker {
+    padding: 1.5rem;
+}
+.p-inputtext {
+    border: unset;
+    outline: unset;
+}
+.p-datepicker-calendar th {
+    font-size: 1.4rem;
+    margin-top: 1rem;
+}
+.p-inputwrapper-filled {
+    border: unset;
+    outline: unset;
+}
+@media (max-width: 598px) {
+    .p-datepicker {
+        left: 10vw !important;
+    }
+}
+.todayCalendar {
+    color: green;
+}
 
 .inactiveColor {
     color: #E2E2E9;
@@ -142,6 +187,12 @@ body::-webkit-scrollbar-thumb {
     transition: .3s border, .3s box-shadow;
     cursor: pointer;
 
+}
+.miniScrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.miniScrollbar::-webkit-scrollbar-thumb {
+    background: #c7c7c7;
 }
 .whiteSelectable:hover {
     border: 1px solid #fb634d;

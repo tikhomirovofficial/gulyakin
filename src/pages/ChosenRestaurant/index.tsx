@@ -12,21 +12,10 @@ import 'swiper/css/pagination'
 import {SwiperProps} from "swiper/swiper-react";
 import {RestaurantItemType} from "../../types/restaurants.types";
 import {HasClassName} from "../../types/components.types";
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import {
-    AddToCartComboRequest,
-    AddToCartComboResponse,
-    GetAddressInfoRequest,
-    GetAddressInfoResponse
-} from "../../types/api.types";
-import {AxiosResponse} from "axios";
-import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
-import {CartApi} from "../../http/api/cart.api";
-import {MarketApi} from "../../http/api/market.api";
-import {AddressesApi} from "../../http/api/addresses.api";
 import {domain} from "../../http/instance/instances";
 import {getImgPath} from "../../utils/getAssetsPath";
 import {getRestaurantData} from "../../features/restaurants/restaurantsSlice";
+import useMarketLogo from "../../hooks/useMarketLogo";
 
 const weekItems = [
     {
@@ -68,8 +57,9 @@ const ChosenRestaurant: FC = () => {
     const dispatch = useAppDispatch()
     const [currentSlide, setCurrentSlide] = useState<number>(0)
     const restaurantImagesSlider = useRef<SwiperProps>(null)
-    const params = useParams<{id: string}>()
+    const params = useParams<{ id: string }>()
     const restaurantInfo = useAppSelector(state => state.restaurants.chosen.data)
+    const logo = useMarketLogo()
     const {loading} = useAppSelector(state => state.restaurants.chosen)
 
     const handleNext = () => {
@@ -82,7 +72,7 @@ const ChosenRestaurant: FC = () => {
 
     useEffect(() => {
         const numberedParamId = Number(params?.id)
-        if(!isNaN(numberedParamId)) {
+        if (!isNaN(numberedParamId)) {
             dispatch(getRestaurantData({
                 adress_id: numberedParamId
             }))
@@ -139,13 +129,14 @@ const ChosenRestaurant: FC = () => {
                                             }
 
                                             {
-                                                currentSlide < restaurantInfo.image.length - 2 ? <div onClick={handleNext}
-                                                                                        className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f  jc-end al-center h-100p p-abs right-0`}>
-                                                    <div className="f-c-col sliderArrowCircle cur-pointer">
-                                                        <SafeArrowIcon width={7}/>
-                                                    </div>
+                                                currentSlide < restaurantInfo.image.length - 2 ?
+                                                    <div onClick={handleNext}
+                                                         className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f  jc-end al-center h-100p p-abs right-0`}>
+                                                        <div className="f-c-col sliderArrowCircle cur-pointer">
+                                                            <SafeArrowIcon width={7}/>
+                                                        </div>
 
-                                                </div> : null
+                                                    </div> : null
                                             }
 
                                             <Swiper
@@ -201,8 +192,9 @@ const ChosenRestaurant: FC = () => {
                                 </div>
                                 <YMaps>
 
-                                    <ChosenRestaurantMap className={`${styles.map} h-100p f-1`} coords={[restaurantInfo.long, restaurantInfo.lat]}
-                                                         logoIconSrc={getImgPath("/logos/logo_gulyakin.svg")}/>
+                                    <ChosenRestaurantMap className={`${styles.map} h-100p f-1`}
+                                                         coords={[restaurantInfo.long, restaurantInfo.lat]}
+                                                         logoIconSrc={logo}/>
                                 </YMaps>
                             </div>
                         </div>
@@ -228,7 +220,7 @@ const ChosenRestaurantMap: FC<ChosenRestaurantMapProps> = React.memo(({coords, l
                     iconLayout: 'default#image', // Используем стандартный макет изображения
                     iconImageHref: logoIconSrc, // Укажите URL вашей кастомной иконки
                     iconImageSize: [52, 52], // Размер вашей иконки
-                    iconImageOffset: [-26, -26],
+                    iconImageOffset: [-26, -52],
                 }
             }/>
         </Map>

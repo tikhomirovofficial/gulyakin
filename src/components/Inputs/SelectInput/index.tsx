@@ -66,6 +66,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
             }
 
         }
+
     };
     const findedById = optionsSelect?.byId ? items.filter(item => {
         if (item?.id === selected) {
@@ -73,10 +74,10 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
         }
     })[0] || null : null
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
-            document.removeEventListener('click', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [])
     return (

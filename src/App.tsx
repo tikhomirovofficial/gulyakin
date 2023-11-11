@@ -20,7 +20,7 @@ import {getCombosByMarket, getProductByMarket, getSouses} from "./features/produ
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
 import {
-    getAddressesByMarketCity,
+    getAddressesByMarketCity, getBookings,
     getCities,
     getDeliveries,
     getPayments,
@@ -146,6 +146,13 @@ function App() {
             }))
         }
     }, [cities, currentGeo.city, market])
+    useEffect(() => {
+        if(cities.length > 0) {
+            dispatch(getBookings({
+                siti_id: currentGeo.city
+            }))
+        }
+    }, [cities, currentGeo.city])
 
     return (
         <>

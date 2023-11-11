@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {withFieldType} from "../../utils/forms/withFieldType";
 import {UserData} from "../../types/user.types";
-import {CreateOrderRequest, CreateOrderResponse} from "../../types/api.types";
+import {BookingCreateRequest, CreateOrderRequest, CreateOrderResponse} from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {OrderApi} from "../../http/api/order.api";
@@ -34,12 +34,13 @@ type OrderFormType = Pick<ProfileFormType, "name"> & {
     success: boolean,
     error: string
 }
-
+type BookingFormType = BookingCreateRequest
 type FormsSliceState = {
     profileErrors: Record<string, string>,
     profileErrsVisible: boolean,
     profileForm: ProfileFormType,
-    orderForm: OrderFormType
+    orderForm: OrderFormType,
+    bookingForm: BookingFormType
 }
 export type Rule<FormType> = {
     key: keyof FormType,
@@ -87,6 +88,14 @@ const initialState: FormsSliceState = {
         restaurant: -1,
         success: false,
         error: ""
+    },
+    bookingForm: {
+        name: "",
+        phone: "",
+        adress: -1,
+        count_guest: 1,
+        time: ""
+
     }
 }
 
@@ -96,6 +105,8 @@ type PayloadHandleProfileEditing = PayloadAction<keyof ProfileFormType>
 
 type PayloadHandleOrder = PayloadAction<FormChangeValByKey<OrderFormType>>
 type PayloadHandleOrderEditing = PayloadAction<keyof OrderFormType>
+
+type PayloadHandleBooking = PayloadAction<FormChangeValByKey<BookingFormType>>
 
 export const sendOrder = createAsyncThunk(
     'order/send',
@@ -133,6 +144,15 @@ export const formsSlice = createSlice({
             if(state.profileErrsVisible) {
                 state.profileErrsVisible = false
             }
+        },
+        handleBookingForm: (state, action: PayloadHandleBooking) => {
+            const key = action.payload.keyField
+            const newVal = action.payload.val
+            const newBookingData = {
+                ...state.bookingForm,
+                [key]: newVal
+            }
+            state.bookingForm = newBookingData
         },
         setOrderSuccess: (state, action) => {
           state.orderForm = {
@@ -280,9 +300,6 @@ export const formsSlice = createSlice({
 
     },
     extraReducers: builder => {
-        builder.addCase(sendOrder.pending, (state, action) => {
-
-        })
         builder.addCase(sendOrder.fulfilled, (state, action) => {
             const redirectHref = action.payload.data.payment_url
             if(redirectHref !== undefined) {
@@ -322,6 +339,7 @@ export const {
     setOrderForm,
     resetProfileErrors,
     setDeliveryVariant,
+    handleBookingForm,
     setOrderSuccess,
     setOrderError,
     setProfileForm,

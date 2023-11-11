@@ -255,30 +255,33 @@ const Main: FC = () => {
 
                         </div>
                         <div className={`wrapper ${styles.comboCatalogWrapper} f-column gap-30 w-100p`}>
-                            <div className={`${styles.oftenOrdered} f-column gap-10`}>
-                                <h3>Комбо</h3>
-                                <Swiper
-                                    spaceBetween={19}
-                                    slidesPerView={"auto"}
-                                    breakpoints={{
-                                        640: {
-                                            spaceBetween: 29
-                                        },
-                                        1360: {
-                                            spaceBetween: 19
-                                        },
+                            {
+                                products.combos.length > 0 ?  <div className={`${styles.oftenOrdered} f-column gap-10`}>
+                                    <h3>Комбо</h3>
+                                    <Swiper
+                                        spaceBetween={19}
+                                        slidesPerView={"auto"}
+                                        breakpoints={{
+                                            640: {
+                                                spaceBetween: 29
+                                            },
+                                            1360: {
+                                                spaceBetween: 19
+                                            },
 
-                                    }}
-                                    className={"f-row-betw w-100p"}>
-                                    {
-                                        products.combos.map(item => (
-                                            <SwiperSlide className={"w-content pd-10-0"}>
-                                               <Combo {...item}/>
-                                            </SwiperSlide>
-                                        ))
-                                    }
-                                </Swiper>
-                            </div>
+                                        }}
+                                        className={"f-row-betw w-100p"}>
+                                        {
+                                            products.combos.map(item => (
+                                                <SwiperSlide className={"w-content pd-10-0"}>
+                                                    <Combo {...item}/>
+                                                </SwiperSlide>
+                                            ))
+                                        }
+                                    </Swiper>
+                                </div> : null
+                            }
+
                             <div className={styles.catalog}>
                                 {
                                     deferredSearch.length > 0 ?

@@ -188,7 +188,7 @@ const ChosenRestaurant: FC = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <RedButton disabled={false} className={"pd-10-0"}>Забронировать столик</RedButton>
+                                    <RedButton disabled={true} className={"pd-10-0"}>Временно недоступно</RedButton>
                                 </div>
                                 <YMaps>
 

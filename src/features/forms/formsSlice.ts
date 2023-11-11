@@ -1,13 +1,19 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {withFieldType} from "../../utils/forms/withFieldType";
 import {UserData} from "../../types/user.types";
-import {BookingCreateRequest, CreateOrderRequest, CreateOrderResponse} from "../../types/api.types";
+import {
+    BookingCreateRequest,
+    BookingCreateResponse,
+    CreateOrderRequest,
+    CreateOrderResponse
+} from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {OrderApi} from "../../http/api/order.api";
 import {validate} from "../../utils/forms/validator";
 import {profileRules} from "../../validator/forms.rules";
 import {resetOrderForm} from "../../utils/common/resetOrderForm";
+import {AddressesApi} from "../../http/api/addresses.api";
 
 export type FieldType = {
     val: string,
@@ -40,7 +46,9 @@ type FormsSliceState = {
     profileErrsVisible: boolean,
     profileForm: ProfileFormType,
     orderForm: OrderFormType,
-    bookingForm: BookingFormType
+    bookingForm: BookingFormType,
+    bookingSuccess: boolean
+    bookingError: string
 }
 export type Rule<FormType> = {
     key: keyof FormType,
@@ -97,7 +105,9 @@ const initialState: FormsSliceState = {
         time: "",
         date: ""
 
-    }
+    },
+    bookingSuccess: false,
+    bookingError: ""
 }
 
 type PayloadHandleProfile = PayloadAction<FormChangeValByKey<ProfileFormType>>
@@ -114,6 +124,14 @@ export const sendOrder = createAsyncThunk(
     async (request: CreateOrderRequest, {dispatch}) => {
         const res: AxiosResponse<CreateOrderResponse> = await handleTokenRefreshedRequest(OrderApi.Create, request)
         return res
+
+    }
+)
+export const createBooking = createAsyncThunk(
+    'booking/create',
+    async (request: BookingCreateRequest, {dispatch}) => {
+        const res: AxiosResponse<BookingCreateResponse> = await AddressesApi.CreateBooking(request)
+        return res.data
 
     }
 )
@@ -155,6 +173,12 @@ export const formsSlice = createSlice({
             }
             state.bookingForm = newBookingData
         },
+        setIsBookingsSuccess: (state, action: PayloadAction<boolean>) => {
+            state.bookingSuccess = action.payload
+        },
+        setBookingError: (state, action: PayloadAction<string>) => {
+            state.bookingError = action.payload
+        },
         setOrderSuccess: (state, action) => {
           state.orderForm = {
               ...state.orderForm,
@@ -163,6 +187,12 @@ export const formsSlice = createSlice({
         },
         setBookingForm: (state, action: PayloadAction<BookingFormType>) => {
           state.bookingForm = action.payload
+        },
+        setBookingAddress: (state, action) => {
+          state.orderForm = {
+              ...state.orderForm,
+              addressId: action.payload
+          }
         },
         setProfileForm: (state, action: PayloadAction<UserData>) => {
             const userData = action.payload
@@ -207,6 +237,7 @@ export const formsSlice = createSlice({
             })
 
         },
+
         setDeliveryVariant: (state, action) => {
           state.orderForm = {
               ...state.orderForm,
@@ -239,6 +270,7 @@ export const formsSlice = createSlice({
                 }
             }
         },
+
         handleOrderTime: (state, action: PayloadAction<OrderTime>) => {
 
             state.orderForm = {
@@ -320,6 +352,20 @@ export const formsSlice = createSlice({
             resetOrderForm()
 
         })
+        builder.addCase(createBooking.fulfilled, (state, action) => {
+            state.bookingSuccess = true
+            state.bookingForm = {
+                name: "",
+                phone: "",
+                adress: -1,
+                count_guest: 1,
+                time: "",
+                date: ""
+            }
+        })
+        builder.addCase(createBooking.rejected, (state, action) => {
+            state.bookingError = "Произошла ошибка!"
+        })
         builder.addCase(sendOrder.rejected, (state, action) => {
             state.orderForm = {
                 ...state.orderForm,
@@ -336,6 +382,7 @@ export const {
     handleOrderFormVal,
     handleOrderFormEditing,
     handleOrderCallNeeded,
+    setBookingAddress,
     handleOrderTime,
     handleOrderPaymentWay,
     handleOrderPickup,
@@ -344,9 +391,11 @@ export const {
     setOrderForm,
     resetProfileErrors,
     setDeliveryVariant,
+    setIsBookingsSuccess,
     handleBookingForm,
     setOrderSuccess,
     setOrderError,
+    setBookingError,
     setProfileForm,
     handleVisibleProfileErrors
 } = formsSlice.actions

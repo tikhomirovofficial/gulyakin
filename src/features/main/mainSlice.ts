@@ -40,7 +40,7 @@ type MainSliceState = {
     payments: VariantType[],
     deliveryTypes: VariantType[],
     bookingAddresses: AddressType[],
-    bookingSuccess: boolean
+
 
 }
 const initialState: MainSliceState = {
@@ -57,7 +57,6 @@ const initialState: MainSliceState = {
     payments: [],
     deliveryTypes: [],
     bookingAddresses: [],
-    bookingSuccess: false,
     markets: [
         {
             id: 2,
@@ -125,14 +124,7 @@ export const getBookings = createAsyncThunk(
 
     }
 )
-export const createBooking = createAsyncThunk(
-    'booking/create',
-    async (request: BookingCreateRequest, {dispatch}) => {
-        const res: AxiosResponse<BookingCreateResponse> = await AddressesApi.CreateBooking(request)
-        return res.data
 
-    }
-)
 export const getPayments = createAsyncThunk(
     'payments/get',
     async (_, {dispatch}) => {
@@ -175,9 +167,7 @@ export const MainSlice = createSlice({
         setIsPhone: (state, action: PayloadAction<boolean>) => {
             state.isPhone = action.payload
         },
-        setIsBookingsSuccess: (state, action: PayloadAction<boolean>) => {
-            state.bookingSuccess = action.payload
-        }
+
 
     },
     extraReducers: builder => {
@@ -196,9 +186,7 @@ export const MainSlice = createSlice({
         builder.addCase(getBookings.fulfilled, (state, action) => {
             state.bookingAddresses = action.payload
         })
-        builder.addCase(createBooking.fulfilled, (state, action) => {
-            state.bookingSuccess = true
-        })
+
         builder.addCase(getPayments.fulfilled, (state, action) => {
             state.payments = action.payload
         })

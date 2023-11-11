@@ -29,7 +29,6 @@ import {getAvailableTimes} from "../../utils/avaliableTimes";
 
 const orderTimes = getAvailableTimes()
 
-console.log(getAvailableTimes())
 type OrderItemProps = {
     id: number,
     image: string,
@@ -156,7 +155,6 @@ const Order = () => {
     }
     const handleChangeDeliveryType = () => {
         dispatch(handleOrderPickup())
-        console.log(getCurrentDeliveryAddress(), getCurrentPickupAddress())
         if(!isPickup) {
             dispatch(handleSelectRestaurant(getCurrentPickupAddress()))
         } else {

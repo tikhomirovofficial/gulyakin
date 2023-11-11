@@ -33,7 +33,7 @@ export class AddressesApi {
         return res;
     }
     static async CreateBooking(requestData: BookingCreateRequest): Promise<AxiosResponse<BookingCreateResponse>> {
-        const res: AxiosResponse<BookingCreateResponse> = await api.get(PATHS.BOOKINGS_LIST + ConvertDataToGetParams(requestData));
+        const res: AxiosResponse<BookingCreateResponse> = await api.post(PATHS.BOOKINGS_LIST, requestData);
         return res;
     }
 

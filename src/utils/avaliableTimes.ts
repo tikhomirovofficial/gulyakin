@@ -2,11 +2,13 @@ function generateTimeArray() {
     const currentHour = new Date().getHours();
     const currentMinute = new Date().getMinutes();
 
-    const startHour = currentHour < 9 ? 9 : currentHour;
+    // Если текущее время позже 22:00, начинаем с завтрашнего дня
+    const startHour = currentHour >= 22 ? 9 : currentHour < 9 ? 9 : currentHour;
     let startMinute = currentHour === 9 && currentMinute < 30 ? 30 : 0;
 
     // Добавляем минимальное следующее время, если текущее время имеет минуты меньше 30
-    if (currentMinute < 30) {
+
+    if (currentMinute < 30 && currentHour <= 22) {
         const formattedNextHour = (startHour + 1).toString().padStart(2, "0");
         return [`${formattedNextHour}:00`, `${formattedNextHour}:30`, ...generateRemainingTimes(startHour + 1)];
     }
@@ -14,6 +16,7 @@ function generateTimeArray() {
     return generateRemainingTimes(startHour);
 }
 
+// Функция для генерации времени для оставшейся части дня
 function generateRemainingTimes(startHour: number) {
     const times = [];
     for (let hour = startHour; hour <= 22; hour++) {
@@ -25,6 +28,7 @@ function generateRemainingTimes(startHour: number) {
     }
     return times;
 }
+
 
 
 

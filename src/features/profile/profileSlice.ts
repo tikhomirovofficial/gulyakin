@@ -4,13 +4,21 @@ import {UserApi} from "../../http/api/user.api";
 import {handleSelectAddressId, setProfileForm} from "../forms/formsSlice";
 import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
 import {
-    AddressAddRequest, AddressAddResponse,
+    AddressAddRequest,
+    AddressAddResponse,
     ChangeUserRequest,
     ChangeUserResponse,
-    DeleteUserAddressRequest, DeleteUserAddressResponse,
-    GetUserDataResponse, UserAddressesResponse
+    DeleteUserAddressRequest,
+    DeleteUserAddressResponse,
+    GetHistoryOrdersResponse,
+    GetOrderDetailsItem, GetOrderItem,
+    GetOrderRequest,
+    GetOrderResponse,
+    GetUserDataResponse,
+    UserAddressesResponse
 } from "../../types/api.types";
 import {AxiosResponse} from "axios";
+import {OrderApi} from "../../http/api/order.api";
 
 
 export interface ProfileState {
@@ -19,6 +27,7 @@ export interface ProfileState {
     data: UserData
 
     addresses: Array<Address & { id: number }>
+    orders: GetOrderItem[]
 
 }
 
@@ -53,6 +62,21 @@ export const getAddressesUser = createAsyncThunk(
         const res: AxiosResponse<UserAddressesResponse> = await handleTokenRefreshedRequest(UserApi.Addresses)
         return res.data.adress
 
+    }
+)
+export const getHistoryOrders = createAsyncThunk(
+    'user/history/get',
+    async (_, {dispatch}) => {
+        const res: AxiosResponse<GetHistoryOrdersResponse> = await handleTokenRefreshedRequest(OrderApi.GetHistory)
+        return res.data
+
+    }
+)
+export const getOrderById = createAsyncThunk(
+    'user/order/get',
+    async (request: GetOrderRequest, {dispatch}) => {
+        const res: AxiosResponse<GetOrderResponse> = await handleTokenRefreshedRequest(OrderApi.GetHistory, request)
+        return res.data
     }
 )
 export const addAddressUser = createAsyncThunk(
@@ -96,6 +120,7 @@ const initialState: ProfileState = {
     },
     addresses: [
     ],
+    orders: []
 }
 
 export const ProfileSlice = createSlice({
@@ -135,7 +160,6 @@ export const ProfileSlice = createSlice({
                 email: "",
                 phone: ""
             }
-
             state.error = "Произошла ошибка сервера"
             state.isLoading = false
 
@@ -145,12 +169,12 @@ export const ProfileSlice = createSlice({
             state.isLoading = true
         })
         builder.addCase(editUser.fulfilled, (state, action) => {
-            // if (action.payload) {
-            //     state.data = action.payload.user
-            // }
             state.error = ""
             state.isLoading = false
 
+        })
+        builder.addCase(getHistoryOrders.fulfilled, (state, action) => {
+            state.orders = action.payload.order.reverse()
         })
         builder.addCase(editUser.rejected, (state, action) => {
             state.error = "Не удалось изменить данные."
@@ -192,22 +216,10 @@ export const ProfileSlice = createSlice({
                 console.log(action.payload)
             }
         })
-        builder.addCase(getAddressesUser.pending, (state, action) => {
-        })
-        builder.addCase(getAddressesUser.rejected, (state, action) => {
 
-        })
         builder.addCase(deleteAddressUser.fulfilled, (state, action) => {
            state.addresses = state.addresses.filter(item => item.id !== action.payload.address_id)
         })
-        builder.addCase(deleteAddressUser.pending, (state, action) => {
-        })
-        builder.addCase(deleteAddressUser.rejected, (state, action) => {
-
-        })
-
-
-
     }
 })
 

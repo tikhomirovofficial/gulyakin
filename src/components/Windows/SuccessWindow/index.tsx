@@ -13,8 +13,11 @@ const SuccessWindow: FC<SuccessWindowProps> = ({title, bottomContent= null, clos
     return (
         <div onClick={closeHandle} className={`${styles.successWindow} ${isOpened? styles.successWindowOpened : ""} t-opacity-visible-transform-3 h-100v w-100v p-fix top-0 left-0 f-c-col`}>
             <WhiteWrapper className={`${styles.container} f-column al-center gap-20`}>
-                <h1>{title}</h1>
-                <SuccessGreenIcon/>
+                <div className="f-column gap-20 al-center">
+                    <h1>{title}</h1>
+                    <SuccessGreenIcon/>
+                </div>
+
                 {bottomContent}
             </WhiteWrapper>
 

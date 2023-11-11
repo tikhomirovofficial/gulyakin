@@ -313,19 +313,34 @@ export type GetOrderRequest = {
     order_id: number
 }
 
+export type GetOrderDetailsItem = {
+    order_id: number,
+    datetime: string,
+    price: number,
+    is_payment: false,
+    is_active: true,
+    products: string[]
+    address: string
+}
+export type GetOrderItem = {
+    order_id: number,
+    datetime: string,
+    price: number,
+    is_payment: boolean,
+    is_active: boolean,
+    address: string,
+    products: Array<{
+        id: number
+        title: string,
+        image: string
+    }>
+}
+
 export type GetOrderResponse = {
-    order: {
-        order_id: number,
-        datetime: string,
-        price: number,
-        is_payment: false,
-        is_active: true,
-        products: string[]
-        address: string
-    }
+    order: GetOrderItem[]
 } & ResponseStatus
 
 
 export type GetHistoryOrdersResponse = {
-    order: Omit<GetOrderResponse, "status">
+    order: GetOrderItem[]
 } & ResponseStatus

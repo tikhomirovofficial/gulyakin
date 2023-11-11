@@ -35,7 +35,10 @@ export class OrderApi {
         return res;
     }
     static async GetHistory(): Promise<AxiosResponse<GetHistoryOrdersResponse>> {
-        const res: AxiosResponse<GetHistoryOrdersResponse> = await api.get(PATHS.ORDER_HISTORY);
+        const res: AxiosResponse<GetHistoryOrdersResponse> = await authApi.get(PATHS.ORDER_HISTORY);
+        if(!res.data) {
+            throw res
+        }
         return res;
     }
     static async Create(requestData: CreateOrderRequest): Promise<AxiosResponse<CreateOrderResponse>> {

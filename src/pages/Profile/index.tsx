@@ -8,7 +8,13 @@ import DarkBorderedButton from "../../components/Buttons/DarkBorderedButton";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import List from "../../components/List";
 import {handleNewAddress} from "../../features/modals/modalsSlice";
-import {deleteAddressUser, editUser, getAddressesUser} from "../../features/profile/profileSlice";
+import {
+    deleteAddressUser,
+    editUser,
+    getAddressesUser,
+    getHistoryOrders,
+    getOrderById
+} from "../../features/profile/profileSlice";
 import {
     handleProfileFormEditing,
     handleProfileFormVal,
@@ -18,15 +24,23 @@ import {TextField} from "../../components/Inputs/TextField";
 import {deleteCookie} from "../../utils/CookieUtil";
 import {useNavigate} from "react-router-dom";
 import {formatPhoneNumber} from "../../utils/forms/formatePhone";
+import RedButton from "../../components/Buttons/RedButton";
+import OrdersHistoryList from "./History";
 
 
 const Profile = () => {
-    const {data, addresses} = useAppSelector(state => state.profile)
+    const {data, addresses, orders} = useAppSelector(state => state.profile)
     const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
     const {profileErrors, profileErrsVisible} = useAppSelector(state => state.forms)
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+
+    const handleGetOrderData = (order_id: number) => {
+        dispatch(getOrderById({
+            order_id
+        }))
+    }
 
     const handleUserEdit = () => {
         const hasErrs = Object.keys(profileErrors).length > 0
@@ -51,6 +65,27 @@ const Profile = () => {
 
     useEffect(() => {
 
+        dispatch(getHistoryOrders())
+        const handleHashChange = () => {
+            const hash = window.location.hash;
+            if (hash) {
+                const targetElement = document.getElementById(hash.substring(1));
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        };
+
+        // Добавляем слушателя события для изменения хэша
+        window.addEventListener('hashchange', handleHashChange);
+
+        // Вызываем обработчик хэша при загрузке страницы
+        handleHashChange();
+
+        // Очищаем слушателя события при размонтировании компонента
+        return () => {
+            window.removeEventListener('hashchange', handleHashChange);
+        };
     }, [])
     return (
         <>
@@ -197,6 +232,26 @@ const Profile = () => {
                                     <p className={styles.addressesEmptyText}>Добавьте новый адрес чтобы ещё удобнее
                                         совершать покупки</p>
                             }
+
+                            <div className="f-column gap-20">
+                                <div id={"orders"} className="f-column gap-10">
+                                    <div className="sectionTitle">
+                                       История заказов
+                                    </div>
+                                    <p className={styles.textHistory}>
+                                        {
+                                            orders.length ? "Ваши последние заказы" : "Вы ещё не сделали ни одного заказа. Перейдите в меню, чтобы сделать свой первый заказ."
+                                        }
+                                    </p>
+                                </div>
+                                {
+                                    !orders.length ?  <RedButton className={`${styles.toMenuBtn}`}>
+                                        <b>В меню</b>
+                                    </RedButton> : <OrdersHistoryList orders={orders}/>
+                                }
+
+                            </div>
+
                         </div>
                         <GrayButton onClick={handleLogout}
                                     className={`${styles.logoutBtn} w-content cur-pointer`}>Выйти</GrayButton>

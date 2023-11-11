@@ -89,7 +89,7 @@ const Order = () => {
 
     const closeSuccess = () => {
         setOrderSuccess(false)
-        window.location.href = '/profile'
+        window.location.href = '/profile#orders'
     }
 
     const handleCreateOrder = () => {
@@ -165,6 +165,7 @@ const Order = () => {
         }
 
     }
+
     const getDisabledBtn = () => {
         if(cart.totalPrice !== 0) {
             // Если вдруг не указан айди адреса, но выбрана доставка
@@ -402,7 +403,7 @@ const Order = () => {
                 </div>
             </div>
             <SuccessWindow
-                bottomContent={<RedButton onClick={closeSuccess} className={"pd-10 w-100p"}>Принять</RedButton>}
+                bottomContent={<RedButton onClick={closeSuccess} className={`${styles.orderSuccessBtn} pd-10 w-100p`}>Принять</RedButton>}
                 closeHandle={closeSuccess}
                 isOpened={success}
                 title={"Успешно заказано!"}/>

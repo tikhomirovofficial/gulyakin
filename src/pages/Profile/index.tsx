@@ -22,7 +22,7 @@ import {
 } from "../../features/forms/formsSlice";
 import {TextField} from "../../components/Inputs/TextField";
 import {deleteCookie} from "../../utils/CookieUtil";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {formatPhoneNumber} from "../../utils/forms/formatePhone";
 import RedButton from "../../components/Buttons/RedButton";
 import OrdersHistoryList from "./History";
@@ -245,9 +245,13 @@ const Profile = () => {
                                     </p>
                                 </div>
                                 {
-                                    !orders.length ?  <RedButton className={`${styles.toMenuBtn}`}>
-                                        <b>В меню</b>
-                                    </RedButton> : <OrdersHistoryList orders={orders}/>
+                                    !orders.length ?
+                                        <Link to={"/"}>
+                                            <RedButton className={`${styles.toMenuBtn}`}>
+                                                <b>В меню</b>
+                                            </RedButton>
+                                        </Link>
+                                        : <OrdersHistoryList orders={orders}/>
                                 }
 
                             </div>

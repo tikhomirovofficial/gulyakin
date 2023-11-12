@@ -8,26 +8,29 @@ import {ArrowMiniRightIcon} from "../../../../icons";
 
 export type HistoryItemProps = Pick<GetOrderItem, "price" | "is_active" | "is_payment" | "order_id" | "products">
 const HistoryItem: FC<HistoryItemProps> = ({
-    order_id,
-    is_active,
-    is_payment,
-    products,
-    price
+                                               order_id,
+                                               is_active,
+                                               is_payment,
+                                               products,
+                                               price
                                            }) => {
     const getOrderStatus = () => {
-        if(is_payment) {
-            if(is_active) {
+        if (is_payment) {
+            if (is_active) {
                 return "Активен"
             }
             return "Исполнен"
         }
         return "Активен"
     }
+    const productsIsDefined = products.length > 0 && products !== undefined
+    const productImage = productsIsDefined ? `${domain}${products[0].image}` : "assets/img/additive_plashka.png"
+
     return (
         <div className={`pd-10 f-row-betw ${styles.orderItem}`}>
             <div className="left d-f al-center gap-10">
                 <div className={`${styles.imgBlock} p-rel`}>
-                    <div style={{backgroundImage: `url(${domain}${products[0].image})`}} className={`${styles.imgItem}`}></div>
+                    <div style={{backgroundImage: `url(${productImage})`}} className={`${styles.imgItem}`}></div>
                 </div>
                 <div className="f-column-betw al-start">
                     <div className={`${styles.orderInfoTop} d-f jc-end`}>
@@ -50,7 +53,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
                     </div>
                 </div>
                 <div className={"w-content h-content"}>
-                    <ArrowMiniRightIcon height={26}/>
+                    <ArrowMiniRightIcon height={26} width={12}/>
                 </div>
             </div>
         </div>

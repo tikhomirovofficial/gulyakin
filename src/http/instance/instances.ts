@@ -2,11 +2,12 @@ import axios from 'axios'
 import {getCookie} from "../../utils/CookieUtil";
 import {getTokens} from "../../utils/storeTokens";
 
-const currentDomain = 1
+const currentDomain = 3
 const domains = [
     "http://dev.advafert.ru",
     "http://vps.advafert.ru:5000",
-    "https://api.client.advafert.ru"
+    "https://api.client.advafert.ru",
+    "https://api.gulyakin.com"
 ]
 
 

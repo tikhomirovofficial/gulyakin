@@ -1,18 +1,16 @@
 import React, {FC} from 'react';
 import styles from "./product.module.scss";
 import RedButton from "../../Buttons/RedButton";
-import {MinusIcon, PlusIcon} from "../../../icons";
+import {MinusIcon, PlusIcon, StarsIcon} from "../../../icons";
 import {HasClassName} from "../../../types/components.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {
-    handleLogin,
     handleProductAdditives,
-    handleYourAddress,
     setChangingAdditivesMode,
     setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
 import {ProductRes, Supplement} from "../../../types/api.types";
-import {editCountCart, setProductAfterAddress, setProductAfterLogin} from "../../../features/cart/cartSlice";
+import {editCountCart} from "../../../features/cart/cartSlice";
 import useToken from "../../../hooks/useToken";
 import {domain} from "../../../http/instance/instances";
 
@@ -20,7 +18,7 @@ type ProductProps = {
     id: number,
     inCart?: boolean,
     count?: number,
-    sale?: number
+    sale?: number,
     supplements?: Array<Supplement>
 } & ProductRes
 
@@ -39,9 +37,6 @@ const Product: FC<ProductProps & HasClassName> = ({
                                                       price
                                                   }) => {
     const dispatch = useAppDispatch()
-
-    const token = useToken()
-    const {address, restaurant} = useAppSelector(state => state.forms.orderForm)
     const {isMobile} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart.items)
     const handleSetAdditivesData = () => {
@@ -90,11 +85,19 @@ const Product: FC<ProductProps & HasClassName> = ({
         }
     }
 
+    const isDayProduct = false
+
     return (
         <div onClick={handleOpenAdditives} className={`${styles.product} cur-pointer h-100p f-column-betw gap-15`}>
             <div className="f-column ">
                 <div className={`${styles.img} w-100p`}>
-                    <img src={domain + "/" + image} alt=""/>
+                    <img src={domain + "/" + image}/>
+                    {
+                        isDayProduct ? <div className={`d-f al-center gap-5 ${styles.productLabel}`}>
+                            <StarsIcon/>
+                            <b>Товар недели</b>
+                        </div> : null
+                    }
                 </div>
             </div>
             <div className={`${styles.content} f-column-betw gap-20 f-1`}>
@@ -105,7 +108,6 @@ const Product: FC<ProductProps & HasClassName> = ({
                         {isMobile ? null :
                             <div className={`${styles.weight} txt-right`}>{weight} г</div>
                         }
-
                     </div>
                 </div>
                 <div onClick={e => e.stopPropagation()} style={{minHeight: 37}} className="f-row-betw">
@@ -135,7 +137,6 @@ const Product: FC<ProductProps & HasClassName> = ({
                             :
                             <RedButton onClick={handleOpenAdditives} className={`${styles.btn} `}>
                                 {!isMobile ? " В корзину" : `${sale || price} ₽`}
-
                             </RedButton>
                     }
                     {!isMobile ? null :

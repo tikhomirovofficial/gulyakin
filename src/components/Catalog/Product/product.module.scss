@@ -33,6 +33,7 @@
   }
   .img {
     border-radius: 6px;
+    background: wheat;
     background-size: contain!important;
     background-repeat: no-repeat;
     height: 23.3rem;
@@ -45,6 +46,18 @@
       left: 0;
       height: auto;
       width: 100%
+    }
+    .productLabel {
+      position: absolute;
+      background: rgba(251, 99, 77, 1);
+      border-radius: 5rem;
+      padding: .5rem 1rem;
+      top: 1rem;
+      left: 1rem;
+      b {
+        color: white;
+        font-size: 1.6rem;
+      }
     }
   }
   h4 {
@@ -93,10 +106,25 @@
     flex-direction: row;
     min-height: unset;
     height: fit-content;
+
     width: 100%;
     .img {
       width: 18rem;
       height: 12rem;
+      .productLabel {
+        padding: .4rem .8rem;
+        right: .6rem;
+        svg {
+          height: .9rem;
+        }
+        top: .6rem;
+        left: unset;
+        b {
+          color: white;
+          font-size: 1.1rem;
+          font-weight: 500;
+        }
+      }
     }
   }
 }
@@ -141,6 +169,19 @@
 
       height: 8rem;
       width: 11rem;
+      .productLabel {
+        padding: .2rem .5rem;
+        right: 0;
+        svg {
+          height: .8rem;
+        }
+        top: 0;
+        b {
+          color: white;
+          font-size: 1.1rem;
+          font-weight: 500;
+        }
+      }
     }
     .btn {
       font-size: 1.6rem;

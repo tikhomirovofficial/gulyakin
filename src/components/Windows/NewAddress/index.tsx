@@ -10,6 +10,7 @@ import RedButton from "../../Buttons/RedButton";
 import {Address} from "../../../types/user.types";
 import {checkFilledValues} from "../../../utils/forms/checkFilledValues";
 import {addAddress, addAddressUser} from "../../../features/profile/profileSlice";
+import {appConfig} from "../../../config/AppConfig";
 
 const NewAddressWindow = () => {
     const dispatch = useAppDispatch()
@@ -29,11 +30,10 @@ const NewAddressWindow = () => {
         })
     }
 
-    const isValidAddressData = checkFilledValues(formNewAddress, [])
+    const isValidAddressData = checkFilledValues(formNewAddress, appConfig.ADDRESS_KEYS_EXCEPTIONS)
 
     const handleAddAddress = () => {
         dispatch(addAddressUser({
-
             addressData: {
                 adress: formNewAddress.city,
                 apartment: Number(formNewAddress.flat),
@@ -42,7 +42,6 @@ const NewAddressWindow = () => {
                 floor: Number(formNewAddress.floor)
             },
             order: false
-
         }))
         dispatch(handleNewAddress())
     }

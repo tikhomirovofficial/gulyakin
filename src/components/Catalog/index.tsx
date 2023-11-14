@@ -22,6 +22,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
             {isLoaded ?
                 <div className="block f-column gap-40">
                     {
+                        searchedData.length > 0 ?
                         searchedData.map(category => (
                             <div className={`${styles.categoryBlock} f-column gap-20`}>
                                 <h2 id={`${category?.id}`} className="sectionTitle">{category?.title}</h2>
@@ -45,7 +46,8 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                             supplements={product.supplements}/>
                                     }/>
                             </div>
-                        ))
+                        )) :
+                            <p className={styles.notFoundedText}>По запросу: {search} ничего не найдено.</p>
                     }
                 </div> :
                 <BigSpinner/>

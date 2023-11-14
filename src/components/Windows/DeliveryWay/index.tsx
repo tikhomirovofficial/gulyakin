@@ -24,6 +24,7 @@ import {deleteSeconds} from "../../../utils/deleteSecondsInTime";
 import useCartAdd from "../../../hooks/useCartAdd";
 import { marketComponents } from '../../LogosSection/markets';
 import useMarketLogo from "../../../hooks/useMarketLogo";
+import {appConfig} from "../../../config/AppConfig";
 
 interface AddressItemProps {
     selected: boolean,
@@ -145,7 +146,7 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) 
         addToCartWithAfterClose()
     }
 
-    const isValidAddressData = checkFilledValues(formNewAddress, [])
+    const isValidAddressData = checkFilledValues(formNewAddress, appConfig.ADDRESS_KEYS_EXCEPTIONS)
 
     const {address} = useAppSelector(state => state.forms.orderForm)
     const [addressInput, changeVal, setVal] = useInput(address.val)
@@ -327,6 +328,7 @@ const DeliveryWay = () => {
 
     const {addProductAfterAddress} = useAppSelector(state => state.cart)
     const products = useAppSelector(state => state.products)
+
     const addToCartWithClose = () => {
         if (addProductAfterAddress !== null) {
             if(!addProductAfterAddress.is_combo) {

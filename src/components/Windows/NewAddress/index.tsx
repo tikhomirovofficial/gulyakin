@@ -25,7 +25,9 @@ const NewAddressWindow = () => {
 
     const handleFormNewAddress = (key: keyof Address, val: string) => {
         setFormNewAddress(prevState => {
-            prevState[key] = val
+            if(key !== "lat" && key !== "long") {
+                prevState[key] = val
+            }
             return {...prevState}
         })
     }
@@ -39,7 +41,9 @@ const NewAddressWindow = () => {
                 apartment: Number(formNewAddress.flat),
                 door_code: Number(formNewAddress.code_door),
                 entrance: Number(formNewAddress.entrance),
-                floor: Number(formNewAddress.floor)
+                floor: Number(formNewAddress.floor),
+                lat: formNewAddress.lat || 0,
+                long: formNewAddress.long || 0,
             },
             order: false
         }))

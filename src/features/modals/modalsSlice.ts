@@ -33,7 +33,7 @@ const initialState: ModalSliceState = {
     bodyLocked: false,
     cookiesAccepted: getFromStorage("cookie_accepted") || false,
     deliveryWay: {
-        opened: false,
+        opened: true,
         variant: 0
     },
     cartOpened: false,

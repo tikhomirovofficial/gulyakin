@@ -4,7 +4,9 @@ export type Address = {
     code_door?: number | string
     floor: number | string
     flat: number | string
-    entrance: number | string
+    entrance: number | string,
+    lat?: number,
+    long?: number
 }
 
 export type UserData = {

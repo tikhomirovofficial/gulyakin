@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useDeferredValue, useEffect, useState} from 'react';
 import WindowBody from "../WhiteWrapper";
 import {CloseIcon, Geo} from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
@@ -30,6 +30,8 @@ import useCartAdd from "../../../hooks/useCartAdd";
 import { marketComponents } from '../../LogosSection/markets';
 import useMarketLogo from "../../../hooks/useMarketLogo";
 import {appConfig} from "../../../config/AppConfig";
+import {GeoApi} from "../../../http/external/geocoding/geo.api";
+import {useDeferred} from "../../../hooks/useDeffered";
 
 interface AddressItemProps {
     selected: boolean,
@@ -78,18 +80,25 @@ const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, time
         </GrayBorderedBlock>
     )
 }
-type SearchAddressItemProps = {
+type FindedAddress = {
     address: string,
-    city: string
+    city: string,
+    house: string | null,
+    geo_lat: string | null,
+    geo_lon: string | null,
 }
 type DeliveryWayCommonProps = {
     addToCartWithAfterClose: () => void,
     handleIsSelectingAddress?: () => void,
     handleSuccess?: (title: string) => any
 }
-const SearchAddressItem: FC<SearchAddressItemProps> = ({address, city}) => {
+
+type SearchAddressProps = {
+    handleAddress: () => any
+} & FindedAddress
+export const SearchAddressItem: FC<SearchAddressProps> = ({address, handleAddress, city}) => {
     return (
-        <div className={`pd-10 ${styles.searchAddressItem} f-column gap-5`}>
+        <div onClick={handleAddress} className={`pd-10 ${styles.searchAddressItem} cur-pointer f-column gap-5`}>
             <b>{address}</b>
             <p>{city}</p>
         </div>
@@ -98,26 +107,7 @@ const SearchAddressItem: FC<SearchAddressItemProps> = ({address, city}) => {
 
 
 const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, handleSuccess}) => {
-    const [findedAddresses, setFindedAddressess] = useState<Array<SearchAddressItemProps>>([
-        {
-            address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
-            city: "Сургут, ул. Университетская, д. 9"
-        },
-        {
-            address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
-            city: "Сургут, ул. Университетская, д. 9"
-        },
-        {
-            address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
-            city: "Сургут, ул. Университетская, д. 9"
-        },
-        {
-            address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
-            city: "Сургут, ул. Университетская, д. 9"
-        }
-    ])
-    const {addProductAfterAddress} = useAppSelector(state => state.cart)
-    const products = useAppSelector(state => state.products)
+    const [findedAddresses, setFindedAddressess] = useState<Array<FindedAddress>>([])
     const dispatch = useAppDispatch()
 
     const [formNewAddress, setFormNewAddress] = useState<Address>({
@@ -127,35 +117,60 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, h
         flat: "",
         floor: "",
     })
+    const defferedAddress = useDeferred(formNewAddress.city, 1000)
+
+
+    useEffect(() => {
+        (async () => {
+            const res = await GeoApi.Suggestions({
+                query: formNewAddress.city,
+                count: appConfig.MAX_SUGGESTIONS_COUNT
+            })
+            if(res.data) {
+                setFindedAddressess(prev => {
+                    const suggests: Array<FindedAddress> = res.data.suggestions.map(item => {
+                        return {
+                            address: item.value,
+                            city: item.data.city,
+                            house: item.data.house,
+                            geo_lon: item.data.geo_lon,
+                            geo_lat: item.data.geo_lat
+                        }
+                    })
+                    return [...suggests]
+                })
+            }
+
+        })()
+    }, [defferedAddress])
+
     const handleFormNewAddress = (key: keyof Address, val: string) => {
         setFormNewAddress(prevState => {
-            prevState[key] = val
+            if(key !== "lat" && key !== "long") {
+                prevState[key] = val
+            }
             return {...prevState}
         })
     }
 
     const handleAddAddress = () => {
-        dispatch(handleOrderFormVal({
-            keyField: "address",
-            val: addressInput
-        }))
         dispatch(addAddressUser({
             addressData: {
                 adress: formNewAddress.city,
                 apartment: Number(formNewAddress.flat),
                 door_code: Number(formNewAddress.code_door),
                 entrance: Number(formNewAddress.entrance),
-                floor: Number(formNewAddress.floor)
+                floor: Number(formNewAddress.floor),
+                lat: formNewAddress.lat || 0,
+                long: formNewAddress.long || 0,
             },
             order: true
         }))
         addToCartWithAfterClose()
     }
 
-    const isValidAddressData = checkFilledValues(formNewAddress, appConfig.ADDRESS_KEYS_EXCEPTIONS)
 
-    const {address} = useAppSelector(state => state.forms.orderForm)
-    const [addressInput, changeVal, setVal] = useInput(address.val)
+    const isValidAddressData = checkFilledValues(formNewAddress, appConfig.ADDRESS_KEYS_EXCEPTIONS)
 
     return (
         <>
@@ -177,14 +192,14 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, h
                             </div>
                         }/>
                     {
-                        !findedAddresses.length ?
-                            <div className={`${styles.searchedMatches} pd-10 p-abs left-0 w-100p bg-white`}>
+                        findedAddresses.length ?
+                            <div className={`${styles.searchedMatches} miniScrollbar  pd-10 p-abs left-0 w-100p bg-white`}>
                                 {
                                     findedAddresses.map(item => (
-                                        <SearchAddressItem address={item.address} city={item.city}/>
+                                        item.house !== null ?
+                                        <SearchAddressItem geo_lat={item.geo_lat} geo_lon={item.geo_lon} handleAddress={() => alert(`${item.geo_lat} и ${item.geo_lon}`)} house={item.house} address={item.address} city={item.city}/> : null
                                     ))
                                 }
-
                             </div> : null
                     }
 

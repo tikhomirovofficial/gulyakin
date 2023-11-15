@@ -37,4 +37,6 @@ export const PATHS = {
     PAYMENT_CONFIRMATION: "/order/success",
     GET_ORDER: "/order/get",
     ORDER_HISTORY: "/order/list",
+
+    GEO_SUGGESTIONS: "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address/"
 };

@@ -72,7 +72,9 @@ export type AddressApiItem ={
     entrance: number,
     floor: number,
     door_code: number
-    apartment: number
+    apartment: number,
+    long: number,
+    lat: number
 }
 export type AddressAddRequest = Omit<AddressApiItem, "id">
 export type AddressAddResponse = ResponseStatus & Pick<AddressApiItem, "id">

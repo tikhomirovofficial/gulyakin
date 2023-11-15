@@ -65,7 +65,7 @@ export class CartApi {
         return res;
     }
     static async Reset(): Promise<AxiosResponse<CartResetResponse>> {
-        const res: AxiosResponse<CartResetResponse> = await authApi.post(PATHS.RESET_CART);
+        const res: AxiosResponse<CartResetResponse> = await authApi.get(PATHS.RESET_CART);
         if(!res.data) {
             throw res
         }

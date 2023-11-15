@@ -10,7 +10,12 @@ import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import SuccessWindow from "../SuccessWindow";
-import {handleDeliveryVariant, handleDeliveryWayWindow} from "../../../features/modals/modalsSlice";
+import {
+    handleDeliveryVariant,
+    handleDeliveryWayWindow,
+    setAddressSuccess,
+    setAddressSuccessTitle
+} from "../../../features/modals/modalsSlice";
 import {handleOrderFormVal, handleSelectAddressId, handleSelectRestaurant} from "../../../features/forms/formsSlice";
 import {useInput} from "../../../hooks/useInput";
 import {addToCart, addToCartCombo, setProductAfterAddress} from "../../../features/cart/cartSlice";
@@ -79,7 +84,8 @@ type SearchAddressItemProps = {
 }
 type DeliveryWayCommonProps = {
     addToCartWithAfterClose: () => void,
-    handleIsSelectingAddress?: () => void
+    handleIsSelectingAddress?: () => void,
+    handleSuccess?: (title: string) => any
 }
 const SearchAddressItem: FC<SearchAddressItemProps> = ({address, city}) => {
     return (
@@ -91,7 +97,7 @@ const SearchAddressItem: FC<SearchAddressItemProps> = ({address, city}) => {
 }
 
 
-const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) => {
+const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, handleSuccess}) => {
     const [findedAddresses, setFindedAddressess] = useState<Array<SearchAddressItemProps>>([
         {
             address: "Ханты-Мансийский автономный округ, Сургут, улица Энергетиков, 24",
@@ -228,7 +234,7 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) 
         </>
     )
 }
-const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, handleIsSelectingAddress}) => {
+const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, handleSuccess, handleIsSelectingAddress}) => {
     const {addresses} = useAppSelector(state => state.profile)
     const {selectedInDelivery} = useAppSelector(state => state.restaurants)
     const dispatch = useAppDispatch()
@@ -243,6 +249,9 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterCl
     const handleAddAddressDelivery = () => {
         dispatch(handleSelectAddressId(selectedInDelivery))
         addToCartWithAfterClose()
+        if (handleSuccess) {
+            handleSuccess("Адрес выбран!")
+        }
     }
 
     return (
@@ -262,7 +271,7 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterCl
     )
 
 }
-const PickupVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) => {
+const PickupVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, handleSuccess}) => {
     const {addresses} = useAppSelector(state => state.main)
     const {selectedInPickup} = useAppSelector(state => state.restaurants)
 
@@ -271,6 +280,9 @@ const PickupVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose}) =>
     const handleAddAddressPickup = () => {
         dispatch(handleSelectRestaurant(selectedInPickup))
         addToCartWithAfterClose()
+        if (handleSuccess) {
+            handleSuccess("Адрес выбран!")
+        }
     }
     return (
         <>
@@ -325,6 +337,13 @@ const DeliveryWay = () => {
         return [0, 0]
     }
 
+    const handleSuccess = (title: string) => {
+        dispatch(setAddressSuccessTitle(title))
+        dispatch(setAddressSuccess(true))
+        setTimeout(() => {
+            dispatch(setAddressSuccess(false))
+        }, 2000)
+    }
 
     const {addProductAfterAddress} = useAppSelector(state => state.cart)
     const products = useAppSelector(state => state.products)
@@ -343,7 +362,6 @@ const DeliveryWay = () => {
                         }) : []
                     }))
                     handleAddedPopup(matchedProduct.title, matchedProduct.weight)
-
                 }
             } else {
                 const matchedCombo = products.combos.filter(item => item.id == addProductAfterAddress.id)[0]
@@ -364,7 +382,7 @@ const DeliveryWay = () => {
 
                     }))
                     handleAddedPopup(matchedCombo.title, matchedCombo.weight)
-
+                    dispatch(setAddressSuccess(true))
                 }
             }
             dispatch(setProductAfterAddress(null))
@@ -389,7 +407,6 @@ const DeliveryWay = () => {
 
     return (
         <ShadowWrapper onClick={closeDeliveryWay}>
-            <SuccessWindow closeHandle={() => {}} isOpened={false} title={"Ваш адрес успешно добавлен!"}/>
             <WindowBody className={`${styles.window} f-row-betw p-rel`}>
                 <div onClick={closeDeliveryWay} className={"modalAbsoluteClose closeWrapper p-abs"}>
                     <CloseIcon isDark={true}/>
@@ -438,8 +455,8 @@ const DeliveryWay = () => {
                         !variant ?
                             !deliveryFromProfile ?
                             <DeliveryVariant addToCartWithAfterClose={addToCartWithClose}/> :
-                            <AddressProfileVariant handleIsSelectingAddress={handleAddressFromProfile} addToCartWithAfterClose={addToCartWithClose}/> :
-                        <PickupVariant addToCartWithAfterClose={addToCartWithClose}/>
+                            <AddressProfileVariant handleSuccess={handleSuccess} handleIsSelectingAddress={handleAddressFromProfile} addToCartWithAfterClose={addToCartWithClose}/> :
+                        <PickupVariant handleSuccess={handleSuccess} addToCartWithAfterClose={addToCartWithClose}/>
 
                     }
 

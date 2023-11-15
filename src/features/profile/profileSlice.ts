@@ -19,6 +19,7 @@ import {
 } from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import {OrderApi} from "../../http/api/order.api";
+import {setAddressSuccess, setAddressSuccessTitle} from "../modals/modalsSlice";
 
 
 export interface ProfileState {
@@ -86,9 +87,15 @@ export const addAddressUser = createAsyncThunk(
         order: boolean
     }, {dispatch}) => {
         const res: AxiosResponse<AddressAddResponse> = await handleTokenRefreshedRequest(UserApi.AddAddress, request.addressData)
-
         if(request.order) {
             dispatch(handleSelectAddressId(res.data.id))
+        }
+        if(res.data?.status) {
+            dispatch(setAddressSuccessTitle("Адрес успешно добавлен"))
+            dispatch(setAddressSuccess(true))
+            setTimeout(() => {
+                dispatch(setAddressSuccess(false))
+            }, 2000)
         }
         return {
             id: res.data.id,

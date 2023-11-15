@@ -18,7 +18,11 @@ type ModalSliceState = {
     mobileMenu: boolean
     isChangingModeAdditives: boolean,
     productAdditivesData: ProductAdditiveData,
-    cartOpened: boolean
+    cartOpened: boolean,
+    addressSuccess: {
+        opened: boolean,
+        title: string
+    }
 }
 
 const initialState: ModalSliceState = {
@@ -48,6 +52,10 @@ const initialState: ModalSliceState = {
         additives: [
         ],
 
+    },
+    addressSuccess: {
+        opened: false,
+        title: "Адрес успешно выбран!"
     }
 
 
@@ -113,6 +121,15 @@ export const ModalsSlice = createSlice({
         setProductAdditivesData: (state, action: PayloadAction<ProductAdditiveData>) => {
             state.productAdditivesData = action.payload
         },
+        setAddressSuccess: (state, action: PayloadAction<boolean>) => {
+            state.addressSuccess.opened = action.payload
+        },
+        setAddressSuccessTitle: (state, action) => {
+            state.addressSuccess = {
+                ...state.addressSuccess,
+                title: action.payload
+            }
+        }
 
     }
 })
@@ -129,6 +146,8 @@ export const {
     handleNewAddress,
     setChangingAdditivesMode,
     handleCartOpened,
+    setAddressSuccess,
+    setAddressSuccessTitle,
     setMobileMenu,
 } = ModalsSlice.actions
 

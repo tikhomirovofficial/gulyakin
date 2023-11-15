@@ -32,6 +32,7 @@ import HeaderMobile from "./components/Header/mobile";
 import MenuMobile from "./components/MenuMobile";
 import CartWidget from "./components/Cart/widget";
 import {isDateValid} from "./utils/forms/dataValidation";
+import SuccessWindow from "./components/Windows/SuccessWindow";
 
 const MOBILE_WIDTH = 1100
 const SMALL_WIDTH = 800
@@ -49,6 +50,7 @@ function App() {
         deliveryWay,
         productAdditives,
         newAddress,
+        addressSuccess,
         bodyLocked
     } = useAppSelector(state => state.modals)
 
@@ -162,6 +164,7 @@ function App() {
                 <LogosSection/>
                 <AppRoutes isAuth={false}/>
                 <Footer/>
+                <SuccessWindow closeHandle={() => {}} isOpened={addressSuccess.opened} title={addressSuccess.title}/>
                 {isMobile ? <CartWidget/> : null}
                 {isMobile ? <MenuMobile/> : null}
                 {bookingOpened ? <BookingWindow/> : null}

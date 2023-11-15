@@ -20,7 +20,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
     return (
         <>
             {isLoaded ?
-                <div className="block f-column gap-40">
+                <div className="block f-column gap-40 ">
                     {
                         searchedData.length > 0 ?
                         searchedData.map(category => (

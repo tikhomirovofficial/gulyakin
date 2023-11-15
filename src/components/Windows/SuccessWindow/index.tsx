@@ -2,16 +2,17 @@ import React, {FC, ReactNode} from 'react';
 import styles from "./successWindow.module.scss"
 import WhiteWrapper from "../WhiteWrapper";
 import {SuccessGreenIcon} from "../../../icons";
+import {HasClassName} from "../../../types/components.types";
 
-interface SuccessWindowProps {
+type SuccessWindowProps = {
     isOpened: boolean
     title: string
-    closeHandle: () => any
+    closeHandle: () => any,
     bottomContent?: ReactNode
-}
-const SuccessWindow: FC<SuccessWindowProps> = ({title, bottomContent= null, closeHandle,  isOpened}) => {
+} & HasClassName
+const SuccessWindow: FC<SuccessWindowProps> = ({title, bottomContent= null, closeHandle, className , isOpened}) => {
     return (
-        <div onClick={closeHandle} className={`${styles.successWindow} ${isOpened? styles.successWindowOpened : ""} t-opacity-visible-transform-3 h-100v w-100v p-fix top-0 left-0 f-c-col`}>
+        <div onClick={closeHandle} className={`${styles.successWindow} ${isOpened? styles.successWindowOpened : ""} ${className || ""} t-opacity-visible-transform-3 h-100v w-100v p-fix top-0 left-0 f-c-col`}>
             <WhiteWrapper className={`${styles.container} f-column al-center gap-20`}>
                 <div className="f-column gap-20 al-center">
                     <h1>{title}</h1>

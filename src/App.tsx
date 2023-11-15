@@ -22,7 +22,7 @@ import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
 import {
     getAddressesByMarketCity, getBookings,
     getCities,
-    getDeliveries,
+    getDeliveries, getMarketsByCity,
     getPayments,
     setIsMobile,
     setIsPhone
@@ -150,6 +150,9 @@ function App() {
     useEffect(() => {
         if(cities.length > 0) {
             dispatch(getBookings({
+                siti_id: currentGeo.city
+            }))
+            dispatch(getMarketsByCity({
                 siti_id: currentGeo.city
             }))
         }

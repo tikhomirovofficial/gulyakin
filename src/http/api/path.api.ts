@@ -11,6 +11,7 @@ export const PATHS = {
     MARKET_CITIES: "/market/",
     PRODUCT_BY_MARKET: "/product/in-market",
     MARKET_ADDRESSES: "/market/adress/siti",
+    MARKETS_BY_CITY: "/market/adress/market",
     MARKET_ADDRESSES_BY_CITY: "/market/adress/market/siti",
     MARKET_INFO: "/market/info",
     MARKET_CATEGORIES: "/product/category",
@@ -32,6 +33,7 @@ export const PATHS = {
     RESET_CART: "/cart/clear",
 
     DELIVERY_OPTIONS: "/order/delivery/list",
+    GET_TYPE_DELIVERY: "/order/geo/delivery/type",
     PAYMENT_OPTIONS: "/order/payment/list",
 
     CREATE_ORDER: "/order/create",

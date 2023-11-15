@@ -2,7 +2,7 @@ import {FC, ReactNode} from "react";
 import styles from "./logosSection.module.scss";
 import {
     FoodHallLogo,
-    FoodPancakesLogo,
+    FoodPancakesLogo, GorSportLogo,
     GulenkiPelmeniLogo,
     GulibuliLogo,
     GustoLogo,
@@ -20,13 +20,7 @@ export type MarketItem = {
 }
 
 export const marketComponents: MarketItem[] = [
-    {
-        mapSvg: getImgPath("/logos/logo_gulyakin.svg"),
-        ComponentLogo: FoodHallLogo,
-        className: `${styles.item} ${styles.neededFill} f-c-col`,
-        forMarketId: 5,
-        selectedClassName: styles.selectedNeededFill
-    },
+
     {
         mapSvg: getImgPath("/logos/pelmen.svg"),
         ComponentLogo: GulenkiPelmeniLogo,
@@ -52,29 +46,43 @@ export const marketComponents: MarketItem[] = [
         mapSvg: getImgPath("/logos/vorob.svg"),
         ComponentLogo: VorobushekLogo,
         className: `${styles.item} ${styles.neededFill} f-c-col `,
-        forMarketId: 6,
+        forMarketId: 5,
         selectedClassName: styles.selectedNeededFill
     },
     {
         mapSvg: getImgPath("/logos/gusto.svg"),
         ComponentLogo: GustoLogo,
         className: `${styles.item} ${styles.neededGusto} f-c-col `,
-        forMarketId: 7,
+        forMarketId: 6,
         selectedClassName: `${styles.selectedNeededGusto}`
+    },
+    {
+        mapSvg: getImgPath("/logos/logo_gulyakin.svg"),
+        ComponentLogo: FoodHallLogo,
+        className: `${styles.item} ${styles.neededFill} f-c-col`,
+        forMarketId: 1,
+        selectedClassName: styles.selectedNeededFill
     },
     {
         mapSvg: getImgPath("/logos/logo_5.svg"),
         ComponentLogo: ShrimpLogo,
         className: `${styles.item} ${styles.neededFill} f-c-col `,
-        forMarketId: 8,
+        forMarketId: 7,
         selectedClassName: styles.selectedNeededFill
     },
     {
         mapSvg: getImgPath("/logos/logo_4.svg"),
         ComponentLogo: GulibuliLogo,
         className: `${styles.item} ${styles.neededFill} f-c-col `,
-        forMarketId: 9,
+        forMarketId: 8,
         selectedClassName: styles.selectedNeededFill
+    },
+    {
+        mapSvg: getImgPath("/logos/logo_4.svg"),
+        ComponentLogo: GorSportLogo,
+        className: `${styles.item} ${styles.neededSport} f-c-col `,
+        forMarketId: 9,
+        selectedClassName: styles.selectedSport
     }
 
 ]

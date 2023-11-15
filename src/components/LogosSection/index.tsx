@@ -9,9 +9,12 @@ import {setMarket} from "../../features/main/mainSlice";
 import {resetOrderForm} from "../../utils/common/resetOrderForm";
 import {setOrderForm} from "../../features/forms/formsSlice";
 
-const LogoItem: FC<Pick<MarketItem, "forMarketId">> = ({forMarketId}) => {
+type LogoItemProps = {
+    id: number
+} & Pick<MarketItem, "forMarketId">
+const LogoItem: FC<LogoItemProps> = ({forMarketId, id}) => {
     const dispatch = useAppDispatch()
-    const {market} = useAppSelector(state => state.main)
+    const {market, cityMarkets} = useAppSelector(state => state.main)
     const getByForId = (forId: number) => {
         return marketComponents.find(item => item.forMarketId === forId) || null
     }
@@ -24,7 +27,7 @@ const LogoItem: FC<Pick<MarketItem, "forMarketId">> = ({forMarketId}) => {
         const classNameLogo = gettedMarket.className
         const classNameSelected = gettedMarket.selectedClassName
         const handleToMarket = () => {
-            dispatch(setMarket(forMarketId))
+            dispatch(setMarket(id))
             dispatch(setOrderForm({
                 address: "", restaurant: -1,
                 addressId: -1
@@ -43,7 +46,7 @@ const LogoItem: FC<Pick<MarketItem, "forMarketId">> = ({forMarketId}) => {
 }
 
 const LogosSection = () => {
-    const {markets} = useAppSelector(state => state.main)
+    const {markets, cityMarkets} = useAppSelector(state => state.main)
 
     const getByForId = (forId: number) => {
         return marketComponents.find(item => item.forMarketId === forId) || null
@@ -58,10 +61,10 @@ const LogosSection = () => {
                     slidesPerView={"auto"}
                     className={`${styles.logos}`}>
                     {
-                        markets.map(marketItem => (
-                            getByForId(marketItem.id) !== null ?
+                        cityMarkets.map(marketItem => (
+                            getByForId(marketItem.link) !== null ?
                                 <SwiperSlide className={"w-content"}>
-                                    <LogoItem forMarketId={marketItem.id}/>
+                                    <LogoItem key={marketItem.id} id={marketItem.id} forMarketId={marketItem.link}/>
                                 </SwiperSlide> : null
                         ))
                     }

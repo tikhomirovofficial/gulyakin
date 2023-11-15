@@ -2,17 +2,28 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {AxiosResponse} from "axios";
 import {
-    AddressByMarketCity, BookingCreateRequest, BookingCreateResponse,
+    AddressByMarketCity,
+    BookingCreateRequest,
+    BookingCreateResponse,
     GetAddressesByMarketCityRequest,
-    GetAddressesByMarketCityResponse, GetBookingsRequest, GetBookingsResponse,
-    GetCitiesResponse, GetDeliveryListResponse, GetPaymentListResponse
+    GetAddressesByMarketCityResponse,
+    GetBookingsRequest,
+    GetBookingsResponse,
+    GetCitiesResponse,
+    GetDeliveryListResponse,
+    GetMarketsByCityRequest,
+    GetMarketsByCityResponse, GetOrderDeliveryRequest, GetOrderDeliveryResponse,
+    GetPaymentListResponse,
+    MarketByCityItem, OrderDeliveryDetails
 } from "../../types/api.types";
 import {AddressesApi} from "../../http/api/addresses.api";
 import {OrderApi} from "../../http/api/order.api";
+import {MarketApi} from "../../http/api/market.api";
 
 type Market = {
     title: string,
     id: number
+    link_id: number
 }
 type VariantType = {
     title: string,
@@ -40,6 +51,8 @@ type MainSliceState = {
     payments: VariantType[],
     deliveryTypes: VariantType[],
     bookingAddresses: AddressType[],
+    cityMarkets: MarketByCityItem[],
+    orderDetails: OrderDeliveryDetails
 
 
 }
@@ -57,37 +70,50 @@ const initialState: MainSliceState = {
     payments: [],
     deliveryTypes: [],
     bookingAddresses: [],
+    cityMarkets: [],
+    orderDetails: {
+        delivery_type: 0, price: 0
+
+    },
     markets: [
         {
             id: 2,
+            link_id: 2,
             title: "Гуленьки Пельменная"
         },
         {
             id: 3,
+            link_id: 3,
             title: "Гуленьки Блинная"
         },
         {
             id: 4,
+            link_id: 4,
             title: "IFOOD"
         },
         {
             id: 5,
+            link_id: 1,
             title: "Фудхолл"
         },
         {
             id: 6,
+            link_id: 5,
             title: "Воробушек"
         },
         {
             id: 7,
+            link_id: 6,
             title: "GUSTO"
         },
         {
             id: 8,
+            link_id: 7,
             title: "Креветочная"
         },
         {
             id: 9,
+            link_id: 8,
             title: "Гулибули"
         }
     ]
@@ -116,6 +142,13 @@ export const getDeliveries = createAsyncThunk(
 
     }
 )
+export const getMarketsByCity = createAsyncThunk(
+    'markets/city/get',
+    async (request: GetMarketsByCityRequest, {dispatch}) => {
+        const res: AxiosResponse<GetMarketsByCityResponse> = await MarketApi.MarketsByCity(request)
+        return res.data.market
+    }
+)
 export const getBookings = createAsyncThunk(
     'bookings/get',
     async (request: GetBookingsRequest, {dispatch}) => {
@@ -124,7 +157,14 @@ export const getBookings = createAsyncThunk(
 
     }
 )
+export const getDeliveryType = createAsyncThunk(
+    'delivery/type/get',
+    async (request: GetOrderDeliveryRequest, {dispatch}) => {
+        const res: AxiosResponse<GetOrderDeliveryResponse> = await OrderApi.GetTypeDelivery(request)
+        return res.data
 
+    }
+)
 export const getPayments = createAsyncThunk(
     'payments/get',
     async (_, {dispatch}) => {
@@ -190,7 +230,15 @@ export const MainSlice = createSlice({
         builder.addCase(getPayments.fulfilled, (state, action) => {
             state.payments = action.payload
         })
-
+        builder.addCase(getMarketsByCity.fulfilled, (state, action) => {
+            state.cityMarkets = action.payload
+        })
+        builder.addCase(getDeliveryType.fulfilled, (state, action) => {
+            state.orderDetails = {
+                delivery_type: action.payload.delivery_type,
+                price: action.payload.price
+            }
+        })
     }
 })
 

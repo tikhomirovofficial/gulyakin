@@ -32,6 +32,7 @@
       }
     }
   }
+
   .selectedNeededIFood {
     background: #FB634D;
     svg {
@@ -43,6 +44,23 @@
       }
 
     }
+  }
+  .selectedSport {
+
+    background: #FB634D;
+    svg {
+      g {
+        path:first-child {
+          fill: white;
+        }
+        path:not(:first-child) {
+          fill: #FB634D;
+        }
+      }
+
+    }
+
+
   }
   .selectedNeededGusto {
     background: #FB634D;
@@ -65,6 +83,23 @@
       }
     }
   }
+  .neededSport {
+    &:hover {
+      background: #FB634D;
+      svg {
+        g {
+          path:first-child {
+            fill: white;
+          }
+          path:not(:first-child) {
+            fill: #FB634D;
+          }
+        }
+
+      }
+    }
+
+  }
   .neededFill {
     &:hover {
       background: #FB634D;
@@ -75,6 +110,7 @@
       }
     }
   }
+
   .neededIfood {
     &:hover {
       background: #FB634D;

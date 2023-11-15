@@ -35,7 +35,7 @@ const RestaurantItem: FC<RestaurantItemProps> = ({cityArea, street, link, canOnl
 }
 
 const Restaurants: FC = () => {
-    const {addresses, currentGeo, cities, market} = useAppSelector(state => state.main)
+    const {addresses, currentGeo, cities, market, cityMarkets} = useAppSelector(state => state.main)
     const logo = useMarketLogo()
     const getAddressesCoords = () => {
         if (addresses.length > 0) {
@@ -61,8 +61,7 @@ const Restaurants: FC = () => {
                         <div className="f-column gap-20">
                             <div className="wrapper w-100p">
                                 <div className="sectionTitle">
-                                    {addresses.length} кафе в
-                                    городе {cities.length > 0 ? cities.filter(city => city.id === currentGeo.city)[0]?.name : ""}
+                                    {addresses.length} кафе в {cityMarkets.length > 0 ? cityMarkets.filter(marketItem => marketItem.id === market)[0]?.market : ""} городе {cities.length > 0 ? cities.filter(city => city.id === currentGeo.city)[0]?.name : ""}
                                 </div>
                             </div>
                             <div className={`${styles.restContainer} wrapper w-100p`}>

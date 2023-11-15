@@ -326,6 +326,7 @@ export type GetOrderDetailsItem = {
     products: string[]
     address: string
 }
+
 export type GetOrderItem = {
     order_id: number,
     datetime: string,
@@ -369,3 +370,25 @@ export type BookingCreateRequest = {
     phone: string
 }
 export type BookingCreateResponse = ResponseStatus
+export type MarketByCityItem = {
+    id: number,
+    link: number,
+    market: string
+}
+
+export type GetMarketsByCityRequest = {
+    siti_id: number
+}
+export type GetMarketsByCityResponse = {
+    market: MarketByCityItem[]
+} & ResponseStatus
+
+export type GetOrderDeliveryRequest = {
+    lat: number
+    lon: number
+}
+export type OrderDeliveryDetails = {
+    delivery_type: number
+    price: number
+}
+export type GetOrderDeliveryResponse = OrderDeliveryDetails & ResponseStatus

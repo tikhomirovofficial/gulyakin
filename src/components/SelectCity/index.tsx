@@ -5,13 +5,14 @@ import RedButton from "../Buttons/RedButton";
 import GrayButton from "../Buttons/GrayButton";
 import List from "../List";
 import {DropDownItem} from "../DropdownList";
-import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
+import {setCurrentCity, setMarket, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {addToStorage} from "../../utils/LocalStorageExplorer";
 import {HasClassName} from "../../types/components.types";
 import {setOrderForm} from "../../features/forms/formsSlice";
 import {resetOrderForm} from "../../utils/common/resetOrderForm";
 import {resetCart} from "../../features/cart/cartSlice";
+import {useLocation, useNavigate} from "react-router-dom";
 
 type SelectCityProps = {
     classNamePopup?: string,
@@ -19,6 +20,8 @@ type SelectCityProps = {
 }
 const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupClass, classNamePopup}) => {
     const dispatch = useAppDispatch()
+    const location = useLocation()
+    const navigation = useNavigate()
     const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
     const handleChangingGeo = () => dispatch(toggleChangingGeo())
     const handleAskCity = () => {
@@ -32,6 +35,7 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupC
     }
 
     const selectCity = (cityId: number) => {
+
         dispatch(setOrderForm({
             address: "", restaurant: -1,
             addressId: -1
@@ -40,6 +44,10 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupC
         dispatch(resetCart())
         dispatch(setCurrentCity(cityId))
         handleChangingGeo()
+        const isOrderPage = location.pathname == "/order"
+        if(isOrderPage) {
+            navigation("/")
+        }
     }
     return (
         <div className={`${styles.logoText} ${className || ""} p-rel f-column gap-5`}>

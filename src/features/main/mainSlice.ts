@@ -2,19 +2,29 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {AxiosResponse} from "axios";
 import {
+    AddressByCityItem,
     AddressByMarketCity,
     BookingCreateRequest,
     BookingCreateResponse,
+    CanOrderAddressesByCityRequest,
+    CanOrderAddressesByCityResponse,
+    CanOrderByCityRequest,
+    CanOrderByCityResponse,
     GetAddressesByMarketCityRequest,
     GetAddressesByMarketCityResponse,
     GetBookingsRequest,
     GetBookingsResponse,
+    GetByCityAddressesRequest,
+    GetByCityAddressesResponse,
     GetCitiesResponse,
     GetDeliveryListResponse,
     GetMarketsByCityRequest,
-    GetMarketsByCityResponse, GetOrderDeliveryRequest, GetOrderDeliveryResponse,
+    GetMarketsByCityResponse,
+    GetOrderDeliveryRequest,
+    GetOrderDeliveryResponse,
     GetPaymentListResponse,
-    MarketByCityItem, OrderDeliveryDetails
+    MarketByCityItem,
+    OrderDeliveryDetails
 } from "../../types/api.types";
 import {AddressesApi} from "../../http/api/addresses.api";
 import {OrderApi} from "../../http/api/order.api";
@@ -47,12 +57,15 @@ type MainSliceState = {
     }
     isMobile: boolean
     isPhone: boolean,
+    canOrder: boolean
     markets: Array<Market>
     payments: VariantType[],
     deliveryTypes: VariantType[],
     bookingAddresses: AddressType[],
     cityMarkets: MarketByCityItem[],
     orderDetails: OrderDeliveryDetails
+    cityAddresses: AddressByCityItem[],
+    pickupAddresses: AddressByCityItem[]
 
 
 }
@@ -71,6 +84,9 @@ const initialState: MainSliceState = {
     deliveryTypes: [],
     bookingAddresses: [],
     cityMarkets: [],
+    cityAddresses: [],
+    pickupAddresses: [],
+    canOrder: true,
     orderDetails: {
         delivery_type: 0, price: 0
 
@@ -134,6 +150,7 @@ export const getCities = createAsyncThunk(
 
     }
 )
+
 export const getDeliveries = createAsyncThunk(
     'deliveries/get',
     async (_, {dispatch}) => {
@@ -142,10 +159,33 @@ export const getDeliveries = createAsyncThunk(
 
     }
 )
+
+export const getCanOrderByCity = createAsyncThunk(
+    'can/order/get',
+    async (request: CanOrderByCityRequest, {dispatch}) => {
+        const res: AxiosResponse<CanOrderByCityResponse> = await OrderApi.GetCanOrderByCity(request)
+        return res.data
+
+    }
+)
+export const getCanOrderAddressesByCity = createAsyncThunk(
+    'can/pickup/addresses/get',
+    async (request: CanOrderAddressesByCityRequest, {dispatch}) => {
+        const res: AxiosResponse<CanOrderAddressesByCityResponse> = await OrderApi.GetCanOrderAddressesByCity(request)
+        return res.data
+
+    }
+)
 export const getMarketsByCity = createAsyncThunk(
     'markets/city/get',
     async (request: GetMarketsByCityRequest, {dispatch}) => {
         const res: AxiosResponse<GetMarketsByCityResponse> = await MarketApi.MarketsByCity(request)
+        if(res?.data) {
+            if(res.data.market.length) {
+                dispatch(setMarket(res.data.market[0].id))
+            }
+
+        }
         return res.data.market
     }
 )
@@ -165,6 +205,14 @@ export const getDeliveryType = createAsyncThunk(
 
     }
 )
+export const getAddressesByCity = createAsyncThunk(
+    'addresses/city/get',
+    async (request: GetByCityAddressesRequest, {dispatch}) => {
+        const res: AxiosResponse<GetByCityAddressesResponse> = await AddressesApi.AddressesByCityId(request)
+        return res.data.adress
+    }
+)
+
 export const getPayments = createAsyncThunk(
     'payments/get',
     async (_, {dispatch}) => {
@@ -233,12 +281,26 @@ export const MainSlice = createSlice({
         builder.addCase(getMarketsByCity.fulfilled, (state, action) => {
             state.cityMarkets = action.payload
         })
+        builder.addCase(getCanOrderByCity.fulfilled, (state, action) => {
+            state.canOrder = action.payload.status
+        })
+        builder.addCase(getAddressesByCity.fulfilled, (state, action) => {
+            state.cityAddresses = action.payload
+        })
+        builder.addCase(getCanOrderAddressesByCity.fulfilled, (state, action) => {
+            if(action.payload.status) {
+                state.pickupAddresses = action.payload.adress
+                return;
+            }
+            state.canOrder = action.payload.status
+        })
         builder.addCase(getDeliveryType.fulfilled, (state, action) => {
             state.orderDetails = {
                 delivery_type: action.payload.delivery_type,
                 price: action.payload.price
             }
         })
+
     }
 })
 

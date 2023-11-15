@@ -78,7 +78,7 @@ export const marketComponents: MarketItem[] = [
         selectedClassName: styles.selectedNeededFill
     },
     {
-        mapSvg: getImgPath("/logos/logo_4.svg"),
+        mapSvg: getImgPath("/logos/sport.svg"),
         ComponentLogo: GorSportLogo,
         className: `${styles.item} ${styles.neededSport} f-c-col `,
         forMarketId: 9,

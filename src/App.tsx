@@ -20,7 +20,8 @@ import {getCombosByMarket, getProductByMarket, getSouses} from "./features/produ
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
 import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
 import {
-    getAddressesByMarketCity, getBookings,
+    getAddressesByCity,
+    getAddressesByMarketCity, getBookings, getCanOrderAddressesByCity,
     getCities,
     getDeliveries, getMarketsByCity,
     getPayments,
@@ -56,7 +57,8 @@ function App() {
 
     const {items} = useAppSelector(state => state.cart)
     const orderForm = useAppSelector(state => state.forms.orderForm)
-    const {market, cities, currentGeo, isMobile} = useAppSelector(state => state.main)
+
+    const {market, cities, currentGeo, isMobile, cityAddresses} = useAppSelector(state => state.main)
 
     const handleResize = () => {
         dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))
@@ -108,9 +110,12 @@ function App() {
 
 
     useEffect(() => {
-
         dispatch(getCategoriesByMarket({market_id: market}))
-        dispatch(getProductByMarket({market_id: market}))
+        const date = new Date()
+        dispatch(getProductByMarket({
+            market_id: market,
+            date: `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+        }))
         dispatch(getCombosByMarket({market_id: market}))
         dispatch(getSouses())
 
@@ -147,6 +152,7 @@ function App() {
             }))
         }
     }, [cities, currentGeo.city, market])
+
     useEffect(() => {
         if(cities.length > 0) {
             dispatch(getBookings({
@@ -155,8 +161,23 @@ function App() {
             dispatch(getMarketsByCity({
                 siti_id: currentGeo.city
             }))
+            dispatch(getAddressesByCity({
+                siti_id: currentGeo.city
+            }))
         }
     }, [cities, currentGeo.city])
+
+    useEffect(() => {
+        if(token) {
+            const hasAddresses = cityAddresses.length > 0
+            if(hasAddresses) {
+                dispatch(getCanOrderAddressesByCity({
+                    siti_id: currentGeo.city
+                }))
+            }
+        }
+
+    }, [cityAddresses, items])
 
     return (
         <>

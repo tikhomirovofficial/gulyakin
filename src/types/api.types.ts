@@ -19,7 +19,9 @@ export interface Supplement {
 export type ProductRes = {
     id: number;
     title: string;
+    is_product_day?: boolean
     short_description: string;
+
     description: string;
     price: number;
     image: string;
@@ -94,15 +96,18 @@ export type GetUserDataResponse = ResponseStatus & {
 export type GetByCityAddressesRequest = {
     siti_id: number
 }
-
+export type AddressByCityItem = {
+    id: number,
+    siti: string,
+    adress: string,
+    long: number,
+    lat: number,
+    market_id: number,
+    work_with: string,
+    works_until: string
+}
 export type GetByCityAddressesResponse = ResponseStatus & {
-    address: Array<{
-        address_id: number,
-        siti: string,
-        address: string,
-        long: number,
-        lat: number
-    }>
+    adress: Array<AddressByCityItem>
 }
 
 export type GetAddressInfoRequest = {
@@ -137,7 +142,8 @@ export type GetAddressesByMarketCityResponse = {
 } & ResponseStatus
 
 export type GetProductsByMarketRequest = {
-    market_id: number
+    market_id: number,
+    date: string
 }
 export type GetProductsByMarketResponse = {
     products: ProductRes[];
@@ -392,3 +398,16 @@ export type OrderDeliveryDetails = {
     price: number
 }
 export type GetOrderDeliveryResponse = OrderDeliveryDetails & ResponseStatus
+
+export type CanOrderByCityRequest = {
+    siti_id: number
+}
+export type CanOrderByCityResponse = ResponseStatus
+
+export type CanOrderAddressesByCityRequest = {
+    siti_id: number
+}
+
+export type CanOrderAddressesByCityResponse = {
+   adress: Array<AddressByCityItem>
+} & ResponseStatus

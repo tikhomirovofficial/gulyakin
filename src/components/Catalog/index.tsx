@@ -34,6 +34,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                         <Product
                                             key={product.id}
                                             title={product.title}
+                                            is_product_day={product.is_product_day !== undefined ? product.is_product_day : false}
                                             id={product.id}
                                             count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
                                             inCart={cart.items.some(item => item.product.id === product.id && !item.is_combo)}

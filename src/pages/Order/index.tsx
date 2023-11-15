@@ -14,7 +14,9 @@ import {
     handleOrderTime,
     handleSelectAddressId,
     handleSelectRestaurant,
-    sendOrder, setOrderError, setOrderSuccess
+    sendOrder,
+    setOrderError,
+    setOrderSuccess
 } from "../../features/forms/formsSlice";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import {domain} from "../../http/instance/instances";
@@ -27,6 +29,7 @@ import {useInput} from "../../hooks/useInput";
 import SuccessWindow from "../../components/Windows/SuccessWindow";
 import {getAvailableTimes} from "../../utils/avaliableTimes";
 import {Link} from "react-router-dom";
+import {getCanOrderAddressesByCity} from "../../features/main/mainSlice";
 
 const orderTimes = getAvailableTimes()
 
@@ -65,7 +68,7 @@ const OrderItem: FC<OrderItemProps> = ({image, id, title, supplements = [], coun
 const Order = () => {
     const dispatch = useAppDispatch()
     const {data, addresses} = useAppSelector(state => state.profile)
-    const marketAddresses = useAppSelector(state => state.main.addresses)
+    const marketAddresses = useAppSelector(state => state.main.cityAddresses)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
 
@@ -92,11 +95,13 @@ const Order = () => {
         window.location.href = '/profile#orders'
     }
 
+
+
     const handleCreateOrder = () => {
-        if(error.length) {
+        if (error.length) {
             setOrderError("")
         }
-        const paymentTypeOrder =  paymentWay == "CARD" ? 1 : 2
+        const paymentTypeOrder = paymentWay == "CARD" ? 1 : 2
         const timeDeliveryOrder = time == "FAST" ? "40 min" : time
         const deliveryTypeOrder = isPickup ? 3 : 2
         const changeWith = paymentWay == "CASH" ? Number(changeSum) : undefined
@@ -113,7 +118,6 @@ const Order = () => {
         }
         dispatch(sendOrder(req))
     }
-    const handleCart = () => dispatch(handleCartOpened())
 
     useEffect(() => {
         dispatch(handleOrderFormVal({
@@ -121,42 +125,42 @@ const Order = () => {
             val: data.name
         }))
     }, [])
+
     useEffect(() => {
-        if(isPickup) {
+        if (isPickup) {
             setDeliveryPrice(0)
             return;
         }
         setDeliveryPrice(100)
     }, [isPickup])
 
-   //console.log(marketAddresses.length > 0 ? marketAddresses[0].id : -1)
     const getCurrentPickupAddress = () => {
-        if(restFromStorage !== -1) {
+        if (restFromStorage !== -1) {
             return restFromStorage
         }
-        if(restaurant !== -1) {
+        if (restaurant !== -1) {
             return restaurant
         }
-        if(marketAddresses.length > 0) {
+        if (marketAddresses.length > 0) {
             return marketAddresses[0].id
         }
         return 0
     }
     const getCurrentDeliveryAddress = () => {
-        if(addressFromStorage !== -1) {
+        if (addressFromStorage !== -1) {
             return addressFromStorage
         }
-        if(addressId !== -1) {
+        if (addressId !== -1) {
             return addressId
         }
-        if(addresses.length > 0) {
+        if (addresses.length > 0) {
             return addresses[0].id
         }
         return 0
     }
     const handleChangeDeliveryType = () => {
         dispatch(handleOrderPickup())
-        if(!isPickup) {
+        if (!isPickup) {
             dispatch(handleSelectRestaurant(getCurrentPickupAddress()))
         } else {
             dispatch(handleSelectAddressId(getCurrentDeliveryAddress()))
@@ -166,12 +170,12 @@ const Order = () => {
     }
 
     const getDisabledBtn = () => {
-        if(cart.totalPrice !== 0) {
+        if (cart.totalPrice !== 0) {
             // Если вдруг не указан айди адреса, но выбрана доставка
-            if(!isPickup && (addressId == 0 || addressId == -1)) {
+            if (!isPickup && (addressId == 0 || addressId == -1)) {
                 return true
             }
-            if(isPickup && (restaurant == 0 || restaurant == -1)) {
+            if (isPickup && (restaurant == 0 || restaurant == -1)) {
                 return true
             }
             return false
@@ -233,11 +237,13 @@ const Order = () => {
                                                                     items={addresses}
                                                                 /> : null
                                                         }
-                                                        <div style={{fontSize: 14}} onClick={() => dispatch(handleNewAddress())} className={`${styles.wayOrderBtn} self-end d-f colorRed cur-pointer`}>
+                                                        <div style={{fontSize: 14}}
+                                                             onClick={() => dispatch(handleNewAddress())}
+                                                             className={`${styles.wayOrderBtn} self-end d-f colorRed cur-pointer`}>
                                                             Добавить адрес
                                                         </div>
                                                     </div>
-                                                     :
+                                                    :
                                                     <SelectInput
                                                         defaultCurrent={getCurrentPickupAddress()}
                                                         className={styles.selectRestaurant}
@@ -344,7 +350,8 @@ const Order = () => {
                                 <div className="f-column gap-15">
                                     <div className="f-column gap-5">
                                         {
-                                            error.length ?      <p style={{fontSize: 16}} className={"colorError"}>{error}</p> : null
+                                            error.length ?
+                                                <p style={{fontSize: 16}} className={"colorError"}>{error}</p> : null
                                         }
 
                                         <RedButton onClick={handleCreateOrder}
@@ -385,7 +392,7 @@ const Order = () => {
                                         <div className={`${styles.productsInfo} f-column gap-5`}>
                                             <div className="f-row-betw">
                                                 <p>{cart.items.length} товаров</p>
-                                                <p>{formatNumberWithSpaces(cart.totalPrice )} ₽</p>
+                                                <p>{formatNumberWithSpaces(cart.totalPrice)} ₽</p>
                                             </div>
                                             <div className="f-row-betw">
                                                 <p>Доставка</p>
@@ -410,7 +417,8 @@ const Order = () => {
                 </div>
             </div>
             <SuccessWindow
-                bottomContent={<RedButton onClick={closeSuccess} className={`${styles.orderSuccessBtn} pd-10 w-100p`}>Принять</RedButton>}
+                bottomContent={<RedButton onClick={closeSuccess}
+                                          className={`${styles.orderSuccessBtn} pd-10 w-100p`}>Принять</RedButton>}
                 closeHandle={closeSuccess}
                 isOpened={success}
                 title={"Успешно заказано!"}/>

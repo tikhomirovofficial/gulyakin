@@ -10,7 +10,7 @@ export const PATHS = {
 
     MARKET_CITIES: "/market/",
     PRODUCT_BY_MARKET: "/product/in-market",
-    MARKET_ADDRESSES: "/market/adress/siti",
+    CITY_ADDRESSES: "/market/adress/siti",
     MARKETS_BY_CITY: "/market/adress/market",
     MARKET_ADDRESSES_BY_CITY: "/market/adress/market/siti",
     MARKET_INFO: "/market/info",
@@ -40,6 +40,9 @@ export const PATHS = {
     PAYMENT_CONFIRMATION: "/order/success",
     GET_ORDER: "/order/get",
     ORDER_HISTORY: "/order/list",
+
+    ACCESSIBILITY_ORDER_CITY: "/order/check ",
+    ACCESSIBILITY_ORDER_CITY_ADDRESSES: "/order/check/get-adress",
 
     GEO_SUGGESTIONS: "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address/"
 };

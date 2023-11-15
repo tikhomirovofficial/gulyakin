@@ -1,4 +1,6 @@
 import {
+    CanOrderAddressesByCityRequest, CanOrderAddressesByCityResponse,
+    CanOrderByCityRequest, CanOrderByCityResponse,
     CreateOrderRequest,
     CreateOrderResponse,
     GetDeliveryListResponse,
@@ -52,6 +54,21 @@ export class OrderApi {
 
     static async PaymentConfirmation(requestData: SendPaymentRequest): Promise<AxiosResponse<SendPaymentResponse>> {
         const res: AxiosResponse<SendPaymentResponse> = await api.post(PATHS.PAYMENT_CONFIRMATION, {...requestData});
+        return res;
+    }
+
+    static async GetCanOrderByCity(requestData: CanOrderByCityRequest): Promise<AxiosResponse<CanOrderByCityResponse>> {
+        const res: AxiosResponse<CanOrderByCityResponse> = await authApi.get(PATHS.ACCESSIBILITY_ORDER_CITY + ConvertDataToGetParams(requestData));
+        if (!res.data) {
+            throw res
+        }
+        return res;
+    }
+    static async GetCanOrderAddressesByCity(requestData: CanOrderAddressesByCityRequest): Promise<AxiosResponse<CanOrderAddressesByCityResponse>> {
+        const res: AxiosResponse<CanOrderAddressesByCityResponse> = await authApi.get(PATHS.ACCESSIBILITY_ORDER_CITY_ADDRESSES + ConvertDataToGetParams(requestData));
+        if (!res.data) {
+            throw res
+        }
         return res;
     }
 

@@ -11,7 +11,6 @@ import {
 } from "../../../features/modals/modalsSlice";
 import {ProductRes, Supplement} from "../../../types/api.types";
 import {editCountCart} from "../../../features/cart/cartSlice";
-import useToken from "../../../hooks/useToken";
 import {domain} from "../../../http/instance/instances";
 
 type ProductProps = {
@@ -33,6 +32,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                                                       sale,
                                                       className,
                                                       composition,
+    is_product_day,
                                                       weight,
                                                       price
                                                   }) => {
@@ -85,17 +85,15 @@ const Product: FC<ProductProps & HasClassName> = ({
         }
     }
 
-    const isDayProduct = false
-
     return (
         <div onClick={handleOpenAdditives} className={`${styles.product} cur-pointer h-100p f-column-betw gap-15`}>
             <div className="f-column ">
                 <div className={`${styles.img} w-100p`}>
                     <img src={domain + "/" + image}/>
                     {
-                        isDayProduct ? <div className={`d-f al-center gap-5 ${styles.productLabel}`}>
+                        is_product_day ? <div className={`d-f al-center gap-5 ${styles.productLabel}`}>
                             <StarsIcon/>
-                            <b>Товар недели</b>
+                            <b>Товар дня</b>
                         </div> : null
                     }
                 </div>

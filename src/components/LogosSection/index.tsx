@@ -15,6 +15,7 @@ type LogoItemProps = {
 const LogoItem: FC<LogoItemProps> = ({forMarketId, id}) => {
     const dispatch = useAppDispatch()
     const {market, cityMarkets} = useAppSelector(state => state.main)
+    const {restaurant} = useAppSelector(state => state.forms.orderForm)
     const getByForId = (forId: number) => {
         return marketComponents.find(item => item.forMarketId === forId) || null
     }
@@ -28,11 +29,13 @@ const LogoItem: FC<LogoItemProps> = ({forMarketId, id}) => {
         const classNameSelected = gettedMarket.selectedClassName
         const handleToMarket = () => {
             dispatch(setMarket(id))
-            dispatch(setOrderForm({
-                address: "", restaurant: -1,
-                addressId: -1
-            }))
-            resetOrderForm()
+            // if(restaurant === -1) {
+            //     resetOrderForm()
+            //     dispatch(setOrderForm({
+            //         address: "", restaurant: -1,
+            //         addressId: -1
+            //     }))
+            // }
         }
 
         return (
@@ -51,7 +54,6 @@ const LogosSection = () => {
     const getByForId = (forId: number) => {
         return marketComponents.find(item => item.forMarketId === forId) || null
     }
-
 
     return (
         <div className={`pd-40-0 ${styles.section}`}>

@@ -26,6 +26,7 @@ import {handleCartOpened, handleNewAddress} from "../../features/modals/modalsSl
 import {useInput} from "../../hooks/useInput";
 import SuccessWindow from "../../components/Windows/SuccessWindow";
 import {getAvailableTimes} from "../../utils/avaliableTimes";
+import {Link} from "react-router-dom";
 
 const orderTimes = getAvailableTimes()
 
@@ -353,7 +354,8 @@ const Order = () => {
                                     </div>
 
                                     <div className={"w-100p d-f jc-center"}>
-                                        <b onClick={handleCart} className={`${styles.backCart}`}>Вернуться в корзину</b>
+
+                                        <Link to={"/"} className={`${styles.backCart}`}>Вернуться в меню</Link>
                                     </div>
 
                                 </div>

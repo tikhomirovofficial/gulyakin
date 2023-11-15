@@ -19,6 +19,7 @@ import {useInput} from "../../hooks/useInput";
 import Catalog from "../../components/Catalog";
 import {domain} from "../../http/instance/instances";
 import Combo from "../../components/Catalog/Combo";
+import Sales from '../../components/Sales';
 
 const Main: FC = () => {
     const {categories, products, cart, main} = useAppSelector(state => state)
@@ -67,77 +68,7 @@ const Main: FC = () => {
     }, [])
     return (
         <>
-            <div className={`${styles.promo} d-n`}>
-                <div className="wrapper">
-                    <div className="block f-column">
-                        <div className={`${styles.promos} w-100p p-rel`}>
-                            <div className={`${styles.container} w-100 f-row-betw`}>
-                                <Link to={"/"} className={styles.item}>
-                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}}
-                                         className={`${styles.image} w-100p bg-cover`}></div>
-                                    <div className={`${styles.info} f-column gap-5 pd-20`}>
-                                        <div className="f-row-betw">
-                                            <h3>Акция №1</h3>
-                                            <ArrowRight/>
-                                        </div>
-                                        <p>Мы открылись, приходите к нам по адресу</p>
-
-                                    </div>
-                                </Link>
-                                <Link to={"/"} className={styles.item}>
-                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}}
-                                         className={`${styles.image} w-100p bg-cover`}></div>
-                                    <div className={`${styles.info} f-column gap-5 pd-20`}>
-                                        <div className="f-row-betw">
-                                            <h3>Акция №2</h3>
-                                            <ArrowRight/>
-                                        </div>
-                                        <p>Мы открылись, приходите к нам по адресу</p>
-
-                                    </div>
-                                </Link>
-                                <Link to={"/"} className={styles.item}>
-                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}}
-                                         className={`${styles.image} w-100p bg-cover`}></div>
-                                    <div className={`${styles.info} f-column gap-5 pd-20`}>
-                                        <div className="f-row-betw">
-                                            <h3>Акция №3</h3>
-                                            <ArrowRight/>
-                                        </div>
-                                        <p>Мы открылись, приходите к нам по адресу</p>
-
-                                    </div>
-                                </Link>
-                                <Link to={"/"} className={styles.item}>
-                                    <div style={{backgroundImage: `url(${getImgPath("promo.jpg")})`}}
-                                         className={`${styles.image} w-100p bg-cover`}></div>
-                                    <div className={`${styles.info} f-column gap-5 pd-20`}>
-                                        <div className="f-row-betw">
-                                            <h3>Акция №4</h3>
-                                            <ArrowRight/>
-                                        </div>
-                                        <p>Мы открылись, приходите к нам по адресу</p>
-
-                                    </div>
-                                </Link>
-                            </div>
-                            <div
-                                className={`${styles.arrowWrapper} promosArrowWrapper h-100p f-c-col p-abs right-0 top-0`}>
-                                <div className={styles.arrow}>
-
-                                </div>
-                            </div>
-                            <div
-                                className={`${styles.arrowWrapper} promosArrowWrapper h-100p f-c-col p-abs left-0 top-0`}>
-                                <div className={styles.arrow}>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+           {/*<Sales/>*/}
             <div className={`${styles.main} f-column gap-20`}>
                 <div className={`pd-30-0`}>
                     <div className={`${styles.block} f-column gap-25`}>

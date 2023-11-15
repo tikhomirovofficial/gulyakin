@@ -1,17 +1,11 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import styles from "../../pages/Main/main.module.scss";
-import {ArrowMiniDown, ArrowMiniRightIcon, CartIcon, Logo, ProfileIcon} from "../../icons";
-import RedButton from "../Buttons/RedButton";
-import GrayButton from "../Buttons/GrayButton";
-import DropdownList, {DropDownItem} from "../DropdownList";
+import {CartIcon, Logo, ProfileIcon} from "../../icons";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
 import {handleCartOpened, handleLogin} from "../../features/modals/modalsSlice";
-import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
 import useToken from "../../hooks/useToken";
-import List from "../List";
 import SelectCity from "../SelectCity";
 import AddedPopup from "../AddedPopup";
 
@@ -19,7 +13,7 @@ import AddedPopup from "../AddedPopup";
 const Header = () => {
     const dispatch = useAppDispatch()
 
-    const {totalPrice, cartClassOpened, cartAdded, cartAddedPopupInfo} = useAppSelector(state => state.cart)
+    const {totalPrice, cartClassOpened, cartAdded, cartAddedPopupInfo, items} = useAppSelector(state => state.cart)
     const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
     const token = useToken()
     const handleCart = () => dispatch(handleCartOpened())
@@ -110,7 +104,7 @@ const Header = () => {
                         <AddedPopup/>
                         <div
                             onClick={handleCart}
-                            className={`${styles.cartBtnFilled} ${styles.cartBtn} gap-5 btn d-f al-center cur-pointer`}>
+                            className={`${items.length > 0 ? styles.cartBtnFilled : styles.cartBtnUnfilled} ${styles.cartBtn} gap-5 btn d-f al-center cur-pointer`}>
                             <CartIcon height={22} width={22}/>
                             <b>
                                 {formatNumberWithSpaces(totalPrice)} ₽

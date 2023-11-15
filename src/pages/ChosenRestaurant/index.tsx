@@ -13,7 +13,6 @@ import {SwiperProps} from "swiper/swiper-react";
 import {RestaurantItemType} from "../../types/restaurants.types";
 import {HasClassName} from "../../types/components.types";
 import {domain} from "../../http/instance/instances";
-import {getImgPath} from "../../utils/getAssetsPath";
 import {getRestaurantData} from "../../features/restaurants/restaurantsSlice";
 import useMarketLogo from "../../hooks/useMarketLogo";
 
@@ -50,8 +49,6 @@ const weekItems = [
 ]
 const today = new Date();
 const dayOfWeek = today.getDay()
-const idRestaurant = 1
-
 
 const ChosenRestaurant: FC = () => {
     const dispatch = useAppDispatch()
@@ -121,7 +118,7 @@ const ChosenRestaurant: FC = () => {
                                                     <div style={{transform: "rotateZ(180deg)"}}
                                                          className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperLeft} d-f jc-end al-center h-100p p-abs left-0`}>
                                                         <div onClick={handlePrev}
-                                                             className="f-c-col sliderArrowCircle cur-pointer">
+                                                             className={`${styles} f-c-col sliderArrowCircle cur-pointer`}>
                                                             <SafeArrowIcon width={7}/>
                                                         </div>
 

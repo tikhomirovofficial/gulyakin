@@ -43,6 +43,9 @@
   padding-right: 3px;
   .addressItem {
     cursor: pointer !important;
+    svg {
+      min-width: 1.6rem
+    }
     padding: 1.5rem 2rem;
     .text {
       margin-top: -3px;

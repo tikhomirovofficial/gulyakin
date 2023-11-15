@@ -100,13 +100,7 @@ const MenuMobile = () => {
                             <a href="">+7 (495) 345-64-54</a>
                         </div>
                         <div className={`d-f gap-10`}>
-                            <a href="" className={`f-c-col ${styles.socialItem}`}>
-                                <VkIcon/>
-                            </a>
-                            <a href="" className={`f-c-col ${styles.socialItem}`}>
-                                <VkIcon/>
-                            </a>
-                            <a href="" className={`f-c-col ${styles.socialItem}`}>
+                            <a target={"_blank"} href="https://vk.com/gulyakin_foodhall" className={`f-c-col ${styles.socialItem}`}>
                                 <VkIcon/>
                             </a>
                         </div>
@@ -114,8 +108,6 @@ const MenuMobile = () => {
 
                 </div>
             </div>
-
-
 
         </div>
     );

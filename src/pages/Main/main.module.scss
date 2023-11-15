@@ -205,7 +205,7 @@
       .item {
         overflow: hidden;
         background: white;
-        width: 32rem;
+        max-width: 31rem;
         min-height: 18.3rem;
         border-radius: 4px;
         border: 1px solid #FAFAFA;
@@ -240,14 +240,49 @@
 
       }
     }
+    .salesArrowLeft {
+      left: -2rem;
+
+    }
+    .salesArrowRight {
+      right: -2rem;
+    }
     .arrowWrapper {
-      visibility: hidden;
-      background: rebeccapurple;
+      z-index: 3;
       .arrow {
         height: 4rem;
         width: 4rem;
         background: white;
         border-radius: 50%;
+      }
+    }
+  }
+
+}
+@media (max-width: 470px) {
+  .promo {
+    .promos {
+      .arrowWrapper {
+        display: none;
+      }
+      .container {
+        .item {
+          max-width: 22rem;
+          max-height: 14rem;
+          min-height: unset;
+          .image {
+            height: 6.6rem
+          }
+          .info {
+            padding: 1.4rem .8rem;
+            h3 {
+              font-size: 1.4rem;
+            }
+            p {
+              font-size: 1rem;
+            }
+          }
+        }
       }
     }
   }

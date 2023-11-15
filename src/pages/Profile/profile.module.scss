@@ -19,7 +19,22 @@
       b {
         font-size: 1.8rem;
       }
+      svg {
+        path {
+          transition: .3s fill, .3s transform
+        }
+      }
+      svg:hover {
+        path:first-child {
+          transform: rotateZ(20deg) translateY(-4px) translateX(2px);
+        }
+        path  {
+          fill: #FB634D
+        }
+      }
     }
+
+
   }
   .addressesEmptyText {
     font-size: 1.4rem;

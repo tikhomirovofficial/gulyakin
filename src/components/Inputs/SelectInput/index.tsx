@@ -101,7 +101,7 @@ const SelectInput: FC<SelectInputWrapper & HasClassName> = ({
                 {focused ?
                     <div ref={dropdownRef}
                          className={`w-100p p-abs left-0 dropDown pd-20 ${classDropDownWrapper ? classDropDownWrapper : ""} `}>
-                        <DropdownList classNameItem={`f-row-betw`} className={"f-column gap-5 bg-white w-100p"}
+                        <DropdownList classNameItem={`f-row-betw gap-5`} className={"f-column gap-5 bg-white w-100p"}
                                       items={items} current={selected}
                                       optionsDropDown={{
                                           keyField: optionsSelect?.keyField as string,

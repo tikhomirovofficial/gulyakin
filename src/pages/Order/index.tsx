@@ -214,7 +214,7 @@ const Order = () => {
                                                           }/>
                                             {
                                                 !isPickup ?
-                                                    <>
+                                                    <div className={`${styles.deliverySelect} f-column gap-5`}>
                                                         {
                                                             addresses.length ?
                                                                 <SelectInput
@@ -232,7 +232,10 @@ const Order = () => {
                                                                     items={addresses}
                                                                 /> : null
                                                         }
-                                                    </>
+                                                        <div style={{fontSize: 14}} onClick={() => dispatch(handleNewAddress())} className={`${styles.wayOrderBtn} self-end d-f colorRed cur-pointer`}>
+                                                            Добавить адрес
+                                                        </div>
+                                                    </div>
                                                      :
                                                     <SelectInput
                                                         defaultCurrent={getCurrentPickupAddress()}

@@ -195,7 +195,9 @@ export const ProfileSlice = createSlice({
                     flat: action.payload.addressData.apartment,
                     code_door: action.payload.addressData.apartment,
                     entrance: action.payload.addressData.entrance,
-                    floor: action.payload.addressData.floor
+                    floor: action.payload.addressData.floor,
+                    lat: action.payload.addressData.lat,
+                    long: action.payload.addressData.long,
                 }]
             }
             state.isLoading = false
@@ -217,7 +219,9 @@ export const ProfileSlice = createSlice({
                         flat: item.apartment,
                         floor: item.floor,
                         entrance: item.entrance,
-                        code_door: item.door_code
+                        code_door: item.door_code,
+                        long: item.long,
+                        lat: item.lat
                     }
                 })]
                 console.log(action.payload)

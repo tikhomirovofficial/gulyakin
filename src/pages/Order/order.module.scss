@@ -148,6 +148,15 @@
 .selectRestaurant {
   font-size: 1.6rem;
   max-width: 34rem;
+  .selectRestaurantItems {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  svg {
+    min-width: 1.3rem;
+  }
 }
 .deliverySelect {
   max-width: 34rem;

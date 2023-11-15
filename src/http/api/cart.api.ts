@@ -4,7 +4,7 @@ import {
     CartCountSupplementsRequest,
     CartCountSupplementsResponse,
     CartProductDeleteRequest,
-    CartProductDeleteResponse,
+    CartProductDeleteResponse, CartResetResponse,
     ChangeCountCartRequest,
     ChangeCountCartResponse, EditCartComboRequest, EditCartComboResponse,
     GetCartResponse
@@ -59,6 +59,13 @@ export class CartApi {
     }
     static async RemoveProduct(requestData: CartProductDeleteRequest): Promise<AxiosResponse<CartProductDeleteResponse>> {
         const res: AxiosResponse<CartProductDeleteResponse> = await authApi.post(PATHS.DELETE_CART_ITEM, {...requestData});
+        if(!res.data) {
+            throw res
+        }
+        return res;
+    }
+    static async Reset(): Promise<AxiosResponse<CartResetResponse>> {
+        const res: AxiosResponse<CartResetResponse> = await authApi.post(PATHS.RESET_CART);
         if(!res.data) {
             throw res
         }

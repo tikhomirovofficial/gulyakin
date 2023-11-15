@@ -5,8 +5,8 @@ export type Address = {
     floor: number | string
     flat: number | string
     entrance: number | string,
-    lat?: number,
-    long?: number
+    lat: number,
+    long: number
 }
 
 export type UserData = {

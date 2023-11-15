@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import ShadowWrapper from "../ShadowWrapper";
 import WindowBody from "../WhiteWrapper";
-import {CloseIcon} from "../../../icons";
+import {CloseIcon, Geo} from "../../../icons";
 import styles from "./newAddress.module.scss"
 import InputWrapper from "../../Inputs/InputWrapper";
 import {useAppDispatch} from "../../../app/hooks";
@@ -11,28 +11,20 @@ import {Address} from "../../../types/user.types";
 import {checkFilledValues} from "../../../utils/forms/checkFilledValues";
 import {addAddress, addAddressUser} from "../../../features/profile/profileSlice";
 import {appConfig} from "../../../config/AppConfig";
+import useNewAddress from "../../../hooks/useNewAddress";
+import AddressSuggestions from "../../AddressSuggestions";
 
 const NewAddressWindow = () => {
     const dispatch = useAppDispatch()
-
-    const [formNewAddress, setFormNewAddress] = useState<Address>({
-        city: "",
-        code_door: "",
-        entrance: "",
-        flat: "",
-        floor: "",
-    })
-
-    const handleFormNewAddress = (key: keyof Address, val: string) => {
-        setFormNewAddress(prevState => {
-            if(key !== "lat" && key !== "long") {
-                prevState[key] = val
-            }
-            return {...prevState}
-        })
-    }
-
-    const isValidAddressData = checkFilledValues(formNewAddress, appConfig.ADDRESS_KEYS_EXCEPTIONS)
+    const {
+        addressCoordsDefined,
+        findedAddresses,
+        changeAddress,
+        formNewAddress,
+        selectSearchedAddress,
+        handleFormNewAddress,
+        isValidAddressData
+    } = useNewAddress()
 
     const handleAddAddress = () => {
         dispatch(addAddressUser({
@@ -61,12 +53,28 @@ const NewAddressWindow = () => {
                     <div className="f-column gap-20">
                         <h2>Новый адрес</h2>
                         <div className="f-column gap-15">
-                            <InputWrapper setVal={val => handleFormNewAddress("city", val)}
-                                          inputId={"address-input"}
-                                          inputVal={formNewAddress.city}
-                                          changeVal={(e) => handleFormNewAddress("city", e.currentTarget.value)}
-                                          placeholder={"Сургут, ул. Университетская, д. 9"}
-                                          labelText={"Город, улица и дом"}/>
+                            <div className={"d-f w-100p p-rel"}>
+                                <InputWrapper
+                                    setVal={val => handleFormNewAddress("city", val)}
+                                    changeVal={changeAddress}
+                                    inputVal={formNewAddress.city}
+                                    inputId={"address-input"}
+                                    className={"w-100p"}
+                                    placeholder={"Сургут, ул. Университетская, д. 9"}
+                                    labelText={
+                                        <div className={"d-f al-center gap-5 svgRedStroke"}>
+                                            Город, улица и дом
+                                            <div className={"f-c-col w-content"}>
+                                                <Geo width={12}/>
+                                            </div>
+                                        </div>
+                                    }/>
+                                {
+                                    findedAddresses.length && !addressCoordsDefined ?
+                                        <AddressSuggestions findedAddresses={findedAddresses}
+                                                            selectAddress={selectSearchedAddress}/> : null
+                                }
+                            </div>
                         </div>
                         <div className="f-row-betw gap-20 flex-wrap">
                             <InputWrapper inputType={"number"} setVal={val => handleFormNewAddress("entrance", val)}

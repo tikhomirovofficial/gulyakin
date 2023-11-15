@@ -55,9 +55,8 @@ function App() {
     } = useAppSelector(state => state.modals)
 
     const {items} = useAppSelector(state => state.cart)
-    const products = useAppSelector(state => state.products.items)
     const orderForm = useAppSelector(state => state.forms.orderForm)
-    const {market, cities, currentGeo, isMobile, markets} = useAppSelector(state => state.main)
+    const {market, cities, currentGeo, isMobile} = useAppSelector(state => state.main)
 
     const handleResize = () => {
         dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))

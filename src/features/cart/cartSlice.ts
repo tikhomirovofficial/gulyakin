@@ -1,12 +1,18 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
-    AddToCartComboRequest, AddToCartComboResponse,
+    AddToCartComboRequest,
+    AddToCartComboResponse,
     AddToCartRequest,
-    AddToCartResponse, CartCountSupplementsRequest, CartCountSupplementsResponse,
+    AddToCartResponse,
+    CartCountSupplementsRequest,
+    CartCountSupplementsResponse,
     CartProductDeleteRequest,
     CartProductItem,
+    CartResetResponse,
     ChangeCountCartRequest,
-    ChangeCountCartResponse, EditCartComboRequest, EditCartComboResponse,
+    ChangeCountCartResponse,
+    EditCartComboRequest,
+    EditCartComboResponse,
     GetCartResponse,
     ProductRes
 } from "../../types/api.types";
@@ -143,6 +149,13 @@ export const removeFromCart = createAsyncThunk(
         }
     }
 )
+export const resetCart = createAsyncThunk(
+    'cart/reset',
+    async (_, {dispatch}) => {
+        const res: AxiosResponse<CartResetResponse> = await handleTokenRefreshedRequest(CartApi.Reset)
+        return res.data
+    }
+)
 
 export const CartSlice = createSlice({
     name: "cart",
@@ -276,7 +289,7 @@ export const CartSlice = createSlice({
             const comboProduct = action.payload.combo_prod
             const comboFromReq = action.payload.combo[0]
             const selectedProductId = comboFromReq.selected_product
-            const compositionFromProds =  comboProduct.products?.map(item => item.title).join(', ') || ""
+            const compositionFromProds = comboProduct.products?.map(item => item.title).join(', ') || ""
 
             const newState: CartProductItem[] = [
                 ...state.items,
@@ -308,7 +321,7 @@ export const CartSlice = createSlice({
             const editedCombo = action.payload.data.product[0]
             console.log(editedCombo)
             state.items = state.items.map(item => {
-                if(item.id === editedCombo.id && item.is_combo) {
+                if (item.id === editedCombo.id && item.is_combo) {
                     return editedCombo
                 }
                 return item
@@ -333,7 +346,7 @@ export const CartSlice = createSlice({
 
         builder.addCase(editSupplementsCountCart.fulfilled, (state, action) => {
             state.items = state.items.map(cartItem => {
-                if(action.payload.cart_id === cartItem.id) {
+                if (action.payload.cart_id === cartItem.id) {
                     return {
                         ...cartItem,
                         supplements: action.payload.supplements_list
@@ -346,8 +359,12 @@ export const CartSlice = createSlice({
 
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
             state.items = state.items.filter(item => item.id !== action.payload.cart_id)
-
         })
+
+        builder.addCase(resetCart.fulfilled, (state, action) => {
+            state.items = []
+        })
+
 
     }
 })

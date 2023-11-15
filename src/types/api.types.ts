@@ -275,6 +275,8 @@ export type CartProductDeleteRequest = {
 }
 export type CartProductDeleteResponse = ResponseStatus
 
+export type CartResetResponse = ResponseStatus
+
 export type GetDeliveryListResponse = {
     delivery_list: Array<{
         id: number,

@@ -28,6 +28,7 @@ export class AddressesApi {
         const res: AxiosResponse<GetAddressesByMarketCityResponse> = await api.get(PATHS.MARKET_ADDRESSES_BY_CITY + ConvertDataToGetParams(requestData));
         return res;
     }
+
     static async Bookings(requestData: GetBookingsRequest): Promise<AxiosResponse<GetBookingsResponse>> {
         const res: AxiosResponse<GetBookingsResponse> = await api.get(PATHS.BOOKINGS_LIST + ConvertDataToGetParams(requestData));
         return res;

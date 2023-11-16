@@ -195,6 +195,10 @@ body::-webkit-scrollbar-thumb {
 .miniScrollbar::-webkit-scrollbar-thumb {
     background: #c7c7c7;
 }
+.errorBlock {
+    border-radius: 4px;
+    background: #FF2000;
+}
 .whiteSelectable:hover {
     border: 1px solid #fb634d;
 }

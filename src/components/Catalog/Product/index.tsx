@@ -33,6 +33,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                                                       className,
                                                       composition,
     is_product_day,
+    is_product_week,
                                                       weight,
                                                       price
                                                   }) => {
@@ -94,7 +95,11 @@ const Product: FC<ProductProps & HasClassName> = ({
                         is_product_day ? <div className={`d-f al-center gap-5 ${styles.productLabel}`}>
                             <StarsIcon/>
                             <b>Товар дня</b>
-                        </div> : null
+                        </div> : is_product_week ?
+                            <div className={`d-f al-center gap-5 ${styles.productLabel}`}>
+                                <StarsIcon/>
+                                <b>Товар недели</b>
+                            </div> : null
                     }
                 </div>
             </div>

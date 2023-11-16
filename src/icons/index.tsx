@@ -68,8 +68,8 @@ export const StarsIcon: FC<IconProps> = ({width = 11, height = 12, stroke = "#43
 export const Burger: FC<IconProps> = ({width = 24, height = 24, stroke = "#434343"}) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 24 24" fill="none">
-            <path d="M7.28307 19L20 19M19.9996 12L4 12M20 5L12.9719 5" stroke={stroke} stroke-width="1.5"
-                  stroke-linecap="round"/>
+            <path d="M7.28307 19L20 19M19.9996 12L4 12M20 5L12.9719 5" stroke={stroke} strokeWidth="1.5"
+                  strokeLinecap="round"/>
         </svg>
     )
 }
@@ -108,10 +108,10 @@ export const InfoCircle: FC<IconProps & HasClassName> = ({width = 20, className,
              fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M10 1C14.9709 1 19 5.03005 19 10C19 14.9699 14.9709 19 10 19C5.03005 19 1 14.9699 1 10C1 5.03005 5.03005 1 10 1Z"
-                  stroke="#434343" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M9.99528 6.30664V10.6062" stroke="#434343" stroke-width="1.5" stroke-linecap="round"
+                  stroke="#434343" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"/>
+            <path d="M9.99528 6.30664V10.6062" stroke="#434343" strokeWidth="1.5" strokeLinecap="round"
                   stroke-linejoin="round"/>
-            <path d="M9.99529 13.6933H10.005" stroke="#434343" stroke-width="1.5" stroke-linecap="round"
+            <path d="M9.99529 13.6933H10.005" stroke="#434343" strokeWidth="1.5" strokeLinecap="round"
                   stroke-linejoin="round"/>
         </svg>
     )
@@ -194,7 +194,7 @@ export const Preloader: FC<IconProps> = ({width = 14, height = 14, fill = "#E2E2
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 14 14" fill="none">
             <path
                 d="M7 13C5.81331 13 4.65327 12.6481 3.66658 11.9888C2.67988 11.3295 1.91085 10.3925 1.45672 9.2961C1.0026 8.19974 0.883777 6.99334 1.11529 5.82946C1.3468 4.66557 1.91824 3.59647 2.75736 2.75736C3.59647 1.91824 4.66557 1.3468 5.82946 1.11529C6.99334 0.883777 8.19974 1.0026 9.2961 1.45672C10.3925 1.91085 11.3295 2.67988 11.9888 3.66658C12.6481 4.65327 13 5.81331 13 7"
-                stroke="#FB634D" stroke-width="2"/>
+                stroke="#FB634D" strokeWidth="2"/>
         </svg>
     )
 }
@@ -249,13 +249,13 @@ export const DeleteIcon: FC<IconProps> = ({width = 18, height = 19}) => {
 export const PaymentCard: FC<IconProps> = ({width = 16, height = 16}) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 18 14" fill="none">
-            <path d="M15.75 5.125L2.25 5.125" stroke="#434343" stroke-width="1.5" stroke-linecap="round"
+            <path d="M15.75 5.125L2.25 5.125" stroke="#434343" strokeWidth="1.5" strokeLinecap="round"
                   stroke-linejoin="round"/>
-            <path d="M7.5 9.625H3.75" stroke="#434343" stroke-width="1.5" stroke-linecap="round"
+            <path d="M7.5 9.625H3.75" stroke="#434343" strokeWidth="1.5" strokeLinecap="round"
                   stroke-linejoin="round"/>
             <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M16.5 9.75463C16.5 9.75463 16.4967 4.22664 16.4967 4.218C16.4829 2.2306 15.0033 1 12.7463 1L5.25367 1C2.98533 0.999999 1.5 2.23996 1.5 4.24464C1.5 4.24464 1.50245 9.77192 1.50245 9.78128C1.5163 11.7687 2.99674 13 5.25367 13L12.7463 13C15.0147 13 16.5 11.7593 16.5 9.75463Z"
-                  stroke="#434343" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  stroke="#434343" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"/>
         </svg>
     )
 }
@@ -264,13 +264,13 @@ export const PaymentCash: FC<IconProps> = ({width = 16, height = 15}) => {
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 16 16" fill="none">
             <path
                 d="M15.2292 9.7968H12.193C11.0781 9.79611 10.1745 8.89318 10.1738 7.77834C10.1738 6.66351 11.0781 5.76057 12.193 5.75989H15.2292"
-                stroke="#434343" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12.5363 7.73214H12.3025" stroke="#434343" stroke-width="1.5" stroke-linecap="round"
+                stroke="#434343" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"/>
+            <path d="M12.5363 7.73214H12.3025" stroke="#434343" strokeWidth="1.5" strokeLinecap="round"
                   stroke-linejoin="round"/>
             <path fill-rule="evenodd" clip-rule="evenodd"
                   d="M4.81075 1.25H11.2933C13.4669 1.25 15.2291 3.01213 15.2291 5.18575V10.5685C15.2291 12.7421 13.4669 14.5043 11.2933 14.5043H4.81075C2.63713 14.5043 0.875 12.7421 0.875 10.5685V5.18575C0.875 3.01213 2.63713 1.25 4.81075 1.25Z"
-                  stroke="#434343" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M4.27686 4.65365H8.32607" stroke="#434343" stroke-width="1.5" stroke-linecap="round"
+                  stroke="#434343" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"/>
+            <path d="M4.27686 4.65365H8.32607" stroke="#434343" strokeWidth="1.5" strokeLinecap="round"
                   stroke-linejoin="round"/>
         </svg>
     )
@@ -385,8 +385,22 @@ export const Cap: FC<IconProps & HasClassName> = ({width = 20, height = 18}) => 
 export const ThinClose: FC<IconProps & HasClassName> = ({width = 14, height = 14}) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 14 14" fill="none">
-            <path d="M12.3134 1.00014L1 12.3136" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M12.3144 12.3134L1.00098 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M12.3134 1.00014L1 12.3136" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+            <path d="M12.3144 12.3134L1.00098 1" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+    )
+}
+export const Warning: FC<IconProps & HasClassName> = ({width = 20, height = 19}) => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 20 19" fill="none">
+            <path
+                d="M9.25049 13.2695C9.25049 12.8555 9.58649 12.5135 10.0005 12.5135C10.4145 12.5135 10.7505 12.8445 10.7505 13.2585V13.2695C10.7505 13.6835 10.4145 14.0195 10.0005 14.0195C9.58649 14.0195 9.25049 13.6835 9.25049 13.2695Z"
+                fill="white"/>
+            <path
+                d="M2.79584 17.4179H17.2778C18.4248 17.3579 19.3068 16.3809 19.2478 15.2339C19.2348 15.0019 19.1848 14.7729 19.0968 14.5589L11.8198 1.82285C11.2638 0.817855 9.99884 0.453855 8.99384 1.01085C8.65184 1.19885 8.36984 1.48085 8.18084 1.82285L0.90384 14.5589C0.47184 15.6229 0.98384 16.8349 2.04684 17.2679C2.26284 17.3549 2.49084 17.4049 2.72284 17.4179"
+                stroke="white" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round"/>
+            <path d="M9.99023 10.396V7.29602" stroke="white" strokeWidth="1.5" strokeLinecap="round"
+                  stroke-linejoin="round"/>
         </svg>
     )
 }

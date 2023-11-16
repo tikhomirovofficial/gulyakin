@@ -153,7 +153,7 @@ const Cart = () => {
                                             <p>Соусы</p>
                                         </div>
                                         <div
-                                            className={`${styles.bread} cur-pointer h-100p f-1 bg-white pd-20 gap-10 d-f al-center`}>
+                                            className={`${styles.bread} cur-pointer h-100p f-1 bg-white pd-20 gap-10 d-n al-center`}>
                                             <img className={"d-b"} src={getImgPath("bread.png")} alt=""/>
                                             <div className="f-column">
                                                 <div className={styles.title}>Хлебная корзина</div>

@@ -34,6 +34,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                         <Product
                                             key={product.id}
                                             title={product.title}
+                                            is_product_week={product.is_product_week !== undefined ? product.is_product_week : false }
                                             is_product_day={product.is_product_day !== undefined ? product.is_product_day : false}
                                             id={product.id}
                                             count={cart.items.filter(item => item.product.id === product.id)[0]?.count}

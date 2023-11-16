@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import styles from './order.module.scss'
 import InputWrapper from "../../components/Inputs/InputWrapper";
-import {PaymentCard, PaymentCash} from "../../icons";
+import {PaymentCard, PaymentCash, Warning} from "../../icons";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import RedButton from "../../components/Buttons/RedButton";
 import RadioInput from "../../components/Inputs/RadioInput";
@@ -29,7 +29,7 @@ import {useInput} from "../../hooks/useInput";
 import SuccessWindow from "../../components/Windows/SuccessWindow";
 import {getAvailableTimes} from "../../utils/avaliableTimes";
 import {Link} from "react-router-dom";
-import {getCanOrderAddressesByCity} from "../../features/main/mainSlice";
+import {getCanOrderAddressesByCity, getDeliveryType, setOrderDetails} from "../../features/main/mainSlice";
 
 const orderTimes = getAvailableTimes()
 
@@ -69,6 +69,7 @@ const Order = () => {
     const dispatch = useAppDispatch()
     const {data, addresses} = useAppSelector(state => state.profile)
     const marketAddresses = useAppSelector(state => state.main.cityAddresses)
+    const {currentGeo, orderDetails, pickupAddresses, canOrder} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
 
@@ -95,15 +96,13 @@ const Order = () => {
         window.location.href = '/profile#orders'
     }
 
-
-
     const handleCreateOrder = () => {
         if (error.length) {
             setOrderError("")
         }
         const paymentTypeOrder = paymentWay == "CARD" ? 1 : 2
         const timeDeliveryOrder = time == "FAST" ? "40 min" : time
-        const deliveryTypeOrder = isPickup ? 3 : 2
+        const deliveryTypeOrder = isPickup ? 3 : orderDetails.delivery_type
         const changeWith = paymentWay == "CASH" ? Number(changeSum) : undefined
         const userAddressId = !isPickup ? addressId : undefined
 
@@ -125,12 +124,38 @@ const Order = () => {
             val: data.name
         }))
     }, [])
+    const defineDeliveryType = () => {
+        if(cart.totalPrice > 0) {
+            if(!isPickup) {
+                if(addresses.length > 0) {
+                    const address = addresses.filter(item => item.id === addressId)[0]
+                    if(address !== undefined) {
+                        dispatch(getDeliveryType({
+                            siti_id: currentGeo.city,
+                            lat: address.lat,
+                            lon: address.long
+                        }))
+                    }
+                }
+            }
+        }
+
+    }
+
+    useEffect(defineDeliveryType, [isPickup, addressId])
+
+    useEffect(defineDeliveryType, [addresses])
 
     useEffect(() => {
         if (isPickup) {
             setDeliveryPrice(0)
+            dispatch(setOrderDetails({
+                price: 0,
+                delivery_type: 0
+            }))
             return;
         }
+
         setDeliveryPrice(100)
     }, [isPickup])
 
@@ -168,7 +193,8 @@ const Order = () => {
         }
 
     }
-
+    const isIncorrectPriceWithDelivery = (!isPickup && orderDetails.delivery_type == 2 && cart.totalPrice < 700)
+    const isNotPickup = isPickup && (pickupAddresses.length == 0 || !canOrder)
     const getDisabledBtn = () => {
         if (cart.totalPrice !== 0) {
             // Если вдруг не указан айди адреса, но выбрана доставка
@@ -183,6 +209,7 @@ const Order = () => {
         return true
 
     }
+
     return (
         <>
             <div className={styles.order}>
@@ -191,6 +218,26 @@ const Order = () => {
                         <div className="orderBlock f-column gap-40">
                             <div className={`${styles.form} f-column gap-25`}>
                                 <div className="sectionTitle">Заказ на {!isPickup ? "доставку" : "самовывоз"}</div>
+                                {
+                                    isIncorrectPriceWithDelivery && !isPickup  ?
+                                        <div className={`pd-20 errorBlock d-f al-center gap-20 ${styles.errorDelivery}`}>
+                                            <Warning/>
+                                            <div className="f-column">
+                                                <p>Недостаточная сумма заказа.</p>
+                                                <b>Мы доставим ваш заказ от 700 ₽</b>
+                                            </div>
+                                        </div> : null
+                                }
+                                {
+                                    isNotPickup ?
+                                        <div className={`pd-20 errorBlock d-f al-center gap-20 ${styles.errorDelivery}`}>
+                                            <Warning/>
+                                            <div className="f-column">
+                                                <p>Нельзя заказать самовывоз.</p>
+                                                <b>Товары из разных ресторанов!</b>
+                                            </div>
+                                        </div> : null
+                                }
                                 <div className="f-column gap-20">
                                     <div className="f-column gap-10">
                                         <div className="orderForm f-column gap-20">
@@ -227,6 +274,7 @@ const Order = () => {
                                                                     className={styles.selectRestaurant}
                                                                     classDropDown={`miniScrollbar ${styles.selectRestaurantItems}`}
                                                                     labelText={"Выбор адреса доставки"}
+                                                                    classDropDownWrapper={`miniScrollBar ${styles.orderDropdownWrapper}`}
                                                                     selectHandler={(selected) => {
                                                                         dispatch(handleSelectAddressId(selected))
                                                                     }}
@@ -248,6 +296,7 @@ const Order = () => {
                                                         defaultCurrent={getCurrentPickupAddress()}
                                                         className={styles.selectRestaurant}
                                                         classDropDown={`miniScrollbar ${styles.selectRestaurantItems}`}
+                                                        classDropDownWrapper={`miniScrollBar ${styles.orderDropdownWrapper}`}
                                                         labelText={"Выберите ресторан (обязательно)"}
                                                         selectHandler={(selected) => {
                                                             dispatch(handleSelectRestaurant(selected))
@@ -256,7 +305,7 @@ const Order = () => {
                                                             byId: true,
                                                             keyField: "adress"
                                                         }}
-                                                        items={marketAddresses}
+                                                        items={pickupAddresses}
                                                     />
 
                                             }
@@ -270,7 +319,7 @@ const Order = () => {
                                     </div>
                                     <div className={`f-column gap-20 ${styles.orderOptions}`}>
                                         <div className={`${styles.timeOrder} f-column gap-10`}>
-                                            <p className={""}>Время доставки</p>
+                                            <p className={""}>Время</p>
                                             <div className={`${styles.timeOrderItems} gap-10 f-column w-100p`}>
                                                 <div className="d-f jc-between gap-10">
                                                     <div
@@ -355,9 +404,9 @@ const Order = () => {
                                         }
 
                                         <RedButton onClick={handleCreateOrder}
-                                                   disabled={getDisabledBtn()}
+                                                   disabled={cart.items.length > 0 ? getDisabledBtn() || !isPickup ? isIncorrectPriceWithDelivery : isNotPickup : true}
                                                    className={`pd-15 ${styles.createOrderBtn}`}>Оформить заказ
-                                            на {formatNumberWithSpaces(cart.totalPrice + deliveryPrice)} ₽</RedButton>
+                                            на {formatNumberWithSpaces(cart.totalPrice + orderDetails.price)} ₽</RedButton>
                                     </div>
 
                                     <div className={"w-100p d-f jc-center"}>
@@ -396,13 +445,13 @@ const Order = () => {
                                             </div>
                                             <div className="f-row-betw">
                                                 <p>Доставка</p>
-                                                <p>{deliveryPrice} ₽</p>
+                                                <p>{orderDetails.price} ₽</p>
                                             </div>
                                         </div>
                                         <div className="totalInfo">
                                             <div className="f-row-betw">
                                                 <b>Сумма заказа</b>
-                                                <b>{formatNumberWithSpaces(cart.totalPrice + deliveryPrice)} ₽</b>
+                                                <b>{formatNumberWithSpaces(cart.totalPrice + orderDetails.price)} ₽</b>
                                             </div>
 
                                         </div>

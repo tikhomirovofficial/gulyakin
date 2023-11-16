@@ -20,6 +20,7 @@ export type ProductRes = {
     id: number;
     title: string;
     is_product_day?: boolean
+    is_product_week?: boolean
     short_description: string;
 
     description: string;
@@ -392,6 +393,7 @@ export type GetMarketsByCityResponse = {
 export type GetOrderDeliveryRequest = {
     lat: number
     lon: number
+    siti_id: number
 }
 export type OrderDeliveryDetails = {
     delivery_type: number

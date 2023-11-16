@@ -237,8 +237,9 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({
                         />
                     ))
                 }
-                <b onClick={handleToNewAddress} className={"colorRed"}>Добавить адрес</b>
+
             </div>
+            <b onClick={handleToNewAddress} className={"colorRed"}>Добавить адрес</b>
             <RedButton disabled={selectedInDelivery == -1} onClick={handleAddAddressDelivery}
                        className={`pd-10-0 ${styles.deliveryBtn}`}>Выбрать</RedButton>
         </>

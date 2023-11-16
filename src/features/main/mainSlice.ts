@@ -255,6 +255,9 @@ export const MainSlice = createSlice({
         setIsPhone: (state, action: PayloadAction<boolean>) => {
             state.isPhone = action.payload
         },
+        setOrderDetails: (state, action) => {
+            state.orderDetails = action.payload
+        },
 
 
     },
@@ -295,16 +298,25 @@ export const MainSlice = createSlice({
             state.canOrder = action.payload.status
         })
         builder.addCase(getDeliveryType.fulfilled, (state, action) => {
-            state.orderDetails = {
-                delivery_type: action.payload.delivery_type,
-                price: action.payload.price
+            if(action.payload.status) {
+                state.orderDetails = {
+                    delivery_type: action.payload.delivery_type,
+                    price: action.payload.price
+                }
+                return
             }
+            state.orderDetails = {
+                delivery_type: 0,
+                price: 0
+            }
+
+
         })
 
     }
 })
 
-export const {setCurrentCity, setIsMobile, setIsPhone, toggleChangingGeo, toggleAskCityVisible, setMarket} = MainSlice.actions
+export const {setCurrentCity, setIsMobile, setOrderDetails, setIsPhone, toggleChangingGeo, toggleAskCityVisible, setMarket} = MainSlice.actions
 
 
 export const mainReducer = MainSlice.reducer

@@ -55,7 +55,13 @@
 .orderDropdownWrapper {
   padding: .5rem;
   overflow-y: auto;
-  max-height: 16rem;
+  max-height: 20rem;
+}
+.orderDropdownWrapper::-webkit-scrollbar {
+  width: 4px;
+}
+.orderDropdownWrapper::-webkit-scrollbar-thumb {
+  background: #c7c7c7;
 }
 .inputSelectable {
   text-wrap: nowrap;
@@ -146,8 +152,16 @@
 .selectRestaurantItems {
   font-size: 1.6rem;
 }
+.errorDelivery {
+  max-width: 34rem;
+  color: white;
+  p, b {
+    font-size: 1.6rem;
+  }
+}
 .selectRestaurant {
   font-size: 1.6rem;
+  max-height: 20rem;
   max-width: 34rem;
   .selectRestaurantItems {
     display: -webkit-box;
@@ -210,6 +224,9 @@
 @media (max-width: 410px) {
   .orderContainer {
     gap: 2rem;
+    .errorDelivery {
+      width: 80vw;
+    }
     .leftContent {
       width: 80vw;
     }

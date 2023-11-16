@@ -36,7 +36,7 @@ const CalendarInput: FC<CalendarInputProps> = ({setCalendarVal, val}) => {
     const [isFocused, setIsFocused] = useState(false)
 
     const isDateDisabled = (date: any) => {
-        return isToday(date) || isAfter10PM(date);
+        return isToday(date) && isAfter10PM(date);
     };
 
 

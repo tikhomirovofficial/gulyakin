@@ -38,8 +38,8 @@ const Footer = () => {
                         </div>
                         <div className={`${styles.navColumn} ${styles.navColumnContacts} f-column gap-10`}>
                             <b className={styles.navItem}>Контакты</b>
-                            <a className={styles.navItem} href="">mail@mail.ru</a>
-                            <a className={styles.navItem} href="">+7 (495) 345-64-54</a>
+                            <a className={styles.navItem} href="mailto:gm.group@internet.ru">gm.group@internet.ru</a>
+                            <a className={styles.navItem} href="tel:+79226592405">+7 (922) 659-24-05</a>
                             <div className={`${styles.socials} d-f gap-10`}>
                                 <a target={"_blank"} href="https://vk.com/gulyakin_foodhall" className={`${styles.item} f-c-col`}>
                                     <VkIcon/>

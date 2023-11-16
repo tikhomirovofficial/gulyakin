@@ -43,14 +43,14 @@ const BookingWindow = () => {
     const {profile} = useAppSelector(state => state)
     const defaultAddress = bookingAddresses.length ? bookingAddresses[0].id : -1
     const isDateDisabled = (date: any) => {
-        return isToday(date) || isAfter10PM(date);
+        return isToday(date) && isAfter10PM(date);
     };
     const times = getAvailableTimes()
 
     useEffect(() => {
         const today = new Date()
         if(isDateDisabled(today)) {
-            today.setDate(today.getDate() + 1)
+            today.setDate(today.getDate())
         }
         dispatch(setBookingForm({
             adress: defaultAddress,

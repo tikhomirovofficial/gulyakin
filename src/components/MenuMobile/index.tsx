@@ -96,8 +96,8 @@ const MenuMobile = () => {
                     <div className="f-column gap-20">
                         <div className="f-column gap-10">
                             <b>Контакты</b>
-                            <a href="">mail@mail.ru</a>
-                            <a href="">+7 (495) 345-64-54</a>
+                            <a href="mailto:gm.group@internet.ru">gm.group@internet.ru</a>
+                            <a href="tel:+79226592405">+7 (922) 659-24-05</a>
                         </div>
                         <div className={`d-f gap-10`}>
                             <a target={"_blank"} href="https://vk.com/gulyakin_foodhall" className={`f-c-col ${styles.socialItem}`}>

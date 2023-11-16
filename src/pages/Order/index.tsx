@@ -30,46 +30,15 @@ import SuccessWindow from "../../components/Windows/SuccessWindow";
 import {getAvailableTimes} from "../../utils/avaliableTimes";
 import {Link} from "react-router-dom";
 import {getCanOrderAddressesByCity, getDeliveryType, setOrderDetails} from "../../features/main/mainSlice";
+import OrderItem from "../../components/OrderItem";
+import useOrderDetails from "../../hooks/useOrderDetails";
+import useOrderAddress from "../../hooks/useOrderAddress";
 
 const orderTimes = getAvailableTimes()
-
-type OrderItemProps = {
-    id: number,
-    image: string,
-    title: string,
-    composition: string,
-    price: number,
-    count: number
-    supplements?: Supplement[]
-}
-const OrderItem: FC<OrderItemProps> = ({image, id, title, supplements = [], count, price, composition}) => {
-    const additivePrice = supplements.length > 0 ? supplements.reduce((a, b) => {
-        return a + b.price
-    }, 0) : 0
-    return (
-        <div className={`${styles.part} ${styles.product} pd-15 d-f gap-10`}>
-            <div style={{backgroundImage: `url(${domain + "/" + image})`}}
-                 className={`bg-cover ${styles.image}`}></div>
-            <div className="f-column-betw f-1 gap-5">
-                <div className="top f-column gap-5">
-                    <h4>{title}</h4>
-                    <p>{composition || "Описание отсутствует"}</p>
-                    {
-                        supplements.length > 0 ?
-                            <p>+ {supplements.map(item => item.title).join(", ")}</p>
-                            : null
-                    }
-                </div>
-                <b className={styles.price}>{formatNumberWithSpaces((price + additivePrice) * count)} ₽</b>
-            </div>
-        </div>
-    )
-}
 const Order = () => {
     const dispatch = useAppDispatch()
     const {data, addresses} = useAppSelector(state => state.profile)
-    const marketAddresses = useAppSelector(state => state.main.cityAddresses)
-    const {currentGeo, orderDetails, pickupAddresses, canOrder} = useAppSelector(state => state.main)
+    const {orderDetails, pickupAddresses, canOrder} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
 
@@ -78,17 +47,20 @@ const Order = () => {
         callNeeded,
         time,
         paymentWay,
-        address,
         error,
-        phone,
         isPickup,
         restaurant,
         success,
         addressId
     } = useAppSelector(state => state.forms.orderForm)
 
-    const [deliveryPrice, setDeliveryPrice] = useState(isPickup ? 0 : 100)
-    const restFromStorage = getFromStorage('order_form')?.restaurant
+    useOrderDetails()
+
+    const {
+        handleChangeDeliveryType,
+        getCurrentPickupAddress,
+    } = useOrderAddress()
+
     const addressFromStorage = getFromStorage('order_form')?.addressId
 
     const closeSuccess = () => {
@@ -124,75 +96,7 @@ const Order = () => {
             val: data.name
         }))
     }, [])
-    const defineDeliveryType = () => {
-        if(cart.totalPrice > 0) {
-            if(!isPickup) {
-                if(addresses.length > 0) {
-                    const address = addresses.filter(item => item.id === addressId)[0]
-                    if(address !== undefined) {
-                        dispatch(getDeliveryType({
-                            siti_id: currentGeo.city,
-                            lat: address.lat,
-                            lon: address.long
-                        }))
-                    }
-                }
-            }
-        }
 
-    }
-
-    useEffect(defineDeliveryType, [isPickup, addressId])
-
-    useEffect(defineDeliveryType, [addresses])
-
-    useEffect(() => {
-        if (isPickup) {
-            setDeliveryPrice(0)
-            dispatch(setOrderDetails({
-                price: 0,
-                delivery_type: 0
-            }))
-            return;
-        }
-
-        setDeliveryPrice(100)
-    }, [isPickup])
-
-    const getCurrentPickupAddress = () => {
-        if (restFromStorage !== -1) {
-            return restFromStorage
-        }
-        if (restaurant !== -1) {
-            return restaurant
-        }
-        if (marketAddresses.length > 0) {
-            return marketAddresses[0].id
-        }
-        return 0
-    }
-    const getCurrentDeliveryAddress = () => {
-        if (addressFromStorage !== -1) {
-            return addressFromStorage
-        }
-        if (addressId !== -1) {
-            return addressId
-        }
-        if (addresses.length > 0) {
-            return addresses[0].id
-        }
-        return 0
-    }
-    const handleChangeDeliveryType = () => {
-        dispatch(handleOrderPickup())
-        if (!isPickup) {
-            dispatch(handleSelectRestaurant(getCurrentPickupAddress()))
-        } else {
-            dispatch(handleSelectAddressId(getCurrentDeliveryAddress()))
-
-        }
-
-    }
     const isIncorrectPriceWithDelivery = (!isPickup && orderDetails.delivery_type == 2 && cart.totalPrice < 700)
     const isNotPickup = isPickup && (pickupAddresses.length == 0 || !canOrder)
     const getDisabledBtn = () => {

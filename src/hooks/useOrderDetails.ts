@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {getDeliveryType, setOrderDetails} from "../features/main/mainSlice";
 import {useAppDispatch, useAppSelector} from "../app/hooks";
 
@@ -13,11 +13,11 @@ const useOrderDetails = () => {
     } = useAppSelector(state => state.forms.orderForm)
 
     const defineDeliveryType = () => {
-        if(cart.totalPrice > 0) {
-            if(!isPickup) {
-                if(addresses.length > 0) {
+        if (cart.totalPrice > 0) {
+            if (!isPickup) {
+                if (addresses.length > 0) {
                     const address = addresses.filter(item => item.id === addressId)[0]
-                    if(address !== undefined) {
+                    if (address !== undefined) {
                         dispatch(getDeliveryType({
                             siti_id: currentGeo.city,
                             lat: address.lat,
@@ -42,6 +42,7 @@ const useOrderDetails = () => {
             }))
             return;
         }
+
 
     }, [isPickup])
 };

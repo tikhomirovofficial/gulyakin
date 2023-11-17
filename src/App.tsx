@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+    import React, {useEffect} from 'react';
 import LoginWindow from "./components/Windows/Login";
 import BookingWindow from "./components/Windows/Booking";
 import {useAppDispatch, useAppSelector} from "./app/hooks";
@@ -170,7 +170,8 @@ function App() {
     useEffect(() => {
         if(token) {
             const hasAddresses = cityAddresses.length > 0
-            if(hasAddresses) {
+            const hasCart = items.length > 0
+            if( hasCart && hasAddresses) {
                 dispatch(getCanOrderAddressesByCity({
                     siti_id: currentGeo.city
                 }))

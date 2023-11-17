@@ -321,7 +321,6 @@ export const formsSlice = createSlice({
             state.orderForm = {
                 ...state.orderForm,
                 restaurant: action.payload,
-                addressId: -1,
                 isPickup: true
             }
         },
@@ -329,7 +328,6 @@ export const formsSlice = createSlice({
             state.orderForm = {
                 ...state.orderForm,
                 addressId: action.payload,
-                restaurant: -1,
                 isPickup: false
             }
         },

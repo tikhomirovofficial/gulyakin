@@ -43,6 +43,10 @@ type AddressType = {
     id: number,
     adress: string
 }
+export type OrderWarning ={
+    title: string
+    description: string
+}
 type MainSliceState = {
     market: number,
     cities: Array<{
@@ -58,6 +62,7 @@ type MainSliceState = {
     isMobile: boolean
     isPhone: boolean,
     canOrder: boolean
+    orderWarning: OrderWarning
     markets: Array<Market>
     payments: VariantType[],
     deliveryTypes: VariantType[],
@@ -65,7 +70,8 @@ type MainSliceState = {
     cityMarkets: MarketByCityItem[],
     orderDetails: OrderDeliveryDetails
     cityAddresses: AddressByCityItem[],
-    pickupAddresses: AddressByCityItem[]
+    pickupAddresses: AddressByCityItem[],
+
 
 
 }
@@ -87,6 +93,10 @@ const initialState: MainSliceState = {
     cityAddresses: [],
     pickupAddresses: [],
     canOrder: true,
+    orderWarning: {
+        description: "",
+        title: ""
+    },
     orderDetails: {
         delivery_type: 0, price: 0
 
@@ -258,6 +268,9 @@ export const MainSlice = createSlice({
         setOrderDetails: (state, action) => {
             state.orderDetails = action.payload
         },
+        setOrderWarning: (state, action: PayloadAction<OrderWarning>) => {
+            state.orderWarning = action.payload
+        }
 
 
     },
@@ -292,6 +305,7 @@ export const MainSlice = createSlice({
         })
         builder.addCase(getCanOrderAddressesByCity.fulfilled, (state, action) => {
             if(action.payload.status) {
+                state.canOrder = action.payload.status
                 state.pickupAddresses = action.payload.adress
                 return;
             }
@@ -299,6 +313,7 @@ export const MainSlice = createSlice({
         })
         builder.addCase(getDeliveryType.fulfilled, (state, action) => {
             if(action.payload.status) {
+                state.canOrder = action.payload.status
                 state.orderDetails = {
                     delivery_type: action.payload.delivery_type,
                     price: action.payload.price
@@ -316,7 +331,7 @@ export const MainSlice = createSlice({
     }
 })
 
-export const {setCurrentCity, setIsMobile, setOrderDetails, setIsPhone, toggleChangingGeo, toggleAskCityVisible, setMarket} = MainSlice.actions
+export const {setCurrentCity, setOrderWarning, setIsMobile, setOrderDetails, setIsPhone, toggleChangingGeo, toggleAskCityVisible, setMarket} = MainSlice.actions
 
 
 export const mainReducer = MainSlice.reducer

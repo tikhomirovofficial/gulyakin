@@ -23,6 +23,7 @@ const CartList = () => {
                             canNotBeAdded={item.id < 0}
                             product={{
                                 products: [],
+                                dimensions: item.product.dimensions,
                                 composition: item.product.composition,
                                 id: item.product.id,
                                 image: item.product.image,
@@ -43,6 +44,7 @@ const CartList = () => {
                         canNotBeAdded={item.id < 0}
                         product={{
                             products: item.product?.products,
+                            dimensions: "г",
                             composition: item.product?.products !== undefined ? item.product.products.map(item => item.title).join(', ') : "" || "",
                             id: item.product.id,
                             image: item.product.image,

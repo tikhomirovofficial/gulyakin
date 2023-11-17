@@ -45,6 +45,7 @@ const initialState: ModalSliceState = {
         description: "",
         imageUrl: "",
         name: "",
+        dimensions: "",
         price: 0,
         is_combo: false,
         weight: 0,

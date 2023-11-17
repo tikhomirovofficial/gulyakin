@@ -9,16 +9,17 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {handleBooking} from "../../../features/modals/modalsSlice";
 import RedButton from "../../Buttons/RedButton";
 import {
+    createBooking,
     handleBookingForm,
-    setBookingAddress, setBookingError,
+    setBookingAddress,
+    setBookingError,
     setBookingForm,
     setIsBookingsSuccess
 } from "../../../features/forms/formsSlice";
-import {getAvailableTimes} from "../../../utils/avaliableTimes";
+import {getTimes} from "../../../utils/avaliableTimes";
 import CalendarInput from "../../Inputs/CalendarInput";
 import {formatPhoneNumber} from "../../../utils/forms/formatePhone";
 import {isAfter10PM, isToday} from "../../../utils/dates";
-import {createBooking} from "../../../features/forms/formsSlice";
 import {extractDigits} from "../../../utils/normalizePhone";
 import SuccessWindow from "../SuccessWindow";
 
@@ -45,11 +46,18 @@ const BookingWindow = () => {
     const isDateDisabled = (date: any) => {
         return isToday(date) && isAfter10PM(date);
     };
-    const times = getAvailableTimes()
+    const defaultParams = {
+        startDate: new Date(2023, 10, 17, 8, 0), // Год, месяц (от 0 до 11), день, час, минута
+        endDate: new Date(2023, 10, 17, 22, 0),
+        step: 30, // Шаг в минутах
+        trimPast: true, // Флаг обрезания времени, если оно прошло текущее время
+        currentTime: new Date(2023, 10, 17, 23, 0), // Обязательное передача текущего времени
+    };
+    const times = getTimes(defaultParams)
 
     useEffect(() => {
         const today = new Date()
-        if(isDateDisabled(today)) {
+        if (isDateDisabled(today)) {
             today.setDate(today.getDate())
         }
         dispatch(setBookingForm({
@@ -63,7 +71,7 @@ const BookingWindow = () => {
     }, [bookingAddresses])
 
     const sendBookingCreate = () => {
-        if(bookingError.length) {
+        if (bookingError.length) {
             setBookingError("")
         }
         dispatch(setBookingError(""))
@@ -161,7 +169,8 @@ const BookingWindow = () => {
                     <div className="f-column gap-15">
                         <div className="f-column gap-5">
                             {bookingError.length ? <b className={"colorError"}>{bookingError}</b> : null}
-                            <RedButton onClick={sendBookingCreate} disabled={(bookingForm.phone?.includes("_") || bookingForm.phone.length == 0) || !bookingForm.name.length || bookingAddresses.length == 0 }
+                            <RedButton onClick={sendBookingCreate}
+                                       disabled={(bookingForm.phone?.includes("_") || bookingForm.phone.length == 0) || !bookingForm.name.length || bookingAddresses.length == 0}
                                        className={"pd-10-0"}>Забронировать</RedButton>
                         </div>
 
@@ -171,7 +180,7 @@ const BookingWindow = () => {
 
                 </div>
 
-            <SuccessWindow isOpened={bookingSuccess} title={"Забронировано"} closeHandle={closeSuccess}/>
+                <SuccessWindow isOpened={bookingSuccess} title={"Забронировано"} closeHandle={closeSuccess}/>
             </WindowBody>
         </ShadowWrapper>
     );

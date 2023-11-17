@@ -72,6 +72,7 @@ const useCombo = (combo_id: number): HookComboReturnType  => {
             imageUrl: thisCombo.image || "",
             is_combo: true,
             name: thisCombo.title,
+            dimensions:"г",
             price: thisCombo.price || 0,
             weight: thisCombo.weight
 

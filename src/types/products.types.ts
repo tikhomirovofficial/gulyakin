@@ -5,7 +5,8 @@ export type Product = {
     imageUrl: string,
     name: string,
     description: string,
-    weight: number
+    weight: number,
+    dimensions: string
 }
 
 export type AdditiveProduct = Pick<Product, "name" | "imageUrl" |"price">
@@ -17,7 +18,3 @@ export type ProductAdditiveData = {
     is_combo: boolean,
     additives: Array<Supplement>
 } & Product
-
-export type ComboAdditiveData = {
-    combo_id: number
-}

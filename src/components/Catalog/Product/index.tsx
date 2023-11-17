@@ -30,6 +30,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                                                       count = 0,
                                                       inCart = false,
                                                       sale,
+    dimensions,
                                                       className,
                                                       composition,
     is_product_day,
@@ -50,7 +51,8 @@ const Product: FC<ProductProps & HasClassName> = ({
             is_combo: false,
             name: title,
             price: price,
-            weight: weight
+            weight: weight,
+            dimensions
 
         }))
         dispatch(handleProductAdditives())
@@ -109,7 +111,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                     <div className="d-f jc-between gap-25">
                         <p>{composition}</p>
                         {isMobile ? null :
-                            <div className={`${styles.weight} txt-right`}>{weight} г</div>
+                            <div className={`${styles.weight} txt-right`}>{weight} {dimensions}</div>
                         }
                     </div>
                 </div>
@@ -143,7 +145,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                             </RedButton>
                     }
                     {!isMobile ? null :
-                        <div className={`${styles.weight} txt-right`}>{weight} г</div>
+                        <div className={`${styles.weight} txt-right`}>{weight} {dimensions}</div>
                     }
 
 

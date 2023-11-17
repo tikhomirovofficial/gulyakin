@@ -7,6 +7,7 @@ type SupplementProps = {
     price: number,
     title: string
     selected?: boolean,
+    onlyOne: boolean,
     setAddedSupplements: Dispatch<SetStateAction<Array<number>>>,
     addedSupplementsIds: Array<number>
 }
@@ -17,10 +18,14 @@ const SupplementItem: FC<SupplementProps> = ({
                                                  addedSupplementsIds,
                                                  title,
                                                  setAddedSupplements,
+    onlyOne,
                                                  selected
                                              }) => {
     const added = addedSupplementsIds.some(sup => sup === id)
     const addSupplement = (id: number) => {
+        if(onlyOne) {
+            setAddedSupplements([])
+        }
         setAddedSupplements(prev => [...prev, id])
     }
     const removeSupplement = (id: number) => {

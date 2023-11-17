@@ -19,6 +19,7 @@ const EditComboVariant = () => {
         weight,
         name,
         description,
+        dimensions,
         id
     } = useAppSelector(state => state.modals.productAdditivesData)
     //ТОЛЬКО ДЛЯ КОМБО
@@ -67,7 +68,7 @@ const EditComboVariant = () => {
                             <div className="top f-column gap-10">
                                 <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
                                     <h3>{name}</h3>
-                                    <div className={styles.weight}>{weight} г</div>
+                                    <div className={styles.weight}>{weight} {dimensions}</div>
                                 </div>
                                 <div className="f-column">
                                     {

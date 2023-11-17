@@ -13,6 +13,7 @@ import useProduct from "../../../../../hooks/useProduct";
 import {getSupplementsTotalPrice} from "../../../../../utils/getSupplementsTotalPrice";
 import {handleProductAdditives} from "../../../../../features/modals/modalsSlice";
 
+const isOneSupplement = false
 const EditProductVariant = () => {
     const {
         additives = [],
@@ -21,6 +22,7 @@ const EditProductVariant = () => {
         weight,
         name,
         description,
+        dimensions,
         id
     } = useAppSelector(state => state.modals.productAdditivesData)
     //ТОЛЬКО ДЛЯ ОБЫЧНОГО ПРОДУКТА
@@ -42,6 +44,7 @@ const EditProductVariant = () => {
                     renderItem={
                         (item) => <SupplementItem
                             addedSupplementsIds={addedSupplements}
+                            onlyOne={isOneSupplement}
                             setAddedSupplements={setAddedSupplements}
                             title={item.title}
                             id={item.id}
@@ -70,7 +73,7 @@ const EditProductVariant = () => {
                             <div className="top f-column gap-10">
                                 <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
                                     <h3>{name}</h3>
-                                    <div className={styles.weight}>{weight} г</div>
+                                    <div className={styles.weight}>{weight} {dimensions}</div>
                                 </div>
                                 <p className={styles.description}>{description || "Описание не заполнено"}</p>
                             </div>

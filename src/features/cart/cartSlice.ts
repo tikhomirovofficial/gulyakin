@@ -271,6 +271,7 @@ export const CartSlice = createSlice({
                             id: product.id,
                             title: product.title,
                             image: product.image,
+                            dimensions: product.dimensions,
                             price: product.price,
                             short_description: product.short_description,
                         },
@@ -296,6 +297,7 @@ export const CartSlice = createSlice({
                     is_combo: true,
                     product: {
                         composition: compositionFromProds,
+                        dimensions: "г",
                         drinks: comboProduct.drinks,
                         id: comboProduct.id,
                         image: comboProduct.image,

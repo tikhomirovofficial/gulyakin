@@ -8,6 +8,7 @@ import {marketComponents, MarketItem} from "./markets";
 import {setMarket} from "../../features/main/mainSlice";
 import {resetOrderForm} from "../../utils/common/resetOrderForm";
 import {setOrderForm} from "../../features/forms/formsSlice";
+import {Link} from "react-router-dom";
 
 type LogoItemProps = {
     id: number
@@ -66,7 +67,10 @@ const LogosSection = () => {
                         cityMarkets.map(marketItem => (
                             getByForId(marketItem.link) !== null ?
                                 <SwiperSlide key={marketItem.id} className={"w-content"}>
-                                    <LogoItem key={marketItem.id} id={marketItem.id} forMarketId={marketItem.link}/>
+                                    <Link to={"/"}>
+                                        <LogoItem key={marketItem.id} id={marketItem.id} forMarketId={marketItem.link}/>
+                                    </Link>
+
                                 </SwiperSlide> : null
                         ))
                     }

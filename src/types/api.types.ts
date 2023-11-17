@@ -23,6 +23,7 @@ export type ProductRes = {
     is_product_week?: boolean
     short_description: string;
 
+    dimensions: string;
     description: string;
     price: number;
     image: string;
@@ -237,6 +238,7 @@ export type CartProductItem = {
     id: number,
     product: {
         id: number
+        dimensions: string
         title: string,
         short_description: string
         image: string

@@ -1,11 +1,13 @@
-import {useAppSelector} from "../app/hooks";
+import {useAppDispatch, useAppSelector} from "../app/hooks";
 import {useEffect, useState} from "react";
 import {setOrderWarning} from "../features/main/mainSlice";
+import {appConfig} from "../config/AppConfig";
 
 type OrderDisabledHook = {
     orderDisabled: boolean
 }
 const useOrderDisabled = (): OrderDisabledHook => {
+    const dispatch = useAppDispatch()
     const {
         isPickup,
         restaurant,
@@ -22,18 +24,17 @@ const useOrderDisabled = (): OrderDisabledHook => {
 
         if (cartFilled) {
             if (!isPickup) {
-                if(canOrder) {
+                if (canOrder) {
                     const addressSelected = (addressId !== 0 && addressId !== -1) // Удостоверяемся, что указан адрес доставки
                     if (addressSelected) {
                         const isCarDelivery = orderDetails.delivery_type === 2 //Доставка на машине
                         if (isCarDelivery) {
-                            if (cart.totalPrice < 700) {
+                            if (cart.totalPrice < appConfig.MIN_ORDER_DELIVERY_SUM) {
                                 setDisabled(true)
-                                setOrderWarning({
-                                    description: "", title: ""
-
-                                })
-                                console.log("СУММА ЗАКАЗА МЕНЬШЕ 700")
+                                dispatch(setOrderWarning({
+                                    title: "Доставка недоступна",
+                                    description: `Мы доставим ваш заказ от ${appConfig.MIN_ORDER_DELIVERY_SUM} ₽`
+                                }))
                                 return
                             }
                             setDisabled(false)
@@ -42,60 +43,68 @@ const useOrderDisabled = (): OrderDisabledHook => {
                         setDisabled(false)
                         return;
                     }
-                    console.log("НЕ ВЫБРАН АДРЕС ДОСТАВКИ")
+                    dispatch(setOrderWarning({
+                        title: "Доставка недоступна",
+                        description: `Адрес доставки не выбран`
+                    }))
                     setDisabled(true)
                     return;
                 }
-                console.log("НЕТ ДОСТУПНОСТИ ЗАКАЗАТЬ В РАЗНЫХ КОНЦЕПЦИЯХ")
+                dispatch(setOrderWarning({
+                    title: "Заказ недоступен",
+                    description: `Ваши товары находятся из разных магазинов!`
+                }))
                 setDisabled(true)
                 return;
             }
 
             if (!canOrder) {
-                console.log("НЕТ ДОСТУПНОСТИ ЗАКАЗАТЬ В РАЗНЫХ КОНЦЕПЦИЯХ")
+                dispatch(setOrderWarning({
+                    title: "Заказ недоступен",
+                    description: `Ваши товары находятся из разных магазинов!`
+                }))
                 setDisabled(true)
                 return;
             }
-
 
             const pickupAddressSelected = restaurant !== 0 && restaurant !== -1
 
             if (pickupAddressSelected) {
                 const pickupAddressesExist = pickupAddresses.length > 0
                 if (!pickupAddressesExist && canOrder) {
-                    console.log("НЕТ АДРЕСОВ ДЛЯ САМОВЫВОЗА")
+                    dispatch(setOrderWarning({
+                        title: "Самовывоз недоступен",
+                        description: `Нет доступных точек для самовывоза`
+                    }))
                     setDisabled(true)
                     return;
                 }
                 setDisabled(false)
                 return;
             }
-            console.log("НЕ ВЫБРАН АДРЕС САМОВЫВОЗА")
+            dispatch(setOrderWarning({
+                title: "Самовывоз недоступен",
+                description: `Не выбран адрес`
+            }))
             setDisabled(true)
             return;
         }
-        console.log("КОРЗИНА ПУСТА")
+        dispatch(setOrderWarning({
+            title: "Заказ недоступен",
+            description: `Добавьте товары в корзину`
+        }))
         setDisabled(true)
 
     }
-    useEffect(getDisabledBtn, [cart.items, cart.totalPrice, pickupAddresses, canOrder, isPickup, addressId, restaurant, orderDetails])
-
-    useEffect(() => {
-
-        // if(cart.items.length > 0    ) {
-        //     console.log("###############")
-        //     console.log("Блокирована кнопка: ", disabled)
-        //     console.log(`Кол-во элементов в корзине ${cart.items.length}`)
-        //     console.log(`Сумма заказа ${cart.totalPrice}`)
-        //     console.log(`Кол-во адресов самовывоза ${pickupAddresses.length}`)
-        //     console.log(`Доступность заказа ${canOrder}`)
-        //     console.log(`Режим доставки: ${isPickup ? "Самовывоз" : "Доставка" }`)
-        //     console.log(`Выбран адрес доставки: ${addressId}`)
-        //     console.log(`Выбран адрес самовывоза: ${restaurant}`)
-        //     console.log("###############")
-        // }
-
-    }, [cart.items, pickupAddresses, canOrder, isPickup, addressId, restaurant])
+    useEffect(getDisabledBtn, [
+        cart.items,
+        cart.totalPrice,
+        pickupAddresses,
+        canOrder,
+        isPickup,
+        addressId,
+        restaurant,
+        orderDetails])
 
     return {
         orderDisabled: disabled

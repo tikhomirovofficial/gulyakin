@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import styles from './order.module.scss'
 import InputWrapper from "../../components/Inputs/InputWrapper";
 import {PaymentCard, PaymentCash, Warning} from "../../icons";
@@ -10,7 +10,6 @@ import {
     handleOrderCallNeeded,
     handleOrderFormVal,
     handleOrderPaymentWay,
-    handleOrderPickup,
     handleOrderTime,
     handleSelectAddressId,
     handleSelectRestaurant,
@@ -19,27 +18,25 @@ import {
     setOrderSuccess
 } from "../../features/forms/formsSlice";
 import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
-import {domain} from "../../http/instance/instances";
 import {getFromStorage} from "../../utils/LocalStorageExplorer";
-import {CreateOrderRequest, Supplement} from "../../types/api.types";
+import {CreateOrderRequest} from "../../types/api.types";
 import {formatPhoneNumber} from "../../utils/forms/formatePhone";
 import List from "../../components/List";
-import {handleCartOpened, handleNewAddress} from "../../features/modals/modalsSlice";
+import {handleNewAddress} from "../../features/modals/modalsSlice";
 import {useInput} from "../../hooks/useInput";
 import SuccessWindow from "../../components/Windows/SuccessWindow";
-import {getAvailableTimes} from "../../utils/avaliableTimes";
+import {defaultParams, getTimes} from "../../utils/avaliableTimes";
 import {Link} from "react-router-dom";
-import {getCanOrderAddressesByCity, getDeliveryType, setOrderDetails} from "../../features/main/mainSlice";
 import OrderItem from "../../components/OrderItem";
 import useOrderDetails from "../../hooks/useOrderDetails";
 import useOrderAddress from "../../hooks/useOrderAddress";
 import useOrderDisabled from "../../hooks/useOrderDisabled";
 
-const orderTimes = getAvailableTimes()
+const orderTimes = getTimes(defaultParams)
 const Order = () => {
     const dispatch = useAppDispatch()
     const {data, addresses} = useAppSelector(state => state.profile)
-    const {orderDetails, pickupAddresses, canOrder} = useAppSelector(state => state.main)
+    const {orderDetails, pickupAddresses, orderWarning} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
 
@@ -97,26 +94,6 @@ const Order = () => {
 
     const {orderDisabled} = useOrderDisabled()
     useOrderDetails()
-    useEffect(() => {
-        console.log(orderDisabled)
-    }, [orderDisabled])
-
-    // const isIncorrectPriceWithDelivery = (!isPickup && orderDetails.delivery_type == 2 && cart.totalPrice < 700)
-    // const isNotPickup = isPickup && (pickupAddresses.length == 0 || !canOrder)
-    // const getDisabledBtn = () => {
-    //     if (cart.totalPrice !== 0) {
-    //         // Если вдруг не указан айди адреса, но выбрана доставка
-    //         if (!isPickup && (addressId == 0 || addressId == -1)) {
-    //             return true
-    //         }
-    //         if (isPickup && (restaurant == 0 || restaurant == -1)) {
-    //             return true
-    //         }
-    //         return false
-    //     }
-    //     return true
-    //
-    // }
 
     return (
         <>
@@ -128,11 +105,12 @@ const Order = () => {
                                 <div className="sectionTitle">Заказ на {!isPickup ? "доставку" : "самовывоз"}</div>
                                 {
                                     orderDisabled ?
-                                        <div className={`pd-20 errorBlock d-f al-center gap-20 ${styles.errorDelivery}`}>
+                                        <div
+                                            className={`pd-20 errorBlock d-f al-center gap-20 ${styles.errorDelivery}`}>
                                             <Warning/>
                                             <div className="f-column">
-                                                <p>Предупреждение</p>
-                                                <b>Описание</b>
+                                                <p>{orderWarning.title}</p>
+                                                <b>{orderWarning.description}</b>
                                             </div>
                                         </div> : null
                                 }

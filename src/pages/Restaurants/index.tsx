@@ -70,7 +70,7 @@ const Restaurants: FC = () => {
                                         <div className={`${styles.sideWrapper} f-column wrapper`}>
                                             {
                                                 addresses.map(item => (
-                                                    <RestaurantItem link={`/restaurants/${item.id}`}
+                                                    <RestaurantItem key={item.id} link={`/restaurants/${item.id}`}
                                                                     street={item.adress}
                                                                     canOnlineOrder={true}
                                                                     cityArea={""}/>
@@ -86,7 +86,7 @@ const Restaurants: FC = () => {
                                                  state={{center: getAddressesCoords(), zoom: 16}}>
                                                 {
                                                     addresses.map(item => (
-                                                        <Placemark geometry={[item.long, item.lat]} options={
+                                                        <Placemark key={item.id} geometry={[item.long, item.lat]} options={
                                                             {
                                                                 iconLayout: 'default#image', // Используем стандартный макет изображения
                                                                 iconImageHref: logo, // Укажите URL вашей кастомной иконки

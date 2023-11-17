@@ -183,9 +183,6 @@ export const CartSlice = createSlice({
         },
         cartAddedClose: state => {
             state.cartClassOpened = false
-            setTimeout(() => {
-                state.cartAdded = false
-            }, 300)
         },
         setProductAfterLogin: (state, action: PayloadAction<DefferedAddingProduct>) => {
             state.addProductAfterLogin = action.payload
@@ -319,7 +316,6 @@ export const CartSlice = createSlice({
         })
         builder.addCase(editCartCombo.fulfilled, (state, action) => {
             const editedCombo = action.payload.data.product[0]
-            console.log(editedCombo)
             state.items = state.items.map(item => {
                 if (item.id === editedCombo.id && item.is_combo) {
                     return editedCombo

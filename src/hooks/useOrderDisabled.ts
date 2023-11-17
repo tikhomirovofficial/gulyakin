@@ -1,7 +1,10 @@
-import React from 'react';
 import {useAppSelector} from "../app/hooks";
+import {useEffect, useState} from "react";
 
-const useOrderDisabled = () => {
+type OrderDisabledHook = {
+    orderDisabled: boolean
+}
+const useOrderDisabled = (): OrderDisabledHook => {
     const {
         isPickup,
         restaurant,
@@ -10,44 +13,78 @@ const useOrderDisabled = () => {
     const {orderDetails, pickupAddresses, canOrder} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
 
+    const [disabled, setDisabled] = useState(false)
     const getDisabledBtn = () => {
         const cartFilled = cart.items.length !== 0
         if (cartFilled) {
-            if(!canOrder) {
-                // ПРЕДУПРЕЖДЕНИЕ: НЕТ ДОСТУПНОСТИ ЗАКАЗАТЬ В РАЗНЫХ КОНЦЕПЦИЯХ
-                return true
+            if (!canOrder) {
+                console.log("НЕТ ДОСТУПНОСТИ ЗАКАЗАТЬ В РАЗНЫХ КОНЦЕПЦИЯХ")
+                setDisabled(true)
+                return;
             }
-            if(!isPickup) {
-                const addressSelected = (addressId == 0 || addressId == -1) // Удостоверяемся, что указан адрес доставки
-                if(addressSelected) {
+            if (!isPickup) {
+                const addressSelected = (addressId !== 0 && addressId !== -1) // Удостоверяемся, что указан адрес доставки
+                if (addressSelected) {
                     const isCarDelivery = orderDetails.delivery_type === 2 //Доставка на машине
-                    if(isCarDelivery) {
-                        if(cart.totalPrice < 700) {
-                            // ПРЕДУПРЕЖДЕНИЕ: СУММА ЗАКАЗА МЕНЬШЕ 700
-                            return true
+                    if (isCarDelivery) {
+                        if (cart.totalPrice < 700) {
+                            console.log("СУММА ЗАКАЗА МЕНЬШЕ 700")
+                            setDisabled(true)
+                            return;
                         }
-                        return false
+                        setDisabled(false)
+                        return;
                     }
-                    return false
+                    setDisabled(false)
+                    return;
                 }
-                return true
+                console.log("НЕ ВЫБРАН АДРЕС ДОСТАВКИ")
+                setDisabled(true)
+                return;
             }
 
-            const pickupAddressSelected = restaurant == 0 || restaurant == -1
+            const pickupAddressSelected = restaurant !== 0 && restaurant !== -1
 
-            if(pickupAddressSelected) {
+            if (pickupAddressSelected) {
                 const pickupAddressesExist = pickupAddresses.length > 0
-                if(!pickupAddressesExist) {
-                    // ПРЕДУПРЕЖДЕНИЕ: НЕТ АДРЕСОВ ДЛЯ САМОВЫВОЗА В ГОРОДЕ
-                    return true
+                if (!pickupAddressesExist) {
+                    console.log("НЕТ АДРЕСОВ ДЛЯ САМОВЫВОЗА")
+                    setDisabled(true)
+                    return;
                 }
-                return false
+                setDisabled(false)
+                return;
             }
-            return true
-        }
-        //ПРЕДУПРЕЖДЕНИЕ: КОРЗИНА ПУСТА
-        return true
+            console.log("НЕ ВЫБРАН АДРЕС САМОВЫВОЗА")
+            setDisabled(true)
 
+            return;
+        }
+        console.log("КОРЗИНА ПУСТА")
+        setDisabled(true)
+
+    }
+    useEffect(getDisabledBtn, [cart.items, pickupAddresses, canOrder, isPickup, addressId, restaurant])
+
+    useEffect(() => {
+
+        if(cart.items.length > 0    ) {
+            console.log("###############")
+            console.log("Блокирована кнопка: ", disabled)
+            console.log(`Кол-во элементов в корзине ${cart.items.length}`)
+            console.log(`Сумма заказа ${cart.totalPrice}`)
+            console.log(`Кол-во адресов самовывоза ${pickupAddresses.length}`)
+            console.log(`Доступность заказа ${canOrder}`)
+            console.log(`Режим доставки: ${isPickup ? "Самовывоз" : "Доставка" }`)
+            console.log(`Выбран адрес доставки: ${addressId}`)
+            console.log(`Выбран адрес самовывоза: ${restaurant}`)
+            console.log("###############")
+        }
+
+    }, [cart.items, pickupAddresses, canOrder, isPickup, addressId, restaurant])
+
+    return {
+        orderDisabled: disabled
     }
 };
 

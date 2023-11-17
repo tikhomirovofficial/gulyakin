@@ -33,6 +33,7 @@ import {getCanOrderAddressesByCity, getDeliveryType, setOrderDetails} from "../.
 import OrderItem from "../../components/OrderItem";
 import useOrderDetails from "../../hooks/useOrderDetails";
 import useOrderAddress from "../../hooks/useOrderAddress";
+import useOrderDisabled from "../../hooks/useOrderDisabled";
 
 const orderTimes = getAvailableTimes()
 const Order = () => {
@@ -41,7 +42,7 @@ const Order = () => {
     const {orderDetails, pickupAddresses, canOrder} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
-
+    useOrderDetails()
     const {
         name,
         callNeeded,
@@ -53,9 +54,6 @@ const Order = () => {
         success,
         addressId
     } = useAppSelector(state => state.forms.orderForm)
-
-    useOrderDetails()
-
     const {
         handleChangeDeliveryType,
         getCurrentPickupAddress,
@@ -97,22 +95,24 @@ const Order = () => {
         }))
     }, [])
 
-    const isIncorrectPriceWithDelivery = (!isPickup && orderDetails.delivery_type == 2 && cart.totalPrice < 700)
-    const isNotPickup = isPickup && (pickupAddresses.length == 0 || !canOrder)
-    const getDisabledBtn = () => {
-        if (cart.totalPrice !== 0) {
-            // Если вдруг не указан айди адреса, но выбрана доставка
-            if (!isPickup && (addressId == 0 || addressId == -1)) {
-                return true
-            }
-            if (isPickup && (restaurant == 0 || restaurant == -1)) {
-                return true
-            }
-            return false
-        }
-        return true
+    const {orderDisabled} = useOrderDisabled()
 
-    }
+    // const isIncorrectPriceWithDelivery = (!isPickup && orderDetails.delivery_type == 2 && cart.totalPrice < 700)
+    // const isNotPickup = isPickup && (pickupAddresses.length == 0 || !canOrder)
+    // const getDisabledBtn = () => {
+    //     if (cart.totalPrice !== 0) {
+    //         // Если вдруг не указан айди адреса, но выбрана доставка
+    //         if (!isPickup && (addressId == 0 || addressId == -1)) {
+    //             return true
+    //         }
+    //         if (isPickup && (restaurant == 0 || restaurant == -1)) {
+    //             return true
+    //         }
+    //         return false
+    //     }
+    //     return true
+    //
+    // }
 
     return (
         <>
@@ -122,26 +122,26 @@ const Order = () => {
                         <div className="orderBlock f-column gap-40">
                             <div className={`${styles.form} f-column gap-25`}>
                                 <div className="sectionTitle">Заказ на {!isPickup ? "доставку" : "самовывоз"}</div>
-                                {
-                                    isIncorrectPriceWithDelivery && !isPickup  ?
-                                        <div className={`pd-20 errorBlock d-f al-center gap-20 ${styles.errorDelivery}`}>
-                                            <Warning/>
-                                            <div className="f-column">
-                                                <p>Недостаточная сумма заказа.</p>
-                                                <b>Мы доставим ваш заказ от 700 ₽</b>
-                                            </div>
-                                        </div> : null
-                                }
-                                {
-                                    isNotPickup ?
-                                        <div className={`pd-20 errorBlock d-f al-center gap-20 ${styles.errorDelivery}`}>
-                                            <Warning/>
-                                            <div className="f-column">
-                                                <p>Нельзя заказать самовывоз.</p>
-                                                <b>Товары из разных ресторанов!</b>
-                                            </div>
-                                        </div> : null
-                                }
+                                {/*{*/}
+                                {/*    isIncorrectPriceWithDelivery && !isPickup  ?*/}
+                                {/*        <div className={`pd-20 errorBlock d-f al-center gap-20 ${styles.errorDelivery}`}>*/}
+                                {/*            <Warning/>*/}
+                                {/*            <div className="f-column">*/}
+                                {/*                <p>Недостаточная сумма заказа.</p>*/}
+                                {/*                <b>Мы доставим ваш заказ от 700 ₽</b>*/}
+                                {/*            </div>*/}
+                                {/*        </div> : null*/}
+                                {/*}*/}
+                                {/*{*/}
+                                {/*    isNotPickup ?*/}
+                                {/*        <div className={`pd-20 errorBlock d-f al-center gap-20 ${styles.errorDelivery}`}>*/}
+                                {/*            <Warning/>*/}
+                                {/*            <div className="f-column">*/}
+                                {/*                <p>Нельзя заказать самовывоз.</p>*/}
+                                {/*                <b>Товары из разных ресторанов!</b>*/}
+                                {/*            </div>*/}
+                                {/*        </div> : null*/}
+                                {/*}*/}
                                 <div className="f-column gap-20">
                                     <div className="f-column gap-10">
                                         <div className="orderForm f-column gap-20">
@@ -308,7 +308,7 @@ const Order = () => {
                                         }
 
                                         <RedButton onClick={handleCreateOrder}
-                                                   disabled={cart.items.length > 0 ? getDisabledBtn() || !isPickup ? isIncorrectPriceWithDelivery : isNotPickup : true}
+                                                   disabled={false}
                                                    className={`pd-15 ${styles.createOrderBtn}`}>Оформить заказ
                                             на {formatNumberWithSpaces(cart.totalPrice + orderDetails.price)} ₽</RedButton>
                                     </div>

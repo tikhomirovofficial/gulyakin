@@ -18,30 +18,37 @@ import useMarketLogo from "../../hooks/useMarketLogo";
 
 const weekItems = [
     {
+        id: 1,
         day: "Воскресенье",
         workTime: "10:30-00:00"
     },
     {
+        id: 2,
         day: "Понедельник",
         workTime: "10:30-00:00"
     },
     {
+        id: 3,
         day: "Вторник",
         workTime: "10:30-00:00"
     },
     {
+        id: 4,
         day: "Среда",
         workTime: "10:30-00:00"
     },
     {
+        id: 5,
         day: "Четверг",
         workTime: "10:30-00:00"
     },
     {
+        id: 6,
         day: "Пятница",
         workTime: "10:30-00:00"
     },
     {
+        id: 7,
         day: "Суббота",
         workTime: "10:30-00:00"
     },
@@ -149,7 +156,7 @@ const ChosenRestaurant: FC = () => {
                                             >
                                                 {
                                                     restaurantInfo.image.map(src => (
-                                                        <SwiperSlide className={"w-content cur-grabbing"}>
+                                                        <SwiperSlide key={Date.now()} className={"w-content cur-grabbing"}>
                                                             <div style={{backgroundImage: `url(${domain}/${src})`}}
                                                                  className={`${styles.item} bg-cover`}>
 
@@ -171,7 +178,7 @@ const ChosenRestaurant: FC = () => {
                                             <p className={styles.phoneLabel}>График работы</p>
                                             {
                                                 weekItems.map((item, index) => (
-                                                    index > 0 ? <div
+                                                    index > 0 ? <div key={item.id}
                                                         className={`f-row-betw ${index === dayOfWeek ? "colorRed" : ""}`}>
                                                         <b>{item.day}</b>
                                                         <b>{item.workTime}</b>

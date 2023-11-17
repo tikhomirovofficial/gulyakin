@@ -65,7 +65,7 @@ const LogosSection = () => {
                     {
                         cityMarkets.map(marketItem => (
                             getByForId(marketItem.link) !== null ?
-                                <SwiperSlide className={"w-content"}>
+                                <SwiperSlide key={marketItem.id} className={"w-content"}>
                                     <LogoItem key={marketItem.id} id={marketItem.id} forMarketId={marketItem.link}/>
                                 </SwiperSlide> : null
                         ))

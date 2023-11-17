@@ -85,7 +85,7 @@ const Cart = () => {
                                     {
                                         souse.map(item => {
                                             const inCartSouse = items.filter(prod => prod.product.id === item.id && !prod.is_combo)[0]
-                                            return <CartAdditiveItem count={inCartSouse?.count || 0}
+                                            return <CartAdditiveItem key={item.id} count={inCartSouse?.count || 0}
                                                                      inCart={inCartSouse !== undefined}
                                                                      short_description={item.short_description || ""}
                                                                      id={item.id} price={item.price}

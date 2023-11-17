@@ -40,7 +40,6 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
             return;
 
         }
-        console.log(product.id)
         const findedCombo = combos.filter(item => item.id === product.id)[0]
         dispatch(setProductAdditivesData({
             id: findedCombo.id,

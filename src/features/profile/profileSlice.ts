@@ -224,7 +224,7 @@ export const ProfileSlice = createSlice({
                         lat: item.lat
                     }
                 })]
-                console.log(action.payload)
+
             }
         })
 

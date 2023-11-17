@@ -11,6 +11,7 @@ const useOrderDetails = () => {
         isPickup,
         addressId
     } = useAppSelector(state => state.forms.orderForm)
+
     const defineDeliveryType = () => {
         if(cart.totalPrice > 0) {
             if(!isPickup) {

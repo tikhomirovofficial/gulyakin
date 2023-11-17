@@ -92,7 +92,6 @@ const BookingWindow = () => {
                         <div className="f-column gap-20">
                             <div className="f-column gap-10">
                                 <CalendarInput setCalendarVal={(val) => {
-                                    console.log(val)
                                     dispatch(handleBookingForm({
                                         keyField: "date",
                                         val: `${val.getMonth() + 1}.${val.getDate()}.${val.getFullYear()}`

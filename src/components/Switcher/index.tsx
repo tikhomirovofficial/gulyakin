@@ -33,12 +33,12 @@ const Switcher: FC<SwitcherProps & HasClassName> = ({currentSelected, onSwitch, 
             </div>
             {elements.map((element, index) => {
                 if(index) {
-                    return <div onClick={() => handleSwitch(index)} ref={elementRef} className={`${styles.item} cur-pointer f-c-col txt-center`}>
+                    return <div key={index} onClick={() => handleSwitch(index)} ref={elementRef} className={`${styles.item} cur-pointer f-c-col txt-center`}>
                         {element}
                     </div>
                 }
 
-                return(<div onClick={() => handleSwitch(index)} className={`${styles.item} cur-pointer  f-c-col txt-center`}>
+                return(<div key={index} onClick={() => handleSwitch(index)} className={`${styles.item} cur-pointer  f-c-col txt-center`}>
                     {element}
                 </div>)
             })}

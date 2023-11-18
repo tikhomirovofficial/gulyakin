@@ -109,37 +109,39 @@ const Cart = () => {
                 </div>
                 <div className={`${styles.content} pd-20 f-1 f-column-betw`}>
                     <div className="f-column gap-25">
-                        <div className="itemsBlock f-column gap-20">
-                            <h2>
+                        <div className="itemsBlock f-column">
+                            <div className={`${styles.cartBlockTop} f-column gap-20`}>
+                                <h2>
+                                    {
+                                        items.length ? `${totalCount} товаров на ${formatNumberWithSpaces(totalPrice)} ₽` :
+                                            "Корзина пуста"
+                                    }
+                                </h2>
                                 {
-                                    items.length ? `${totalCount} товаров на ${formatNumberWithSpaces(totalPrice)} ₽` :
-                                        "Корзина пуста"
-                                }
-                            </h2>
-                            {
-                                items.length && !isCurrent ?
-                                    <div className={`${styles.info} d-f al-center gap-10`}>
-                                        <InfoCircle className={styles.infoIcon} height={18} width={18}/>
-                                        <p>
-                                            Сейчас заказ недоступен <br/>
-                                            ресторан работает с {workTimes.startTime} до {workTimes.endTime}.
-                                        </p>
-                                    </div> : null
-                            }
-                            {
-                                !items.length ?
-                                    <div className={`d-f gap-10`}>
-                                        <InfoCircle className={styles.infoIcon} height={18} width={18}/>
-                                        <div className={`${styles.emptyText} f-column`}>
+                                    items.length && !isCurrent ?
+                                        <div className={`${styles.info} d-f al-center gap-10`}>
+                                            <InfoCircle className={styles.infoIcon} height={18} width={18}/>
                                             <p>
-                                                В вашей корзине пусто, откройте «Меню» <br/> и выберите понравившийся
-                                                товар.
+                                                Сейчас заказ недоступен <br/>
+                                                ресторан работает с {workTimes.startTime} до {workTimes.endTime}.
                                             </p>
-                                        </div>
+                                        </div> : null
+                                }
+                                {
+                                    !items.length ?
+                                        <div className={`d-f gap-10`}>
+                                            <InfoCircle className={styles.infoIcon} height={18} width={18}/>
+                                            <div className={`${styles.emptyText} f-column`}>
+                                                <p>
+                                                    В вашей корзине пусто, откройте «Меню» <br/> и выберите понравившийся
+                                                    товар.
+                                                </p>
+                                            </div>
 
-                                    </div>
-                                    : null
-                            }
+                                        </div>
+                                        : null
+                                }
+                            </div>
                             <CartList/>
 
                         </div>

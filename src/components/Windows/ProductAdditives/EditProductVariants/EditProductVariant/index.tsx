@@ -23,6 +23,7 @@ const EditProductVariant = () => {
         name,
         description,
         dimensions,
+        is_multiple_supplements,
         id
     } = useAppSelector(state => state.modals.productAdditivesData)
     //ТОЛЬКО ДЛЯ ОБЫЧНОГО ПРОДУКТА
@@ -44,7 +45,7 @@ const EditProductVariant = () => {
                     renderItem={
                         (item) => <SupplementItem
                             addedSupplementsIds={addedSupplements}
-                            onlyOne={isOneSupplement}
+                            onlyOne={is_multiple_supplements === false}
                             setAddedSupplements={setAddedSupplements}
                             title={item.title}
                             id={item.id}
@@ -81,15 +82,15 @@ const EditProductVariant = () => {
                                 <RenderSupplementsList/>
                             </div>
                         </div>
-                        <div className={`${styles.additivesBtnWrapper} d-f al-end f-1 w-100p`}>
-                            <RedButton onClick={saveMode ? saveProduct : addProduct} disabled={false}
-                                       className={`${styles.additivesBtn} pd-10-0`}>
 
-                                {!saveMode ? `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
-                            </RedButton>
-                        </div>
                     </div>
+                    <div className={`${styles.additivesBtnWrapper} d-f al-end f-1 w-100p`}>
+                        <RedButton onClick={saveMode ? saveProduct : addProduct} disabled={false}
+                                   className={`${styles.additivesBtn} pd-10-0`}>
 
+                            {!saveMode ? `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
+                        </RedButton>
+                    </div>
                 </div>
             </WindowBody>
         </ShadowWrapper>

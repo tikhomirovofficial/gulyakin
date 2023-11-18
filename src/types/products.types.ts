@@ -4,6 +4,7 @@ export type Product = {
     price: number
     imageUrl: string,
     name: string,
+    is_multiple_supplements?: boolean,
     description: string,
     weight: number,
     dimensions: string

@@ -4,8 +4,6 @@ import {AxiosResponse} from "axios";
 import {
     AddressByCityItem,
     AddressByMarketCity,
-    BookingCreateRequest,
-    BookingCreateResponse,
     CanOrderAddressesByCityRequest,
     CanOrderAddressesByCityResponse,
     CanOrderByCityRequest,
@@ -39,11 +37,12 @@ type VariantType = {
     title: string,
     id: number
 }
+
 type AddressType = {
     id: number,
     adress: string
 }
-export type OrderWarning ={
+export type OrderWarning = {
     title: string
     description: string
 }
@@ -76,9 +75,6 @@ type MainSliceState = {
     orderDetails: OrderDeliveryDetails
     cityAddresses: AddressByCityItem[],
     pickupAddresses: AddressByCityItem[],
-
-
-
 }
 const initialState: MainSliceState = {
     market: getFromStorage('market') || -1,
@@ -99,7 +95,7 @@ const initialState: MainSliceState = {
     pickupAddresses: [],
     workTimes: {
         startTime: "6:00",
-        endTime: "10:00"
+        endTime: "23:00"
     },
     canOrder: true,
     orderWarning: {
@@ -108,7 +104,6 @@ const initialState: MainSliceState = {
     },
     orderDetails: {
         delivery_type: 0, price: 0
-
     },
     markets: [
         {
@@ -157,16 +152,14 @@ export const getCities = createAsyncThunk(
     'cities/get',
     async (_, {dispatch}) => {
         const res: AxiosResponse<GetCitiesResponse> = await AddressesApi.Cities()
-        if(res.data.siti.length) {
+        if (res.data.siti.length) {
             return {
                 cities: res.data.siti
             }
         }
-
         return {
             cities: []
         }
-
     }
 )
 
@@ -175,7 +168,6 @@ export const getDeliveries = createAsyncThunk(
     async (_, {dispatch}) => {
         const res: AxiosResponse<GetDeliveryListResponse> = await OrderApi.DeliveriesWays()
         return res.data.delivery_list
-
     }
 )
 
@@ -184,7 +176,6 @@ export const getCanOrderByCity = createAsyncThunk(
     async (request: CanOrderByCityRequest, {dispatch}) => {
         const res: AxiosResponse<CanOrderByCityResponse> = await OrderApi.GetCanOrderByCity(request)
         return res.data
-
     }
 )
 export const getCanOrderAddressesByCity = createAsyncThunk(
@@ -192,18 +183,16 @@ export const getCanOrderAddressesByCity = createAsyncThunk(
     async (request: CanOrderAddressesByCityRequest, {dispatch}) => {
         const res: AxiosResponse<CanOrderAddressesByCityResponse> = await OrderApi.GetCanOrderAddressesByCity(request)
         return res.data
-
     }
 )
 export const getMarketsByCity = createAsyncThunk(
     'markets/city/get',
     async (request: GetMarketsByCityRequest, {dispatch}) => {
         const res: AxiosResponse<GetMarketsByCityResponse> = await MarketApi.MarketsByCity(request)
-        if(res?.data) {
-            if(res.data.market.length) {
+        if (res?.data) {
+            if (res.data.market.length) {
                 dispatch(setMarket(res.data.market[0].id))
             }
-
         }
         return res.data.market
     }
@@ -213,7 +202,6 @@ export const getBookings = createAsyncThunk(
     async (request: GetBookingsRequest, {dispatch}) => {
         const res: AxiosResponse<GetBookingsResponse> = await AddressesApi.Bookings(request)
         return res.data.booking
-
     }
 )
 export const getDeliveryType = createAsyncThunk(
@@ -221,7 +209,6 @@ export const getDeliveryType = createAsyncThunk(
     async (request: GetOrderDeliveryRequest, {dispatch}) => {
         const res: AxiosResponse<GetOrderDeliveryResponse> = await OrderApi.GetTypeDelivery(request)
         return res.data
-
     }
 )
 export const getAddressesByCity = createAsyncThunk(
@@ -237,7 +224,6 @@ export const getPayments = createAsyncThunk(
     async (_, {dispatch}) => {
         const res: AxiosResponse<GetPaymentListResponse> = await OrderApi.PaymentsWays()
         return res.data.payment_list
-
     }
 )
 export const getAddressesByMarketCity = createAsyncThunk(
@@ -245,7 +231,6 @@ export const getAddressesByMarketCity = createAsyncThunk(
     async (request: GetAddressesByMarketCityRequest, {dispatch}) => {
         const res: AxiosResponse<GetAddressesByMarketCityResponse> = await AddressesApi.AddressInfoByCityAndMarketId(request)
         return res.data.adress
-
     }
 )
 export const MainSlice = createSlice({
@@ -255,7 +240,7 @@ export const MainSlice = createSlice({
         setCurrentCity: (state, action: PayloadAction<number>) => {
             state.currentGeo.city = action.payload
             addToStorage("city", action.payload)
-            if(!getFromStorage("city_accepted")) {
+            if (!getFromStorage("city_accepted")) {
                 addToStorage("city_accepted", true)
             }
         },
@@ -280,13 +265,11 @@ export const MainSlice = createSlice({
         setOrderWarning: (state, action: PayloadAction<OrderWarning>) => {
             state.orderWarning = action.payload
         },
-
-
     },
     extraReducers: builder => {
         builder.addCase(getCities.fulfilled, (state, action) => {
             state.cities = action.payload.cities
-            if(!state.currentGeo.city) {
+            if (!state.currentGeo.city) {
                 state.currentGeo.city = action.payload.cities[0].id
             }
         })
@@ -313,7 +296,7 @@ export const MainSlice = createSlice({
             state.cityAddresses = action.payload
         })
         builder.addCase(getCanOrderAddressesByCity.fulfilled, (state, action) => {
-            if(action.payload.status) {
+            if (action.payload.status) {
                 state.canOrder = action.payload.status
                 state.pickupAddresses = action.payload.adress
                 return;
@@ -321,7 +304,7 @@ export const MainSlice = createSlice({
             state.canOrder = action.payload.status
         })
         builder.addCase(getDeliveryType.fulfilled, (state, action) => {
-            if(action.payload.status) {
+            if (action.payload.status) {
                 state.canOrder = action.payload.status
                 state.orderDetails = {
                     delivery_type: action.payload.delivery_type,
@@ -333,14 +316,20 @@ export const MainSlice = createSlice({
                 delivery_type: 0,
                 price: 0
             }
-
-
         })
-
     }
 })
 
-export const {setCurrentCity, setOrderWarning, setIsMobile, setOrderDetails, setIsPhone, toggleChangingGeo, toggleAskCityVisible, setMarket} = MainSlice.actions
+export const {
+    setCurrentCity,
+    setOrderWarning,
+    setIsMobile,
+    setOrderDetails,
+    setIsPhone,
+    toggleChangingGeo,
+    toggleAskCityVisible,
+    setMarket
+} = MainSlice.actions
 
 
 export const mainReducer = MainSlice.reducer

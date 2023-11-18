@@ -37,6 +37,8 @@ interface AddressItemProps {
 
 
 const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, timeWork, disabled = false}) => {
+    console.log(timeWork)
+    const hasIncorrectTimeWork = timeWork?.some(item => item === undefined || item === null)
     if (disabled) {
         return (
             <GrayBorderedBlock disabled={disabled} className={`pd-20 d-f gap-10 cur-pointer ${styles.addressItem} `}>
@@ -44,7 +46,7 @@ const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, time
                 <div className={`f-column gap-5 ${styles.text}`}>
                     <h2>{text}</h2>
                     {
-                        timeWork ?
+                        timeWork && !hasIncorrectTimeWork ?
                             <div className="f-column">
                                 <div
                                     className={styles.timeWork}>{deleteSeconds(timeWork[0])} — {deleteSeconds(timeWork[1])}</div>
@@ -63,7 +65,7 @@ const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, time
             <div className={`f-column gap-5 ${styles.text}`}>
                 <h2>{text}</h2>
                 {
-                    timeWork ?
+                    timeWork && !hasIncorrectTimeWork ?
                         <div className="f-column">
                             <div
                                 className={styles.timeWork}>{deleteSeconds(timeWork[0])} — {deleteSeconds(timeWork[1])}</div>
@@ -78,6 +80,7 @@ export type FindedAddress = {
     address: string,
     city: string,
     house: string | null,
+    flat: string | null,
     geo_lat: string | null,
     geo_lon: string | null,
 }

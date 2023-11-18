@@ -35,13 +35,14 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                                 key={product.id}
                                                 title={product.title}
                                                 dimensions={product.dimensions}
+                                                is_multiple_supplements={product.is_multiple_supplements}
                                                 is_product_week={product.is_product_week !== undefined ? product.is_product_week : false}
                                                 is_product_day={product.is_product_day !== undefined ? product.is_product_day : false}
                                                 id={product.id}
                                                 count={cart.items.filter(item => item.product.id === product.id)[0]?.count}
                                                 inCart={cart.items.some(item => item.product.id === product.id && !item.is_combo)}
                                                 image={product.image}
-                                                composition={product.composition || "Состав не заполнен"}
+                                                composition={product.composition}
                                                 weight={product.weight}
                                                 price={product.price} category={product.category}
                                                 description={product.description}

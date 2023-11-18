@@ -35,6 +35,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                                                       composition,
     is_product_day,
     is_product_week,
+    is_multiple_supplements,
                                                       weight,
                                                       price
                                                   }) => {
@@ -50,6 +51,7 @@ const Product: FC<ProductProps & HasClassName> = ({
             imageUrl: image || "",
             is_combo: false,
             name: title,
+            is_multiple_supplements: is_multiple_supplements,
             price: price,
             weight: weight,
             dimensions
@@ -108,7 +110,7 @@ const Product: FC<ProductProps & HasClassName> = ({
             <div className={`${styles.content} f-column-betw gap-20 f-1`}>
                 <div className={`${styles.textBlock} gap-5 f-1 f-column-betw`}>
                     <h3>{title}</h3>
-                    <div className="d-f jc-between gap-25">
+                    <div className="d-f jc-between gap-25 f-1">
                         <p>{composition}</p>
                         {isMobile ? null :
                             <div className={`${styles.weight} txt-right`}>{weight} {dimensions}</div>

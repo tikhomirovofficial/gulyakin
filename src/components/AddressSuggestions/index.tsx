@@ -12,8 +12,9 @@ const AddressSuggestions: FC<AddressSuggestionsProps> = ({findedAddresses, selec
         <div className={`${styles.searchedMatches} miniScrollbar  pd-10 p-abs left-0 w-100p bg-white`}>
             {
                 findedAddresses.map(item => (
-                    item.house !== null ?
+                    item.house !== null && item.flat === null ?
                         <SearchAddressItem
+                            flat={null}
                             geo_lat={item.geo_lat}
                             geo_lon={item.geo_lon}
                             handleAddress={() => selectAddress(item.geo_lat || "0", item.geo_lon || "0", item.address)}

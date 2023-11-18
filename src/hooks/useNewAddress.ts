@@ -78,6 +78,7 @@ const useNewAddress = (): UseNewAddressReturn => {
                 setFindedAddressess(prev => {
                     const suggests: Array<FindedAddress> = res.data.suggestions.map(item => {
                         return {
+                            flat: item.data.flat,
                             address: item.value,
                             city: item.data.city,
                             house: item.data.house,

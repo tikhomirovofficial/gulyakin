@@ -2,7 +2,7 @@
   z-index: 10;
 }
 .window {
-  padding: 2rem 2rem 3rem 3rem;
+  padding: 2rem 3rem;
   max-height: 60rem;
   height: 100%;
   max-width: 108rem;
@@ -175,9 +175,12 @@
     padding: 0;
   }
   .additivesBtnWrapper {
-    position: sticky;
+    position: fixed;
+    width: 100%;
+    left: 0;
+
     background: white;
-    padding-bottom: 1.6rem !important;
+    padding: 0 2rem 1.6rem !important;
     bottom: 0;
   }
   .additivesBarContainer {

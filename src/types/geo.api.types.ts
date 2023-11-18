@@ -10,6 +10,7 @@ export type SuggestionsResponse = {
             street_type: string,
             house: string,
             geo_lat: string,
+            flat: string
             geo_lon: string,
         }
     }>

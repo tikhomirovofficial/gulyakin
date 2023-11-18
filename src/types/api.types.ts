@@ -19,6 +19,7 @@ export interface Supplement {
 export type ProductRes = {
     id: number;
     title: string;
+    is_multiple_supplements: boolean,
     is_product_day?: boolean
     is_product_week?: boolean
     short_description: string;

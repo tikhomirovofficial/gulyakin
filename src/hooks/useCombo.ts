@@ -68,7 +68,7 @@ const useCombo = (combo_id: number): HookComboReturnType  => {
             id: combo_id,
             additives: [],
             currentAdditive: 0,
-            description: thisCombo.products?.map(item => item.title).join(', ') || "Описания нет",
+            description: thisCombo.products?.map(item => item.title).join(', ') || "",
             imageUrl: thisCombo.image || "",
             is_combo: true,
             name: thisCombo.title,

@@ -24,7 +24,7 @@ const OrderItem: FC<OrderItemProps> = ({image, id, title, supplements = [], coun
             <div className="f-column-betw f-1 gap-5">
                 <div className="top f-column gap-5">
                     <h4>{title}</h4>
-                    <p>{composition || "Описание отсутствует"}</p>
+                    <p>{composition}</p>
                     {
                         supplements.length > 0 ?
                             <p>+ {supplements.map(item => item.title).join(", ")}</p>

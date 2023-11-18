@@ -16,10 +16,8 @@ import {
     setBookingForm,
     setIsBookingsSuccess
 } from "../../../features/forms/formsSlice";
-import {getTimes} from "../../../utils/datetime/avaliableTimes";
 import CalendarInput from "../../Inputs/CalendarInput";
 import {formatPhoneNumber} from "../../../utils/forms/formatePhone";
-import {isAfter10PM, isToday} from "../../../utils/datetime/dates";
 import {extractDigits} from "../../../utils/common/normalizePhone";
 import SuccessWindow from "../SuccessWindow";
 import {isDateToday} from "../../../utils/datetime/isDateToday";
@@ -52,7 +50,7 @@ const BookingWindow = () => {
 
     const [bookingWorkTimes, setBookingWorkTimes] = useState({
         startTime: "8:00",
-        endTime: "12:00"
+        endTime: "13:00"
     })
 
     const times = useBookingTimes({

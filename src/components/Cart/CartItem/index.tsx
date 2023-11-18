@@ -29,6 +29,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
                 is_combo: is_combo,
                 description: findedProduct.composition,
                 dimensions: findedProduct.dimensions,
+                is_multiple_supplements: findedProduct.is_multiple_supplements,
                 cart_id: id,
                 imageUrl: findedProduct.image,
                 name: findedProduct.title,
@@ -83,7 +84,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
                     <div className="text f-column gap-5 f-1 al-self-center">
                         <div className={"f-column gap-5"}>
                             <b>{product.title}</b>
-                            <p>{product.composition || "Описания нет"}</p>
+                            <p>{product.composition}</p>
                             {
                                 supplements.length > 0 ?
                                     <p>+ {supplements.map(item => item.title).join(", ")}</p>

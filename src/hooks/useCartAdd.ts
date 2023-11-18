@@ -18,9 +18,9 @@ const UseCartAdd = () => {
 
         setTimeout(() => {
             dispatch(cartAddedClose())
-            setTimeout(() => {
-                dispatch(resetCartAddedPopupInfo())
-            }, 300)
+            // setTimeout(() => {
+            //     dispatch(resetCartAddedPopupInfo())
+            // }, 300)
         }, 2000)
     }
     return handleOpenAddedPopup

@@ -1,4 +1,4 @@
-import {getTokens} from "../utils/storeTokens";
+import {getTokens} from "../utils/auth/storeTokens";
 import {useAppSelector} from "../app/hooks";
 
 const useAuth = () => {

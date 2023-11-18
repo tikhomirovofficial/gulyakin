@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ProductAdditiveData} from "../../types/products.types";
-import {getImgPath} from "../../utils/getAssetsPath";
-import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
+import {getImgPath} from "../../utils/common/getAssetsPath";
+import {addToStorage, getFromStorage} from "../../utils/common/LocalStorageExplorer";
 
 type ModalSliceState = {
     loginOpened: boolean,

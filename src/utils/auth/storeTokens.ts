@@ -1,5 +1,5 @@
-import {JWT} from "../types/api.types";
-import {getCookie, setCookie} from "./CookieUtil";
+import {JWT} from "../../types/api.types";
+import {getCookie, setCookie} from "../common/CookieUtil";
 
 const DAYS = 30
 export const storeTokens = (tokens: JWT) => {

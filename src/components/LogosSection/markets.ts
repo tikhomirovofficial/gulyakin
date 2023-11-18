@@ -9,7 +9,7 @@ import {
     IFoodLogo,
     ShrimpLogo, VorobushekLogo
 } from "../../icons";
-import {getImgPath} from "../../utils/getAssetsPath";
+import {getImgPath} from "../../utils/common/getAssetsPath";
 
 export type MarketItem = {
     mapSvg: string

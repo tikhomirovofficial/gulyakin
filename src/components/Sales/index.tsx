@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import styles from "../../pages/Main/main.module.scss";
 import {Link} from "react-router-dom";
-import {getImgPath} from "../../utils/getAssetsPath";
+import {getImgPath} from "../../utils/common/getAssetsPath";
 import {ArrowRight, SafeArrowIcon} from "../../icons";
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/css';

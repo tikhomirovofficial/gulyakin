@@ -8,9 +8,9 @@ import RedButton from "../../../../Buttons/RedButton";
 import List from "../../../../List";
 import SupplementItem from "../../SupplementItem";
 import {useAppDispatch, useAppSelector} from "../../../../../app/hooks";
-import {getFromCartAddedSupplements} from "../../../../../utils/getFromCartAddedSupplements";
+import {getFromCartAddedSupplements} from "../../../../../utils/products/getFromCartAddedSupplements";
 import useProduct from "../../../../../hooks/useProduct";
-import {getSupplementsTotalPrice} from "../../../../../utils/getSupplementsTotalPrice";
+import {getSupplementsTotalPrice} from "../../../../../utils/products/getSupplementsTotalPrice";
 import {handleProductAdditives} from "../../../../../features/modals/modalsSlice";
 
 const isOneSupplement = false

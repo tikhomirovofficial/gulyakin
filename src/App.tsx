@@ -18,7 +18,7 @@ import LogosSection from "./components/LogosSection";
 import Footer from "./components/Footer";
 import {getCombosByMarket, getProductByMarket, getSouses} from "./features/products/productsSlice";
 import {getCategoriesByMarket} from "./features/categories/categoriesSlice";
-import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
+import {addToStorage, getFromStorage} from "./utils/common/LocalStorageExplorer";
 import {
     getAddressesByCity,
     getAddressesByMarketCity, getBookings, getCanOrderAddressesByCity,

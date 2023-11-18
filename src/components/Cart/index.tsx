@@ -3,13 +3,14 @@ import ShadowWrapper from "../Windows/ShadowWrapper";
 import {CloseIcon, InfoCircle} from "../../icons";
 import styles from './cart.module.scss'
 import RedButton from "../Buttons/RedButton";
-import {getImgPath} from "../../utils/getAssetsPath";
+import {getImgPath} from "../../utils/common/getAssetsPath";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
+import {formatNumberWithSpaces} from "../../utils/common/numberWithSpaces";
 import {handleCartOpened} from "../../features/modals/modalsSlice";
 import {useNavigate} from "react-router-dom";
 import CartAdditiveItem from "./CartAdditiveItem";
 import CartList from "./CartList";
+import useIsWorkTime from "../../hooks/useIsWorkTime";
 
 
 const Cart = () => {
@@ -17,10 +18,11 @@ const Cart = () => {
     const navigate = useNavigate()
     const {items, totalPrice} = useAppSelector(state => state.cart)
     const {souse} = useAppSelector(state => state.products)
+    const {workTimes} = useAppSelector(state => state.main)
     const [additivesOpened, setAdditivesOpened] = useState(false)
     const [classAdditivesAdded, setClassAdditivesAdded] = useState(false)
     const [classOpened, setClassOpened] = useState(false)
-
+    const {isCurrent} = useIsWorkTime({...workTimes})
     const handleOpenAdditives = () => {
         setAdditivesOpened(true)
 
@@ -115,12 +117,12 @@ const Cart = () => {
                                 }
                             </h2>
                             {
-                                items.some(item => item.product !== undefined ? item.product.id == -1 : null) ?
+                                items.length && !isCurrent ?
                                     <div className={`${styles.info} d-f al-center gap-10`}>
                                         <InfoCircle className={styles.infoIcon} height={18} width={18}/>
                                         <p>
-                                            Некоторые блюда из вашей корзины <br/> разобрали или у нас закончились
-                                            ингредиенты.
+                                            Сейчас заказ недоступен <br/>
+                                            ресторан работает с {workTimes.startTime} до {workTimes.endTime}.
                                         </p>
                                     </div> : null
                             }
@@ -177,7 +179,7 @@ const Cart = () => {
                     {
                         items.length ?
                             <RedButton onClick={handleToOrder}
-                                       disabled={items.some(item => item.product !== undefined && item.product.id < 0)}
+                                       disabled={!isCurrent}
                                        className={"w-100p pd-15"}>К
                                 оформлению</RedButton> :
                             <RedButton onClick={handleToCatalog}

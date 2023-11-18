@@ -14,7 +14,7 @@ import {
 import {AxiosResponse} from "axios";
 import authApi, {api} from "../instance/instances";
 import {PATHS} from "./path.api";
-import {ConvertDataToGetParams} from "../../utils/ConvertDataToGetParams";
+import {ConvertDataToGetParams} from "../../utils/forms/ConvertDataToGetParams";
 
 export class OrderApi {
     static async DeliveriesWays(): Promise<AxiosResponse<GetDeliveryListResponse>> {

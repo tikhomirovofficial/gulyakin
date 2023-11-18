@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import styles from './order.module.scss'
 import InputWrapper from "../../components/Inputs/InputWrapper";
 import {PaymentCard, PaymentCash, Warning} from "../../icons";
@@ -17,29 +17,33 @@ import {
     setOrderError,
     setOrderSuccess
 } from "../../features/forms/formsSlice";
-import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
-import {getFromStorage} from "../../utils/LocalStorageExplorer";
+import {formatNumberWithSpaces} from "../../utils/common/numberWithSpaces";
+import {getFromStorage} from "../../utils/common/LocalStorageExplorer";
 import {CreateOrderRequest} from "../../types/api.types";
 import {formatPhoneNumber} from "../../utils/forms/formatePhone";
 import List from "../../components/List";
 import {handleNewAddress} from "../../features/modals/modalsSlice";
 import {useInput} from "../../hooks/useInput";
 import SuccessWindow from "../../components/Windows/SuccessWindow";
-import {defaultParams, getTimes} from "../../utils/avaliableTimes";
+import {getTimes} from "../../utils/datetime/avaliableTimes";
 import {Link} from "react-router-dom";
 import OrderItem from "../../components/OrderItem";
 import useOrderDetails from "../../hooks/useOrderDetails";
 import useOrderAddress from "../../hooks/useOrderAddress";
 import useOrderDisabled from "../../hooks/useOrderDisabled";
+import {createDefaultParams} from "../../utils/datetime/getParamsTimePeriod";
+import {isCurrentDateInRange} from "../../utils/datetime/isCurrentDateInRange";
+import useIsWorkTime from "../../hooks/useIsWorkTime";
 
-const orderTimes = getTimes(defaultParams)
+
+
+
 const Order = () => {
     const dispatch = useAppDispatch()
     const {data, addresses} = useAppSelector(state => state.profile)
-    const {orderDetails, pickupAddresses, orderWarning} = useAppSelector(state => state.main)
+    const {orderDetails, pickupAddresses, orderWarning, workTimes} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
-
     const {
         name,
         callNeeded,
@@ -51,11 +55,13 @@ const Order = () => {
         success,
         addressId
     } = useAppSelector(state => state.forms.orderForm)
+
     const {
         handleChangeDeliveryType,
         getCurrentPickupAddress,
     } = useOrderAddress()
 
+    const {orderTimes, isCurrent} = useIsWorkTime({...workTimes})
     const addressFromStorage = getFromStorage('order_form')?.addressId
 
     const closeSuccess = () => {
@@ -92,7 +98,10 @@ const Order = () => {
         }))
     }, [])
 
-    const {orderDisabled} = useOrderDisabled()
+
+    const {orderDisabled} = useOrderDisabled({
+        isCurrentWorkTime: isCurrent
+    })
     useOrderDetails()
 
     return (
@@ -195,27 +204,29 @@ const Order = () => {
                                         </b>
                                     </div>
                                     <div className={`f-column gap-20 ${styles.orderOptions}`}>
-                                        <div className={`${styles.timeOrder} f-column gap-10`}>
-                                            <p className={""}>Время</p>
-                                            <div className={`${styles.timeOrderItems} gap-10 f-column w-100p`}>
-                                                <div className="d-f jc-between gap-10">
-                                                    <div
-                                                        onClick={() => dispatch(handleOrderTime("FAST"))}
-                                                        className={`${styles.inputSelectable} ${time === "FAST" ? "whiteSelectableSelected" : ""} f-1 whiteSelectable txt-center p-rel`}>
-                                                        <p>Через ~40 мин</p>
+                                        {
+                                            isCurrent ?  <div className={`${styles.timeOrder} f-column gap-10`}>
+                                                <p className={""}>Время</p>
+                                                <div className={`${styles.timeOrderItems} gap-10 f-column w-100p`}>
+                                                    <div className="d-f jc-between gap-10">
+                                                        <div
+                                                            onClick={() => dispatch(handleOrderTime("FAST"))}
+                                                            className={`${styles.inputSelectable} ${time === "FAST" ? "whiteSelectableSelected" : ""} f-1 whiteSelectable txt-center p-rel`}>
+                                                            <p>Через ~40 мин</p>
+                                                        </div>
+                                                        <SelectInput placeholder={"Другое время"} iconMiniArrow={{
+                                                            height: 10,
+                                                            width: 10
+                                                        }} classDropDown={styles.orderSelect}
+                                                                     classDropDownWrapper={`miniScrollBar ${styles.orderDropdownWrapper}`}
+                                                                     classNameBlock={`${styles.inputSelectable} ${styles.timeSelect} ${time !== "FAST" ? "whiteSelectableSelected" : ""} whiteSelectable gap-5 f-1`}
+                                                                     selectHandler={(selected) => {
+                                                                         dispatch(handleOrderTime(orderTimes[selected]))
+                                                                     }} items={orderTimes}/>
                                                     </div>
-                                                    <SelectInput placeholder={"Другое время"} iconMiniArrow={{
-                                                        height: 10,
-                                                        width: 10
-                                                    }} classDropDown={styles.orderSelect}
-                                                                 classDropDownWrapper={`miniScrollBar ${styles.orderDropdownWrapper}`}
-                                                                 classNameBlock={`${styles.inputSelectable} ${styles.timeSelect} ${time !== "FAST" ? "whiteSelectableSelected" : ""} whiteSelectable gap-5 f-1`}
-                                                                 selectHandler={(selected) => {
-                                                                     dispatch(handleOrderTime(orderTimes[selected]))
-                                                                 }} items={orderTimes}/>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </div> : null
+                                        }
                                         <div className="f-column gap-20">
                                             <RadioInput selected={callNeeded} text={
                                                 <p><b>Требуется</b> звонок оператора</p>

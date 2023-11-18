@@ -1,4 +1,4 @@
-import {CartProductItem, ProductRes, Supplement} from "../types/api.types";
+import {CartProductItem, ProductRes, Supplement} from "../../types/api.types";
 
 const res: any[] = [
     {

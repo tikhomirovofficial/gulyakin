@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {UserApi} from "../../../http/api/user.api";
-import {extractDigits} from "../../../utils/normalizePhone";
+import {extractDigits} from "../../../utils/common/normalizePhone";
 import styles from "./login.module.scss";
 import InputWrapper from "../../Inputs/InputWrapper";
 import {Preloader} from "../../../icons";

@@ -27,12 +27,9 @@ const useOrderDetails = () => {
                 }
             }
         }
-
     }
 
-    useEffect(defineDeliveryType, [isPickup, addressId])
-
-    useEffect(defineDeliveryType, [addresses])
+    useEffect(defineDeliveryType, [isPickup, addressId, addresses, cart.totalPrice])
 
     useEffect(() => {
         if (isPickup) {
@@ -42,8 +39,6 @@ const useOrderDetails = () => {
             }))
             return;
         }
-
-
     }, [isPickup])
 };
 

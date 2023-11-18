@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {addToStorage, getFromStorage} from "../../utils/LocalStorageExplorer";
+import {addToStorage, getFromStorage} from "../../utils/common/LocalStorageExplorer";
 import {AxiosResponse} from "axios";
 import {
     AddressByCityItem,
@@ -47,6 +47,10 @@ export type OrderWarning ={
     title: string
     description: string
 }
+export type WorkTimes = {
+    startTime: string
+    endTime: string
+}
 type MainSliceState = {
     market: number,
     cities: Array<{
@@ -62,6 +66,7 @@ type MainSliceState = {
     isMobile: boolean
     isPhone: boolean,
     canOrder: boolean
+    workTimes: WorkTimes
     orderWarning: OrderWarning
     markets: Array<Market>
     payments: VariantType[],
@@ -92,6 +97,10 @@ const initialState: MainSliceState = {
     cityMarkets: [],
     cityAddresses: [],
     pickupAddresses: [],
+    workTimes: {
+        startTime: "6:00",
+        endTime: "10:00"
+    },
     canOrder: true,
     orderWarning: {
         description: "",
@@ -270,7 +279,7 @@ export const MainSlice = createSlice({
         },
         setOrderWarning: (state, action: PayloadAction<OrderWarning>) => {
             state.orderWarning = action.payload
-        }
+        },
 
 
     },

@@ -9,7 +9,7 @@ import {
 import {AxiosResponse} from "axios";
 import {api} from "../instance/instances";
 import {PATHS} from "./path.api";
-import {ConvertDataToGetParams} from "../../utils/ConvertDataToGetParams";
+import {ConvertDataToGetParams} from "../../utils/forms/ConvertDataToGetParams";
 
 export class ProductsApi {
     static async ProductsByMarket(requestData: GetProductsByMarketRequest): Promise<AxiosResponse<GetProductsByMarketResponse>> {

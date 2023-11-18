@@ -9,7 +9,7 @@ import {useAppDispatch, useAppSelector} from "../../../../../app/hooks";
 import {handleProductAdditives} from "../../../../../features/modals/modalsSlice";
 import useCombo from "../../../../../hooks/useCombo";
 import AdditiveItem from "../../AdditiveItem";
-import {getImgPath} from "../../../../../utils/getAssetsPath";
+import {getImgPath} from "../../../../../utils/common/getAssetsPath";
 
 const EditComboVariant = () => {
     const {

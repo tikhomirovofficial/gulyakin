@@ -1,4 +1,4 @@
-import {CartProductItem, Supplement} from "../types/api.types";
+import {CartProductItem, Supplement} from "../../types/api.types";
 
 export const getFromCartAddedSupplements = (cart: CartProductItem[], id: number, supplements: Supplement[]) => {
     return supplements?.length > 0 ?

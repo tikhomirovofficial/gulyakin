@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {GetOrderItem} from "../../../../types/api.types";
 import styles from "../../profile.module.scss";
-import {formatNumberWithSpaces} from "../../../../utils/numberWithSpaces";
+import {formatNumberWithSpaces} from "../../../../utils/common/numberWithSpaces";
 import {domain} from "../../../../http/instance/instances";
 import {ArrowMiniRightIcon} from "../../../../icons";
 

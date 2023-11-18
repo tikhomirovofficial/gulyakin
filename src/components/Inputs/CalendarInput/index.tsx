@@ -5,7 +5,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import {Calendar} from 'primereact/calendar';
 
 import {addLocale} from 'primereact/api';
-import {isAfter10PM, isToday} from "../../../utils/dates";
+import {isAfter10PM, isToday} from "../../../utils/datetime/dates";
 
 
 addLocale('ru', {
@@ -29,16 +29,12 @@ const MIN_DATE = new Date()
 
 type CalendarInputProps = {
     setCalendarVal: (val: Date) => any,
+    isTodayDisabled: boolean
     val: Date
 
 }
-const CalendarInput: FC<CalendarInputProps> = ({setCalendarVal, val}) => {
+const CalendarInput: FC<CalendarInputProps> = ({setCalendarVal, val, isTodayDisabled}) => {
     const [isFocused, setIsFocused] = useState(false)
-
-    const isDateDisabled = (date: any) => {
-        return isToday(date) && isAfter10PM(date);
-    };
-
 
     return (
         <>
@@ -48,9 +44,8 @@ const CalendarInput: FC<CalendarInputProps> = ({setCalendarVal, val}) => {
                 <Calendar
                     minDate={MIN_DATE}
                     inputId={"calendarInput"}
-                    yearNavigator={false}
                     todayButtonClassName={"todayCalendar"}
-                    disabledDates={isDateDisabled(new Date()) ? [new Date()] : []}
+                    disabledDates={isTodayDisabled ? [new Date()] : []}
                     readOnlyInput={true}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}

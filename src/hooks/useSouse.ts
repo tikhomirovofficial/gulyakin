@@ -1,4 +1,4 @@
-import {arraysEqual} from "../utils/arrayEquals";
+import {arraysEqual} from "../utils/common/arrayEquals";
 import {handleLogin, handleProductAdditives, handleYourAddress} from "../features/modals/modalsSlice";
 import {CartCountSupplementsRequest} from "../types/api.types";
 import {

@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Supplement} from "../../types/api.types";
 import styles from "../../pages/Order/order.module.scss";
 import {domain} from "../../http/instance/instances";
-import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
+import {formatNumberWithSpaces} from "../../utils/common/numberWithSpaces";
 
 type OrderItemProps = {
     id: number,

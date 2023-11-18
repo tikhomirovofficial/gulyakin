@@ -10,7 +10,7 @@ import styles from "../cart.module.scss";
 import {domain} from "../../../http/instance/instances";
 import {editCountCart, removeFromCart, removeProduct} from "../../../features/cart/cartSlice";
 import {MiniClose, MinusIcon, PlusIcon} from "../../../icons";
-import {formatNumberWithSpaces} from "../../../utils/numberWithSpaces";
+import {formatNumberWithSpaces} from "../../../utils/common/numberWithSpaces";
 
 type CartItemProps = {
     canNotBeAdded?: boolean,

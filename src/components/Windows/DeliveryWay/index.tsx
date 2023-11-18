@@ -20,12 +20,12 @@ import {addToCart, addToCartCombo, setProductAfterAddress} from "../../../featur
 import {setSelectedInDelivery, setSelectedInPickup} from "../../../features/restaurants/restaurantsSlice";
 import {addAddressUser} from "../../../features/profile/profileSlice";
 import {AddressByCityItem, AddressByMarketCity} from "../../../types/api.types";
-import {deleteSeconds} from "../../../utils/deleteSecondsInTime";
+import {deleteSeconds} from "../../../utils/datetime/deleteSecondsInTime";
 import useCartAdd from "../../../hooks/useCartAdd";
 import useMarketLogo from "../../../hooks/useMarketLogo";
 import useNewAddress from "../../../hooks/useNewAddress";
 import AddressSuggestions from "../../AddressSuggestions";
-import {getImgPath} from "../../../utils/getAssetsPath";
+import {getImgPath} from "../../../utils/common/getAssetsPath";
 
 interface AddressItemProps {
     selected: boolean,

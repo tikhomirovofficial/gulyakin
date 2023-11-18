@@ -1,4 +1,4 @@
-import {getTokens, storeTokens} from "../storeTokens";
+import {getTokens, storeTokens} from "./storeTokens";
 import {UserApi} from "../../http/api/user.api";
 import {decodeToken} from "react-jwt";
 

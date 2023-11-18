@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Supplement} from "../../../types/api.types";
 import styles from "../cart.module.scss";
-import {getImgPath} from "../../../utils/getAssetsPath";
+import {getImgPath} from "../../../utils/common/getAssetsPath";
 import {MinusIcon, PlusIcon} from "../../../icons";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {domain} from "../../../http/instance/instances";

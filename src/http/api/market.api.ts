@@ -7,7 +7,7 @@ import {
 import {AxiosResponse} from "axios";
 import {api} from "../instance/instances";
 import {PATHS} from "./path.api";
-import {ConvertDataToGetParams} from "../../utils/ConvertDataToGetParams";
+import {ConvertDataToGetParams} from "../../utils/forms/ConvertDataToGetParams";
 
 export class MarketApi {
     static async InfoById(requestData: GetMarketInfoRequest): Promise<AxiosResponse<GetMarketInfoResponse>> {

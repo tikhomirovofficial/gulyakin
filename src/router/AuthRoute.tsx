@@ -3,7 +3,7 @@ import {Navigate} from "react-router-dom";
 import {RouteProps} from "../types/router.types";
 import {getUser} from "../features/profile/profileSlice";
 import {useAppDispatch, useAppSelector} from "../app/hooks";
-import {deleteCookie, getCookie} from "../utils/CookieUtil";
+import {deleteCookie, getCookie} from "../utils/common/CookieUtil";
 import useToken from "../hooks/useToken";
 import {handleLogin} from "../features/modals/modalsSlice";
 import useAuth from "../hooks/useAuth";

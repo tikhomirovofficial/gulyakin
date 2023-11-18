@@ -21,7 +21,7 @@ import {
     handleVisibleProfileErrors
 } from "../../features/forms/formsSlice";
 import {TextField} from "../../components/Inputs/TextField";
-import {deleteCookie} from "../../utils/CookieUtil";
+import {deleteCookie} from "../../utils/common/CookieUtil";
 import {Link, useNavigate} from "react-router-dom";
 import {formatPhoneNumber} from "../../utils/forms/formatePhone";
 import RedButton from "../../components/Buttons/RedButton";

@@ -1,4 +1,4 @@
-import {Supplement} from "../types/api.types";
+import {Supplement} from "../../types/api.types";
 
 export const getSupplementsTotalPrice = (addedSupplements: number[], supplements: Supplement[]): number => {
     return addedSupplements?.length > 0 ? supplements.reduce((a, b) => {

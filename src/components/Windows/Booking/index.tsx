@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import ShadowWrapper from "../ShadowWrapper";
 import WindowBody from "../WhiteWrapper";
 import {CloseIcon} from "../../../icons";
@@ -16,12 +16,16 @@ import {
     setBookingForm,
     setIsBookingsSuccess
 } from "../../../features/forms/formsSlice";
-import {getTimes} from "../../../utils/avaliableTimes";
+import {getTimes} from "../../../utils/datetime/avaliableTimes";
 import CalendarInput from "../../Inputs/CalendarInput";
 import {formatPhoneNumber} from "../../../utils/forms/formatePhone";
-import {isAfter10PM, isToday} from "../../../utils/dates";
-import {extractDigits} from "../../../utils/normalizePhone";
+import {isAfter10PM, isToday} from "../../../utils/datetime/dates";
+import {extractDigits} from "../../../utils/common/normalizePhone";
 import SuccessWindow from "../SuccessWindow";
+import {isDateToday} from "../../../utils/datetime/isDateToday";
+import {getDatesWithTimes} from "../../../utils/datetime/dayWithTimes";
+import {checkDateAndTime} from "../../../utils/datetime/checkDateAndTime";
+import useBookingTimes from "../../../hooks/useBookingTimes";
 
 
 const countGuests = [
@@ -43,30 +47,50 @@ const BookingWindow = () => {
     const {bookingForm, bookingSuccess, bookingError} = useAppSelector(state => state.forms)
     const {profile} = useAppSelector(state => state)
     const defaultAddress = bookingAddresses.length ? bookingAddresses[0].id : -1
-    const isDateDisabled = (date: any) => {
-        return isToday(date) && isAfter10PM(date);
-    };
-    const defaultParams = {
-        startDate: new Date(2023, 10, 17, 8, 0), // Год, месяц (от 0 до 11), день, час, минута
-        endDate: new Date(2023, 10, 17, 22, 0),
-        step: 30, // Шаг в минутах
-        trimPast: true, // Флаг обрезания времени, если оно прошло текущее время
-        currentTime: new Date(2023, 10, 17, 23, 0), // Обязательное передача текущего времени
-    };
-    const times = getTimes(defaultParams)
+    const [isBookingDateToday, setIsBookingDateToday] = useState(true)
+    const [isTodayDisabled, setIsTodayDisabled] = useState(false)
+
+    const [bookingWorkTimes, setBookingWorkTimes] = useState({
+        startTime: "8:00",
+        endTime: "12:00"
+    })
+
+    const times = useBookingTimes({
+        dateValue: new Date(bookingForm.date),
+        isToday: isBookingDateToday,
+        workEndTime: bookingWorkTimes.endTime,
+        workStartTime: bookingWorkTimes.startTime
+    })
+
+    useEffect(() => {
+        const dateValueIsToday = isDateToday(new Date(bookingForm.date))
+        setIsBookingDateToday(dateValueIsToday)
+        dispatch(setBookingForm({
+            ...bookingForm,
+            time: times[0],
+        }))
+
+    }, [bookingForm.date])
 
     useEffect(() => {
         const today = new Date()
-        if (isDateDisabled(today)) {
-            today.setDate(today.getDate())
-        }
+        const datesWithTimes = getDatesWithTimes(
+            today,
+            bookingWorkTimes.startTime,
+            bookingWorkTimes.endTime
+        )
+
+        const defaultDate = checkDateAndTime(datesWithTimes[1])
+        const defaultIsToday = isDateToday(defaultDate)
+        setIsTodayDisabled(!defaultIsToday)
+
         dispatch(setBookingForm({
             adress: defaultAddress,
             count_guest: Number(countGuests[0]),
             name: profile.data.name || "",
             phone: profile.data.phone.length ? formatPhoneNumber(profile.data.phone) : "",
             time: times[0],
-            date: `${today.getMonth() + 1}.${today.getDate()}.${today.getFullYear()}`
+            date: `${defaultDate.getMonth() + 1}.${defaultDate.getDate()}.${defaultDate.getFullYear()}`
         }))
     }, [bookingAddresses])
 
@@ -99,7 +123,7 @@ const BookingWindow = () => {
                         <h2>Бронирование столика</h2>
                         <div className="f-column gap-20">
                             <div className="f-column gap-10">
-                                <CalendarInput setCalendarVal={(val) => {
+                                <CalendarInput isTodayDisabled={isTodayDisabled} setCalendarVal={(val) => {
                                     dispatch(handleBookingForm({
                                         keyField: "date",
                                         val: `${val.getMonth() + 1}.${val.getDate()}.${val.getFullYear()}`
@@ -177,7 +201,6 @@ const BookingWindow = () => {
                         <div className={"caption txt-center"}>Продолжая, вы соглашаетесь <a href=""> со сбором и
                             обработкой персональных данных и пользовательским соглашением</a></div>
                     </div>
-
                 </div>
 
                 <SuccessWindow isOpened={bookingSuccess} title={"Забронировано"} closeHandle={closeSuccess}/>

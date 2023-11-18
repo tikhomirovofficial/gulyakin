@@ -4,7 +4,7 @@ import List from "../List";
 import Product from "./Product";
 import {useAppSelector} from "../../app/hooks";
 import {BigSpinner} from "../Preloader";
-import {getCombinedData, searchProducts} from "../../utils/productsFilter";
+import {getCombinedData, searchProducts} from "../../utils/common/productsFilter";
 
 type CatalogProps = {
     search: string

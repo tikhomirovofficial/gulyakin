@@ -1,7 +1,7 @@
 import React from 'react';
 import {handleOrderPickup, handleSelectAddressId, handleSelectRestaurant} from "../features/forms/formsSlice";
 import {useAppDispatch, useAppSelector} from "../app/hooks";
-import {getFromStorage} from "../utils/LocalStorageExplorer";
+import {getFromStorage} from "../utils/common/LocalStorageExplorer";
 
 
 type OrderAddressHook = {

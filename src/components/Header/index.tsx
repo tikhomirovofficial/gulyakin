@@ -4,7 +4,7 @@ import styles from "../../pages/Main/main.module.scss";
 import {CartIcon, Logo, ProfileIcon} from "../../icons";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {handleCartOpened, handleLogin} from "../../features/modals/modalsSlice";
-import {formatNumberWithSpaces} from "../../utils/numberWithSpaces";
+import {formatNumberWithSpaces} from "../../utils/common/numberWithSpaces";
 import useToken from "../../hooks/useToken";
 import SelectCity from "../SelectCity";
 import AddedPopup from "../AddedPopup";

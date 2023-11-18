@@ -6,7 +6,7 @@ import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {RestaurantItemType} from "../../types/restaurants.types";
 import {Link} from "react-router-dom";
-import {getImgPath} from "../../utils/getAssetsPath";
+import {getImgPath} from "../../utils/common/getAssetsPath";
 import {marketComponents} from "../../components/LogosSection/markets";
 import useMarketLogo from "../../hooks/useMarketLogo";
 

@@ -8,7 +8,7 @@ import {Provider} from 'react-redux';
 import {store} from "./app/store";
 import {BrowserRouter, createHashRouter, RouterProvider} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "./app/hooks";
-import {addToStorage, getFromStorage} from "./utils/LocalStorageExplorer";
+import {addToStorage, getFromStorage} from "./utils/common/LocalStorageExplorer";
 import {setMarket} from "./features/main/mainSlice";
 
 const root = ReactDOM.createRoot(

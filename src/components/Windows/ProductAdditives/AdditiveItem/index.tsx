@@ -2,7 +2,7 @@ import {AdditiveProduct} from "../../../../types/products.types";
 import React, {FC} from "react";
 import {HasClassName} from "../../../../types/components.types";
 import styles from "../productAdditives.module.scss";
-import {getImgPath} from "../../../../utils/getAssetsPath";
+import {getImgPath} from "../../../../utils/common/getAssetsPath";
 import {AddedAdditiveIcon} from "../../../../icons";
 import {domain} from "../../../../http/instance/instances";
 

@@ -1,8 +1,8 @@
 import React, {FC, useDeferredValue, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
-import {AddedAdditiveIcon, ArrowMiniRightIcon, ArrowRight, Geo} from "../../icons";
+import {ArrowMiniRightIcon, Geo} from "../../icons";
 import styles from './main.module.scss'
-import {getImgPath} from "../../utils/getAssetsPath";
+import {getImgPath} from "../../utils/common/getAssetsPath";
 import GrayBorderedBlock from "../../components/GrayBorderedBlock";
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import SearchInput from "../../components/Inputs/SearchInput";
@@ -17,9 +17,7 @@ import useToken from "../../hooks/useToken";
 import Preloader from "../../components/Preloader";
 import {useInput} from "../../hooks/useInput";
 import Catalog from "../../components/Catalog";
-import {domain} from "../../http/instance/instances";
 import Combo from "../../components/Catalog/Combo";
-import Sales from '../../components/Sales';
 
 const Main: FC = () => {
     const {categories, products, cart, main} = useAppSelector(state => state)
@@ -68,7 +66,7 @@ const Main: FC = () => {
     }, [])
     return (
         <>
-           {/*<Sales/>*/}
+            {/*<Sales/>*/}
             <div className={`${styles.main} f-column gap-20`}>
                 <div className={`pd-30-0`}>
                     <div className={`${styles.block} f-column gap-25`}>
@@ -175,11 +173,7 @@ const Main: FC = () => {
                                                 </div>
 
                                         }
-
-
                                     </div>
-
-
                                 </div>
                             </div>
 
@@ -187,7 +181,7 @@ const Main: FC = () => {
                         </div>
                         <div className={`wrapper ${styles.comboCatalogWrapper} f-column gap-30 w-100p`}>
                             {
-                                products.combos.length > 0 ?  <div className={`${styles.oftenOrdered} f-column gap-10`}>
+                                products.combos.length > 0 ? <div className={`${styles.oftenOrdered} f-column gap-10`}>
                                     <h3>Комбо</h3>
                                     <Swiper
                                         spaceBetween={19}
@@ -219,9 +213,7 @@ const Main: FC = () => {
                                         <div className={styles.searchedQuery}>Поиск по запросу: {deferredSearch}</div>
                                         : null
                                 }
-
                                 <Catalog search={deferredSearch}/>
-
                             </div>
                         </div>
                     </div>

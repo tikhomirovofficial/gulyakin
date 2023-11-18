@@ -1,4 +1,4 @@
-import {Category, ProductRes} from "../types/api.types";
+import {Category, ProductRes} from "../../types/api.types";
 
 export const getCombinedData = (categories: Category[], products: ProductRes[]) => {
     return categories.map((category: Category) => ({

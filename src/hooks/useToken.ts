@@ -1,4 +1,4 @@
-import {getTokens} from "../utils/storeTokens";
+import {getTokens} from "../utils/auth/storeTokens";
 import {decodeToken} from "react-jwt";
 
 const useToken = () => {

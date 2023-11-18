@@ -48,14 +48,7 @@ function getTimes(params: GetTimesParams): string[] {
     return times;
 }
 
-const defaultParams: GetTimesParams = {
-    startDate: new Date(2023, 10, 17, 8, 0), // Год, месяц (от 0 до 11), день, час, минута
-    endDate: new Date(2023, 10, 17, 22, 0),
-    step: 30, // Шаг в минутах
-    trimPast: true, // Флаг обрезания времени, если оно прошло текущее время
-    currentTime: new Date(), // Обязательное передача текущего времени
-};
+
 export {
-    getTimes,
-    defaultParams
+    getTimes
 }

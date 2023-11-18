@@ -1,6 +1,6 @@
 import axios from 'axios'
-import {getCookie} from "../../utils/CookieUtil";
-import {getTokens} from "../../utils/storeTokens";
+import {getCookie} from "../../utils/common/CookieUtil";
+import {getTokens} from "../../utils/auth/storeTokens";
 
 const currentDomain = 3
 const domains = [
@@ -30,21 +30,16 @@ export const api = axios.create({
         'Accept': 'application/json',
     }
 })
-
-
-//let _isRetried = false
-
-
 authApi.interceptors.response.use(null, (ctx) => {
     const res = ctx
     if (res.code == "ERR_NETWORK") {
-        //alert("ошибка интернета")
+        //alert("ошибка соединения")
     }
     return res
 })
 
 authApi.interceptors.request.use((config) => {
-    const tokens = getTokens(); // Получите актуальные токены
+    const tokens = getTokens();
     if (tokens?.access) {
         config.headers.Authorization = `Bearer ${tokens.access}`;
     }

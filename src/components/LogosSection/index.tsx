@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import styles from "./logosSection.module.scss";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {Swiper, SwiperSlide} from 'swiper/react';
@@ -6,14 +6,13 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import {marketComponents, MarketItem} from "./markets";
 import {setMarket} from "../../features/main/mainSlice";
-import {resetOrderForm} from "../../utils/common/resetOrderForm";
-import {setOrderForm} from "../../features/forms/formsSlice";
 import {Link} from "react-router-dom";
+import {HasClassName} from "../../types/components.types";
 
 type LogoItemProps = {
     id: number
-} & Pick<MarketItem, "forMarketId">
-const LogoItem: FC<LogoItemProps> = ({forMarketId, id}) => {
+} & Pick<MarketItem, "forMarketId"> & HasClassName
+const LogoItem: FC<LogoItemProps> = ({forMarketId, id, className}) => {
     const dispatch = useAppDispatch()
     const {market, cityMarkets} = useAppSelector(state => state.main)
     const {restaurant} = useAppSelector(state => state.forms.orderForm)
@@ -40,7 +39,8 @@ const LogoItem: FC<LogoItemProps> = ({forMarketId, id}) => {
         }
 
         return (
-            <div onClick={handleToMarket} className={`${classNameLogo} ${isSelected ? classNameSelected : null}`}>
+            <div onClick={handleToMarket}
+                 className={`${classNameLogo} ${isSelected ? classNameSelected : null} ${className || ""}`}>
                 <ComponentLogo/>
             </div>
         )
@@ -50,33 +50,56 @@ const LogoItem: FC<LogoItemProps> = ({forMarketId, id}) => {
 }
 
 const LogosSection = () => {
-    const {markets, cityMarkets} = useAppSelector(state => state.main)
+    const {cityMarkets} = useAppSelector(state => state.main)
+    const [neededSlider, setNeededSlider] = useState(false)
 
     const getByForId = (forId: number) => {
         return marketComponents.find(item => item.forMarketId === forId) || null
     }
+    const logosSectionRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (logosSectionRef.current) {
+            const logosNode = logosSectionRef.current
+            setNeededSlider(logosNode.scrollWidth > logosNode.clientWidth)
+        }
+    }, [cityMarkets])
 
     return (
         <div className={`pd-40-0 ${styles.section}`}>
             <div className="wrapper w-100p">
-                <Swiper
-                    spaceBetween={20}
-                    slidesPerView={"auto"}
-                    className={`${styles.logos}`}>
-                    {
-                        cityMarkets.map(marketItem => (
-                            getByForId(marketItem.link) !== null ?
-                                <SwiperSlide key={marketItem.id} className={"w-content"}>
-                                    <Link to={"/"}>
-                                        <LogoItem key={marketItem.id} id={marketItem.id} forMarketId={marketItem.link}/>
-                                    </Link>
-
-                                </SwiperSlide> : null
-                        ))
-                    }
-                </Swiper>
+                {
+                    neededSlider ?
+                        <Swiper
+                            spaceBetween={20}
+                            slidesPerView={"auto"}
+                            className={`${styles.logos}`}>
+                            {
+                                cityMarkets.map(marketItem => (
+                                    getByForId(marketItem.link) !== null ?
+                                        <SwiperSlide key={marketItem.id} className={"w-content"}>
+                                            <Link to={"/"}>
+                                                <LogoItem key={marketItem.id} id={marketItem.id}
+                                                          forMarketId={marketItem.link}/>
+                                            </Link>
+                                        </SwiperSlide> : null
+                                ))
+                            }
+                        </Swiper> :
+                        <div ref={logosSectionRef} className={`${styles.logos} f-row-betw gap-20`}>
+                            {
+                                cityMarkets.map(marketItem => (
+                                    getByForId(marketItem.link) !== null ?
+                                        <Link key={marketItem.id} className={"f-1"} to={"/"}>
+                                            <LogoItem className={styles.nonSliderElement} key={marketItem.id} id={marketItem.id}
+                                                      forMarketId={marketItem.link}/>
+                                        </Link>
+                                        : null
+                                ))
+                            }
+                        </div>
+                }
             </div>
-
         </div>
     );
 };

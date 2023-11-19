@@ -5,6 +5,9 @@ import Restaurants from "../pages/Restaurants";
 import ChosenRestaurant from "../pages/ChosenRestaurant";
 import Profile from "../pages/Profile";
 import Order from "../pages/Order";
+import PublicSelling from "../pages/Documents/PublicSelling";
+import UserDocument from "../pages/Documents/UserDocument";
+import Empty from "../pages/Empty";
 
 export interface RoutesCollection {
     auth: RoutesList,
@@ -26,7 +29,20 @@ export const routes: RoutesCollection = {
         {
             Component: ChosenRestaurant,
             path: "/restaurants/:id"
+        },
+        {
+            Component: PublicSelling,
+            path: "/public-selling"
+        },
+        {
+            Component: UserDocument,
+            path: "/user-document"
+        },
+        {
+            Component: Empty,
+            path: "/empty"
         }
+
 
 
     ],

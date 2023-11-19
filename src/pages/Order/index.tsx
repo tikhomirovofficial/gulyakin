@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect} from 'react';
 import styles from './order.module.scss'
 import InputWrapper from "../../components/Inputs/InputWrapper";
 import {PaymentCard, PaymentCash, Warning} from "../../icons";
@@ -25,17 +25,12 @@ import List from "../../components/List";
 import {handleNewAddress} from "../../features/modals/modalsSlice";
 import {useInput} from "../../hooks/useInput";
 import SuccessWindow from "../../components/Windows/SuccessWindow";
-import {getTimes} from "../../utils/datetime/avaliableTimes";
 import {Link} from "react-router-dom";
 import OrderItem from "../../components/OrderItem";
 import useOrderDetails from "../../hooks/useOrderDetails";
 import useOrderAddress from "../../hooks/useOrderAddress";
 import useOrderDisabled from "../../hooks/useOrderDisabled";
-import {createDefaultParams} from "../../utils/datetime/getParamsTimePeriod";
-import {isCurrentDateInRange} from "../../utils/datetime/isCurrentDateInRange";
 import useIsWorkTime from "../../hooks/useIsWorkTime";
-
-
 
 
 const Order = () => {
@@ -205,7 +200,7 @@ const Order = () => {
                                     </div>
                                     <div className={`f-column gap-20 ${styles.orderOptions}`}>
                                         {
-                                            isCurrent ?  <div className={`${styles.timeOrder} f-column gap-10`}>
+                                            isCurrent ? <div className={`${styles.timeOrder} f-column gap-10`}>
                                                 <p className={""}>Время</p>
                                                 <div className={`${styles.timeOrderItems} gap-10 f-column w-100p`}>
                                                     <div className="d-f jc-between gap-10">

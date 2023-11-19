@@ -31,7 +31,7 @@ const Header = () => {
                     </div>
 
                     <nav className={"d-f gap-20 f-1"}>
-                        <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
+                        <Link className={`${styles.item} f-c-col p-rel`} to={"/empty"}>
                             <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
                                 О нас
                             </div>
@@ -49,31 +49,31 @@ const Header = () => {
                             </div>
                             <div className="hidden">Контакты</div>
                         </Link>
-                        <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
+                        <Link className={`${styles.item} f-c-col p-rel`} to={"/empty"}>
                             <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
                                 Вакансии
                             </div>
                             <div className="hidden">Вакансии</div>
                         </Link>
-                        <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
+                        <Link className={`${styles.item} f-c-col p-rel`} to={"/empty"}>
                             <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
                                 Инвестиции
                             </div>
                             <div className="hidden">Инвестиции</div>
                         </Link>
-                        <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
+                        <Link className={`${styles.item} f-c-col p-rel`} to={"/empty"}>
                             <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
                                 Предложить помещение
                             </div>
                             <div className="hidden">Предложить помещение</div>
                         </Link>
-                        <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
+                        <Link className={`${styles.item} f-c-col p-rel`} to={"/empty"}>
                             <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
                                 Поставщикам
                             </div>
                             <div className="hidden">Поставщикам</div>
                         </Link>
-                        <Link className={`${styles.item} f-c-col p-rel`} to={"/"}>
+                        <Link className={`${styles.item} f-c-col p-rel`} to={"/empty"}>
                             <div className={`${styles.text} w-100p h-100p p-abs left-0`}>
                                 Помощь
                             </div>

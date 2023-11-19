@@ -29,7 +29,9 @@ input[type='number'] {
 * {
     font-family: 'TTChocolates', sans-serif !important;
 }
-
+.pageTop {
+    margin-top: 4rem;
+}
 main {
     margin-top: 11rem;
 }
@@ -206,6 +208,12 @@ body::-webkit-scrollbar-thumb {
     border: 1px solid #fb634d !important;
 
 }
+.bigSectionTitle {
+    color: #4D4D4D;
+    font-size: 4.8rem;
+    font-weight: 700
+}
+
 @media (max-width: 1340px) {
     .wrapper {
         max-width: 1070px;
@@ -228,6 +236,9 @@ body::-webkit-scrollbar-thumb {
 @media (max-width: 820px) {
     .sectionTitle {
         font-size: 2.4rem;
+    }
+    .bigSectionTitle {
+        font-size: 3.8rem;
     }
 }
 

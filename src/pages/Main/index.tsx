@@ -18,9 +18,10 @@ import Preloader from "../../components/Preloader";
 import {useInput} from "../../hooks/useInput";
 import Catalog from "../../components/Catalog";
 import Combo from "../../components/Catalog/Combo";
+import {Link as ScrollLink} from "react-scroll"
 
 const Main: FC = () => {
-    const {categories, products, cart, main} = useAppSelector(state => state)
+    const {categories, products, main} = useAppSelector(state => state)
     const is_auth = useAuth()
     const token = useToken()
 
@@ -155,13 +156,13 @@ const Main: FC = () => {
                                                         categories.category.map(item => (
                                                             <SwiperSlide key={item.id}
                                                                          className={"w-content cur-grabbing"}>
-                                                                <a href={`/#${item.id}`}>
+                                                                <ScrollLink spy={true} activeClass={styles.categoryActive} to={`ctg-${item.id}`} smooth={true} offset={-160}>
                                                                     <GrayBorderedBlock
                                                                         clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)}
                                                                         className={styles.item}>
                                                                         {item.title}
                                                                     </GrayBorderedBlock>
-                                                                </a>
+                                                                </ScrollLink>
 
                                                             </SwiperSlide>
                                                         ))

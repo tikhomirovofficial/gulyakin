@@ -36,7 +36,8 @@ const countGuests = [
     "7",
     "8",
     "9",
-    "10"
+    "10",
+    "Более 10"
 ]
 
 const BookingWindow = () => {
@@ -84,7 +85,7 @@ const BookingWindow = () => {
 
         dispatch(setBookingForm({
             adress: defaultAddress,
-            count_guest: Number(countGuests[0]),
+            count_guest: countGuests[0],
             name: profile.data.name || "",
             phone: profile.data.phone.length ? formatPhoneNumber(profile.data.phone) : "",
             time: times[0],

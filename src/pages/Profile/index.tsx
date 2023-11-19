@@ -60,7 +60,6 @@ const Profile = () => {
     const handleLogout = () => {
         deleteCookie("tokens")
         window.location.href = "/"
-
     }
 
     useEffect(() => {

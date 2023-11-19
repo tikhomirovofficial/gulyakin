@@ -5,7 +5,7 @@ import Product from "./Product";
 import {useAppSelector} from "../../app/hooks";
 import {BigSpinner} from "../Preloader";
 import {getCombinedData, searchProducts} from "../../utils/common/productsFilter";
-
+import {Element} from 'react-scroll'
 type CatalogProps = {
     search: string
 }
@@ -24,8 +24,8 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                     {
                         searchedData.length > 0 ?
                             searchedData.map(category => (
-                                <div key={category.id} className={`${styles.categoryBlock} f-column gap-20`}>
-                                    <h2 id={`${category?.id}`} className="sectionTitle">{category?.title}</h2>
+                                <Element name={`ctg-${category.id}`} key={category.id} className={`${styles.categoryBlock} f-column gap-20`}>
+                                    <h2 className="sectionTitle">{category?.title}</h2>
                                     <List
                                         listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
                                         list={category?.products}
@@ -49,7 +49,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                                 short_description={product.short_description}
                                                 supplements={product.supplements}/>
                                         }/>
-                                </div>
+                                </Element>
                             )) :
                             <p className={styles.notFoundedText}>По запросу: {search} ничего не найдено.</p>
                     }

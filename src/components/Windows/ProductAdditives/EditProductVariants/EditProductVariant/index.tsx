@@ -13,7 +13,6 @@ import useProduct from "../../../../../hooks/useProduct";
 import {getSupplementsTotalPrice} from "../../../../../utils/products/getSupplementsTotalPrice";
 import {handleProductAdditives} from "../../../../../features/modals/modalsSlice";
 
-const isOneSupplement = false
 const EditProductVariant = () => {
     const {
         additives = [],
@@ -37,7 +36,7 @@ const EditProductVariant = () => {
     const handleProductWindow = () => dispatch(handleProductAdditives())
     const RenderSupplementsList = () => {
         if (additives?.length) {
-            return <div className="additivesListBlock f-1 gap-10 f-column">
+            return <div className={`${styles.additivesListBlock} f-1 gap-10 f-column`}>
                 <h4>Дополнительно</h4>
                 <List
                     listBlockClassname={`${styles.supplementsList} f-column gap-10`}
@@ -82,15 +81,16 @@ const EditProductVariant = () => {
                                 <RenderSupplementsList/>
                             </div>
                         </div>
+                        <div className={`${styles.additivesBtnWrapper} d-f al-end f-1 w-100p`}>
+                            <RedButton onClick={saveMode ? saveProduct : addProduct} disabled={false}
+                                       className={`${styles.additivesBtn} pd-10-0`}>
+
+                                {!saveMode ? `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
+                            </RedButton>
+                        </div>
 
                     </div>
-                    <div className={`${styles.additivesBtnWrapper} d-f al-end f-1 w-100p`}>
-                        <RedButton onClick={saveMode ? saveProduct : addProduct} disabled={false}
-                                   className={`${styles.additivesBtn} pd-10-0`}>
 
-                            {!saveMode ? `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
-                        </RedButton>
-                    </div>
                 </div>
             </WindowBody>
         </ShadowWrapper>

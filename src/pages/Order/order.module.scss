@@ -102,6 +102,27 @@
   background: #c7c7c7;
   border-radius: 30px;
 }
+.part {
+  background: #FAFAFA;
+}
+.product {
+  .image {
+    min-width: 7.5rem;
+    background-position: center;
+    min-height: 7.5rem;
+    max-width: 7.5rem;
+    max-height: 7.5rem;
+    border-radius: 4px;
+  }
+
+
+  h4, .price {
+    font-size: 1.6rem;
+  }
+  p {
+    font-size: 1.2rem;
+  }
+}
 .compositionOrder {
   padding: 3rem 4rem;
   max-width: 42rem;
@@ -115,27 +136,7 @@
   h3 {
     font-size: 2.4rem;
   }
-  .part {
-    background: #FAFAFA;
-  }
-  .product {
-    .image {
-      min-width: 7.5rem;
-      background-position: center;
-      min-height: 7.5rem;
-      max-width: 7.5rem;
-      max-height: 7.5rem;
-      border-radius: 4px;
-    }
 
-
-    h4, .price {
-      font-size: 1.6rem;
-    }
-    p {
-      font-size: 1.2rem;
-    }
-  }
   .info {
     p {
       font-size: 1.6rem;

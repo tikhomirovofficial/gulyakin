@@ -352,7 +352,7 @@ export type GetOrderItem = {
 }
 
 export type GetOrderResponse = {
-    order: GetOrderItem[]
+    order: GetOrderItem
 } & ResponseStatus
 
 
@@ -375,7 +375,7 @@ export type BookingCreateRequest = {
     adress: number,
     time: string,
     date: string,
-    count_guest: number,
+    count_guest: string | number,
     name: string,
     phone: string
 }

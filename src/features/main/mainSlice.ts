@@ -94,7 +94,7 @@ const initialState: MainSliceState = {
     cityAddresses: [],
     pickupAddresses: [],
     workTimes: {
-        startTime: "6:00",
+        startTime: "0:00",
         endTime: "23:00"
     },
     canOrder: true,

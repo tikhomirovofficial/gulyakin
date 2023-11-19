@@ -1,17 +1,9 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import styles from "../../pages/Main/main.module.scss";
-import {ArrowMiniDown, ArrowMiniRightIcon, Burger, CartIcon, Geo, Logo, ProfileIcon} from "../../icons";
-import RedButton from "../Buttons/RedButton";
-import GrayButton from "../Buttons/GrayButton";
-import DropdownList, {DropDownItem} from "../DropdownList";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {setCurrentCity, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
-import {handleCartOpened, handleLogin, setMobileMenu} from "../../features/modals/modalsSlice";
-import {addToStorage, getFromStorage} from "../../utils/common/LocalStorageExplorer";
-import {formatNumberWithSpaces} from "../../utils/common/numberWithSpaces";
-import useToken from "../../hooks/useToken";
-import List from "../List";
+import {Burger, Geo, Logo} from "../../icons";
+import {useAppDispatch} from "../../app/hooks";
+import {setMobileMenu} from "../../features/modals/modalsSlice";
 import GradientGrayBtn from "../Buttons/GradientGrayButton";
 
 

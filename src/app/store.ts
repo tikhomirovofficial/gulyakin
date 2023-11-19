@@ -7,6 +7,8 @@ import {cartReducer} from "../features/cart/cartSlice";
 import {formsReducer} from "../features/forms/formsSlice";
 import {productsReducer} from "../features/products/productsSlice";
 import {categoriesReducer} from "../features/categories/categoriesSlice";
+import {ordersHistoryReducer} from "../features/orders-history/orderHistorySlice";
+
 export const store = configureStore({
     reducer: {
         profile: profileReducer,
@@ -16,8 +18,8 @@ export const store = configureStore({
         cart: cartReducer,
         forms: formsReducer,
         products: productsReducer,
-        categories: categoriesReducer
-        
+        categories: categoriesReducer,
+        ordersHistory: ordersHistoryReducer
     }
 })
 

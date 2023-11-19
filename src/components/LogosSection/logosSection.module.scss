@@ -1,6 +1,11 @@
 .section {
   background: #FAFAFA;
 }
+.nonSliderElement {
+  width: unset !important;
+  min-width: 12.6rem;
+  flex: 1
+}
 .logos {
   .item {
     cursor: pointer;

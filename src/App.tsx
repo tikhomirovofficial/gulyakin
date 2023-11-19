@@ -34,6 +34,7 @@ import MenuMobile from "./components/MenuMobile";
 import CartWidget from "./components/Cart/widget";
 import {isDateValid} from "./utils/forms/dataValidation";
 import SuccessWindow from "./components/Windows/SuccessWindow";
+    import HistoryOrderWindow from "./components/Windows/HistoryOrder";
 
 const MOBILE_WIDTH = 1100
 const SMALL_WIDTH = 800
@@ -51,6 +52,7 @@ function App() {
         deliveryWay,
         productAdditives,
         newAddress,
+        orderHistory,
         addressSuccess,
         bodyLocked
     } = useAppSelector(state => state.modals)
@@ -110,15 +112,14 @@ function App() {
 
 
     useEffect(() => {
-        dispatch(getCategoriesByMarket({market_id: market}))
         const date = new Date()
+        dispatch(getCategoriesByMarket({market_id: market}))
         dispatch(getProductByMarket({
             market_id: market,
             date: `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
         }))
         dispatch(getCombosByMarket({market_id: market}))
         dispatch(getSouses())
-
         if (!cities.length) {
             dispatch(getCities())
         }
@@ -184,9 +185,11 @@ function App() {
         <>
             <ScrollToTop/>
             <div className={`App f-column jc-between`}>
-                {isMobile ? <HeaderMobile/> : <Header/>}
-                <LogosSection/>
-                <AppRoutes isAuth={false}/>
+                <div className="f-column">
+                    {isMobile ? <HeaderMobile/> : <Header/>}
+                    <LogosSection/>
+                    <AppRoutes isAuth={false}/>
+                </div>
                 <Footer/>
                 <SuccessWindow closeHandle={() => {}} isOpened={addressSuccess.opened} title={addressSuccess.title}/>
                 {isMobile ? <CartWidget/> : null}
@@ -196,6 +199,7 @@ function App() {
                 {yourAddress ? <YourAddressWindow/> : null}
                 {deliveryWay.opened ? <DeliveryWay/> : null}
                 {productAdditives ? <ProductAdditives/> : null}
+                {orderHistory ? <HistoryOrderWindow/> : null}
                 {newAddress ? <NewAddress/> : null}
                 {cartOpened ? <Cart/> : null}
                 <CookiePopup isOpened={cookiesAccepted}/>

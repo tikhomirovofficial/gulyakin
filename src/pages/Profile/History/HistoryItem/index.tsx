@@ -4,6 +4,10 @@ import styles from "../../profile.module.scss";
 import {formatNumberWithSpaces} from "../../../../utils/common/numberWithSpaces";
 import {domain} from "../../../../http/instance/instances";
 import {ArrowMiniRightIcon} from "../../../../icons";
+import {useAppDispatch} from "../../../../app/hooks";
+import {handleHistoryOrder} from "../../../../features/modals/modalsSlice";
+import {getOrderStatus} from "../../../../utils/orders/getOrderStatus";
+import {getOrderById} from "../../../../features/orders-history/orderHistorySlice";
 
 
 export type HistoryItemProps = Pick<GetOrderItem, "price" | "is_active" | "is_payment" | "order_id" | "products">
@@ -14,20 +18,20 @@ const HistoryItem: FC<HistoryItemProps> = ({
                                                products,
                                                price
                                            }) => {
-    const getOrderStatus = () => {
-        if (is_payment) {
-            if (is_active) {
-                return "Активен"
-            }
-            return "Исполнен"
-        }
-        return "Активен"
-    }
+    const dispatch = useAppDispatch()
+
+    const orderStatus = getOrderStatus(is_active, is_payment)
     const productsIsDefined = products.length > 0 && products !== undefined
     const productImage = productsIsDefined ? `${domain}${products[0].image}` : "assets/img/additive_plashka.png"
 
+    const openOrderDetails = () => {
+        dispatch(getOrderById({
+            order_id
+        }))
+        dispatch(handleHistoryOrder())
+    }
     return (
-        <div className={`pd-10 f-row-betw ${styles.orderItem}`}>
+        <div onClick={openOrderDetails} className={`pd-10 f-row-betw ${styles.orderItem}`}>
             <div className="left d-f al-center gap-10">
                 <div className={`${styles.imgBlock} p-rel`}>
                     <div style={{backgroundImage: `url(${productImage})`}} className={`${styles.imgItem}`}></div>
@@ -49,7 +53,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
                         <p>Статус</p>
                     </div>
                     <div className={`${styles.orderInfoBottom} d-f jc-end`}>
-                        <p>{getOrderStatus()}</p>
+                        <p>{orderStatus}</p>
                     </div>
                 </div>
                 <div className={"w-content h-content"}>

@@ -17,6 +17,7 @@ type ModalSliceState = {
     bodyLocked: boolean,
     mobileMenu: boolean
     isChangingModeAdditives: boolean,
+    orderHistory: boolean
     productAdditivesData: ProductAdditiveData,
     cartOpened: boolean,
     addressSuccess: {
@@ -30,6 +31,7 @@ const initialState: ModalSliceState = {
     bookingOpened: false,
     yourAddress: false,
     productAdditives: false,
+    orderHistory: false,
     bodyLocked: false,
     cookiesAccepted: getFromStorage("cookie_accepted") || false,
     deliveryWay: {
@@ -82,6 +84,10 @@ export const ModalsSlice = createSlice({
         handleCartOpened: (state) => {
             state.bodyLocked = !state.bodyLocked
             state.cartOpened = !state.cartOpened
+        },
+        handleHistoryOrder: (state) => {
+            state.bodyLocked = !state.bodyLocked
+            state.orderHistory = !state.orderHistory
         },
         handleLogin: (state) => {
             state.bodyLocked = !state.bodyLocked
@@ -147,6 +153,7 @@ export const {
     handleNewAddress,
     setChangingAdditivesMode,
     handleCartOpened,
+    handleHistoryOrder,
     setAddressSuccess,
     setAddressSuccessTitle,
     setMobileMenu,

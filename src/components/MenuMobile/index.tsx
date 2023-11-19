@@ -63,28 +63,28 @@ const MenuMobile = () => {
 
                 <div className="wrapper w-100p h-100p">
                     <div className="f-column jc-between h-100p gap-10 pd-20-0">
-                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                        <Link onClick={handleClose} className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
                             О нас
                         </Link>
-                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                        <Link onClick={handleClose} className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
                             Каталог
                         </Link>
-                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                        <Link onClick={handleClose} className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
                             Контакты
                         </Link>
-                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                        <Link onClick={handleClose} className={`${styles.navItem} f-c-col p-rel`} to={"/empty"}>
                             Вакансии
                         </Link>
-                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                        <Link onClick={handleClose} className={`${styles.navItem} f-c-col p-rel`} to={"/empty"}>
                             Инвестиции
                         </Link>
-                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                        <Link onClick={handleClose} className={`${styles.navItem} f-c-col p-rel`} to={"/empty"}>
                             Предложить помещение
                         </Link>
-                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                        <Link onClick={handleClose} className={`${styles.navItem} f-c-col p-rel`} to={"/empty"}>
                             Поставщикам
                         </Link>
-                        <Link className={`${styles.navItem} f-c-col p-rel`} to={"/"}>
+                        <Link onClick={handleClose} className={`${styles.navItem} f-c-col p-rel`} to={"/empty"}>
                             Помощь
                         </Link>
                     </div>

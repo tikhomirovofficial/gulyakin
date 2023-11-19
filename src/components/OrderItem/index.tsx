@@ -23,7 +23,9 @@ const OrderItem: FC<OrderItemProps> = ({image, id, title, supplements = [], coun
                  className={`bg-cover ${styles.image}`}></div>
             <div className="f-column-betw f-1 gap-5">
                 <div className="top f-column gap-5">
-                    <h4>{title}</h4>
+                    <div className="d-f gap-10">
+                        <h4>{title} × {count}</h4>
+                    </div>
                     <p>{composition}</p>
                     {
                         supplements.length > 0 ?

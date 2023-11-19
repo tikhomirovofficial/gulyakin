@@ -10,31 +10,35 @@ const Footer = () => {
                 <div className={`${styles.block} gap-40 f-column`}>
                     <nav className={"d-f jc-between flex-wrap"}>
                         <div className={`${styles.navColumn} ${styles.navLogoColumn} f-column gap-10`}>
-                            <Logo className={styles.logo}/>
-                            <Link className={styles.navItem} to={"/"}>О нас</Link>
+                            <Link to={"/"}>
+                                <Logo className={styles.logo}/>
+                            </Link>
+
+                            <Link className={styles.navItem} to={"/empty"}>О нас</Link>
                         </div>
                         <div className={`${styles.navColumn} f-column gap-10`}>
                             <b className={styles.navItem}>Работа</b>
-                            <Link className={styles.navItem} to={"/"}>В Гулякин <br/> Фудхолл</Link>
-                            <Link className={styles.navItem} to={"/"}>В Гуленьки <br/> Пельменная</Link>
-                            <Link className={styles.navItem} to={"/"}>В iFood</Link>
-                            <Link className={styles.navItem} to={"/"}>В Воробушек</Link>
-                            <Link className={styles.navItem} to={"/"}>В Gusto</Link>
-                            <Link className={styles.navItem} to={"/"}>В Креветочная</Link>
-                            <Link className={styles.navItem} to={"/"}>В Гулибули</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В Гулякин <br/> Фудхолл</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В Гуленьки <br/> Пельменная</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В iFood</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В Воробушек</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В Gusto</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В Креветочная</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В Гулибули</Link>
                         </div>
                         <div className={`${styles.navColumn} f-column gap-10`}>
                             <b className={styles.navItem}>Партнёрам</b>
-                            <Link className={styles.navItem} to={"/"}>Инвестиции</Link>
-                            <Link className={styles.navItem} to={"/"}>Поставщикам</Link>
-                            <Link className={styles.navItem} to={"/"}>Предложить помещение</Link>
+                            <Link className={styles.navItem} to={"/empty"}>Инвестиции</Link>
+                            <Link className={styles.navItem} to={"/empty"}>Поставщикам</Link>
+                            <Link className={styles.navItem} to={"/empty"}>Предложить помещение</Link>
                         </div>
                         <div className={`${styles.navColumn} f-column gap-10`}>
                             <b className={styles.navItem}>Документы</b>
-                            <Link className={styles.navItem} to={"/"}>Политика конфиденциальности</Link>
-                            <Link className={styles.navItem} to={"/"}>Пользовательское соглашение</Link>
-                            <Link className={styles.navItem} to={"/"}>Соглашение на обработку ПД</Link>
-                            <Link className={styles.navItem} to={"/"}>Правила программы лояльности</Link>
+                            <Link className={styles.navItem} to={"/empty"}>Политика конфиденциальности</Link>
+                            <Link className={styles.navItem} to={"/public-selling"}>Публичная оферта</Link>
+                            <Link className={styles.navItem} to={"/user-document"}>Пользовательское соглашение</Link>
+                            <Link className={styles.navItem} to={"/empty"}>Соглашение на обработку ПД</Link>
+                            <Link className={styles.navItem} to={"/empty"}>Правила программы лояльности</Link>
                         </div>
                         <div className={`${styles.navColumn} ${styles.navColumnContacts} f-column gap-10`}>
                             <b className={styles.navItem}>Контакты</b>

@@ -28,11 +28,17 @@ export class OrderApi {
     }
 
     static async GetData(request: GetOrderRequest): Promise<AxiosResponse<GetOrderResponse>> {
-        const res: AxiosResponse<GetOrderResponse> = await api.get(PATHS.GET_ORDER + ConvertDataToGetParams(request));
+        const res: AxiosResponse<GetOrderResponse> = await authApi.get(PATHS.GET_ORDER + ConvertDataToGetParams(request));
+        if (!res.data) {
+            throw res
+        }
         return res;
     }
     static async GetTypeDelivery(request: GetOrderDeliveryRequest): Promise<AxiosResponse<GetOrderDeliveryResponse>> {
         const res: AxiosResponse<GetOrderDeliveryResponse> = await authApi.get(PATHS.GET_TYPE_DELIVERY + ConvertDataToGetParams(request));
+        if (!res.data) {
+            throw res
+        }
         return res;
     }
 

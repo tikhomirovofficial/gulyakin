@@ -7,7 +7,7 @@ import {
     CanOrderAddressesByCityRequest,
     CanOrderAddressesByCityResponse,
     CanOrderByCityRequest,
-    CanOrderByCityResponse,
+    CanOrderByCityResponse, DeliveryAddress,
     GetAddressesByMarketCityRequest,
     GetAddressesByMarketCityResponse,
     GetBookingsRequest,
@@ -27,6 +27,8 @@ import {
 import {AddressesApi} from "../../http/api/addresses.api";
 import {OrderApi} from "../../http/api/order.api";
 import {MarketApi} from "../../http/api/market.api";
+import {getDayOfWeekNumber} from "../../utils/datetime/getWeekDay";
+import {deleteSeconds} from "../../utils/datetime/deleteSecondsInTime";
 
 type Market = {
     title: string,
@@ -73,6 +75,7 @@ type MainSliceState = {
     bookingAddresses: AddressType[],
     cityMarkets: MarketByCityItem[],
     orderDetails: OrderDeliveryDetails
+    deliveryAddress: DeliveryAddress
     cityAddresses: AddressByCityItem[],
     pickupAddresses: AddressByCityItem[],
 }
@@ -93,8 +96,21 @@ const initialState: MainSliceState = {
     cityMarkets: [],
     cityAddresses: [],
     pickupAddresses: [],
+    deliveryAddress: {
+        adress: "",
+        id: 0,
+        image: [],
+        is_around_clock: false,
+        lat: 0,
+        long: 0,
+        market: {id: 0, link: 0, name: "", short_description: ""},
+        phone: "",
+        time: [],
+        timeaone: ""
+
+    },
     workTimes: {
-        startTime: "0:00",
+        startTime: "8:00",
         endTime: "23:00"
     },
     canOrder: true,
@@ -299,6 +315,20 @@ export const MainSlice = createSlice({
             if (action.payload.status) {
                 state.canOrder = action.payload.status
                 state.pickupAddresses = action.payload.adress
+                state.deliveryAddress = action.payload.delivery_adress
+
+                const dayWeek = getDayOfWeekNumber() - 1
+                const addressWorkTimes = action.payload.delivery_adress.time[dayWeek]
+
+                if(addressWorkTimes !== undefined) {
+                    const startTime = deleteSeconds(addressWorkTimes[0])
+                    const endTime = deleteSeconds(addressWorkTimes[1])
+                    state.workTimes = {
+                        startTime,
+                        endTime
+                    }
+                }
+
                 return;
             }
             state.canOrder = action.payload.status

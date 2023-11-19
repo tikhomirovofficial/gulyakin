@@ -12,17 +12,17 @@ type OrderHistorySliceType = {
 const initialState: OrderHistorySliceType = {
     data: {
         address: "",
-        datetime: "",
+        datetime: "2023-10-13T09:17:47.712379Z",
         is_active: false,
         is_payment: false,
         order_id: 0,
         price: 0,
         products: []
-
     },
     loading: false
 
 }
+
 export const getOrderById = createAsyncThunk(
     'history/order/get',
     async (request: GetOrderRequest, {dispatch}) => {

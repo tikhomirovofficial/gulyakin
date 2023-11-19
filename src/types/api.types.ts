@@ -69,9 +69,9 @@ export type RefreshRequest = Pick<JWT, "refresh">
 export type RefreshResponse = Pick<JWT, "access">
 
 export type ChangeUserRequest = Omit<UserData, "phone">
-export type ChangeUserResponse = {user: UserData} & ResponseStatus
+export type ChangeUserResponse = { user: UserData } & ResponseStatus
 
-export type AddressApiItem ={
+export type AddressApiItem = {
     id: number
     adress: string,
     entrance: number,
@@ -85,7 +85,7 @@ export type AddressAddRequest = Omit<AddressApiItem, "id">
 export type AddressAddResponse = ResponseStatus & Pick<AddressApiItem, "id">
 
 export type UserAddressesResponse = ResponseStatus & {
-   adress: Array<AddressApiItem>
+    adress: Array<AddressApiItem>
 }
 export type DeleteUserAddressRequest = {
     adress_id: number
@@ -141,7 +141,7 @@ export type AddressByMarketCity = {
     works_until: string
 }
 export type GetAddressesByMarketCityResponse = {
-   adress: Array<AddressByMarketCity>
+    adress: Array<AddressByMarketCity>
 } & ResponseStatus
 
 export type GetProductsByMarketRequest = {
@@ -152,9 +152,7 @@ export type GetProductsByMarketResponse = {
     products: ProductRes[];
 } & ResponseStatus
 
-export type GetSousesRequest = {
-
-}
+export type GetSousesRequest = {}
 export type GetSousesResponse = {
     souse: ProductRes[]
 } & ResponseStatus
@@ -413,6 +411,25 @@ export type CanOrderAddressesByCityRequest = {
     siti_id: number
 }
 
+
+export type DeliveryAddress = {
+    id: number
+    adress: string
+    market: {
+        id: number
+        name: string
+        short_description: string
+        link: number
+    }
+    lat: number
+    long: number
+    is_around_clock: boolean
+    time: Array<Array<string>>
+    phone: string
+    timeaone: string
+    image: string[]
+}
 export type CanOrderAddressesByCityResponse = {
-   adress: Array<AddressByCityItem>
+    adress: Array<AddressByCityItem>
+    delivery_adress: DeliveryAddress
 } & ResponseStatus

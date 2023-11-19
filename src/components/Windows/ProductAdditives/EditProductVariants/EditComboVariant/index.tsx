@@ -81,7 +81,7 @@ const EditComboVariant = () => {
                                     }
                                 </div>
                             </div>
-                            <div className={`${!additives?.length ? "f-1" : ""} content gap-10 f-column-betw`}>
+                            <div className={`${!additives?.length ? "f-1" : ""} ${styles.drinksList} content gap-10 f-column-betw`}>
                                 <div className="f-column gap-10">
                                     <h4>Выберите напиток</h4>
                                     <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>

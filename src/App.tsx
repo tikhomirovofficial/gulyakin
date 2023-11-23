@@ -110,7 +110,6 @@ function App() {
 
     }, [items])
 
-
     useEffect(() => {
         const date = new Date()
         dispatch(getCategoriesByMarket({ market_id: market }))

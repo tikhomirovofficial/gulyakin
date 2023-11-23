@@ -1,27 +1,27 @@
-import React, {FC, useDeferredValue, useEffect, useRef, useState} from 'react';
-import {Link} from "react-router-dom";
-import {ArrowMiniRightIcon, Geo} from "../../icons";
+import React, { FC, useDeferredValue, useEffect, useRef, useState } from 'react';
+import { Link } from "react-router-dom";
+import { ArrowMiniRightIcon, Geo } from "../../icons";
 import styles from './main.module.scss'
-import {getImgPath} from "../../utils/common/getAssetsPath";
+import { getImgPath } from "../../utils/common/getAssetsPath";
 import GrayBorderedBlock from "../../components/GrayBorderedBlock";
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
 import SearchInput from "../../components/Inputs/SearchInput";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {Swiper, SwiperProps, SwiperSlide} from 'swiper/react';
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { Swiper, SwiperProps, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import {handleBooking} from "../../features/modals/modalsSlice";
-import {getUser} from "../../features/profile/profileSlice";
+import { handleBooking } from "../../features/modals/modalsSlice";
+import { getUser } from "../../features/profile/profileSlice";
 import useAuth from "../../hooks/useAuth";
 import useToken from "../../hooks/useToken";
 import Preloader from "../../components/Preloader";
-import {useInput} from "../../hooks/useInput";
+import { useInput } from "../../hooks/useInput";
 import Catalog from "../../components/Catalog";
 import Combo from "../../components/Catalog/Combo";
-import {Link as ScrollLink} from "react-scroll"
+import { Link as ScrollLink } from "react-scroll"
 
 const Main: FC = () => {
-    const {categories, products, main} = useAppSelector(state => state)
+    const { categories, products, main } = useAppSelector(state => state)
     const is_auth = useAuth()
     const token = useToken()
 
@@ -79,7 +79,7 @@ const Main: FC = () => {
                                             <Link to={"/restaurants"}>
                                                 <GradientGrayBtn
                                                     className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
-                                                    <Geo/>
+                                                    <Geo />
                                                     <p>Рестораны на карте</p>
                                                 </GradientGrayBtn>
                                             </Link>
@@ -90,18 +90,18 @@ const Main: FC = () => {
                                         value={searchVal}
                                         changeVal={changeSearchVal}
                                         setVal={setSearchVal}
-                                        className={styles.search}/>
+                                        className={styles.search} />
                                 </div>
                                 <div className={`${styles.orderTrigger} f-1  p-rel`}>
                                     <div className="p-abs w-100p h-100p top-0 left-0 d-f jc-center">
                                         <div className={`${styles.backgrounds} p-rel f-row-betw h-100p`}>
-                                            <img className={"h-100p"} src={getImgPath("pelmeni.png")} alt=""/>
-                                            <img className={"h-100p"} src={getImgPath("vilki.png")} alt=""/>
+                                            <img className={"h-100p"} src={getImgPath("pelmeni.png")} alt="" />
+                                            <img className={"h-100p"} src={getImgPath("vilki.png")} alt="" />
                                         </div>
                                     </div>
 
                                     <div onClick={() => dispatch(handleBooking())}
-                                         className="w-100p f-c-row p-rel h-100p">
+                                        className="w-100p f-c-row p-rel h-100p">
                                         <div className={`${styles.text} f-column`}>
                                             <p>Забронируйте</p>
                                             <p>у нас столик!</p>
@@ -116,10 +116,10 @@ const Main: FC = () => {
 
                                 <div className="w-100p p-rel">
                                     {
-                                        sliderNeeded && currentSlide > 0 ? <div style={{transform: "rotateZ(180deg)"}}
-                                                                                className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
+                                        sliderNeeded && currentSlide > 0 ? <div style={{ transform: "rotateZ(180deg)" }}
+                                            className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
                                             <div onClick={handlePrev} className="miniSliderArrow cur-pointer f-c-col">
-                                                <ArrowMiniRightIcon width={14} height={14}/>
+                                                <ArrowMiniRightIcon width={14} height={14} />
                                             </div>
 
                                         </div> : null
@@ -129,7 +129,7 @@ const Main: FC = () => {
                                         sliderNeeded && !isEndSlider ? <div
                                             className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
                                             <div onClick={handleNext} className="miniSliderArrow cur-pointer f-c-col">
-                                                <ArrowMiniRightIcon width={14} height={14}/>
+                                                <ArrowMiniRightIcon width={14} height={14} />
                                             </div>
 
                                         </div> : null
@@ -145,7 +145,7 @@ const Main: FC = () => {
                                                         setCurrentSlide(slider.activeIndex)
                                                     }}
 
-                                                    style={{margin: 0}}
+                                                    style={{ margin: 0 }}
                                                     slidesPerView={'auto'}
                                                     centeredSlides={false}
                                                     className={""}
@@ -155,7 +155,7 @@ const Main: FC = () => {
                                                     {
                                                         categories.category.map(item => (
                                                             <SwiperSlide key={item.id}
-                                                                         className={"w-content cur-grabbing"}>
+                                                                className={"w-content cur-grabbing"}>
                                                                 <ScrollLink spy={true} activeClass={styles.categoryActive} to={`ctg-${item.id}`} smooth={true} offset={-160}>
                                                                     <GrayBorderedBlock
                                                                         clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)}
@@ -170,7 +170,7 @@ const Main: FC = () => {
                                                 </Swiper> :
 
                                                 <div className="f-c-col infiniteSpin w-content h-content">
-                                                    <Preloader height={20} width={20}/>
+                                                    <Preloader height={20} width={20} />
                                                 </div>
 
                                         }
@@ -200,7 +200,7 @@ const Main: FC = () => {
                                         {
                                             products.combos.map(item => (
                                                 <SwiperSlide className={"w-content pd-10-0"}>
-                                                    <Combo {...item}/>
+                                                    <Combo {...item} />
                                                 </SwiperSlide>
                                             ))
                                         }
@@ -214,7 +214,7 @@ const Main: FC = () => {
                                         <div className={styles.searchedQuery}>Поиск по запросу: {deferredSearch}</div>
                                         : null
                                 }
-                                <Catalog search={deferredSearch}/>
+                                <Catalog search={deferredSearch} />
                             </div>
                         </div>
                     </div>

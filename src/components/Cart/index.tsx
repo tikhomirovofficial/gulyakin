@@ -22,7 +22,8 @@ const Cart = () => {
     const [additivesOpened, setAdditivesOpened] = useState(false)
     const [classAdditivesAdded, setClassAdditivesAdded] = useState(false)
     const [classOpened, setClassOpened] = useState(false)
-    const {isCurrent} = useIsWorkTime({...workTimes})
+    const {isCurrent} = useIsWorkTime({...workTimes, is_around_time: workTimes.isAroundTime})
+
     const handleOpenAdditives = () => {
         setAdditivesOpened(true)
 

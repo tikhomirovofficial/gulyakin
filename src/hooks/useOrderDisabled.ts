@@ -2,6 +2,7 @@ import {useAppDispatch, useAppSelector} from "../app/hooks";
 import {useEffect, useState} from "react";
 import {setOrderWarning} from "../features/main/mainSlice";
 import {appConfig} from "../config/AppConfig";
+import { log } from "console";
 
 type OrderDisabledHook = {
     orderDisabled: boolean
@@ -23,9 +24,12 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
 
 
     const getDisabledBtn = () => {
+        console.log(props.isCurrentWorkTime);
+        
         if(props.isCurrentWorkTime) {
             const cartFilled = cart.items.length !== 0
             if (cartFilled) {
+                
                 if (!isPickup) {
                     if (canOrder) {
                         const addressSelected = (addressId !== 0 && addressId !== -1) // Удостоверяемся, что указан адрес доставки
@@ -99,6 +103,7 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
             setDisabled(true)
             return;
         }
+       
         dispatch(setOrderWarning({
             title: "Заказ недоступен",
             description: `Ресторан работает с ${workTimes.startTime} до ${workTimes.endTime}`

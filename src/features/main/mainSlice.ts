@@ -50,7 +50,8 @@ export type OrderWarning = {
 }
 export type WorkTimes = {
     startTime: string
-    endTime: string
+    endTime: string,
+    isAroundTime: boolean
 }
 type MainSliceState = {
     market: number,
@@ -111,7 +112,8 @@ const initialState: MainSliceState = {
     },
     workTimes: {
         startTime: "8:00",
-        endTime: "23:00"
+        endTime: "23:00",
+        isAroundTime: false
     },
     canOrder: true,
     orderWarning: {
@@ -325,7 +327,8 @@ export const MainSlice = createSlice({
                     const endTime = deleteSeconds(addressWorkTimes[1])
                     state.workTimes = {
                         startTime,
-                        endTime
+                        endTime,
+                        isAroundTime: action.payload.delivery_adress.is_around_clock
                     }
                 }
 

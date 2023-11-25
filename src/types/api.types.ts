@@ -408,7 +408,8 @@ export type CanOrderByCityRequest = {
 export type CanOrderByCityResponse = ResponseStatus
 
 export type CanOrderAddressesByCityRequest = {
-    siti_id: number
+    siti_id: number,
+    adress_id: number
 }
 
 

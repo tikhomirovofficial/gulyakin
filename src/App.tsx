@@ -171,14 +171,17 @@ function App() {
         if (token) {
             const hasAddresses = cityAddresses.length > 0
             const hasCart = items.length > 0
+            const hasDeliveryAddress = orderForm.addressId > 0
+
             if (hasCart && hasAddresses) {
                 dispatch(getCanOrderAddressesByCity({
-                    siti_id: currentGeo.city
+                    siti_id: currentGeo.city,
+                    adress_id: hasDeliveryAddress ? orderForm.addressId : 0
                 }))
             }
         }
 
-    }, [cityAddresses, items])
+    }, [cityAddresses, items, orderForm.addressId, orderForm.isPickup])
 
     return (
         <>

@@ -56,7 +56,7 @@ const Order = () => {
         getCurrentPickupAddress,
     } = useOrderAddress()
 
-    const {orderTimes, isCurrent} = useIsWorkTime({...workTimes})
+    const {orderTimes, isCurrent} = useIsWorkTime({...workTimes, is_around_time: workTimes.isAroundTime})
     const addressFromStorage = getFromStorage('order_form')?.addressId
 
     const closeSuccess = () => {
@@ -95,7 +95,7 @@ const Order = () => {
 
 
     const {orderDisabled} = useOrderDisabled({
-        isCurrentWorkTime: isCurrent
+        isCurrentWorkTime: isCurrent,
     })
     useOrderDetails()
 
@@ -287,7 +287,7 @@ const Order = () => {
                                         }
 
                                         <RedButton onClick={handleCreateOrder}
-                                                   disabled={orderDisabled}
+                                                   disabled={orderDisabled || orderDetails.delivery_type === 0}
                                                    className={`pd-15 ${styles.createOrderBtn}`}>Оформить заказ
                                             на {formatNumberWithSpaces(cart.totalPrice + orderDetails.price)} ₽</RedButton>
                                     </div>

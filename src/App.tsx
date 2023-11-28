@@ -59,6 +59,7 @@ function App() {
 
     const { items } = useAppSelector(state => state.cart)
     const orderForm = useAppSelector(state => state.forms.orderForm)
+    const profile = useAppSelector(state => state.profile)
 
     const { market, cities, currentGeo, isMobile, cityAddresses } = useAppSelector(state => state.main)
 
@@ -172,11 +173,12 @@ function App() {
             const hasAddresses = cityAddresses.length > 0
             const hasCart = items.length > 0
             const hasDeliveryAddress = orderForm.addressId > 0
-
+            const userHasAddresses = profile.addresses.length > 0
+            
             if (hasCart && hasAddresses) {
                 dispatch(getCanOrderAddressesByCity({
                     siti_id: currentGeo.city,
-                    adress_id: hasDeliveryAddress ? orderForm.addressId : 0
+                    adress_id: hasDeliveryAddress ? orderForm.addressId :  profile.addresses[0].id
                 }))
             }
         }

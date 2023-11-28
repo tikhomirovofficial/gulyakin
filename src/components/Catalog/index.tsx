@@ -25,7 +25,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                         searchedData.length > 0 ?
                             searchedData.map(category => (
                                 <Element name={`ctg-${category.id}`} key={category.id} className={`${styles.categoryBlock} f-column gap-20`}>
-                                    <h2 className="sectionTitle">{category?.title}</h2>
+                                    <h2 className="sectionTitle grayColor_dark">{category?.title}</h2>
                                     <List
                                         listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
                                         list={category?.products}
@@ -51,7 +51,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                         }/>
                                 </Element>
                             )) :
-                            <p className={styles.notFoundedText}>По запросу: {search} ничего не найдено.</p>
+                            <p className={`${styles.notFoundedText} grayColor_dark`}>По запросу: {search} ничего не найдено.</p>
                     }
                 </div> :
                 <BigSpinner/>

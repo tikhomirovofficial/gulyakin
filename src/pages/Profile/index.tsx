@@ -92,16 +92,17 @@ const Profile = () => {
                 <div className="wrapper">
                     <div className="profileBlock f-column gap-40">
                         <div className={`${styles.form} f-column gap-25`}>
-                            <div className="sectionTitle">
+                            <div className="sectionTitle grayColor_dark">
                                 Личные данные
                             </div>
                             <div className="personalForm f-column gap-20">
                                 <TextField
                                     handleSave={handleUserEdit}
-                                    className={styles.inputField}
+                                    className={`${styles.inputField} inputFieldBlock_dark`}
                                     placeholder={"Иван"}
                                     labelText={"Ваше имя"}
                                     isEditing={name.isEditing}
+                                    
                                     formValue={name.val}
                                     condValue={data.name}
                                     handleEdit={() => {
@@ -198,14 +199,14 @@ const Profile = () => {
                         </div>
                         <div className={`${styles.addressesBlock} f-column gap-25`}>
                             <div className="top f-row-betw">
-                                <div className="sectionTitle">
+                                <div className="sectionTitle grayColor_dark ">
                                     Адреса
                                 </div>
                                 <DarkBorderedButton onClick={() => dispatch(handleNewAddress())}
                                                     className={`${styles.addAddressBtn}`}>
                                     <div className={"d-f al-center gap-5"}>
-                                        <PlusIncCircleIcon height={14} width={14}/>
-                                        <p>Добавить</p>
+                                        <PlusIncCircleIcon fill={"#c3c3c3"} height={14} width={14}/>
+                                        <p className={"grayColor_dark"}>Добавить</p>
                                     </div>
                                 </DarkBorderedButton>
                             </div>
@@ -215,29 +216,29 @@ const Profile = () => {
                                           renderItem={({city, id}) => (
                                               <div className={`${styles.addressItem} f-row-betw`}>
                                                   <div className="left f-column gap-5">
-                                                      <p>{city}</p>
-                                                      <b>{city}</b>
+                                                      <p className={"grayColor_dark"}>{city}</p>
+                                                      <b className={"grayColor_dark"}>{city}</b>
                                                   </div>
                                                   <div onClick={() => dispatch(deleteAddressUser({
                                                       adress_id: id
                                                   }))}
                                                        className="w-content cur-pointer f-c-col">
-                                                      <DeleteIcon/>
+                                                      <DeleteIcon fill={"#C3C3C3"}/>
                                                   </div>
 
                                               </div>
                                           )}
                                     /> :
-                                    <p className={styles.addressesEmptyText}>Добавьте новый адрес чтобы ещё удобнее
+                                    <p className={`${styles.addressesEmptyText} grayColor_dark`}>Добавьте новый адрес чтобы ещё удобнее
                                         совершать покупки</p>
                             }
 
                             <div className="f-column gap-20">
                                 <div id={"orders"} className="f-column gap-10">
-                                    <div className="sectionTitle">
+                                    <div className="sectionTitle grayColor_dark">
                                        История заказов
                                     </div>
-                                    <p className={styles.textHistory}>
+                                    <p className={`${styles.textHistory} grayColor_dark`}>
                                         {
                                             orders.length ? "Ваши последние заказы" : "Вы ещё не сделали ни одного заказа. Перейдите в меню, чтобы сделать свой первый заказ."
                                         }

@@ -1,14 +1,17 @@
 .block {
   border-radius: 4px;
-  border: 1px solid #E2E2E9;
+  border: 1px solid #e2e2e9;
   font-size: 1.4rem;
-  transition: .3s border;
+  transition: 0.3s border;
 
   label {
-    transition: .3s color;
+    transition: 0.3s color;
+  }
+  input {
+    color: "red";
   }
   &:hover {
-    border: 1px solid #FB634D;
+    border: 1px solid #fb634d;
   }
 }
 .textField {
@@ -24,14 +27,23 @@
   padding: 1.6rem !important;
 }
 .input::placeholder {
-  color: #E2E2E9;
+  color: #575151;
 }
 .errorTextColor {
-  color: #FF2000;
+  color: #ff2000;
 }
 .close {
   min-height: 100%;
 }
+.lockedBlock {
+  border: 1px solid #575151;
+  input {
+    color: #434343;
+    
+  }
+  background: #f3f3f7 !important;
+}
 .label {
   font-size: 1.4rem;
+  color: #E2E2E9
 }

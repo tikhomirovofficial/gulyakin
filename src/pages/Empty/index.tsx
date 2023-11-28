@@ -8,7 +8,7 @@ const Empty = () => {
             <div className="wrapper">
                 <div className={`${styles.emptyBlock} w-100p h-100p f-c-col`}>
                     <div className="f-column al-center gap-20">
-                        <div className={"bigSectionTitle txt-center"}>Страница пуста</div>
+                        <div className={"bigSectionTitle txt-center grayColor_dark"}>Страница пуста</div>
                         <p className={`txt-center ${styles.description}`}>К сожалению, информация на данной странице ещё не заполнена, зайдите, пожалуйста,  позже</p>
                         <Link to={"/"} className={"w-content h-content"}>
                             <RedButton className={styles.button}>Вернуться в каталог</RedButton>

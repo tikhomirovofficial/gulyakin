@@ -109,11 +109,11 @@ const Product: FC<ProductProps & HasClassName> = ({
             </div>
             <div className={`${styles.content} f-column-betw gap-20 f-1`}>
                 <div className={`${styles.textBlock} gap-5 f-1 f-column-betw`}>
-                    <h3>{title}</h3>
+                    <h3 className={"grayColor_dark"}>{title}</h3>
                     <div className="d-f jc-between gap-25 f-1">
-                        <p>{composition}</p>
+                        <p className={"colorWhite_dark"}>{composition}</p>
                         {isMobile ? null :
-                            <div className={`${styles.weight} txt-right`}>{weight} {dimensions}</div>
+                            <div className={`${styles.weight} txt-right colorWhite_dark`}>{weight} {dimensions}</div>
                         }
                     </div>
                 </div>
@@ -127,7 +127,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                                 </div> : null
                             }
 
-                            <h4>{sale || price} ₽</h4>
+                            <h4 className={"grayColor_dark"}>{sale || price} ₽</h4>
                         </div>
                     }
 
@@ -135,10 +135,10 @@ const Product: FC<ProductProps & HasClassName> = ({
                     {
                         inCart ?
                             <div className={"d-f al-center gap-5"}>
-                                <div onClick={handleMinusProduct} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon/>
+                                <div onClick={handleMinusProduct} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon fill={"#F6CAAF"}/>
                                 </div>
-                                <div className={styles.count}>{count}</div>
-                                <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon/></div>
+                                <div className={`${styles.count} grayColor_dark`}>{count}</div>
+                                <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon fill={"#F6CAAF"}/></div>
 
                             </div>
                             :

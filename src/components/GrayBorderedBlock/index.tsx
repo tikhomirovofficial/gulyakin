@@ -7,32 +7,33 @@ interface GrayBorderedBlock {
     isFocused?: boolean
     validError?: string,
     labelFor?: string,
+    disabledBorder?: boolean
     clickHandler?: () => void
 }
-const GrayBorderedBlock: FC<HasChildrenProps & HasClassName & GrayBorderedBlock> = ({className, labelFor, clickHandler, disabled, isIncorrectStyle, validError, isFocused, children}) => {
+const GrayBorderedBlock: FC<HasChildrenProps & HasClassName & GrayBorderedBlock> = ({className, disabledBorder = false, labelFor, clickHandler, disabled, isIncorrectStyle, validError, isFocused, children}) => {
 
     if(clickHandler) {
         if(labelFor) {
             return (
-                <label htmlFor={labelFor}  onClick={clickHandler} className={`${styles.block} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+                <label htmlFor={labelFor}  onClick={clickHandler} className={`${styles.block} ${disabledBorder ? styles.disabledBorder : null}  ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
                     {children}
                 </label>
             );
         }
         return (
-            <div onClick={clickHandler} className={`${styles.block} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+            <div onClick={clickHandler} className={`${styles.block} ${disabledBorder ? styles.disabledBorder : null} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
                 {children}
             </div>
         );
     }
 
     if(labelFor) {
-        return ( <label htmlFor={labelFor} className={`${styles.block} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+        return ( <label htmlFor={labelFor} className={`${styles.block} ${disabledBorder ? styles.disabledBorder : null}  ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
             {children}
         </label>)
     }
     return (
-        <div className={`${styles.block} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+        <div className={`${styles.block} ${disabledBorder ? styles.disabledBorder : null} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
             {children}
         </div>
     );

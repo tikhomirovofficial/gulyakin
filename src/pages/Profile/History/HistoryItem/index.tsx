@@ -57,7 +57,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
                     </div>
                 </div>
                 <div className={"w-content h-content"}>
-                    <ArrowMiniRightIcon height={26} width={12}/>
+                    <ArrowMiniRightIcon stroke={"#C3C3C3"} height={26} width={12}/>
                 </div>
             </div>
         </div>

@@ -69,7 +69,7 @@ export const TextField: FC<TextFieldProps> = ({isEditing, errText, maskPlacehold
                 editingOrEmpty || !formValueEqualsCond ?
                     <div onClick={canBeSaved ? handleSave : () => console.log("Nothing edited")}
                          className={`w-content cur-pointer ${!isTextArea ? "f-c-col" : ""}`}>
-                        <SaveIcon fill={!canBeSaved ? "#E2E2E9" : "#FB634D"}/>
+                        <SaveIcon fill={!canBeSaved ? "#E2E2E9" : "#FCC8A5"}/>
                     </div> :
                     <div ref={editRef} onClick={handleEditing}
                          className={`w-content cur-pointer  ${!isTextArea ? "f-c-col" : ""}`}>

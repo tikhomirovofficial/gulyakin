@@ -65,7 +65,7 @@ const NewAddressWindow = () => {
                                         <div className={"d-f al-center gap-5 svgRedStroke"}>
                                             Город, улица и дом
                                             <div className={"f-c-col w-content"}>
-                                                <Geo width={12}/>
+                                                <Geo stroke={"#FCC8A5"} width={12}/>
                                             </div>
                                         </div>
                                     }/>

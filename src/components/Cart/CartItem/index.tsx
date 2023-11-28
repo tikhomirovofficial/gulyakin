@@ -132,7 +132,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
 
                                                 }))
                                             }
-                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/>
+                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#C8C7CC"} width={12}/>
                                         </div>
 
                                         <div className={styles.count}>{count}</div>
@@ -142,7 +142,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
                                                 count: count + 1,
                                                 id: product.id
                                             }))
-                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/>
+                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#C8C7CC"} width={12}/>
                                         </div>
 
                                     </div>

@@ -1,5 +1,5 @@
 .section {
-  background: #FAFAFA;
+  background: #2A2C36;
 }
 .nonSliderElement {
   width: unset !important;
@@ -22,7 +22,7 @@
 
   }
   .selectedNeededStroke {
-    background: #FB634D;
+    background: #F7C9AB;
     svg {
       path {
         stroke: white;
@@ -30,7 +30,7 @@
     }
   }
   .selectedNeededFill {
-    background: #FB634D;
+    background: #F7C9AB;
     svg {
       path {
         fill: white;
@@ -39,7 +39,7 @@
   }
 
   .selectedNeededIFood {
-    background: #FB634D;
+    background: #F7C9AB;
     svg {
       g {
         path {
@@ -52,14 +52,14 @@
   }
   .selectedSport {
 
-    background: #FB634D;
+    background: #F7C9AB;
     svg {
       g {
         path:first-child {
           fill: white;
         }
         path:not(:first-child) {
-          fill: #FB634D;
+          fill: #F7C9AB;
         }
       }
 
@@ -68,7 +68,7 @@
 
   }
   .selectedNeededGusto {
-    background: #FB634D;
+    background: #F7C9AB;
     svg {
       g {
         path {
@@ -80,7 +80,7 @@
   }
   .neededStroke {
     &:hover {
-      background: #FB634D;
+      background: #F7C9AB;
       svg {
         path {
           stroke: white;
@@ -90,14 +90,14 @@
   }
   .neededSport {
     &:hover {
-      background: #FB634D;
+      background: #F7C9AB;
       svg {
         g {
           path:first-child {
             fill: white;
           }
           path:not(:first-child) {
-            fill: #FB634D;
+            fill: #F7C9AB;
           }
         }
 
@@ -107,7 +107,7 @@
   }
   .neededFill {
     &:hover {
-      background: #FB634D;
+      background: #F7C9AB;
       svg {
         path {
           fill: white;
@@ -118,7 +118,7 @@
 
   .neededIfood {
     &:hover {
-      background: #FB634D;
+      background: #F7C9AB;
       svg {
         g {
           path {
@@ -132,7 +132,7 @@
   }
   .neededGusto {
     &:hover {
-      background: #FB634D;
+      background: #F7C9AB;
       svg {
         g {
           path {

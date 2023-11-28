@@ -45,9 +45,9 @@ const CartAdditiveItem: FC<CartAdditiveItemProps> = ({id, price, inCart, short_d
             {
                 inCart ?
                     <div className={"d-f al-center gap-5"}>
-                        <div onClick={handleMinusProduct} className={"cur-pointer f-c-col"}><MinusIcon fill={"#434343"} width={12}/></div>
+                        <div onClick={handleMinusProduct} className={"cur-pointer f-c-col"}><MinusIcon fill={"#C8C7CC"} width={12}/></div>
                         <div className={styles.count}>{count}</div>
-                        <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon fill={"#434343"} width={12}/></div>
+                        <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon fill={"#C8C7CC"} width={12}/></div>
 
                     </div> :
                     <div onClick={addSouse} className={`${styles.add} colorRed cur-pointer`}>Добавить</div>

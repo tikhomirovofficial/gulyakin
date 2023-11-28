@@ -106,7 +106,7 @@ const Order = () => {
                     <div className={`${styles.orderContainer} d-f jc-between gap-80`}>
                         <div className="orderBlock f-column gap-40">
                             <div className={`${styles.form} f-column gap-25`}>
-                                <div className="sectionTitle">Заказ на {!isPickup ? "доставку" : "самовывоз"}</div>
+                                <div className="sectionTitle grayColor_dark">Заказ на {!isPickup ? "доставку" : "самовывоз"}</div>
                                 {
                                     orderDisabled ?
                                         <div
@@ -242,7 +242,7 @@ const Order = () => {
                             </div>
                             <div className={`${styles.leftContent} orderBottom f-column gap-40`}>
                                 <div className="f-column gap-20 paymentWay">
-                                    <div className="sectionTitle">Способы оплаты</div>
+                                    <div className="sectionTitle grayColor_dark">Способы оплаты</div>
                                     <div className="d-f gap-10">
                                         <div
                                             onClick={() => {

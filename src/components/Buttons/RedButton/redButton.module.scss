@@ -11,7 +11,12 @@
     filter: brightness(95%);
   }
   &:disabled {
-    background: #E2E2E9;;
+    background: #E2E2E9;
+    filter:grayscale(100%);
     color: #ABADBA;
   }
+}
+.buttonDark {
+  background: #F6CAAF !important;
+  color: #4F4F4F;
 }

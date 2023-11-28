@@ -14,7 +14,7 @@ const SearchInput: FC<HasClassName & SearchInputProps> = ({className, changeVal,
     const handleClearInput = () => setVal("")
 
     return (
-        <GrayBorderedBlock labelFor={"searchInput"}
+        <GrayBorderedBlock disabledBorder={true} labelFor={"searchInput"}
                            className={`${styles.search} ${className || null} ${isFocused ? styles.searchFocused : null} f-row-betw gap-20`}>
             <SearchIcon/>
             <input id={"searchInput"}

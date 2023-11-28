@@ -83,7 +83,6 @@ const Main: FC = () => {
                                                     <p>Рестораны на карте</p>
                                                 </GradientGrayBtn>
                                             </Link>
-
                                     }
 
                                     <SearchInput
@@ -117,7 +116,7 @@ const Main: FC = () => {
                                 <div className="w-100p p-rel">
                                     {
                                         sliderNeeded && currentSlide > 0 ? <div style={{ transform: "rotateZ(180deg)" }}
-                                            className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs left-0`}>
+                                            className={`${styles.shadowRight} ${styles.shadowRightDark} d-f jc-end al-center h-100p p-abs left-0`}>
                                             <div onClick={handlePrev} className="miniSliderArrow cur-pointer f-c-col">
                                                 <ArrowMiniRightIcon width={14} height={14} />
                                             </div>
@@ -127,7 +126,7 @@ const Main: FC = () => {
                                     }
                                     {
                                         sliderNeeded && !isEndSlider ? <div
-                                            className={`${styles.shadowRight} d-f jc-end al-center h-100p p-abs right-0`}>
+                                            className={`${styles.shadowRight} ${styles.shadowRightDark} d-f jc-end al-center h-100p p-abs right-0`}>
                                             <div onClick={handleNext} className="miniSliderArrow cur-pointer f-c-col">
                                                 <ArrowMiniRightIcon width={14} height={14} />
                                             </div>
@@ -183,7 +182,7 @@ const Main: FC = () => {
                         <div className={`wrapper ${styles.comboCatalogWrapper} f-column gap-30 w-100p`}>
                             {
                                 products.combos.length > 0 ? <div className={`${styles.oftenOrdered} f-column gap-10`}>
-                                    <h3>Комбо</h3>
+                                    <h3 className={"grayColor_dark"}>Комбо</h3>
                                     <Swiper
                                         spaceBetween={19}
                                         slidesPerView={"auto"}

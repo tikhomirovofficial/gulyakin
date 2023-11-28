@@ -148,14 +148,14 @@ const Cart = () => {
                         </div>
                         {
                             items.length ?
-                                <div className="additivesBlock f-column gap-5">
+                                <div className={` f-column gap-5`}>
                                     <h3>Добавить к заказу?</h3>
-                                    <div className={"f-row-betw gap-10"}>
+                                    <div className={`f-row-betw gap-10 `}>
                                         <div onClick={handleOpenAdditives}
-                                             className={`${styles.souses} cur-pointer al-center bg-white pd-20 f-column gap-5`}>
+                                             className={`${styles.souses} cur-pointer al-center bg-white pd-20 f-column gap-5 ${styles.addSousesBlock}`}>
                                             <div style={{backgroundImage: `url(${getImgPath("productAdditive.png")})`}}
                                                  className={styles.img}></div>
-                                            <p>Соусы</p>
+                                            <p className={"grayColor_dark"}>Соусы</p>
                                         </div>
                                         <div
                                             className={`${styles.bread} cur-pointer h-100p f-1 bg-white pd-20 gap-10 d-n al-center`}>

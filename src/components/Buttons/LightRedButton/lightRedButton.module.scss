@@ -1,12 +1,13 @@
 .button {
   border-radius: 4px;
   color: white;
-  background: #FFAFA4;
+  background: transparent;
   font-weight: 700;
   transition: .3s filter;
   cursor: pointer;
   font-size: 2rem;
-  color: #C83A29;
+  color: #c3c3c3;
+  border: 1px solid #c3c3c3;
 
   &:hover {
     filter: brightness(95%);

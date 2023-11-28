@@ -172,7 +172,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                         htmlFor={inputId}>{labelText}</label> : null}
                     <div className="d-f al-center gap-10">
 
-                        <GrayBorderedBlock disabled={true} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
+                        <GrayBorderedBlock disabled={true} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} ${styles.lockedBlock} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                             <input readOnly={true} placeholder={placeholder || ""}
                                    value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.textField} f-1`}
                                    id={inputId} type="text"/>

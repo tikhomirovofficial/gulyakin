@@ -10,8 +10,8 @@ const AddedPopup = () => {
     return (
         <>
             <div className={`${styles.addedPopup} ${cartClassOpened ? styles.addedPopupOpened : ""} p-abs f-column gap-5 t-opacity-visible-3`}>
-                <p>В корзину добавлено:</p>
-                <b>{cartAddedPopupInfo.title}, {cartAddedPopupInfo.weight} г</b>
+                <p className={styles.addedTextColor}>В корзину добавлено:</p>
+                <b className={styles.addedTextColor}>{cartAddedPopupInfo.title}, {cartAddedPopupInfo.weight} г</b>
             </div>
         </>
 

@@ -25,7 +25,7 @@ const Header = () => {
                 <div className={`${styles.block} pd-30-0 f-row-betw gap-40`}>
                     <div className={`${styles.left} d-f al-center gap-35`}>
                         <Link to={"/"} className="">
-                            <Logo/>
+                            <Logo fill={"#fff"}/>
                         </Link>
                         <SelectCity/>
                     </div>
@@ -95,7 +95,7 @@ const Header = () => {
 
                                 <Link to={"/profile"}
                                       className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
-                                    <ProfileIcon height={22} width={16}/>
+                                    <ProfileIcon fill={"white"} height={22} width={16}/>
                                     <b>
                                         Кабинет
                                     </b>
@@ -105,7 +105,7 @@ const Header = () => {
                         <div
                             onClick={handleCart}
                             className={`${items.length > 0 ? styles.cartBtnFilled : styles.cartBtnUnfilled} ${styles.cartBtn} gap-5 btn d-f al-center cur-pointer`}>
-                            <CartIcon height={22} width={22}/>
+                            <CartIcon fill={"white"} height={22} width={22}/>
                             <b>
                                 {formatNumberWithSpaces(totalPrice)} ₽
                             </b>

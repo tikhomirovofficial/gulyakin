@@ -3,22 +3,34 @@
   border: 1px solid #E2E2E9;
   padding: 0 1.8rem;
   font-size: 1.4rem;
+  background: #2A2C36;
   transition: .3s border;
+  input {
+    background: inherit;
+    color: white;
+  }
   label {
     transition: .3s color;
   }
   &:hover {
-    border: 1px solid #FB634D;
+    border: 1px solid #F8CAA9
   }
 }
+.disabledBorder {
+  border: none !important;
+}
+
 .focused {
-  border: 1px solid #FB634D;
+  border: 1px solid #F8CAA9;
 }
 .error {
   border: 1px solid #FF2000;
 }
+.closed {
+  background: #F3F3F7
+}
 .disabled {
-  background: #F3F3F7;
+  background: #333;
   &:hover {
     border: 1px solid #E2E2E9;
   }

@@ -17,6 +17,7 @@
 
 html {
     font-size: 10px;
+    background: #363844;
 
 }
 input::-webkit-outer-spin-button,
@@ -29,11 +30,23 @@ input[type='number'] {
 * {
     font-family: 'TTChocolates', sans-serif !important;
 }
+.inputFieldBlock_dark {
+    background: #333;
+  }
+.grayColor_dark {
+    color: #C4C4C4 !important;
+}
+.colorWhite_dark {
+    color: white !important;
+}
 .pageTop {
     margin-top: 4rem;
 }
 main {
     margin-top: 11rem;
+}
+body {
+    background: #363844;
 }
 body::-webkit-scrollbar {
     width: 8px;
@@ -52,7 +65,7 @@ body::-webkit-scrollbar-thumb {
 .sectionTitle {
     font-size: 3.6rem;
     font-weight: 700;
-    color: #434343;
+
 }
 .App {
     padding-top: 11rem;
@@ -67,7 +80,7 @@ body::-webkit-scrollbar-thumb {
     font-size: 1.4rem;
 }
 .caption a {
-    color: #fb634d;
+    color: #F6CAAF;
 }
 .caption-big {
     font-size: 1.8rem;
@@ -149,14 +162,14 @@ body::-webkit-scrollbar-thumb {
     top: 2rem;
 }
 .colorRed {
-    color: #FB634D;
+    color: #FCC8A5 !important;
 }
 .colorError {
     color: #FF2000;
 }
 
 .svgRedStroke path{
-    stroke: #fb634d;
+    stroke: #FCC8A5;
 }
 .miniSliderArrow path{
     transition: .3s stroke;
@@ -184,12 +197,14 @@ body::-webkit-scrollbar-thumb {
 }
 .whiteSelectable {
     border-radius: 4px;
-    background: white;
+    background: #2A2C36;
     box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.10);
     border: 1px solid transparent;
     transition: .3s border, .3s box-shadow;
     cursor: pointer;
-
+}
+.whiteSelectable p {
+    color: white;
 }
 .miniScrollbar::-webkit-scrollbar {
     width: 4px;
@@ -199,13 +214,13 @@ body::-webkit-scrollbar-thumb {
 }
 .errorBlock {
     border-radius: 4px;
-    background: #FF2000;
+    background: #ff6328ff;
 }
 .whiteSelectable:hover {
-    border: 1px solid #fb634d;
+    border: 1px solid #FCC8A5;
 }
 .whiteSelectableSelected {
-    border: 1px solid #fb634d !important;
+    border: 1px solid #FCC8A5!important;
 
 }
 .bigSectionTitle {

@@ -5,7 +5,7 @@ const UserDocument = () => {
         <div className={"pageTop"}>
             <div className="wrapper">
                 <div className="emptyBlock f-column gap-40">
-                    <div className="sectionTitle">
+                    <div className="sectionTitle grayColor_dark">
                         Пользовательское соглашение
                     </div>
                     <p className={styles.text}>

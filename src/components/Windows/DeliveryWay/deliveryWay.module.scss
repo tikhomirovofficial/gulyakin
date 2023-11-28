@@ -16,6 +16,7 @@
 }
 .searchedMatches {
   overflow-y: auto;
+  background: #2A2C36;
   border-radius: 6px;
   max-height: 26.9rem;
   top: calc(100% + .5rem);
@@ -26,7 +27,7 @@
 .searchAddressItem {
   border-radius: 4px;
   &:hover {
-    background: #F3F3F7;
+    background: #363844;
   }
   b {
     font-size: 1.6rem;

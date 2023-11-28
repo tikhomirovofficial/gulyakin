@@ -104,7 +104,7 @@ const ChosenRestaurant: FC = () => {
                                 <div style={{transform: "rotateZ(180deg)"}} className="f-c-col">
                                     <ArrowMiniRightIcon width={17} height={17}/>
                                 </div>
-                                <div className="sectionTitle">
+                                <div className="sectionTitle grayColor_dark">
                                     Все рестораны
                                 </div>
                             </Link>

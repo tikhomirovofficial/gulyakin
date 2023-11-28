@@ -17,10 +17,11 @@
       background: #c7c7c7;
     }
     width: 34rem;
-    background: white;
-    border-left: 2px solid #fafafa;
-    border-top: 2px solid #fafafa;
-    border-bottom: 2px solid #fafafa;
+    background: #2A2C36;
+    background: #2A2C36;
+    border-left: 2px solid #727272;
+    border-top: 2px solid #727272;
+    border-bottom: 2px solid #727272;
     .itemWrapper {
       padding-top: .4rem;
       padding-left: .4rem;
@@ -43,6 +44,7 @@
         }
         .bottomText {
           font-size: 1.4rem;
+          color: white;
         }
       }
     }
@@ -70,7 +72,7 @@
   right: -1.5rem;
 }
 .choosenRestaruantBlock {
-  color: #494949;
+  color: #c3c3c3;
 
   .addressTitle {
     font-size: 2rem;
@@ -92,7 +94,7 @@
   }
   .phoneLabel {
     font-size: 1.4rem;
-    color: black;
+    color: white;
   }
   .phone {
     font-size: 1.8rem;

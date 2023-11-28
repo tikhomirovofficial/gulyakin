@@ -60,7 +60,7 @@ const Restaurants: FC = () => {
 
                         <div className="f-column gap-20">
                             <div className="wrapper w-100p">
-                                <div className="sectionTitle">
+                                <div className="sectionTitle grayColor_dark">
                                     {addresses.length} кафе в {cityMarkets.length > 0 ? cityMarkets.filter(marketItem => marketItem.id === market)[0]?.market : ""} городе {cities.length > 0 ? cities.filter(city => city.id === currentGeo.city)[0]?.name : ""}
                                 </div>
                             </div>

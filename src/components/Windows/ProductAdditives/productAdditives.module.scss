@@ -28,7 +28,7 @@
   max-height: 25rem;
   .item {
     cursor: pointer;
-    background: #F7F7F7;
+    background: #363844;
     border-radius: 4px;
     width: 10.5rem;
     min-height: 13.8rem;
@@ -63,7 +63,7 @@
     }
   }
   .itemSelected {
-    border: 1px solid #FB634D;
+    border: 1px solid #F6CAAF;
     .addedIconBlock {
       visibility: visible;
       opacity: 1;
@@ -87,7 +87,7 @@
     span {
       font-size: 2rem;
     }
-    color: black
+    color: white
   }
   .weight {
     color: #C0C0C0;
@@ -109,6 +109,7 @@
   }
   h4 {
     font-size: 2rem;
+    color: #c3c3c3;
   }
 }
 .productAdditivesBar::-webkit-scrollbar {

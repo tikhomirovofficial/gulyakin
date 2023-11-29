@@ -147,7 +147,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                             </RedButton>
                     }
                     {!isMobile ? null :
-                        <div className={`${styles.weight} txt-right`}>{weight} {dimensions}</div>
+                        <div className={`${styles.weight} txt-right colorWhite_dark`}>{weight} {dimensions}</div>
                     }
 
 

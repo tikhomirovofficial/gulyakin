@@ -18,7 +18,7 @@ const HeaderMobile = () => {
                 <div className={`${styles.block} pd-20-0 f-row-betw gap-40`}>
                     <div className={`${styles.left} d-f al-center gap-35`}>
                         <Link to={"/"} className="">
-                            <Logo/>
+                            <Logo fill={"#fff"}/>
                         </Link>
                         <Link to={"/restaurants"}>
                             <GradientGrayBtn

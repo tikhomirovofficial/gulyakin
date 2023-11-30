@@ -155,6 +155,7 @@ function App() {
     }, [cities, currentGeo.city, market])
 
     useEffect(() => {
+        window.scrollTo(0, 0)
         if (cities.length > 0) {
             dispatch(getBookings({
                 siti_id: currentGeo.city
@@ -174,11 +175,12 @@ function App() {
             const hasCart = items.length > 0
             const hasDeliveryAddress = orderForm.addressId > 0
             const userHasAddresses = profile.addresses.length > 0
-            
+            const defaultAddressId = 17
+
             if (hasCart && hasAddresses) {
                 dispatch(getCanOrderAddressesByCity({
                     siti_id: currentGeo.city,
-                    adress_id: hasDeliveryAddress ? orderForm.addressId :  profile.addresses[0].id
+                    adress_id: hasDeliveryAddress ? orderForm.addressId :  userHasAddresses ? profile.addresses[0].id : defaultAddressId
                 }))
             }
         }

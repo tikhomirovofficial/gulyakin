@@ -201,7 +201,7 @@ const Order = () => {
                                     <div className={`f-column gap-20 ${styles.orderOptions}`}>
                                         {
                                             isCurrent ? <div className={`${styles.timeOrder} f-column gap-10`}>
-                                                <p className={""}>Время</p>
+                                                <p className={"c-white"}>Время</p>
                                                 <div className={`${styles.timeOrderItems} gap-10 f-column w-100p`}>
                                                     <div className="d-f jc-between gap-10">
                                                         <div

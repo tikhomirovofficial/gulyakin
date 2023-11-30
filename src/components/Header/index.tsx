@@ -87,7 +87,7 @@ const Header = () => {
                             !token ?
                                 <div onClick={() => dispatch(handleLogin())}
                                      className={`${styles.profileBtn} btn d-f al-center gap-5 cur-pointer`}>
-                                    <ProfileIcon height={22} width={16}/>
+                                    <ProfileIcon fill={"white"} height={22} width={16}/>
                                     <b>
                                         Кабинет
                                     </b>

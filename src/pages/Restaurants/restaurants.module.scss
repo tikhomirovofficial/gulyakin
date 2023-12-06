@@ -1,6 +1,5 @@
-
 .promo {
-  background: #FAFAFA;
+  background: #fafafa;
 
   .promos {
     .container {
@@ -10,8 +9,8 @@
         width: 32rem;
         min-height: 18.3rem;
         border-radius: 4px;
-        border: 1px solid #FAFAFA;
-        transition: .3s border;
+        border: 1px solid #fafafa;
+        transition: 0.3s border;
         .image {
           height: 11rem;
           background-position: center;
@@ -24,22 +23,21 @@
             font-size: 1.4rem;
           }
           svg {
-            transition: .3s transform;
+            transition: 0.3s transform;
             path {
-              transition: .3s fill;
+              transition: 0.3s fill;
             }
           }
         }
         &:hover {
-          border: 1px solid #FCC8A5;
+          border: 1px solid #fcc8a5;
           svg {
             transform: translateX(5px);
             path {
-              fill: #FCC8A5;;
+              fill: #fcc8a5;
             }
           }
         }
-
       }
     }
     .arrowWrapper {
@@ -75,14 +73,14 @@
       background: #c7c7c7;
     }
     min-width: 34rem;
-    background: #2A2C36;
+    background: #2a2c36;
     border-left: 2px solid #727272;
     border-top: 2px solid #727272;
     border-bottom: 2px solid #727272;
     .itemWrapper {
-      padding-top: .4rem;
-      padding-left: .4rem;
-      padding-bottom: .4rem;
+      padding-top: 0.4rem;
+      padding-left: 0.4rem;
+      padding-bottom: 0.4rem;
       width: 100%;
       border-bottom: 2px solid #727272;
       cursor: pointer;
@@ -92,7 +90,7 @@
         &:hover {
           background: #363844;
         }
-        transition: .3s background;
+        transition: 0.3s background;
         b {
           font-size: 1.6rem;
           color: #c3c3c3;
@@ -148,7 +146,6 @@
     }
   }
   .workTimeBlock {
-
   }
   .phoneLabel {
     font-size: 1.4rem;
@@ -177,12 +174,12 @@
   }
 
   .map {
-  height: 50vh;
-  border-radius: 6px;
-  max-height: 576px;
+    height: 50vh;
+    border-radius: 6px;
+    max-height: 576px;
   }
   .restaurantsSection {
-    background: #FAFAFA;
+    background: #fafafa;
     height: unset;
     max-height: unset;
     .restaurantsContainer {
@@ -191,12 +188,12 @@
     }
     .itemWrapper {
       border-radius: 4px;
-      padding: .4rem;
+      padding: 0.4rem;
       max-width: 100%;
       border-bottom: 2px solid #fafafa;
       cursor: pointer;
       .item {
-        border-radius: .6rem !important;
+        border-radius: 0.6rem !important;
       }
     }
 
@@ -215,7 +212,6 @@
     }
 
     .map {
-
       flex: 1;
       flex: unset;
       width: 100%;
@@ -229,5 +225,14 @@
 @media (max-width: 480px) {
   .mapContainer {
     min-height: 48vh !important;
+  }
+  .restaurantsSection {
+    .sideWrapper {
+      border-left: unset;
+      border-bottom: unset;
+    }
+    .restaurantsContainer {
+      padding: 0 !important;
+    }
   }
 }

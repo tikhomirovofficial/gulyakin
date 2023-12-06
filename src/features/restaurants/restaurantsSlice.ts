@@ -29,6 +29,7 @@ const initialState: RestaurantsSliceType = {
             id: 0,
             image: [],
             lat: 0,
+            phone: "",
             long: 0,
             market: {
                 description: "", id: 0, link: "", name: "", short_description: ""

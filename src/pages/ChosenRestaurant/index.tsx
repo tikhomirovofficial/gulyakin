@@ -1,20 +1,21 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
-import {ArrowMiniRightIcon, Cap, SafeArrowIcon} from "../../icons";
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { ArrowMiniRightIcon, Cap, SafeArrowIcon } from "../../icons";
 import styles from './chosenRestaurant.module.scss'
 import GradientGrayBtn from "../../components/Buttons/GradientGrayButton";
-import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {Link, useParams} from "react-router-dom";
+import { Map, Placemark, YMaps } from '@pbe/react-yandex-maps';
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { Link, useParams } from "react-router-dom";
 import RedButton from "../../components/Buttons/RedButton";
-import {Swiper, SwiperSlide} from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination'
-import {SwiperProps} from "swiper/swiper-react";
-import {RestaurantItemType} from "../../types/restaurants.types";
-import {HasClassName} from "../../types/components.types";
-import {domain} from "../../http/instance/instances";
-import {getRestaurantData} from "../../features/restaurants/restaurantsSlice";
+import { SwiperProps } from "swiper/swiper-react";
+import { RestaurantItemType } from "../../types/restaurants.types";
+import { HasClassName } from "../../types/components.types";
+import { domain } from "../../http/instance/instances";
+import { getRestaurantData } from "../../features/restaurants/restaurantsSlice";
 import useMarketLogo from "../../hooks/useMarketLogo";
+import { formatPhoneNumber } from '../../utils/forms/formatePhone';
 
 const weekItems = [
     {
@@ -64,7 +65,7 @@ const ChosenRestaurant: FC = () => {
     const params = useParams<{ id: string }>()
     const restaurantInfo = useAppSelector(state => state.restaurants.chosen.data)
     const logo = useMarketLogo()
-    const {loading} = useAppSelector(state => state.restaurants.chosen)
+    const { loading } = useAppSelector(state => state.restaurants.chosen)
 
     const handleNext = () => {
         restaurantImagesSlider.current.swiper.slideNext();
@@ -91,7 +92,7 @@ const ChosenRestaurant: FC = () => {
                     <div className="wrapper w-100p">
                         <Link to={"/"}>
                             <GradientGrayBtn className={`${styles.backButton} cur-pointer d-f gap-10`}>
-                                <Cap/>
+                                <Cap />
                                 <p>Вернуться в меню</p>
                             </GradientGrayBtn>
                         </Link>
@@ -101,8 +102,8 @@ const ChosenRestaurant: FC = () => {
                     <div className="f-column gap-20">
                         <div className="wrapper w-100p">
                             <Link to={"/restaurants"} className="d-f al-center gap-10">
-                                <div style={{transform: "rotateZ(180deg)"}} className="f-c-col">
-                                    <ArrowMiniRightIcon width={17} height={17}/>
+                                <div style={{ transform: "rotateZ(180deg)" }} className="f-c-col">
+                                    <ArrowMiniRightIcon width={17} height={17} />
                                 </div>
                                 <div className="sectionTitle grayColor_dark">
                                     Все рестораны
@@ -122,11 +123,11 @@ const ChosenRestaurant: FC = () => {
                                         <div className="d-f p-rel">
                                             {
                                                 currentSlide > 0 ?
-                                                    <div style={{transform: "rotateZ(180deg)"}}
-                                                         className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperLeft} d-f jc-end al-center h-100p p-abs left-0`}>
+                                                    <div style={{ transform: "rotateZ(180deg)" }}
+                                                        className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperLeft} d-f jc-end al-center h-100p p-abs left-0`}>
                                                         <div onClick={handlePrev}
-                                                             className={`${styles} f-c-col sliderArrowCircle cur-pointer`}>
-                                                            <SafeArrowIcon width={7}/>
+                                                            className={`${styles} f-c-col sliderArrowCircle cur-pointer`}>
+                                                            <SafeArrowIcon width={7} />
                                                         </div>
 
                                                     </div> : null
@@ -135,16 +136,16 @@ const ChosenRestaurant: FC = () => {
                                             {
                                                 currentSlide < restaurantInfo.image.length - 2 ?
                                                     <div onClick={handleNext}
-                                                         className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f  jc-end al-center h-100p p-abs right-0`}>
+                                                        className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f  jc-end al-center h-100p p-abs right-0`}>
                                                         <div className="f-c-col sliderArrowCircle cur-pointer">
-                                                            <SafeArrowIcon width={7}/>
+                                                            <SafeArrowIcon width={7} />
                                                         </div>
 
                                                     </div> : null
                                             }
 
                                             <Swiper
-                                                style={{margin: 0}}
+                                                style={{ margin: 0 }}
                                                 slidesPerView={'auto'}
                                                 centeredSlides={false}
                                                 className={styles.gallery}
@@ -157,8 +158,8 @@ const ChosenRestaurant: FC = () => {
                                                 {
                                                     restaurantInfo.image.map(src => (
                                                         <SwiperSlide key={Date.now()} className={"w-content cur-grabbing"}>
-                                                            <div style={{backgroundImage: `url(${domain}/${src})`}}
-                                                                 className={`${styles.item} bg-cover`}>
+                                                            <div style={{ backgroundImage: `url(${domain}/${src})` }}
+                                                                className={`${styles.item} bg-cover`}>
 
                                                             </div>
                                                         </SwiperSlide>
@@ -172,7 +173,7 @@ const ChosenRestaurant: FC = () => {
                                     <div className={`${styles.workTimeBlock} f-column gap-20 f-1`}>
                                         <div className="f-column">
                                             <p className={styles.phoneLabel}>Телефон</p>
-                                            <div className={styles.phone}>{"79005001849"}</div>
+                                            <a href={`tel:+${restaurantInfo.phone}`} className={styles.phone}>{formatPhoneNumber(restaurantInfo.phone)}</a>
                                         </div>
                                         <div className={`f-column gap-5 ${styles.workClocks}`}>
                                             <p className={styles.phoneLabel}>График работы</p>
@@ -197,8 +198,8 @@ const ChosenRestaurant: FC = () => {
                                 <YMaps>
 
                                     <ChosenRestaurantMap className={`${styles.map} h-100p f-1`}
-                                                         coords={[restaurantInfo.long, restaurantInfo.lat]}
-                                                         logoIconSrc={logo}/>
+                                        coords={[restaurantInfo.long, restaurantInfo.lat]}
+                                        logoIconSrc={logo} />
                                 </YMaps>
                             </div>
                         </div>
@@ -215,10 +216,10 @@ const ChosenRestaurant: FC = () => {
 type ChosenRestaurantMapProps = Pick<RestaurantItemType, "coords"> & {
     logoIconSrc: string
 } & HasClassName
-const ChosenRestaurantMap: FC<ChosenRestaurantMapProps> = React.memo(({coords, logoIconSrc, className}) => {
+const ChosenRestaurantMap: FC<ChosenRestaurantMapProps> = React.memo(({ coords, logoIconSrc, className }) => {
     return (
         <Map className={`${className || ""} h-100p w-100p`}
-             state={{center: coords, zoom: 13}}>
+            state={{ center: coords, zoom: 13 }}>
             <Placemark geometry={coords} options={
                 {
                     iconLayout: 'default#image', // Используем стандартный макет изображения
@@ -226,7 +227,7 @@ const ChosenRestaurantMap: FC<ChosenRestaurantMapProps> = React.memo(({coords, l
                     iconImageSize: [52, 52], // Размер вашей иконки
                     iconImageOffset: [-26, -52],
                 }
-            }/>
+            } />
         </Map>
     )
 })

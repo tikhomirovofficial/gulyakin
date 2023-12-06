@@ -1,15 +1,17 @@
 import React from 'react';
 import styles from './menuMobile.module.scss'
-import {Logo, MiniClose, ProfileIcon, ThinClose, VkIcon} from "../../icons";
+import { Logo, MiniClose, ProfileIcon, ThinClose, VkIcon } from "../../icons";
 import SelectCity from "../SelectCity";
-import {Link} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {handleLogin, setMobileMenu} from "../../features/modals/modalsSlice";
+import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { handleLogin, setMobileMenu } from "../../features/modals/modalsSlice";
 import useToken from "../../hooks/useToken";
+import { formatPhoneNumber } from '../../utils/forms/formatePhone';
 
 const MenuMobile = () => {
     const dispatch = useAppDispatch()
-    const {mobileMenu} = useAppSelector(state => state.modals)
+    const { mobileMenu } = useAppSelector(state => state.modals)
+    const { phone } = useAppSelector(state => state.main)
     const token = useToken()
     const handleClose = () => {
         dispatch(setMobileMenu(false))
@@ -25,14 +27,14 @@ const MenuMobile = () => {
                 <div className="wrapper w-100p d-f jc-between ">
                     <div className="f-column gap-20">
                         <Link onClick={handleClose} to={"/"}>
-                            <Logo fill={"white"}/>
+                            <Logo fill={"white"} />
                         </Link>
 
-                        <SelectCity askGeoPopupClass={styles.askGeo} classNamePopup={styles.menuSelectPopup} className={styles.menuSelectCity}/>
+                        <SelectCity askGeoPopupClass={styles.askGeo} classNamePopup={styles.menuSelectPopup} className={styles.menuSelectCity} />
                     </div>
                     <div className={`${styles.closeWrapper} w-content d-f`}>
                         <div onClick={handleClose} className="w-content h-content">
-                            <ThinClose fill={"white"} width={20} height={20}/>
+                            <ThinClose fill={"white"} width={20} height={20} />
                         </div>
 
                     </div>
@@ -46,12 +48,12 @@ const MenuMobile = () => {
                         <div className="f-column pd-20-0">
                             {
                                 !token ? <div onClick={login} className={`${styles.menuItemLink} d-f al-center gap-10`}>
-                                    <ProfileIcon/>
+                                    <ProfileIcon />
                                     <b>Кабинет</b>
                                 </div> :
                                     <Link onClick={handleClose} to={"/profile"}>
                                         <div className={`${styles.menuItemLink} d-f al-center gap-10`}>
-                                            <ProfileIcon/>
+                                            <ProfileIcon />
                                             <b>Кабинет</b>
                                         </div>
                                     </Link>
@@ -97,11 +99,11 @@ const MenuMobile = () => {
                         <div className="f-column gap-10">
                             <b>Контакты</b>
                             <a href="mailto:gm.group@internet.ru">gm.group@internet.ru</a>
-                            <a href="tel:+79226592405">+7 (922) 659-24-05</a>
+                            <a href={`tel:${phone}`}>{formatPhoneNumber(phone)}</a>
                         </div>
                         <div className={`d-f gap-10`}>
                             <a target={"_blank"} href="https://vk.com/gulyakin_foodhall" className={`f-c-col ${styles.socialItem}`}>
-                                <VkIcon/>
+                                <VkIcon />
                             </a>
                         </div>
                     </div>

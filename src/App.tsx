@@ -113,10 +113,15 @@ function App() {
 
     useEffect(() => {
         const date = new Date()
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
         dispatch(getCategoriesByMarket({ market_id: market }))
         dispatch(getProductByMarket({
             market_id: market,
-            date: `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+            date: `${day}-${month}-${year}`
         }))
         dispatch(getCombosByMarket({ market_id: market }))
         dispatch(getSouses())
@@ -180,7 +185,7 @@ function App() {
             if (hasCart && hasAddresses) {
                 dispatch(getCanOrderAddressesByCity({
                     siti_id: currentGeo.city,
-                    adress_id: hasDeliveryAddress ? orderForm.addressId :  userHasAddresses ? profile.addresses[0].id : defaultAddressId
+                    adress_id: hasDeliveryAddress ? orderForm.addressId : userHasAddresses ? profile.addresses[0].id : defaultAddressId
                 }))
             }
         }

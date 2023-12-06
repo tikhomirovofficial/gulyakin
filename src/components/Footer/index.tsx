@@ -2,8 +2,11 @@ import React from 'react';
 import styles from "../../pages/Main/main.module.scss";
 import {CreatedLogo, Logo, VkIcon} from "../../icons";
 import {Link} from "react-router-dom";
+import { useAppSelector } from '../../app/hooks';
+import { formatPhoneNumber } from '../../utils/forms/formatePhone';
 
 const Footer = () => {
+    const {phone} = useAppSelector(state => state.main)
     return (
         <footer className={`${styles.footer} pd-40-0`}>
             <div className="wrapper">
@@ -43,7 +46,7 @@ const Footer = () => {
                         <div className={`${styles.navColumn} ${styles.navColumnContacts} f-column gap-10`}>
                             <b className={styles.navItem}>Контакты</b>
                             <a className={styles.navItem} href="mailto:gm.group@internet.ru">gm.group@internet.ru</a>
-                            <a className={styles.navItem} href="tel:+79226592405">+7 (922) 659-24-05</a>
+                            <a className={styles.navItem} href={`tel:${phone}`}>{formatPhoneNumber(phone)}</a>
                             <div className={`${styles.socials} d-f gap-10`}>
                                 <a target={"_blank"} href="https://vk.com/gulyakin_foodhall" className={`${styles.item} f-c-col`}>
                                     <VkIcon/>

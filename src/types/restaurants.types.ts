@@ -17,6 +17,7 @@ export type RestaurantDetails = {
     id: number,
     adress: string,
     market: MarketInfo,
+    phone: string,
     long: number,
     lat: number,
     work_with: number,

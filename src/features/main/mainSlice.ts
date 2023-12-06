@@ -55,6 +55,7 @@ export type WorkTimes = {
 }
 type MainSliceState = {
     market: number,
+    phone: string,
     cities: Array<{
         id: number,
         name: string
@@ -82,6 +83,7 @@ type MainSliceState = {
 }
 const initialState: MainSliceState = {
     market: getFromStorage('market') || -1,
+    phone: "+78005002797",
     cities: [],
     changingGeo: false,
     addresses: [],

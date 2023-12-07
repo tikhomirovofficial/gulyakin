@@ -79,7 +79,7 @@ type MainSliceState = {
     orderDetails: OrderDeliveryDetails
     deliveryAddress: DeliveryAddress
     cityAddresses: AddressByCityItem[],
-    pickupAddresses: AddressByCityItem[],
+    pickupAddresses: AddressByCityItem[]
 }
 const initialState: MainSliceState = {
     market: getFromStorage('market') || -1,
@@ -122,6 +122,7 @@ const initialState: MainSliceState = {
         description: "",
         title: ""
     },
+
     orderDetails: {
         delivery_type: 0, price: 0
     },
@@ -257,6 +258,9 @@ export const MainSlice = createSlice({
     name: "main",
     initialState,
     reducers: {
+        setWorkTimes: (state, action: PayloadAction<WorkTimes>) => {
+            state.workTimes = action.payload
+        },
         setCurrentCity: (state, action: PayloadAction<number>) => {
             state.currentGeo.city = action.payload
             addToStorage("city", action.payload)
@@ -363,7 +367,8 @@ export const {
     setIsPhone,
     toggleChangingGeo,
     toggleAskCityVisible,
-    setMarket
+    setMarket,
+    setWorkTimes,
 } = MainSlice.actions
 
 

@@ -108,6 +108,7 @@ export type AddressByCityItem = {
     market_id: number,
     work_with: string,
     works_until: string
+    time?: Array<string>
 }
 export type GetByCityAddressesResponse = ResponseStatus & {
     adress: Array<AddressByCityItem>

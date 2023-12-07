@@ -24,13 +24,15 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
 
 
     const getDisabledBtn = () => {
-        console.log(props.isCurrentWorkTime);
+        console.log(props.isCurrentWorkTime, "sds");
         
         if(props.isCurrentWorkTime) {
             const cartFilled = cart.items.length !== 0
             if (cartFilled) {
                 
                 if (!isPickup) {
+
+                    
                     if (canOrder) {
                         const addressSelected = (addressId !== 0 && addressId !== -1) // Удостоверяемся, что указан адрес доставки
                         if (addressSelected) {
@@ -42,6 +44,7 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
                                         title: "Доставка недоступна",
                                         description: `Мы доставим ваш заказ от ${appConfig.MIN_ORDER_DELIVERY_SUM} ₽`
                                     }))
+                                    
                                     return
                                 }
                                 setDisabled(false)
@@ -70,6 +73,8 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
                         title: "Заказ недоступен",
                         description: `Ваши товары находятся из разных магазинов!`
                     }))
+                    console.log("Из разных");
+                    
                     setDisabled(true)
                     return;
                 }
@@ -79,11 +84,13 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
                 if (pickupAddressSelected) {
                     const pickupAddressesExist = pickupAddresses.length > 0
                     if (!pickupAddressesExist && canOrder) {
+                        console.log("нет точек");
                         dispatch(setOrderWarning({
                             title: "Самовывоз недоступен",
                             description: `Нет доступных точек для самовывоза`
                         }))
                         setDisabled(true)
+                        
                         return;
                     }
                     setDisabled(false)
@@ -93,6 +100,7 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
                     title: "Самовывоз недоступен",
                     description: `Не выбран адрес`
                 }))
+                console.log("недоступен");
                 setDisabled(true)
                 return;
             }
@@ -100,10 +108,11 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
                 title: "Заказ недоступен",
                 description: `Добавьте товары в корзину`
             }))
+            console.log("Иа");
             setDisabled(true)
             return;
         }
-       
+        console.log("не работает");
         dispatch(setOrderWarning({
             title: "Заказ недоступен",
             description: `Ресторан работает с ${workTimes.startTime} до ${workTimes.endTime}`

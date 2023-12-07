@@ -26,7 +26,8 @@ import {
     getDeliveries, getMarketsByCity,
     getPayments,
     setIsMobile,
-    setIsPhone
+    setIsPhone,
+    setWorkTimes
 } from "./features/main/mainSlice";
 import { setOrderForm } from "./features/forms/formsSlice";
 import HeaderMobile from "./components/Header/mobile";
@@ -35,6 +36,9 @@ import CartWidget from "./components/Cart/widget";
 import { isDateValid } from "./utils/forms/dataValidation";
 import SuccessWindow from "./components/Windows/SuccessWindow";
 import HistoryOrderWindow from "./components/Windows/HistoryOrder";
+import { log } from 'console';
+import { getDayOfWeekNumber } from './utils/datetime/getWeekDay';
+import { deleteSeconds } from './utils/datetime/deleteSecondsInTime';
 
 const MOBILE_WIDTH = 1100
 const SMALL_WIDTH = 800
@@ -61,7 +65,7 @@ function App() {
     const orderForm = useAppSelector(state => state.forms.orderForm)
     const profile = useAppSelector(state => state.profile)
 
-    const { market, cities, currentGeo, isMobile, cityAddresses } = useAppSelector(state => state.main)
+    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses} = useAppSelector(state => state.main)
 
     const handleResize = () => {
         dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))
@@ -191,6 +195,27 @@ function App() {
         }
 
     }, [cityAddresses, items, orderForm.addressId, orderForm.isPickup])
+    // useEffect(() => {
+    //     if(orderForm.isPickup && orderForm.restaurant > 0) {
+    //         const currentRest = pickupAddresses.filter(item => item.id === orderForm.restaurant)[0]
+    //         const weekDay = getDayOfWeekNumber()
+    //         console.log(currentRest)
+    //         if(currentRest.time !== undefined) {
+    //             dispatch(
+    //                 setWorkTimes({
+    //                     startTime: deleteSeconds(currentRest.time[weekDay - 1][0]),
+    //                     endTime: deleteSeconds(currentRest.time[weekDay - 1][1]),
+    //                     isAroundTime: false
+    //                 })
+    //             )
+    //         }
+           
+    //         // dispatch(setWorkTimes({
+                
+    //         // }))
+            
+    //     }
+    // }, [orderForm.isPickup, pickupAddresses, orderForm.restaurant])
 
     return (
         <>

@@ -36,7 +36,7 @@ import useIsWorkTime from "../../hooks/useIsWorkTime";
 const Order = () => {
     const dispatch = useAppDispatch()
     const {data, addresses} = useAppSelector(state => state.profile)
-    const {orderDetails, pickupAddresses, orderWarning, workTimes} = useAppSelector(state => state.main)
+    const {orderDetails, pickupAddresses, orderWarning, workTimes, deliveryAddress} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
     const {
@@ -77,7 +77,7 @@ const Order = () => {
         const req: CreateOrderRequest = {
             delivery_type: deliveryTypeOrder,
             is_call: callNeeded,
-            marekt_adress_id: restaurant,
+            marekt_adress_id: isPickup ? restaurant : deliveryAddress.id,
             pyment_type: paymentTypeOrder,
             time_delivery: timeDeliveryOrder,
             change_with: changeWith,
@@ -287,7 +287,7 @@ const Order = () => {
                                         }
 
                                         <RedButton onClick={handleCreateOrder}
-                                                   disabled={orderDisabled || orderDetails.delivery_type === 0}
+                                                   disabled={orderDisabled || (orderDetails.delivery_type === 0 && !isPickup)}
                                                    className={`pd-15 ${styles.createOrderBtn}`}>Оформить заказ
                                             на {formatNumberWithSpaces(cart.totalPrice + orderDetails.price)} ₽</RedButton>
                                     </div>

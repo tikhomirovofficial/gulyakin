@@ -14,7 +14,7 @@ type IsWorkTimeHook = {
 }
 const useIsWorkTime = (params: IsWorkTimeHookProps): IsWorkTimeHook => {
 
-    const orderTimesParams = useMemo(() => createDefaultParams(params.startTime, params.endTime), [params])
+    const orderTimesParams = useMemo(() => createDefaultParams(params.startTime, params.endTime), [params])    
     const orderTimes = useMemo(() => getTimes(orderTimesParams), [orderTimesParams])
     const currentTimeIsWorkTime = useMemo(() => !params.is_around_time ? isCurrentDateInRange(orderTimesParams.startDate, orderTimesParams.endDate) : true , [params])
 

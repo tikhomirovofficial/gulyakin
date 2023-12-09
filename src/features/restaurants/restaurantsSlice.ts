@@ -35,6 +35,7 @@ const initialState: RestaurantsSliceType = {
                 description: "", id: 0, link: "", name: "", short_description: ""
 
             },
+            time: [],
             timeaone: 0,
             work_with: 0,
             works_until: 0

@@ -23,5 +23,6 @@ export type RestaurantDetails = {
     work_with: number,
     works_until: number,
     timeaone: number,
+    time: Array<Array<string>>
     image: string[]
 }

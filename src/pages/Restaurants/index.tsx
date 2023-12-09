@@ -35,7 +35,7 @@ const RestaurantItem: FC<RestaurantItemProps> = ({cityArea, street, link, canOnl
 }
 
 const Restaurants: FC = () => {
-    const {addresses, currentGeo, cities, market, cityMarkets} = useAppSelector(state => state.main)
+    const {addresses, currentGeo, cities, market, cityMarkets, bookingAddresses} = useAppSelector(state => state.main)
     const logo = useMarketLogo()
     const getAddressesCoords = () => {
         if (addresses.length > 0) {
@@ -72,7 +72,7 @@ const Restaurants: FC = () => {
                                                 addresses.map(item => (
                                                     <RestaurantItem key={item.id} link={`/restaurants/${item.id}`}
                                                                     street={item.adress}
-                                                                    canOnlineOrder={true}
+                                                                    canOnlineOrder={bookingAddresses.some(b_address => b_address.id === item.id)}
                                                                     cityArea={""}/>
                                                 ))
                                             }

@@ -207,7 +207,7 @@ const Order = () => {
                                                         <div
                                                             onClick={() => dispatch(handleOrderTime("FAST"))}
                                                             className={`${styles.inputSelectable} ${time === "FAST" ? "whiteSelectableSelected" : ""} f-1 whiteSelectable txt-center p-rel`}>
-                                                            <p>Через ~40 мин</p>
+                                                            <p>Ближайшее</p>
                                                         </div>
                                                         <SelectInput placeholder={"Другое время"} iconMiniArrow={{
                                                             height: 10,

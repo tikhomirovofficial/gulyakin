@@ -16,6 +16,9 @@ import { domain } from "../../http/instance/instances";
 import { getRestaurantData } from "../../features/restaurants/restaurantsSlice";
 import useMarketLogo from "../../hooks/useMarketLogo";
 import { formatPhoneNumber } from '../../utils/forms/formatePhone';
+import { deleteSeconds } from '../../utils/datetime/deleteSecondsInTime';
+import BookingWindow from '../../components/Windows/Booking';
+import { handleBooking } from '../../features/modals/modalsSlice';
 
 const weekItems = [
     {
@@ -60,12 +63,13 @@ const dayOfWeek = today.getDay()
 
 const ChosenRestaurant: FC = () => {
     const dispatch = useAppDispatch()
+    const { modals, main } = useAppSelector(state => state)
     const [currentSlide, setCurrentSlide] = useState<number>(0)
     const restaurantImagesSlider = useRef<SwiperProps>(null)
     const params = useParams<{ id: string }>()
-    const restaurantInfo = useAppSelector(state => state.restaurants.chosen.data)
+    const restaurantInfo = useAppSelector(state => state.restaurants.chosen)
     const logo = useMarketLogo()
-    const { loading } = useAppSelector(state => state.restaurants.chosen)
+    const canBooking = main.bookingAddresses.some(item => item.id === restaurantInfo.data.id)
 
     const handleNext = () => {
         restaurantImagesSlider.current.swiper.slideNext();
@@ -75,6 +79,10 @@ const ChosenRestaurant: FC = () => {
         restaurantImagesSlider.current.swiper.slidePrev();
     }
 
+    const openRestaurantBooking = () => {
+        dispatch(handleBooking())
+    }
+
     useEffect(() => {
         const numberedParamId = Number(params?.id)
         if (!isNaN(numberedParamId)) {
@@ -82,12 +90,12 @@ const ChosenRestaurant: FC = () => {
                 adress_id: numberedParamId
             }))
         }
+        console.log(restaurantInfo);
 
     }, [])
     return (
         <>
             <div className={`${styles.main} f-column gap-20`}>
-
                 <div className={`${styles.block} f-column gap-25`}>
                     <div className="wrapper w-100p">
                         <Link to={"/"}>
@@ -97,8 +105,6 @@ const ChosenRestaurant: FC = () => {
                             </GradientGrayBtn>
                         </Link>
                     </div>
-
-
                     <div className="f-column gap-20">
                         <div className="wrapper w-100p">
                             <Link to={"/restaurants"} className="d-f al-center gap-10">
@@ -117,7 +123,7 @@ const ChosenRestaurant: FC = () => {
                                     className={`${styles.sideWrapper} ${styles.choosenRestaruantBlock} f-column-betw gap-20 pd-20`}>
                                     <div className="top f-column gap-15">
                                         <div className="address f-column">
-                                            <h3 className={styles.addressTitle}>{restaurantInfo.adress}</h3>
+                                            <h3 className={styles.addressTitle}>{restaurantInfo.data.adress}</h3>
                                             <p className={styles.addressAreaText}>{""}</p>
                                         </div>
                                         <div className="d-f p-rel">
@@ -134,7 +140,7 @@ const ChosenRestaurant: FC = () => {
                                             }
 
                                             {
-                                                currentSlide < restaurantInfo.image.length - 2 ?
+                                                currentSlide < restaurantInfo.data.image.length - 2 ?
                                                     <div onClick={handleNext}
                                                         className={`${styles.sliderArrowWrapper} ${styles.sliderArrowWrapperRight} d-f  jc-end al-center h-100p p-abs right-0`}>
                                                         <div className="f-c-col sliderArrowCircle cur-pointer">
@@ -156,7 +162,7 @@ const ChosenRestaurant: FC = () => {
                                                 spaceBetween={20}
                                             >
                                                 {
-                                                    restaurantInfo.image.map(src => (
+                                                    restaurantInfo.data.image.map(src => (
                                                         <SwiperSlide key={Date.now()} className={"w-content cur-grabbing"}>
                                                             <div style={{ backgroundImage: `url(${domain}/${src})` }}
                                                                 className={`${styles.item} bg-cover`}>
@@ -173,32 +179,36 @@ const ChosenRestaurant: FC = () => {
                                     <div className={`${styles.workTimeBlock} f-column gap-20 f-1`}>
                                         <div className="f-column">
                                             <p className={styles.phoneLabel}>Телефон</p>
-                                            <a href={`tel:+${restaurantInfo.phone}`} className={styles.phone}>{formatPhoneNumber(restaurantInfo.phone)}</a>
+                                            <a href={`tel:+${restaurantInfo.data.phone}`} className={styles.phone}>{formatPhoneNumber(restaurantInfo.data.phone)}</a>
                                         </div>
                                         <div className={`f-column gap-5 ${styles.workClocks}`}>
                                             <p className={styles.phoneLabel}>График работы</p>
-                                            {
-                                                weekItems.map((item, index) => (
-                                                    index > 0 ? <div key={item.id}
-                                                        className={`f-row-betw ${index === dayOfWeek ? "colorRed" : ""}`}>
-                                                        <b>{item.day}</b>
-                                                        <b>{item.workTime}</b>
-                                                    </div> : null
 
-                                                ))
+                                            {
+                                                restaurantInfo.data.time.length ?
+                                                    weekItems.map((item, index) => (
+                                                        index > 0 ? <div key={item.id}
+                                                            className={`f-row-betw ${index === dayOfWeek ? "colorRed" : ""}`}>
+                                                            <b>{item.day}</b>
+                                                            <b>{deleteSeconds(restaurantInfo.data.time[index][0])} - {deleteSeconds(restaurantInfo.data.time[index][1])}</b>
+                                                        </div> : null
+
+                                                    )) : null
                                             }
-                                            <div className={`f-row-betw ${dayOfWeek === 0 && "colorRed"}`}>
-                                                <b>{weekItems[0].day}</b>
-                                                <b>{weekItems[0].workTime}</b>
-                                            </div>
+                                            {
+                                                restaurantInfo.data.time.length ? <div className={`f-row-betw ${dayOfWeek === 0 && "colorRed"}`}>
+                                                    <b>{weekItems[0].day}</b>
+                                                    <b>{deleteSeconds(restaurantInfo.data.time[0][0])} - {deleteSeconds(restaurantInfo.data.time[0][1])}</b>
+                                                </div> : null
+                                            }
+
                                         </div>
                                     </div>
-                                    <RedButton disabled={true} className={"pd-10-0"}>Временно недоступно</RedButton>
+                                    <RedButton onClick={openRestaurantBooking} disabled={!canBooking} className={"pd-10-0"}>{canBooking ? "Забронировать столик" : "Бронирование недоступно"}</RedButton>
                                 </div>
                                 <YMaps>
-
                                     <ChosenRestaurantMap className={`${styles.map} h-100p f-1`}
-                                        coords={[restaurantInfo.long, restaurantInfo.lat]}
+                                        coords={[restaurantInfo.data.long, restaurantInfo.data.lat]}
                                         logoIconSrc={logo} />
                                 </YMaps>
                             </div>
@@ -208,6 +218,10 @@ const ChosenRestaurant: FC = () => {
 
                 </div>
             </div>
+            {
+                canBooking ? modals.bookingOpened ? <BookingWindow address={restaurantInfo.data.id} /> : null : null
+            }
+
         </>
 
     );

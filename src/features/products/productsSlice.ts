@@ -12,12 +12,14 @@ import {ProductsApi} from "../../http/api/products.api";
 
 
 type ProductsSliceState = {
+    productsLoading: boolean
     items: ProductRes[]
     combos: Combo[]
     souse: ProductRes[]
 }
 
 const initialState: ProductsSliceState = {
+    productsLoading: false,
     items: [],
     combos: [],
     souse: []
@@ -52,6 +54,13 @@ export const ProductsSlice = createSlice({
             if (action.payload) {
                 state.items = action.payload
             }
+            state.productsLoading = false
+        })
+        builder.addCase(getProductByMarket.pending, (state, action) => {
+            state.productsLoading = true
+        })
+        builder.addCase(getProductByMarket.rejected, (state, action) => {
+            state.productsLoading = false
         })
         builder.addCase(getCombosByMarket.fulfilled, (state, action) => {
             if (action.payload) {

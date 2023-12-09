@@ -12,7 +12,7 @@ type CatalogProps = {
 
 const Catalog: FC<CatalogProps> = ({search}) => {
     const {categories, products, cart} = useAppSelector(state => state)
-    const isLoaded = categories.category.length && products.items.length
+    const isLoaded = !categories.isLoading && !products.productsLoading 
 
     const searchedData = searchProducts(search, getCombinedData(categories.category, products.items))
     useEffect(() => {
@@ -51,7 +51,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                         }/>
                                 </Element>
                             )) :
-                            <p className={`${styles.notFoundedText} grayColor_dark`}>По запросу: {search} ничего не найдено.</p>
+                            <p className={`${styles.notFoundedText} grayColor_dark`}>{search.length ? `По запросу: ${search} ничего не найдено.` : "Здесь пока нет товаров."}</p>
                     }
                 </div> :
                 <BigSpinner/>

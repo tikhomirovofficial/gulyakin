@@ -230,7 +230,6 @@ function App() {
                 <SuccessWindow closeHandle={() => { }} isOpened={addressSuccess.opened} title={addressSuccess.title} />
                 {isMobile ? <CartWidget /> : null}
                 {isMobile ? <MenuMobile /> : null}
-                {bookingOpened ? <BookingWindow /> : null}
                 {loginOpened ? <LoginWindow /> : null}
                 {yourAddress ? <YourAddressWindow /> : null}
                 {deliveryWay.opened ? <DeliveryWay /> : null}

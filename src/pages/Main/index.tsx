@@ -19,9 +19,10 @@ import { useInput } from "../../hooks/useInput";
 import Catalog from "../../components/Catalog";
 import Combo from "../../components/Catalog/Combo";
 import { Link as ScrollLink } from "react-scroll"
+import BookingWindow from '../../components/Windows/Booking';
 
 const Main: FC = () => {
-    const { categories, products, main } = useAppSelector(state => state)
+    const { categories, products, main, modals } = useAppSelector(state => state)
     const is_auth = useAuth()
     const token = useToken()
 
@@ -45,6 +46,8 @@ const Main: FC = () => {
 
 
     useEffect(() => {
+        setCurrentSlide(0)
+        setSliderNeeded(false)
         if (sliderCategories.current) {
             const slider = sliderCategories.current as HTMLDivElement
             const parentWidth = slider.parentElement?.parentElement?.offsetWidth
@@ -53,9 +56,10 @@ const Main: FC = () => {
                 const sliderIsSmaller = slider.offsetWidth < parentWidth
                 if (!sliderIsSmaller) {
                     setSliderNeeded(true)
+                    setIsEndSlider(false)
                 }
             }
-
+            
 
         }
     }, [categories])
@@ -125,7 +129,7 @@ const Main: FC = () => {
 
                                     }
                                     {
-                                        sliderNeeded && !isEndSlider ? <div
+                                        !categories.isLoading && categories.category.length > 0 && sliderNeeded && !isEndSlider ? <div
                                             className={`${styles.shadowRight} ${styles.shadowRightDark} d-f jc-end al-center h-100p p-abs right-0`}>
                                             <div onClick={handleNext} className="miniSliderArrow cur-pointer f-c-col">
                                                 <ArrowMiniRightIcon width={14} height={14} />
@@ -137,7 +141,7 @@ const Main: FC = () => {
 
                                     <div className="w-100p d-f gap-10 of-y-hide scrollbar-unset">
                                         {
-                                            categories.category.length > 0 ?
+                                            !categories.isLoading && categories.category.length > 0 ?
                                                 <Swiper
                                                     onActiveIndexChange={(slider: SwiperProps) => {
                                                         setIsEndSlider(slider.isEnd)
@@ -167,9 +171,12 @@ const Main: FC = () => {
                                                         ))
                                                     }
                                                 </Swiper> :
-
+                                                categories.isLoading ?
                                                 <div className="f-c-col infiniteSpin w-content h-content">
                                                     <Preloader height={20} width={20} />
+                                                </div> :
+                                                <div style={{fontSize: 16}} className={"grayColor_dark"}>
+                                                    Категории отсутствуют.
                                                 </div>
 
                                         }
@@ -219,6 +226,7 @@ const Main: FC = () => {
                     </div>
                 </div>
             </div>
+            {modals.bookingOpened ? <BookingWindow /> : null}
         </>
 
     );

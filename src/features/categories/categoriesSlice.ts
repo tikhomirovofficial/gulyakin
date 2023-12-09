@@ -5,11 +5,13 @@ import {ProductsApi} from "../../http/api/products.api";
 
 
 type CategoriesSliceState = {
-    category: Category[]
+    category: Category[],
+    isLoading: boolean
 }
 
 const initialState: CategoriesSliceState = {
-    category: []
+    category: [],
+    isLoading: false
 }
 export const getCategoriesByMarket = createAsyncThunk(
     'categories/by-market',
@@ -26,15 +28,16 @@ export const CategoriesSlice = createSlice({
 
     extraReducers: builder => {
         builder.addCase(getCategoriesByMarket.pending, (state, action) => {
-
+            state.isLoading = true
         })
         builder.addCase(getCategoriesByMarket.fulfilled, (state, action) => {
             if (action.payload) {
                 state.category = action.payload
             }
+            state.isLoading = false
         })
         builder.addCase(getCategoriesByMarket.rejected, (state, action) => {
-
+            state.isLoading = false
         })
     }
 

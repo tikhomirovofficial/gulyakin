@@ -1,6 +1,7 @@
-import {UserData} from "./user.types";
-import {ResponseStatus} from "./common.types";
-import {RestaurantDetails} from "./restaurants.types";
+import { UserData } from "./user.types";
+import { ResponseStatus } from "./common.types";
+import { RestaurantDetails } from "./restaurants.types";
+import { AddressType } from "../features/main/mainSlice";
 
 export type JWT = {
     access?: string,
@@ -364,10 +365,7 @@ export type GetBookingsRequest = {
 }
 
 export type GetBookingsResponse = {
-    booking: Array<{
-        id: number,
-        adress: string
-    }>
+    booking: AddressType[]
 } & ResponseStatus
 
 export type BookingCreateRequest = {

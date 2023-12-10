@@ -40,9 +40,13 @@ type VariantType = {
     id: number
 }
 
-type AddressType = {
+export type AddressType = {
     id: number,
     adress: string
+    link: number
+    lat: number
+    long: number
+    time: Array<string[]>
 }
 export type OrderWarning = {
     title: string

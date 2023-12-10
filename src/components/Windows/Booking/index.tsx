@@ -24,7 +24,8 @@ import { isDateToday } from "../../../utils/datetime/isDateToday";
 import { getDatesWithTimes } from "../../../utils/datetime/dayWithTimes";
 import { checkDateAndTime } from "../../../utils/datetime/checkDateAndTime";
 import useBookingTimes from "../../../hooks/useBookingTimes";
-
+import { getDayOfWeekNumber } from "../../../utils/datetime/getWeekDay";
+import { deleteSeconds } from "../../../utils/datetime/deleteSecondsInTime";
 
 const countGuests = [
     "1",
@@ -48,20 +49,21 @@ const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
     const { bookingAddresses } = useAppSelector(state => state.main)
     const { bookingForm, bookingSuccess, bookingError } = useAppSelector(state => state.forms)
     const { profile } = useAppSelector(state => state)
-    const defaultAddress = bookingAddresses.length ? bookingAddresses[0].id : -1
     const [isBookingDateToday, setIsBookingDateToday] = useState(true)
     const [isTodayDisabled, setIsTodayDisabled] = useState(false)
 
-    const [bookingWorkTimes, setBookingWorkTimes] = useState({
-        startTime: "8:00",
-        endTime: "13:00"
-    })
+    const defaultAddress = bookingAddresses.length ? address || bookingAddresses[0].id : -1
+    const bookingAddressObj = bookingAddresses.filter(item => item.id === defaultAddress)[0]
+
+    const weekDay = getDayOfWeekNumber() - 1
+    const startBookingTime = bookingAddressObj.time[weekDay] !== undefined ? deleteSeconds(bookingAddressObj.time[weekDay][0]) : ""
+    const endBookingTime = bookingAddressObj.time[weekDay] !== undefined ? deleteSeconds(bookingAddressObj.time[weekDay][1]) : ""
 
     const times = useBookingTimes({
         dateValue: new Date(bookingForm.date),
         isToday: isBookingDateToday,
-        workEndTime: bookingWorkTimes.endTime,
-        workStartTime: bookingWorkTimes.startTime
+        workEndTime: startBookingTime,
+        workStartTime: endBookingTime
     })
 
     useEffect(() => {
@@ -78,14 +80,14 @@ const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
         const today = new Date()
         const datesWithTimes = getDatesWithTimes(
             today,
-            bookingWorkTimes.startTime,
-            bookingWorkTimes.endTime
+            startBookingTime,
+            endBookingTime
         )
 
         const defaultDate = checkDateAndTime(datesWithTimes[1])
         const defaultIsToday = isDateToday(defaultDate)
-        setIsTodayDisabled(!defaultIsToday)
 
+        setIsTodayDisabled(!defaultIsToday)
         dispatch(setBookingForm({
             adress: address || defaultAddress,
             count_guest: countGuests[0],

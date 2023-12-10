@@ -18,6 +18,21 @@
   background-size: cover;
   background-repeat: no-repeat;
 }
+.productBlockImage {
+  height: 100%;
+  overflow: hidden;
+  flex: 1;
+  position: relative;
+  img {
+    width: auto;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+
+  }
+}
 
 .additiveTitle {
 
@@ -202,6 +217,12 @@
     padding-bottom: 7rem;
   }
   .productImage {
+    height: 20%;
+    max-height: 40rem;
+    min-height: 19rem;
+    width: 100%;
+  }
+  .productBlockImage {
     height: 20%;
     max-height: 40rem;
     min-height: 19rem;

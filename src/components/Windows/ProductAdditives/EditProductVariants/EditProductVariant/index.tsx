@@ -66,8 +66,11 @@ const EditProductVariant = () => {
                     </div>
                 </div>
                 <div className={`${styles.additivesContainer} f-row-betw h-100p gap-40`}>
-                    <div style={{backgroundImage: `url(${domain + imageUrl})`}}
-                         className={`${styles.productImage}`}></div>
+                    <div className={styles.productBlockImage}>
+                        <img src={domain + imageUrl} alt="" />
+                    </div>
+                    {/* <div style={{backgroundImage: `url(${domain + imageUrl})`}}
+                         className={`${styles.productImage}`}></div> */}
                     <div className={`${styles.additivesBarContainer} f-column-betw gap-20 h-100p`}>
                         <div className={`${styles.productAdditivesBar} f-column-betw gap-10`}>
                             <div className="top f-column gap-10">

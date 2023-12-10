@@ -1,28 +1,28 @@
-import React, {FC} from 'react';
-import {CartProductItem} from "../../../types/api.types";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import React, { FC } from 'react';
+import { CartProductItem } from "../../../types/api.types";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
     handleProductAdditives,
     setChangingAdditivesMode,
     setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
 import styles from "../cart.module.scss";
-import {domain} from "../../../http/instance/instances";
-import {editCountCart, removeFromCart, removeProduct} from "../../../features/cart/cartSlice";
-import {MiniClose, MinusIcon, PlusIcon} from "../../../icons";
-import {formatNumberWithSpaces} from "../../../utils/common/numberWithSpaces";
+import { domain } from "../../../http/instance/instances";
+import { editCountCart, removeFromCart, removeProduct } from "../../../features/cart/cartSlice";
+import { MiniClose, MinusIcon, PlusIcon } from "../../../icons";
+import { formatNumberWithSpaces } from "../../../utils/common/numberWithSpaces";
 
 type CartItemProps = {
     canNotBeAdded?: boolean,
     canBeChanged?: boolean,
     is_combo?: boolean
 } & CartProductItem
-const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, id, count, supplements, product}) => {
+const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, id, count, supplements, product }) => {
     const dispatch = useAppDispatch()
-    const {items, combos} = useAppSelector(state => state.products)
+    const { items, combos } = useAppSelector(state => state.products)
     const handleChange = () => {
         dispatch(setChangingAdditivesMode(true))
-        if(!is_combo) {
+        if (!is_combo) {
             const findedProduct = items.filter(item => product !== undefined ? item.id === product.id : null)[0]
             dispatch(setProductAdditivesData({
                 id: findedProduct.id,
@@ -65,8 +65,8 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
     }, 0) : 0
 
     const getCanBeChanged = () => {
-        if(product !== undefined) {
-            if(!is_combo) {
+        if (product !== undefined) {
+            if (!is_combo) {
                 return items.some(item => item.supplements.length > 0 && item.id === product.id)
             }
             return true
@@ -79,8 +79,11 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
         product !== undefined ?
             <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
                 <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
-                    <div style={{backgroundImage: `url("${domain}${product.image}")`}}
-                         className={`${styles.image} bg-cover`}></div>
+                    <div className={styles.imageBlock}>
+                        <img src={`${domain}${product.image}`} alt="" />
+                    </div>
+                    {/* <div style={{ backgroundImage: `url("${domain}${product.image}")` }}
+                        className={`${styles.image} bg-cover`}></div> */}
                     <div className="text f-column gap-5 f-1 al-self-center">
                         <div className={"f-column gap-5"}>
                             <b>{product.title}</b>
@@ -104,7 +107,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
                         <div onClick={() => dispatch(removeFromCart({
                             cart_id: id
                         }))} className="close cur-pointer w-content h-content">
-                            <MiniClose/>
+                            <MiniClose />
                         </div>
                     </div>
 
@@ -119,7 +122,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
                                 <div className="d-f gap-20">
                                     {
                                         canBeChanged ? <div onClick={handleChange}
-                                                            className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
+                                            className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
                                     }
 
                                     <div className={"d-f al-center gap-5"}>
@@ -132,7 +135,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
 
                                                 }))
                                             }
-                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#C8C7CC"} width={12}/>
+                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#C8C7CC"} width={12} />
                                         </div>
 
                                         <div className={styles.count}>{count}</div>
@@ -142,7 +145,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
                                                 count: count + 1,
                                                 id: product.id
                                             }))
-                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#C8C7CC"} width={12}/>
+                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#C8C7CC"} width={12} />
                                         </div>
 
                                     </div>
@@ -151,7 +154,7 @@ const CartItem: FC<CartItemProps> = ({canNotBeAdded = false, is_combo = false, i
                             </> :
                             <div className="w-100p jc-end d-f">
                                 <div onClick={() => dispatch(removeProduct(id))}
-                                     className={`colorRed cur-pointer ${styles.delete}`}>Удалить
+                                    className={`colorRed cur-pointer ${styles.delete}`}>Удалить
                                 </div>
                             </div>
                     }

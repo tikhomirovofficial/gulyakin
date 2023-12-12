@@ -1,19 +1,13 @@
 .block {
   border-radius: 4px;
-  border: 1px solid #E2E2E9;
   padding: 0 1.8rem;
   font-size: 1.4rem;
-  background: #2A2C36;
   transition: .3s border;
   input {
     background: inherit;
-    color: white;
   }
   label {
     transition: .3s color;
-  }
-  &:hover {
-    border: 1px solid #F8CAA9
   }
 }
 .disabledBorder {

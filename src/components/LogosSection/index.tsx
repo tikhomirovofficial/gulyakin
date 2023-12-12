@@ -8,6 +8,7 @@ import {marketComponents, MarketItem} from "./markets";
 import {setMarket} from "../../features/main/mainSlice";
 import {Link} from "react-router-dom";
 import {HasClassName} from "../../types/components.types";
+import useTheme from '../../hooks/useTheme';
 
 type LogoItemProps = {
     id: number
@@ -40,7 +41,7 @@ const LogoItem: FC<LogoItemProps> = ({forMarketId, id, className}) => {
 
         return (
             <div onClick={handleToMarket}
-                 className={`${classNameLogo} ${isSelected ? classNameSelected : null} ${className || ""}`}>
+                 className={`${classNameLogo} lt-hover-active-bg ${isSelected ? classNameSelected : null} ${className || ""}`}>
                 <ComponentLogo/>
             </div>
         )
@@ -52,6 +53,7 @@ const LogoItem: FC<LogoItemProps> = ({forMarketId, id, className}) => {
 const LogosSection = () => {
     const {cityMarkets} = useAppSelector(state => state.main)
     const [neededSlider, setNeededSlider] = useState(false)
+    const gTheme = useTheme()
 
     const getByForId = (forId: number) => {
         return marketComponents.find(item => item.forMarketId === forId) || null
@@ -66,7 +68,7 @@ const LogosSection = () => {
     }, [cityMarkets])
 
     return (
-        <div className={`pd-40-0 ${styles.section}`}>
+        <div className={`pd-40-0 ${gTheme("lt-light-gray-bg", "dk-light-gray-bg")}`}>
             <div className="wrapper w-100p">
                 {
                     neededSlider ?

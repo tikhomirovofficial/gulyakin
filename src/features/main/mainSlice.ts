@@ -58,6 +58,7 @@ export type WorkTimes = {
     isAroundTime: boolean
 }
 type MainSliceState = {
+    isDarkTheme: boolean,
     market: number,
     phone: string,
     cities: Array<{
@@ -87,6 +88,7 @@ type MainSliceState = {
 }
 const initialState: MainSliceState = {
     market: getFromStorage('market') || -1,
+    isDarkTheme: !true,
     phone: "+78005002797",
     cities: [],
     changingGeo: false,

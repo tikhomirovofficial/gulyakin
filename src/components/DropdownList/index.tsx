@@ -3,6 +3,8 @@ import List from "../List";
 import {HasClassName} from "../../types/components.types";
 import styles from "./dropdown.module.scss"
 import {CheckedMark} from "../../icons";
+import useTheme from '../../hooks/useTheme';
+import { useAppSelector } from '../../app/hooks';
 
 interface DropDownItemProps {
     isCurrent: boolean,
@@ -11,12 +13,15 @@ interface DropDownItemProps {
 }
 
 export const DropDownItem: FC<DropDownItemProps & HasClassName> = ({isCurrent, className, text, selectHandler}) => {
+    const gTheme = useTheme()
+    const {isDarkTheme} = useAppSelector(state => state.main)
+    
     return (
-        <div onClick={selectHandler} className={`${className} ${styles.item} ${isCurrent ? styles.checkedItem : ""}`}>
-            <p>
+        <div onClick={selectHandler} className={`${className} ${styles.item} ${gTheme("lt-g-hover", "dk-g-hover")} ${isCurrent ? styles.checkedItem : ""}`}>
+            <p className={gTheme("c-black", "dk-lg-c")}>
                 {text}
             </p>
-            {isCurrent ? <CheckedMark height={11} width={11}/> : null}
+            {isCurrent ? <CheckedMark stroke={isDarkTheme ? "#C8C7CD" : "black"} height={11} width={11}/> : null}
         </div>
     )
 }

@@ -20,69 +20,68 @@ export type MarketItem = {
 }
 
 export const marketComponents: MarketItem[] = [
-
     {
         mapSvg: getImgPath("/logos/pelmen.svg"),
         ComponentLogo: GulenkiPelmeniLogo,
-        className: `${styles.item} ${styles.neededFill} f-c-col `,
+        className: `${styles.item} lt-neededFill f-c-col `,
         forMarketId: 2,
-        selectedClassName: styles.selectedNeededFill
+        selectedClassName: "lt-selectedNeededFill"
     },
     {
         mapSvg: getImgPath("/logos/logo_3.svg"),
         ComponentLogo: FoodPancakesLogo,
-        className: `${styles.item} ${styles.neededFill} f-c-col `,
+        className: `${styles.item} lt-neededFill f-c-col `,
         forMarketId: 3,
-        selectedClassName: styles.selectedNeededFill
+        selectedClassName: "lt-selectedNeededFill"
     },
     {
         mapSvg: getImgPath("/logos/ifood.svg"),
         ComponentLogo: IFoodLogo,
-        className: `${styles.item} ${styles.neededFill} ${styles.neededIfood} f-c-col `,
+        className: `${styles.item} lt-neededIfood f-c-col `,
         forMarketId: 4,
-        selectedClassName: `${styles.selectedNeededIFood} ${styles.selectedNeededIFood}`
+        selectedClassName: `lt-selectedNeededIFood lt-selectedNeededIFood`
     },
     {
         mapSvg: getImgPath("/logos/vorob.svg"),
         ComponentLogo: VorobushekLogo,
-        className: `${styles.item} ${styles.neededFill} f-c-col `,
+        className: `${styles.item} lt-neededFill f-c-col `,
         forMarketId: 5,
-        selectedClassName: styles.selectedNeededFill
+        selectedClassName:  "lt-selectedNeededFill"
     },
     {
         mapSvg: getImgPath("/logos/gusto.svg"),
         ComponentLogo: GustoLogo,
-        className: `${styles.item} ${styles.neededGusto} f-c-col `,
+        className: `${styles.item} lt-neededGusto f-c-col `,
         forMarketId: 6,
-        selectedClassName: `${styles.selectedNeededGusto}`
+        selectedClassName: `lt-selectedNeededGusto`
     },
     {
         mapSvg: getImgPath("/logos/logo_gulyakin.svg"),
         ComponentLogo: FoodHallLogo,
-        className: `${styles.item} ${styles.neededFill} f-c-col`,
+        className: `${styles.item} lt-neededFill f-c-col`,
         forMarketId: 1,
-        selectedClassName: styles.selectedNeededFill
+        selectedClassName: "lt-selectedNeededFill"
     },
     {
         mapSvg: getImgPath("/logos/logo_5.svg"),
         ComponentLogo: ShrimpLogo,
-        className: `${styles.item} ${styles.neededFill} f-c-col `,
+        className: `${styles.item} lt-neededFill f-c-col `,
         forMarketId: 7,
-        selectedClassName: styles.selectedNeededFill
+        selectedClassName: "selectedNeededFill"
     },
     {
         mapSvg: getImgPath("/logos/logo_4.svg"),
         ComponentLogo: GulibuliLogo,
-        className: `${styles.item} ${styles.neededFill} f-c-col `,
+        className: `${styles.item} lt-neededFill f-c-col `,
         forMarketId: 8,
-        selectedClassName: styles.selectedNeededFill
+        selectedClassName: "lt-selectedNeededFill"
     },
     {
         mapSvg: getImgPath("/logos/sport.svg"),
         ComponentLogo: GorSportLogo,
-        className: `${styles.item} ${styles.neededSport} f-c-col `,
+        className: `${styles.item} lt-neededSport f-c-col `,
         forMarketId: 9,
-        selectedClassName: styles.selectedSport
+        selectedClassName: "selectedSport"
     }
 
 ]

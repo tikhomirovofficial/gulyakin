@@ -3,9 +3,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  background: #363844;
   z-index: 6;
-  color: white;
 }
 
 .addedPopup {
@@ -40,11 +38,8 @@
     
     p {
       font-size: 1.6rem;
-      color: white;
     }
-
     .city {
-      color: #FB634D;
       font-size: 1.6rem;
     }
     .geoPopup {
@@ -88,13 +83,11 @@
         height: 2px;
         width: 1px;
         position: absolute;
-        background: white;
         left: 0;
 
       }
       .text {
         transition: .3s font-weight;
-        color: white;
         min-width: calc(100% + 1rem);
       }
 
@@ -115,7 +108,7 @@
   .right {
     b {
       font-size: 1.6rem;
-      color: white;
+
     }
 
     .profileBtn {
@@ -127,15 +120,12 @@
         transition: .2s transform;
       }
       &:hover {
-        color: #F6CAAF;
         svg {
           transform: scale(1.1);
         }
-        path {
-          fill: #F6CAAF;
-        }
       }
     }
+   
 
     .cartBtn {
       transition: .2s color;
@@ -149,7 +139,7 @@
       }
 
     }
-    .cartBtnUnfilled {
+    .cartBtnUnfille {
       &:hover {
         color: #F6CAAF;
         svg {
@@ -167,7 +157,7 @@
         }
       }
     }
-    .cartBtnFilled {
+    .cartBtnFille {
       svg {
         path:nth-child(1) {
           fill: white;
@@ -307,34 +297,23 @@
   position: sticky;
   z-index: 3;
   margin: 1.5rem 0;
-  background: #363844;
   top: 11rem;
   .shadowRight {
     z-index: 9;
-    width: 7.8rem;
+    width: 3rem;
     height: 100%;
     margin-right: -2px;
     background: linear-gradient(270deg, #FFF 0%, rgba(254, 254, 254, 0.62) 44.79%, rgba(252, 252, 252, 0.28) 79.17%, rgba(217, 217, 217, 0.00) 100%);
   }
   .shadowRightDark {
-    background: #363844;
     width: 3rem;
-    svg {
-      path {
-        stroke: white
-      }
-    }
+
   }
-  .categoryActive > div {
-    border: 1px solid #E2E2E9;
-  }
+ 
   .item {
     margin: .5rem 0;
     padding: .7rem 2rem;
     white-space: nowrap;
-    background: #2A2C36;
-    border: 1px solid transparent;
-    color: white;
     cursor: pointer;
     transition: .3s border, .3s box-shadow;
   

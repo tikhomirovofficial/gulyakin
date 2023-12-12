@@ -1,29 +1,31 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import styles from "./selectCity.module.scss";
-import {ArrowMiniDown, ArrowMiniRightIcon} from "../../icons";
+import { ArrowMiniDown, ArrowMiniRightIcon } from "../../icons";
 import RedButton from "../Buttons/RedButton";
 import GrayButton from "../Buttons/GrayButton";
 import List from "../List";
-import {DropDownItem} from "../DropdownList";
-import {setCurrentCity, setMarket, toggleAskCityVisible, toggleChangingGeo} from "../../features/main/mainSlice";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {addToStorage} from "../../utils/common/LocalStorageExplorer";
-import {HasClassName} from "../../types/components.types";
-import {setOrderForm} from "../../features/forms/formsSlice";
-import {resetOrderForm} from "../../utils/common/resetOrderForm";
-import {resetCart} from "../../features/cart/cartSlice";
-import {useLocation, useNavigate} from "react-router-dom";
+import { DropDownItem } from "../DropdownList";
+import { setCurrentCity, setMarket, toggleAskCityVisible, toggleChangingGeo } from "../../features/main/mainSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { addToStorage } from "../../utils/common/LocalStorageExplorer";
+import { HasClassName } from "../../types/components.types";
+import { setOrderForm } from "../../features/forms/formsSlice";
+import { resetOrderForm } from "../../utils/common/resetOrderForm";
+import { resetCart } from "../../features/cart/cartSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+import useTheme from '../../hooks/useTheme';
 
 type SelectCityProps = {
     classNamePopup?: string,
     askGeoPopupClass?: string
 }
-const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupClass, classNamePopup}) => {
+const SelectCity: FC<HasClassName & SelectCityProps> = ({ className, askGeoPopupClass, classNamePopup }) => {
     const dispatch = useAppDispatch()
     const location = useLocation()
     const navigation = useNavigate()
-    const {cities, currentGeo, changingGeo, askCityVisible} = useAppSelector(state => state.main)
+    const { cities, currentGeo, changingGeo, askCityVisible, isDarkTheme } = useAppSelector(state => state.main)
     const handleChangingGeo = () => dispatch(toggleChangingGeo())
+    const gTheme = useTheme()
     const handleAskCity = () => {
         dispatch(toggleAskCityVisible())
         addToStorage("city_accepted", currentGeo.city)
@@ -45,18 +47,18 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupC
         dispatch(setCurrentCity(cityId))
         handleChangingGeo()
         const isOrderPage = location.pathname == "/order"
-        if(isOrderPage) {
+        if (isOrderPage) {
             navigation("/")
         }
     }
     return (
         <div className={`${styles.logoText} ${className || ""} p-rel f-column gap-5`}>
-            <p>Доставка готовый еды</p>
+            <p className={gTheme("lt-c", "dk-c")}>Доставка готовый еды</p>
             <div className={`d-f al-center gap-10`}>
-                <p>в городе</p>
+                <p className={gTheme("lt-c", "dk-c")}>в городе</p>
                 <div onClick={handleChangingGeo}
-                     className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
-                    <b>{
+                    className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
+                    <b className={gTheme("lt-active-c", "dk-active-c")}>{
                         cities.length > 0 ?
                             !currentGeo.city ?
                                 cities[0].name :
@@ -64,18 +66,18 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupC
                             : "..."
                     }</b>
                     {
-                        !changingGeo ? <ArrowMiniRightIcon height={11} stroke="white"/> : <ArrowMiniDown stroke="white" height={10}/>
+                        !changingGeo ? <ArrowMiniRightIcon height={11} stroke={isDarkTheme ? "white" : "black"} /> : <ArrowMiniDown stroke="white" height={10} />
                     }
 
                 </div>
                 {
                     askCityVisible ? <div
                         className={`${styles.geoPopup} ${styles.yourCity} ${askGeoPopupClass || ""} f-column gap-15 p-abs bg-white`}>
-                        <b className={"txt-center"}>Это ваш город?</b>
+                        <b className={`txt-center`}>Это ваш город?</b>
                         <div className="d-f gap-5 jc-around">
                             <RedButton onClick={handleAskCity} className={styles.btn}>Да</RedButton>
                             <GrayButton onClick={handleNotYourCity}
-                                        className={styles.btn}>Другой</GrayButton>
+                                className={styles.btn}>Другой</GrayButton>
                         </div>
 
                     </div> : null
@@ -83,17 +85,17 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({className, askGeoPopupC
                 {
                     changingGeo ?
                         <List
-                            listBlockClassname={`${styles.geoPopup} ${classNamePopup} f-column gap-15 p-abs bg-white `}
+                            listBlockClassname={`${styles.geoPopup} ${gTheme("lt-white-bg", "dk-light-gray-bg")}  ${classNamePopup} f-column gap-15 p-abs bg-white `}
                             list={cities}
                             renderItem={(item) =>
                                 <DropDownItem key={item.id}
-                                              selectHandler={() =>  {
-                                                 selectCity(item.id)
-                                              }}
-                                              className={`${styles.selectCityItem} f-row-betw`}
-                                              text={item.name} isCurrent={item.id === currentGeo.city}
+                                    selectHandler={() => {
+                                        selectCity(item.id)
+                                    }}
+                                    className={`${styles.selectCityItem} f-row-betw`}
+                                    text={item.name} isCurrent={item.id === currentGeo.city}
                                 />
-                            }/>
+                            } />
                         : null
                 }
 

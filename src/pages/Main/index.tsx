@@ -20,6 +20,7 @@ import Catalog from "../../components/Catalog";
 import Combo from "../../components/Catalog/Combo";
 import { Link as ScrollLink } from "react-scroll"
 import BookingWindow from '../../components/Windows/Booking';
+import useTheme from '../../hooks/useTheme';
 
 const Main: FC = () => {
     const { categories, products, main, modals } = useAppSelector(state => state)
@@ -32,7 +33,7 @@ const Main: FC = () => {
     const [sliderNeeded, setSliderNeeded] = useState(false)
     const [currentSlide, setCurrentSlide] = useState<number>(0)
     const [isEndSlider, setIsEndSlider] = useState(false)
-
+    const gTheme = useTheme()
     const [searchVal, changeSearchVal, setSearchVal] = useInput("")
     const deferredSearch = useDeferredValue(searchVal)
 
@@ -59,7 +60,7 @@ const Main: FC = () => {
                     setIsEndSlider(false)
                 }
             }
-            
+
 
         }
     }, [categories])
@@ -83,7 +84,7 @@ const Main: FC = () => {
                                             <Link to={"/restaurants"}>
                                                 <GradientGrayBtn
                                                     className={`${styles.btn} cur-pointer d-f al-center gap-10`}>
-                                                    <Geo />
+                                                    <Geo stroke={main.isDarkTheme ? "white" : "black"} />
                                                     <p>Рестораны на карте</p>
                                                 </GradientGrayBtn>
                                             </Link>
@@ -114,15 +115,15 @@ const Main: FC = () => {
                             </div>
                         </div>
 
-                        <div className={`${styles.menuCategories}`}>
+                        <div className={`${styles.menuCategories} ${gTheme("lt-white-bg", "dk-white-bg")}`}>
                             <div className="wrapper ">
 
                                 <div className="w-100p p-rel">
                                     {
                                         sliderNeeded && currentSlide > 0 ? <div style={{ transform: "rotateZ(180deg)" }}
-                                            className={`${styles.shadowRight} ${styles.shadowRightDark} d-f jc-end al-center h-100p p-abs left-0`}>
-                                            <div onClick={handlePrev} className="miniSliderArrow cur-pointer f-c-col">
-                                                <ArrowMiniRightIcon width={14} height={14} />
+                                            className={`${styles.shadowRight} ${styles.shadowRightDark} ${gTheme("lt-categoriesArrow", "dk-categoriesArrow")} d-f jc-end al-center h-100p p-abs left-0`}>
+                                            <div onClick={handlePrev} className={`${gTheme("lt-miniSliderArrow", "dk-miniSliderArrow")} cur-pointer f-c-col`}>
+                                                <ArrowMiniRightIcon stroke={"black"} width={14} height={14} />
                                             </div>
 
                                         </div> : null
@@ -130,9 +131,9 @@ const Main: FC = () => {
                                     }
                                     {
                                         !categories.isLoading && categories.category.length > 0 && sliderNeeded && !isEndSlider ? <div
-                                            className={`${styles.shadowRight} ${styles.shadowRightDark} d-f jc-end al-center h-100p p-abs right-0`}>
-                                            <div onClick={handleNext} className="miniSliderArrow cur-pointer f-c-col">
-                                                <ArrowMiniRightIcon width={14} height={14} />
+                                            className={`${styles.shadowRight} ${styles.shadowhtDark} ${gTheme("lt-categoriesArrow", "dk-categoriesArrow")}  d-f jc-end al-center h-100p p-abs right-0`}>
+                                            <div onClick={handleNext} className={`${gTheme("lt-miniSliderArrow", "dk-miniSliderArrow")} cur-pointer f-c-col`}>
+                                                <ArrowMiniRightIcon  stroke={"black"} width={14} height={14} />
                                             </div>
 
                                         </div> : null
@@ -159,10 +160,10 @@ const Main: FC = () => {
                                                         categories.category.map(item => (
                                                             <SwiperSlide key={item.id}
                                                                 className={"w-content cur-grabbing"}>
-                                                                <ScrollLink spy={true} activeClass={styles.categoryActive} to={`ctg-${item.id}`} smooth={true} offset={-160}>
+                                                                <ScrollLink spy={true} activeClass={gTheme("lt-categoryActive", "dk-categoryActive")} to={`ctg-${item.id}`} smooth={true} offset={-160}>
                                                                     <GrayBorderedBlock
                                                                         clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)}
-                                                                        className={styles.item}>
+                                                                        className={`${styles.item} ${gTheme("lt-categoryItem", "dk-categoryItem")}`}>
                                                                         {item.title}
                                                                     </GrayBorderedBlock>
                                                                 </ScrollLink>
@@ -172,12 +173,12 @@ const Main: FC = () => {
                                                     }
                                                 </Swiper> :
                                                 categories.isLoading ?
-                                                <div className="f-c-col infiniteSpin w-content h-content">
-                                                    <Preloader height={20} width={20} />
-                                                </div> :
-                                                <div style={{fontSize: 16}} className={"grayColor_dark"}>
-                                                    Категории отсутствуют.
-                                                </div>
+                                                    <div className="f-c-col infiniteSpin w-content h-content">
+                                                        <Preloader height={20} width={20} />
+                                                    </div> :
+                                                    <div style={{ fontSize: 16 }} className={"grayColor_dark"}>
+                                                        Категории отсутствуют.
+                                                    </div>
 
                                         }
                                     </div>

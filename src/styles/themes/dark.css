@@ -1,0 +1,129 @@
+.dk-white-bg {
+    background: #363844;
+}
+.dk-light-gray-bg {
+    background: #2a2c36;
+}
+.dk-gray-bg {
+    background: #2a2c36;
+}
+.dk-light-black-bg {
+    background: #232222;
+}
+.dk-g-hover:hover {
+    background: #363844;
+}
+.dk-graybordered {
+    border-color: #e2e2e9 !important;
+}
+.dk-inactive-bg {
+    background: #f3f3f7 !important;
+}
+.dk-active-bg {
+    background: #f6caaf;
+}
+.dk-disabled-bg {
+    background: #e2e2e9;
+}
+.dk-c {
+    color: white;
+}
+.dk-light-black-c {
+    color: #232222;
+}
+.dk-dark-gray-c {
+    color: #4f4f4f;
+}
+.dk-active-c {
+    color: #f6caaf;
+}
+.dk-hover-active-bg:hover {
+    background: #f6caaf !important;
+}
+.dk-lg-c {
+    color: #c8c7cd;
+}
+.dk-gray-c {
+    color: #c4c4c4;
+}
+.dk-header-nav::after {
+    background: white;
+}
+.dk-profile-btn:hover b {
+    color: #f6caaf !important;
+}
+.dk-profile-btn:hover path {
+    fill: #f6caaf;
+}
+.dk-cart-btn-unfilled:hover b {
+    color: #f6caaf;
+}
+.dk-cart-btn-unfilled:hover svg path:nth-child(1) {
+    stroke: #f6caaf;
+}
+.dk-cart-btn-unfilled:hover svg path:nth-child(2) {
+    stroke: #f6caaf;
+    transform: translateY(-3px);
+}
+.dk-cart-btn-unfilled:hover svg path:nth-child(3),
+.dk-cart-btn-unfilled:hover svg path:nth-child(4) {
+    stroke: #f6caaf;
+}
+
+.dk-cart-btn-filled svg path:nth-child(1) {
+    fill: white;
+}
+.dk-cart-btn-filled svg path:nth-child(3),
+.dk-cart-btn-filled svg path:nth-child(4) {
+    stroke: #363844;
+}
+.dk-cart-btn-filled:hover b {
+    color: #f6caaf;
+}
+.dk-cart-btn-filled:hover svg path:nth-child(1) {
+    fill: #f6caaf;
+    stroke: #f6caaf;
+}
+.dk-cart-btn-filled:hover svg path:nth-child(2) {
+    stroke: #f6caaf;
+    transform: translateY(-3px);
+}
+.dk-gradientBtn {
+    color: white;
+    background: #2a2c36;
+    &:hover {
+        background: rgba(0, 0, 0, 0.05) !important;
+    }
+}
+.dk-grayBordered {
+    border: 1px solid #e2e2e9;
+    background: #2a2c36;
+}
+
+.dk-grayBordered input {
+    color: white;
+}
+.dk-grayBordered:hover {
+    border: 1px solid #f8caa9;
+}
+
+.dk-categoriesArrow {
+    background: #363844 !important;
+}
+.dk-categoriesArrow svg path {
+    stroke: white;
+}
+.dk-miniSliderArrow:hover path {
+    stroke: #f6caaf;
+}
+.dk-categoryItem {
+    background: #2a2c36;
+    border: 1px solid transparent;
+    color: white;
+}
+.dk-categoryItem:hover {
+    border: 1px solid white !important;
+}
+.dk-categoryActive > div {
+    border: 1px solid #e2e2e9;
+}

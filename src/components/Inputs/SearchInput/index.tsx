@@ -3,6 +3,8 @@ import {CloseIcon, SearchIcon} from "../../../icons";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
 import React, {ChangeEvent, FC, useState} from "react";
 import {HasClassName} from "../../../types/components.types";
+import useTheme from "../../../hooks/useTheme";
+import { useAppSelector } from "../../../app/hooks";
 
 type SearchInputProps = {
     value: string,
@@ -11,11 +13,13 @@ type SearchInputProps = {
 }
 const SearchInput: FC<HasClassName & SearchInputProps> = ({className, changeVal, setVal, value}) => {
     const [isFocused, setIsFocused] = useState(false)
+    const gTheme = useTheme()
+    const {isDarkTheme} = useAppSelector(state => state.main)
     const handleClearInput = () => setVal("")
 
     return (
-        <GrayBorderedBlock disabledBorder={true} labelFor={"searchInput"}
-                           className={`${styles.search} ${className || null} ${isFocused ? styles.searchFocused : null} f-row-betw gap-20`}>
+        <GrayBorderedBlock disabledBorder={isDarkTheme} labelFor={"searchInput"}
+                           className={`${styles.search}  ${className || null} ${isFocused ? styles.searchFocused : null} f-row-betw gap-20`}>
             <SearchIcon/>
             <input id={"searchInput"}
                    onBlur={() => setIsFocused(false)}

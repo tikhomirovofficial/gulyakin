@@ -65,7 +65,7 @@ function App() {
     const orderForm = useAppSelector(state => state.forms.orderForm)
     const profile = useAppSelector(state => state.profile)
 
-    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses} = useAppSelector(state => state.main)
+    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses, isDarkTheme} = useAppSelector(state => state.main)
 
     const handleResize = () => {
         dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))
@@ -153,6 +153,11 @@ function App() {
             dispatch(getAddressesUser())
         }
     }, [token])
+    useEffect(() => {
+        if(isDarkTheme) {
+            document.body.classList.add("dk-white-bg")
+        }
+    }, [isDarkTheme])
 
     useEffect(() => {
         if (cities.length > 0) {
@@ -195,6 +200,7 @@ function App() {
         }
 
     }, [cityAddresses, items, orderForm.addressId, orderForm.isPickup])
+    
     // useEffect(() => {
     //     if(orderForm.isPickup && orderForm.restaurant > 0) {
     //         const currentRest = pickupAddresses.filter(item => item.id === orderForm.restaurant)[0]

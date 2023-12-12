@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './styles/index.css';
 import './styles/animations.css';
 import './styles/tikstyles.css';
+import './styles/themes/light.css';
+import './styles/themes/dark.css';
 import App from './App';
 import {Provider} from 'react-redux';
 import {store} from "./app/store";

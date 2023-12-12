@@ -17,7 +17,6 @@
 
 html {
     font-size: 10px;
-    background: #363844;
 
 }
 input::-webkit-outer-spin-button,
@@ -46,7 +45,6 @@ main {
     margin-top: 11rem;
 }
 body {
-    background: #363844;
 }
 body::-webkit-scrollbar {
     width: 8px;

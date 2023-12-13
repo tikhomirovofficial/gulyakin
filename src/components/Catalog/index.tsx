@@ -6,6 +6,7 @@ import {useAppSelector} from "../../app/hooks";
 import {BigSpinner} from "../Preloader";
 import {getCombinedData, searchProducts} from "../../utils/common/productsFilter";
 import {Element} from 'react-scroll'
+import useTheme from '../../hooks/useTheme';
 type CatalogProps = {
     search: string
 }
@@ -13,7 +14,7 @@ type CatalogProps = {
 const Catalog: FC<CatalogProps> = ({search}) => {
     const {categories, products, cart} = useAppSelector(state => state)
     const isLoaded = !categories.isLoading && !products.productsLoading 
-
+    const gTheme = useTheme()
     const searchedData = searchProducts(search, getCombinedData(categories.category, products.items))
     useEffect(() => {
     }, [search])
@@ -25,7 +26,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                         searchedData.length > 0 ?
                             searchedData.map(category => (
                                 <Element name={`ctg-${category.id}`} key={category.id} className={`${styles.categoryBlock} f-column gap-20`}>
-                                    <h2 className="sectionTitle grayColor_dark">{category?.title}</h2>
+                                    <h2 className={`sectionTitle ${gTheme("lt-coal-c", "dk-gray-c")}`}>{category?.title}</h2>
                                     <List
                                         listBlockClassname={`${styles.catalogPartList} d-f flex-wrap gap-20`}
                                         list={category?.products}

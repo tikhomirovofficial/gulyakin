@@ -12,6 +12,7 @@ import {
 import {ProductRes, Supplement} from "../../../types/api.types";
 import {editCountCart} from "../../../features/cart/cartSlice";
 import {domain} from "../../../http/instance/instances";
+import useTheme from '../../../hooks/useTheme';
 
 type ProductProps = {
     id: number,
@@ -42,6 +43,7 @@ const Product: FC<ProductProps & HasClassName> = ({
     const dispatch = useAppDispatch()
     const {isMobile} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart.items)
+    const gTheme = useTheme()
     const handleSetAdditivesData = () => {
         dispatch(setProductAdditivesData({
             id: id,
@@ -96,24 +98,24 @@ const Product: FC<ProductProps & HasClassName> = ({
                 <div className={`${styles.img} w-100p`}>
                     <img src={domain + "/" + image}/>
                     {
-                        is_product_day ? <div className={`d-f al-center gap-5 ${styles.productLabel}`}>
+                        is_product_day ? <div className={`d-f al-center gap-5 ${gTheme("lt-active-bg", "dk-active-bg")} ${styles.productLabel}`}>
                             <StarsIcon/>
                             <b>Товар дня</b>
                         </div> : is_product_week ?
                             <div className={`d-f al-center gap-5 ${styles.productLabel}`}>
                                 <StarsIcon/>
-                                <b>Товар недели</b>
+                                <b className={gTheme("lt-active-bg", "dk-active-bg")}>Товар недели</b>
                             </div> : null
                     }
                 </div>
             </div>
             <div className={`${styles.content} f-column-betw gap-20 f-1`}>
                 <div className={`${styles.textBlock} gap-5 f-1 f-column-betw`}>
-                    <h3 className={"grayColor_dark"}>{title}</h3>
+                    <h3 className={gTheme("lt-dark-coal-c", "dk-gray-c")}>{title}</h3>
                     <div className="d-f jc-between gap-25 f-1">
-                        <p className={"colorWhite_dark"}>{composition}</p>
+                        <p className={gTheme("lt-c", "dk-c")}>{composition}</p>
                         {isMobile ? null :
-                            <div className={`${styles.weight} txt-right colorWhite_dark`}>{weight} {dimensions}</div>
+                            <div className={`${styles.weight} txt-right ${gTheme("lt-c", "dk-c")}`}>{weight} {dimensions}</div>
                         }
                     </div>
                 </div>
@@ -123,11 +125,11 @@ const Product: FC<ProductProps & HasClassName> = ({
                             {sale ?
                                 <div className={`${styles.sale} p-rel`}>
                                     <div className={`${styles.line} p-abs`}></div>
-                                    <b>{price}</b>
+                                    <b className={gTheme("lt-light-black-c", "dk-gray-c")}>{price}</b>
                                 </div> : null
                             }
 
-                            <h4 className={"grayColor_dark"}>{sale || price} ₽</h4>
+                            <h4 className={gTheme("lt-light-black-c", "dk-gray-c")}>{sale || price} ₽</h4>
                         </div>
                     }
 

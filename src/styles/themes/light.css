@@ -34,6 +34,12 @@
 .lt-c {
     color: black;
 }
+.lt-coal-c {
+    color: #434343;
+}
+.lt-dark-coal-c {
+    color: #494949;
+}
 .lt-light-black-c {
     color: #232222;
 }
@@ -184,7 +190,17 @@
 }
 
 .lt-grayBordered input {
-    color: black;
+    color: #434343;
+}
+.lt-grayBordered input::placeholder {
+    color: #e2e2e9;
+}
+.lt-grayBorderedDisabled {
+    background: #f3f3f7 !important;
+}
+.lt-grayBorderedLocked {
+    border: 1px solid #e2e2e9 !important;
+    background: #f3f3f7 !important;
 }
 .lt-grayBordered:hover {
     border: 1px solid #9a9a9a;
@@ -213,9 +229,49 @@
 }
 .lt-categoryItem:hover {
     border: 1px solid transparent;
-    box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.10);
+    box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.1);
 }
 .lt-categoryActive > div {
     border: 1px solid transparent;
-    box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.10);
+    box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.1);
+}
+.lt-input-label-c {
+    color: black;
+}
+.lt-tranparent-bg {
+    background: transparent;
+}
+.lt-darkBorderedBtn {
+    border: 1px solid #434343;
+}
+.lt-orderInfoTop-c {
+    color: #9e9e9e;
+}
+.lt-orderInfoBottom-c {
+    color: black;
+}
+.lt-orderItemBg {
+    background: white;
+}
+
+.lt-addressItem svg:hover path {
+    fill: #9a9a9a;
+}
+.lt-selectedValue {
+    color: #434343;
+}
+.lt-whiteSelectable {
+    background: white;
+}
+.lt-whiteSelectable p {
+    color: black;
+}
+.lt-whiteSelectable:hover {
+    border: 1px solid #9a9a9a!important;
+}
+.lt-whiteSelectableSelected {
+    border: 1px solid #9a9a9a!important;
+}
+.lt-radioBorder {
+    border: 2px solid #9a9a9a !important;
 }

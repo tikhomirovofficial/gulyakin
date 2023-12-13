@@ -18,13 +18,12 @@
   border: 1px solid #F8CAA9;
 }
 .error {
-  border: 1px solid #FF2000;
+  border: 1px solid #FF2000 !important;
 }
 .closed {
   background: #F3F3F7
 }
 .disabled {
-  background: #333;
   &:hover {
     border: 1px solid #E2E2E9;
   }

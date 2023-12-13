@@ -13,6 +13,7 @@ import styles from "./inputWrapper.module.scss"
 import {CloseIcon, LockedIcon} from "../../../icons";
 import {HasClassName} from "../../../types/components.types";
 import InputMask from "react-input-mask";
+import useTheme from '../../../hooks/useTheme';
 
 interface InputWrapper {
     grayBorderedClassName?: string,
@@ -70,7 +71,9 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
                                                        }) => {
     const [isFocusedState, setIsFocusedState] = useState<boolean>(isFocused || false)
     const inputRef = useRef<HTMLInputElement>(null)
+    const gTheme = useTheme()
 
+    
     const handleBlur = () => {
         if(btn) {
             if(!inActive && !disabled) {
@@ -118,7 +121,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
         return (
             <div className={`d-f al-center gap-10`}>
                 <div className={`f-column gap-10 ${className}`}>
-                    {labelText ? <label className={`${styles.label} ${errText ? styles.errorTextColor : null}`}
+                    {labelText ? <label className={`${styles.label} ${gTheme("lt-input-label-c", "dk-input-label-c")} ${errText ? styles.errorTextColor : null}`}
                                         htmlFor={inputId}>{errText ? errText : labelText}</label> : null}
                     <div className={`d-f ${isTextArea ? "" : "al-center"} gap-10`}>
 
@@ -168,11 +171,11 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
         return (
             <div className={"d-f al-center gap-10"}>
                 <div className={`f-column gap-10 ${className}`}>
-                    {labelText ? <label className={`${styles.label} ${errText ? styles.errorTextColor : null}`}
+                    {labelText ? <label className={`${styles.label} ${gTheme("lt-input-label-c", "dk-input-label-c")} ${errText ? styles.errorTextColor : null}`}
                                         htmlFor={inputId}>{labelText}</label> : null}
                     <div className="d-f al-center gap-10">
 
-                        <GrayBorderedBlock disabled={true} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} ${styles.lockedBlock} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
+                        <GrayBorderedBlock disabled={true} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} ${gTheme("lt-grayBorderedLocked", "dk-grayBorderedLocked")}  d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                             <input readOnly={true} placeholder={placeholder || ""}
                                    value={inputVal || (isPhone ? "+7" : "")} onChange={changeVal} className={`${styles.textField} f-1`}
                                    id={inputId} type="text"/>
@@ -199,7 +202,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
     }
     return (
         <div className={`f-column gap-10 ${className}`}>
-            {labelText ? <label className={`${styles.label} ${errText ? styles.errorTextColor : null}`}
+            {labelText ? <label className={`${styles.label} ${gTheme("lt-input-label-c", "dk-input-label-c")} ${errText ? styles.errorTextColor : null}`}
                                htmlFor={inputId}>{errText ? errText : labelText}</label> : null}
             <GrayBorderedBlock  labelFor={inputId} validError={errText} isFocused={isFocusedState} className={`${grayBorderedClassName || ""} d-f jc-between ${!isTextArea ? "inputField f-row-betw" : styles.textArea}`}>
                 {
@@ -216,7 +219,7 @@ const InputWrapper: FC<InputWrapper & HasClassName> = ({
 
                 }
                 {postFix ?
-                    <p style={{fontSize: 16}} className={"f-1"}>{postFix}</p>: null
+                    <p style={{fontSize: 16}} className={`f-1 ${gTheme("lt-c", "dk-c")}`}>{postFix}</p>: null
                 }
                 {
                     inputVal ? <div className={`${styles.close} h-100p cur-pointer visible f-c-col`}>

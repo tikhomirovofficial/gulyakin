@@ -195,15 +195,13 @@ body::-webkit-scrollbar-thumb {
 }
 .whiteSelectable {
     border-radius: 4px;
-    background: #2A2C36;
+
     box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.10);
     border: 1px solid transparent;
     transition: .3s border, .3s box-shadow;
     cursor: pointer;
 }
-.whiteSelectable p {
-    color: white;
-}
+
 .miniScrollbar::-webkit-scrollbar {
     width: 4px;
 }

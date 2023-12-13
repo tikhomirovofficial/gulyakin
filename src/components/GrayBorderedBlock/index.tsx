@@ -16,25 +16,25 @@ const GrayBorderedBlock: FC<HasChildrenProps & HasClassName & GrayBorderedBlock>
     if(clickHandler) {
         if(labelFor) {
             return (
-                <label htmlFor={labelFor}  onClick={clickHandler} className={`${styles.block} ${gTheme("lt-grayBordered", "dk-grayBordered")} ${disabledBorder ? styles.disabledBorder : null}  ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+                <label htmlFor={labelFor}  onClick={clickHandler} className={`${styles.block} ${gTheme("lt-grayBordered", "dk-grayBordered")} ${disabledBorder ? styles.disabledBorder : null}  ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? gTheme("lt-grayBorderedDisabled", "dk-grayBorderedDisabled"): ""} ${className || null}`}>
                     {children}
                 </label>
             );
         }
         return (
-            <div onClick={clickHandler} className={`${styles.block} ${gTheme("lt-grayBordered", "dk-grayBordered")} ${disabledBorder ? styles.disabledBorder : null} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+            <div onClick={clickHandler} className={`${styles.block} ${gTheme("lt-grayBordered", "dk-grayBordered")} ${disabledBorder ? styles.disabledBorder : null} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? gTheme("lt-grayBorderedDisabled", "dk-grayBorderedDisabled") : ""} ${className || null}`}>
                 {children}
             </div>
         );
     }
 
     if(labelFor) {
-        return ( <label htmlFor={labelFor} className={`${styles.block} ${gTheme("lt-grayBordered", "dk-grayBordered")} ${disabledBorder ? styles.disabledBorder : null}  ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+        return ( <label htmlFor={labelFor} className={`${styles.block} ${gTheme("lt-grayBordered", "dk-grayBordered")} ${disabledBorder ? styles.disabledBorder : null}  ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? gTheme("lt-grayBorderedDisabled", "dk-grayBorderedDisabled") : ""} ${className || null}`}>
             {children}
         </label>)
     }
     return (
-        <div className={`${styles.block} ${gTheme("lt-grayBordered", "dk-grayBordered")} ${disabledBorder ? styles.disabledBorder : null} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? styles.disabled : ""} ${className || null}`}>
+        <div className={`${styles.block} ${gTheme("lt-grayBordered", "dk-grayBordered")} ${disabledBorder ? styles.disabledBorder : null} ${validError ? styles.error : ""} ${!disabled && isFocused ? styles.focused: ""} ${disabled ? gTheme("lt-grayBorderedDisabled", "dk-grayBorderedDisabled") : ""} ${className || null}`}>
             {children}
         </div>
     );

@@ -66,7 +66,7 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({ className, askGeoPopup
                             : "..."
                     }</b>
                     {
-                        !changingGeo ? <ArrowMiniRightIcon height={11} stroke={isDarkTheme ? "white" : "black"} /> : <ArrowMiniDown stroke="white" height={10} />
+                        !changingGeo ? <ArrowMiniRightIcon height={11} stroke={isDarkTheme ? "white" : "black"} /> : <ArrowMiniDown stroke={isDarkTheme ? "white" : "black"} height={10} />
                     }
 
                 </div>

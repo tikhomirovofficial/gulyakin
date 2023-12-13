@@ -1,9 +1,10 @@
 import InputWrapper from "../InputWrapper";
 import {HasClassName} from "../../../types/components.types";
 import React, {FC, useRef} from "react";
-import {useAppDispatch} from "../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {handleProfileFormEditing} from "../../../features/forms/formsSlice";
 import {EditIcon, SaveIcon} from "../../../icons";
+import useTheme from "../../../hooks/useTheme";
 
 type TextFieldProps = {
     isEditing: boolean,
@@ -26,10 +27,11 @@ export const TextField: FC<TextFieldProps> = ({isEditing, errText, maskPlacehold
     const editingOrEmpty = isEditing || !formValue?.length
     const formValueEqualsCond = formValue === condValue
     const bothEmpty = condValue === "" && formValueEqualsCond
-
+    const {isDarkTheme} = useAppSelector(state => state.main)
     const canBeSaved = !formValueEqualsCond && !formValIsEmpty
 
     const dispatch = useAppDispatch()
+    const gTheme = useTheme()
 
     const handleInputFocus = () => {
         if(editRef.current !== null) {
@@ -57,7 +59,7 @@ export const TextField: FC<TextFieldProps> = ({isEditing, errText, maskPlacehold
             disabled={!isEditing && !condIsEmpty && !canBeSaved}
             inActive={!isEditing && !condIsEmpty && !canBeSaved}
             onInputBlur={formValueEqualsCond || (!formValueEqualsCond && formValIsEmpty)?  onInputBlur : undefined}
-            grayBorderedClassName={className}
+            grayBorderedClassName={`${className} ${gTheme("lt-tranparent-bg", "dk-input-wrapper-bg")}`}
             onInputFocus={onInputFocus}
             inputVal={formValue}
             isTextArea={isTextArea}
@@ -69,11 +71,11 @@ export const TextField: FC<TextFieldProps> = ({isEditing, errText, maskPlacehold
                 editingOrEmpty || !formValueEqualsCond ?
                     <div onClick={canBeSaved ? handleSave : () => console.log("Nothing edited")}
                          className={`w-content cur-pointer ${!isTextArea ? "f-c-col" : ""}`}>
-                        <SaveIcon fill={!canBeSaved ? "#E2E2E9" : "#FCC8A5"}/>
+                        <SaveIcon fill={!canBeSaved ? "#E2E2E9" : isDarkTheme ? "#FCC8A5" : "#9a9a9a"}/>
                     </div> :
                     <div ref={editRef} onClick={handleEditing}
                          className={`w-content cur-pointer  ${!isTextArea ? "f-c-col" : ""}`}>
-                        <EditIcon/>
+                        <EditIcon fill={isDarkTheme ? "#FCC8A5" : "#9a9a9a"}/>
                     </div>
             }/>
     )

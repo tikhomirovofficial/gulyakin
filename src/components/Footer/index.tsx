@@ -4,11 +4,14 @@ import {CreatedLogo, Logo, VkIcon} from "../../icons";
 import {Link} from "react-router-dom";
 import { useAppSelector } from '../../app/hooks';
 import { formatPhoneNumber } from '../../utils/forms/formatePhone';
+import useTheme from '../../hooks/useTheme';
 
 const Footer = () => {
     const {phone} = useAppSelector(state => state.main)
+    const gTheme = useTheme()
+
     return (
-        <footer className={`${styles.footer} pd-40-0`}>
+        <footer className={`${styles.footer} ${gTheme("lt-light-black-bg", "dk-gray-bg")} pd-40-0`}>
             <div className="wrapper">
                 <div className={`${styles.block} gap-40 f-column`}>
                     <nav className={"d-f jc-between flex-wrap"}>

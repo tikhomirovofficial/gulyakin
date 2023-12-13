@@ -28,9 +28,6 @@
         path:first-child {
           transform: rotateZ(20deg) translateY(-4px) translateX(2px);
         }
-        path  {
-          fill: #FB634D
-        }
       }
     }
 
@@ -42,7 +39,6 @@
   }
   .inputField {
     width: 34rem;
-    background: #333333;
     input {
       font-size: 1.6rem;
     }
@@ -57,7 +53,6 @@
 }
 .orderItem {
   border-radius: 4px;
-  background: #333;
   box-shadow: 0px 0px 12px 0px rgba(56, 56, 56, 0.05);
   padding-right: 3rem;
   .imgBlock {
@@ -71,12 +66,10 @@
   }
   .orderInfoTop {
     font-size: 1.2rem;
-    color: #9E9E9E;
     gap: 3px
   }
   .orderInfoBottom {
     font-size: 1.6rem;
-    color: #C3C3C3;
     gap: 5px
   }
 }

@@ -23,7 +23,7 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({ className, askGeoPopup
     const dispatch = useAppDispatch()
     const location = useLocation()
     const navigation = useNavigate()
-    const { cities, currentGeo, changingGeo, askCityVisible, isDarkTheme } = useAppSelector(state => state.main)
+    const { cities, currentGeo, changingGeo, askCityVisible, isDarkTheme, isMobile } = useAppSelector(state => state.main)
     const handleChangingGeo = () => dispatch(toggleChangingGeo())
     const gTheme = useTheme()
     const handleAskCity = () => {
@@ -53,9 +53,9 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({ className, askGeoPopup
     }
     return (
         <div className={`${styles.logoText} ${className || ""} p-rel f-column gap-5`}>
-            <p className={gTheme("lt-c", "dk-c")}>Доставка готовый еды</p>
+            <p className={!isMobile ? gTheme("lt-c", "dk-c") : ""}>Доставка готовой еды</p>
             <div className={`d-f al-center gap-10`}>
-                <p className={gTheme("lt-c", "dk-c")}>в городе</p>
+                <p className={!isMobile ? gTheme("lt-c", "dk-c") : ""}>в городе</p>
                 <div onClick={handleChangingGeo}
                     className={`${styles.city} d-f al-center gap-5 cur-pointer`}>
                     <b className={gTheme("lt-active-c", "dk-active-c")}>{

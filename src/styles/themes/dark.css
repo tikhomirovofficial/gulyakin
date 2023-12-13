@@ -20,7 +20,10 @@
     background: #f3f3f7 !important;
 }
 .dk-active-bg {
-    background: #f6caaf;
+    background: #f6caaf !important;
+}
+.dk-focused {
+    border: 1px solid #f8caa9 !important;
 }
 .dk-disabled-bg {
     background: #e2e2e9;
@@ -114,7 +117,7 @@
     color: white;
 }
 .dk-grayBordered input::placeholder {
-    color: #C3C3C3;
+    color: #c3c3c3;
 }
 .dk-grayBordered:hover {
     border: 1px solid #f8caa9;
@@ -166,17 +169,68 @@
     color: #c3c3c3;
 }
 .dk-whiteSelectable {
-    background: #2A2C36;
+    background: #2a2c36;
 }
 .dk-whiteSelectable:hover {
-    border: 1px solid #FCC8A5!important;
+    border: 1px solid #fcc8a5 !important;
 }
 .dk-whiteSelectable p {
     color: white;
 }
 .dk-whiteSelectableSelected {
-    border: 1px solid #FCC8A5!important;
+    border: 1px solid #fcc8a5 !important;
 }
 .dk-radioBorder {
-    border: 2px solid #FCC8A5 !important;
+    border: 2px solid #fcc8a5 !important;
+}
+.dk-restaurantItem {
+    background: transparent;
+}
+.dk-restaurantItem:hover {
+    background: #2a2c36;
+}
+.dk-restaurantItem p,
+.dk-restaurantItem b,
+.dk-restaurantItem span {
+    color: #c3c3c3;
+}
+.dk-sidewrapper {
+    background: #2a2c36;
+    border-left: 2px solid #727272;
+    border-top: 2px solid #727272;
+    border-bottom: 2px solid #727272;
+}
+.dk-sidewrapperItem {
+    border-bottom: 2px solid #727272;
+}
+.dk-active-week b,
+.dk-active-week p {
+    color: #f6caaf !important;
+}
+.dk-cart {
+    color: #c3c3c3;
+    background: #363844;
+}
+.dk-cartItem {
+    background: #333;
+}
+.dk-window {
+    background: #2a2c36;
+}
+.dk-window p,
+.dk-window label,
+.dk-window b {
+    color: white;
+}
+.dk-window h2 {
+    color: #c4c4c4;
+}
+.dk-window h3 {
+    color: #c4c4c4;
+}
+.dk-caption {
+    color: #c3c3c3;
+}
+.dk-caption a {
+    color: #f8caa9;
 }

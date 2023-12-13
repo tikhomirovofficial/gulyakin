@@ -9,7 +9,7 @@
     filter: brightness(95%);
   }
   &:disabled {
-    background: #E2E2E9;
+    background: #E2E2E9 !important;
     filter:grayscale(100%);
     color: #ABADBA;
   }

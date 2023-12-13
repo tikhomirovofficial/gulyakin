@@ -73,35 +73,25 @@
       background: #c7c7c7;
     }
     min-width: 34rem;
-    background: #2a2c36;
-    border-left: 2px solid #727272;
-    border-top: 2px solid #727272;
-    border-bottom: 2px solid #727272;
     .itemWrapper {
       padding-top: 0.4rem;
       padding-left: 0.4rem;
       padding-bottom: 0.4rem;
       width: 100%;
-      border-bottom: 2px solid #727272;
+      
       cursor: pointer;
       .item {
         border-radius: 6px 0px 0px 6px;
         padding: 1.1rem 1.6rem;
-        &:hover {
-          background: #363844;
-        }
         transition: 0.3s background;
         b {
           font-size: 1.6rem;
-          color: #c3c3c3;
         }
         p {
           font-size: 1.2rem;
-          color: #c3c3c3;
         }
         .bottomText {
           font-size: 1.4rem;
-          color: white;
         }
       }
     }

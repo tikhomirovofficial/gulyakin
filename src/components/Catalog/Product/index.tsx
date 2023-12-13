@@ -1,18 +1,19 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import styles from "./product.module.scss";
 import RedButton from "../../Buttons/RedButton";
-import {MinusIcon, PlusIcon, StarsIcon} from "../../../icons";
-import {HasClassName} from "../../../types/components.types";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import { MinusIcon, PlusIcon, StarsIcon } from "../../../icons";
+import { HasClassName } from "../../../types/components.types";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
     handleProductAdditives,
     setChangingAdditivesMode,
     setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
-import {ProductRes, Supplement} from "../../../types/api.types";
-import {editCountCart} from "../../../features/cart/cartSlice";
-import {domain} from "../../../http/instance/instances";
+import { ProductRes, Supplement } from "../../../types/api.types";
+import { editCountCart } from "../../../features/cart/cartSlice";
+import { domain } from "../../../http/instance/instances";
 import useTheme from '../../../hooks/useTheme';
+import useAppColor from '../../../hooks/useAppColor';
 
 type ProductProps = {
     id: number,
@@ -24,26 +25,27 @@ type ProductProps = {
 
 
 const Product: FC<ProductProps & HasClassName> = ({
-                                                      title,
-                                                      supplements = [],
-                                                      image,
-                                                      id,
-                                                      count = 0,
-                                                      inCart = false,
-                                                      sale,
+    title,
+    supplements = [],
+    image,
+    id,
+    count = 0,
+    inCart = false,
+    sale,
     dimensions,
-                                                      className,
-                                                      composition,
+    className,
+    composition,
     is_product_day,
     is_product_week,
     is_multiple_supplements,
-                                                      weight,
-                                                      price
-                                                  }) => {
+    weight,
+    price
+}) => {
     const dispatch = useAppDispatch()
-    const {isMobile} = useAppSelector(state => state.main)
+    const { isMobile, isDarkTheme} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart.items)
     const gTheme = useTheme()
+    const appColor = useAppColor()
     const handleSetAdditivesData = () => {
         dispatch(setProductAdditivesData({
             id: id,
@@ -96,14 +98,14 @@ const Product: FC<ProductProps & HasClassName> = ({
         <div onClick={handleOpenAdditives} className={`${styles.product} cur-pointer h-100p f-column-betw gap-15`}>
             <div className="f-column ">
                 <div className={`${styles.img} w-100p`}>
-                    <img src={domain + "/" + image}/>
+                    <img src={domain + "/" + image} />
                     {
                         is_product_day ? <div className={`d-f al-center gap-5 ${gTheme("lt-active-bg", "dk-active-bg")} ${styles.productLabel}`}>
-                            <StarsIcon/>
+                            <StarsIcon />
                             <b>Товар дня</b>
                         </div> : is_product_week ?
                             <div className={`d-f al-center gap-5 ${styles.productLabel}`}>
-                                <StarsIcon/>
+                                <StarsIcon />
                                 <b className={gTheme("lt-active-bg", "dk-active-bg")}>Товар недели</b>
                             </div> : null
                     }
@@ -119,7 +121,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                         }
                     </div>
                 </div>
-                <div onClick={e => e.stopPropagation()} style={{minHeight: 37}} className="f-row-betw">
+                <div onClick={e => e.stopPropagation()} style={{ minHeight: 37 }} className="f-row-betw">
                     {isMobile ? null :
                         <div className={"d-f al-center gap-10"}>
                             {sale ?
@@ -137,10 +139,10 @@ const Product: FC<ProductProps & HasClassName> = ({
                     {
                         inCart ?
                             <div className={"d-f al-center gap-5"}>
-                                <div onClick={handleMinusProduct} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon fill={"#F6CAAF"}/>
+                                <div onClick={handleMinusProduct} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon fill={appColor} />
                                 </div>
-                                <div className={`${styles.count} grayColor_dark`}>{count}</div>
-                                <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon fill={"#F6CAAF"}/></div>
+                                <div className={`${styles.count} ${gTheme("lt-light-coal-c", "dk-lg-c")}`}>{count}</div>
+                                <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon fill={appColor} /></div>
 
                             </div>
                             :
@@ -149,7 +151,7 @@ const Product: FC<ProductProps & HasClassName> = ({
                             </RedButton>
                     }
                     {!isMobile ? null :
-                        <div className={`${styles.weight} txt-right colorWhite_dark`}>{weight} {dimensions}</div>
+                        <div className={`${styles.weight} txt-right ${gTheme("lt-c", "dk-c")}`}>{weight} {dimensions}</div>
                     }
 
 

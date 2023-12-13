@@ -2,7 +2,7 @@ import axios from 'axios'
 import {getCookie} from "../../utils/common/CookieUtil";
 import {getTokens} from "../../utils/auth/storeTokens";
 
-const currentDomain = 3
+const currentDomain = 0
 const domains = [
     "http://dev.advafert.ru",
     "http://vps.advafert.ru:5000",

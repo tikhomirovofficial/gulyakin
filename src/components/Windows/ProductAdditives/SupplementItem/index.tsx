@@ -1,6 +1,7 @@
 import React, {Dispatch, FC, SetStateAction} from "react";
 import styles from "../productAdditives.module.scss";
 import {CheckedMark} from "../../../../icons";
+import useTheme from "../../../../hooks/useTheme";
 
 type SupplementProps = {
     id: number,
@@ -22,6 +23,7 @@ const SupplementItem: FC<SupplementProps> = ({
                                                  selected
                                              }) => {
     const added = addedSupplementsIds.some(sup => sup === id)
+    const gTheme = useTheme()
     const addSupplement = (id: number) => {
         if(onlyOne) {
             setAddedSupplements([])
@@ -47,7 +49,7 @@ const SupplementItem: FC<SupplementProps> = ({
                 <div className={`${styles.price}`}>+ {price} ₽</div>
             </div>
             <div onClick={() => handleSupplement(id)}
-                 className={`${styles.checkbox} ${added ? styles.checkboxSelected : ""} w-content h-content f-c-col`}>
+                 className={`${styles.checkbox} ${added ? gTheme("lt-active-bg", "dk-active-bg") : ""} w-content h-content f-c-col`}>
                 {
                     added ? <CheckedMark stroke={"white"} height={10}/> : null
                 }

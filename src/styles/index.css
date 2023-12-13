@@ -74,12 +74,9 @@ body::-webkit-scrollbar-thumb {
     cursor: pointer;
 }
 .caption {
-    color: #c3c3c3;
     font-size: 1.4rem;
 }
-.caption a {
-    color: #F6CAAF;
-}
+
 .caption-big {
     font-size: 1.8rem;
 }

@@ -11,6 +11,7 @@ import { domain } from "../../../http/instance/instances";
 import { editCountCart, removeFromCart, removeProduct } from "../../../features/cart/cartSlice";
 import { MiniClose, MinusIcon, PlusIcon } from "../../../icons";
 import { formatNumberWithSpaces } from "../../../utils/common/numberWithSpaces";
+import useTheme from '../../../hooks/useTheme';
 
 type CartItemProps = {
     canNotBeAdded?: boolean,
@@ -19,6 +20,7 @@ type CartItemProps = {
 } & CartProductItem
 const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, id, count, supplements, product }) => {
     const dispatch = useAppDispatch()
+    const gTheme = useTheme()
     const { items, combos } = useAppSelector(state => state.products)
     const handleChange = () => {
         dispatch(setChangingAdditivesMode(true))
@@ -74,10 +76,10 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
         return null
     }
     const canBeChanged = getCanBeChanged()
-
+    const {isDarkTheme} = useAppSelector(state => state.main)
     return (
         product !== undefined ?
-            <div className={`${styles.cartItem} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
+            <div className={`${styles.cartItem} ${gTheme("lt-cartItem", "dk-cartItem")} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
                 <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
                     <div className={styles.imageBlock}>
                         <img src={`${domain}${product.image}`} alt="" />
@@ -122,7 +124,7 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
                                 <div className="d-f gap-20">
                                     {
                                         canBeChanged ? <div onClick={handleChange}
-                                            className={`colorRed cur-pointer ${styles.delete}`}>Изменить</div> : null
+                                            className={`cur-pointer ${styles.delete} ${gTheme("lt-active-c", "dk-active-c")}`}>Изменить</div> : null
                                     }
 
                                     <div className={"d-f al-center gap-5"}>
@@ -135,7 +137,7 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
 
                                                 }))
                                             }
-                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={"#C8C7CC"} width={12} />
+                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={isDarkTheme ? "#C8C7CC" : "#434343"} width={12} />
                                         </div>
 
                                         <div className={styles.count}>{count}</div>
@@ -145,7 +147,7 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
                                                 count: count + 1,
                                                 id: product.id
                                             }))
-                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={"#C8C7CC"} width={12} />
+                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={isDarkTheme ? "#C8C7CC" : "#434343"} width={12} />
                                         </div>
 
                                     </div>

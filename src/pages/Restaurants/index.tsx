@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 import {getImgPath} from "../../utils/common/getAssetsPath";
 import {marketComponents} from "../../components/LogosSection/markets";
 import useMarketLogo from "../../hooks/useMarketLogo";
+import useTheme from '../../hooks/useTheme';
 
 const logosIsMax = true
 
@@ -16,18 +17,19 @@ type RestaurantItemProps = {
     link: string
 } & Pick<RestaurantItemType, "cityArea" | "canOnlineOrder" | "street">
 const RestaurantItem: FC<RestaurantItemProps> = ({cityArea, street, link, canOnlineOrder}) => {
+    const gTheme = useTheme()
     return (
-        <Link to={link} className={styles.itemWrapper}>
-            <div className={styles.item}>
-                <div className={"f-column gap-10"}>
+        <Link to={link} className={`${styles.itemWrapper}  ${gTheme("lt-sidewrapperItem", "dk-sidewrapperItem")} `}>
+            <div className={`${styles.item} ${gTheme("lt-restaurantItem", "dk-restaurantItem")}`}>
+                <div className={`f-column gap-10 `}>
                     <div className="f-column f-1 gap-5">
                         <b>{street}</b>
                         <p>{cityArea}</p>
                     </div>
 
-                    <div className={`${!canOnlineOrder && "hidden"} ${styles.bottomText}`}>
+                    <span className={`${!canOnlineOrder && "hidden"} ${styles.bottomText}`}>
                         Доступно онлайн бронирование столика
-                    </div>
+                    </span>
                 </div>
             </div>
         </Link>
@@ -35,8 +37,9 @@ const RestaurantItem: FC<RestaurantItemProps> = ({cityArea, street, link, canOnl
 }
 
 const Restaurants: FC = () => {
-    const {addresses, currentGeo, cities, market, cityMarkets, bookingAddresses} = useAppSelector(state => state.main)
+    const {addresses, currentGeo, cities, market, cityMarkets, bookingAddresses, isDarkTheme} = useAppSelector(state => state.main)
     const logo = useMarketLogo()
+    const gTheme = useTheme()
     const getAddressesCoords = () => {
         if (addresses.length > 0) {
             return [addresses[0].long, addresses[0].lat]
@@ -52,7 +55,7 @@ const Restaurants: FC = () => {
                         <div className="wrapper d-f jc-start w-100p">
                             <Link to={"/"}>
                                 <GradientGrayBtn className={`${styles.backButton} cur-pointer d-f gap-10`}>
-                                    <Cap/>
+                                <Cap fill={isDarkTheme ? "#c3c3c3" : "black"}/>
                                     <p>Вернуться в меню</p>
                                 </GradientGrayBtn>
                             </Link>
@@ -60,14 +63,14 @@ const Restaurants: FC = () => {
 
                         <div className="f-column gap-20">
                             <div className="wrapper w-100p">
-                                <div className="sectionTitle grayColor_dark">
+                                <div className={`sectionTitle ${gTheme("lt-coal-c", "dk-gray-c")}`}>
                                     {addresses.length} кафе в {cityMarkets.length > 0 ? cityMarkets.filter(marketItem => marketItem.id === market)[0]?.market : ""} городе {cities.length > 0 ? cities.filter(city => city.id === currentGeo.city)[0]?.name : ""}
                                 </div>
                             </div>
                             <div className={`${styles.restContainer} wrapper w-100p`}>
                                 <div className={`of-hide w-100p  f-row-betw ${styles.restaurantsSection}`}>
                                     <div className={`${styles.restaurantsContainer} f-column h-100p`}>
-                                        <div className={`${styles.sideWrapper} f-column wrapper`}>
+                                        <div className={`${styles.sideWrapper} ${gTheme("lt-sidewrapper", "dk-sidewrapper")} f-column wrapper`}>
                                             {
                                                 addresses.map(item => (
                                                     <RestaurantItem key={item.id} link={`/restaurants/${item.id}`}

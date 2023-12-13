@@ -8,7 +8,6 @@
   max-width: 108rem;
   padding-bottom: 0;
   width: 100%;
-  color: #434343;
 
 }
 .productImage {
@@ -111,9 +110,6 @@
   }
   .titleBlock {
     font-size: 2.4rem;
-    h3 {
-      color: #c3c3c3
-    }
   }
   .description {
     min-height: 6rem;
@@ -124,7 +120,6 @@
   }
   h4 {
     font-size: 2rem;
-    color: #c3c3c3;
   }
 }
 .productAdditivesBar::-webkit-scrollbar {
@@ -152,9 +147,6 @@
     cursor: pointer;
     background: rgba(0, 0, 0, 0.08);
 
-  }
-  .checkboxSelected {
-    background: #FCC8A5;;
   }
 }
 .supplementsList {
@@ -185,9 +177,7 @@
   width: 100%;
 }
 .additivesListBlock {
-  h4 {
-    color: #c3c3c3;
-  }
+ 
 }
 @media (max-width: 1100px) {
   .additiveList {
@@ -239,7 +229,6 @@
     position: fixed;
     width: 100%;
     left: 0;
-    background: #2A2C36;
     padding: 0 2rem 1.6rem !important;
     bottom: 0;
   }

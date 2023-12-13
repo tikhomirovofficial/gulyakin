@@ -1,3 +1,5 @@
+
+
 .lt-white-bg {
     background: white;
 }
@@ -20,7 +22,10 @@
     background: #f3f3f7 !important;
 }
 .lt-active-bg {
-    background: #9a9a9a;
+    background: #9a9a9a !important;
+}
+.lt-focused {
+    border: 1px solid #9a9a9a !important;
 }
 .lt-disabled-bg {
     background: #e2e2e9;
@@ -42,6 +47,9 @@
 }
 .lt-light-black-c {
     color: #232222;
+}
+.lt-light-coal-c {
+    color: #282828
 }
 .lt-gray-c {
     color: #9a9a9a;
@@ -274,4 +282,53 @@
 }
 .lt-radioBorder {
     border: 2px solid #9a9a9a !important;
+}
+.lt-restaurantItem {
+    background: transparent;
+}
+.lt-restaurantItem:hover {
+    background: #F3F3F7;
+}
+.lt-restaurantItem p, .lt-restaurantItem b, .lt-restaurantItem span {
+    color: #434343
+}
+
+.lt-sidewrapper {
+    background: white;
+    border-left: 2px solid #FAFAFA;
+    border-top: 2px solid #FAFAFA;
+    border-bottom: 2px solid #FAFAFA;
+}
+.lt-sidewrapperItem {
+    border-bottom: 2px solid #FAFAFA;
+}
+.lt-active-week b, .lt-active-week p{
+    color: #9a9a9a!important;
+}
+.lt-cart {
+    color: #494949;
+    background: #fafafa;
+}
+.lt-cartItem {
+    background: white;
+}
+.lt-window {
+    background: white;
+}
+.lt-window p,
+.lt-window label,
+.lt-window b {
+    color: black;
+}
+.lt-window h2 {
+    color: black;
+}
+.lt-window h3 {
+    color: black;
+}
+.lt-caption {
+    color: #5C6370
+}
+.lt-caption a {
+    color: #9a9a9a;
 }

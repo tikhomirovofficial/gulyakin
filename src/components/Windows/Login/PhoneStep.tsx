@@ -6,6 +6,7 @@ import InputWrapper from "../../Inputs/InputWrapper";
 import {Preloader} from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
 import {LoginContext, LoginContextType} from "./index";
+import useTheme from '../../../hooks/useTheme';
 
 const LoginPhoneStep = () => {
     const {
@@ -22,6 +23,7 @@ const LoginPhoneStep = () => {
         setPhoneLoading,
         setPhone
     } = useContext<LoginContextType>(LoginContext)
+    const gTheme = useTheme()
     const handleSendPhone = async () => {
         try {
             setPhoneLoading(true)
@@ -83,7 +85,7 @@ const LoginPhoneStep = () => {
                     <RedButton onClick={handleSendPhone} disabled={phone.includes("_") || phone.length < 1}
                                className={"pd-10-0"}>Выслать
                         код</RedButton>
-                    <div className={"caption txt-center"}>Продолжая, вы соглашаетесь <a href=""> со сбором и
+                    <div className={`caption txt-center ${gTheme("lt-caption", "dk-caption")}`}>Продолжая, вы соглашаетесь <a href=""> со сбором и
                         обработкой персональных данных и пользовательским соглашением</a></div>
                 </div>
 

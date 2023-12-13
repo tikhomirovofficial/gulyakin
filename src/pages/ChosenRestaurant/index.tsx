@@ -19,6 +19,7 @@ import { formatPhoneNumber } from '../../utils/forms/formatePhone';
 import { deleteSeconds } from '../../utils/datetime/deleteSecondsInTime';
 import BookingWindow from '../../components/Windows/Booking';
 import { handleBooking } from '../../features/modals/modalsSlice';
+import useTheme from '../../hooks/useTheme';
 
 const weekItems = [
     {
@@ -70,7 +71,7 @@ const ChosenRestaurant: FC = () => {
     const restaurantInfo = useAppSelector(state => state.restaurants.chosen)
     const logo = useMarketLogo()
     const canBooking = main.bookingAddresses.some(item => item.id === restaurantInfo.data.id)
-
+    const gTheme = useTheme()
     const handleNext = () => {
         restaurantImagesSlider.current.swiper.slideNext();
     }
@@ -99,8 +100,8 @@ const ChosenRestaurant: FC = () => {
                 <div className={`${styles.block} f-column gap-25`}>
                     <div className="wrapper w-100p">
                         <Link to={"/"}>
-                            <GradientGrayBtn className={`${styles.backButton} cur-pointer d-f gap-10`}>
-                                <Cap />
+                            <GradientGrayBtn className={`${styles.backButton}  cur-pointer d-f gap-10`}>
+                                <Cap fill={main.isDarkTheme ? "#c3c3c3" : "black"}/>
                                 <p>Вернуться в меню</p>
                             </GradientGrayBtn>
                         </Link>
@@ -109,9 +110,9 @@ const ChosenRestaurant: FC = () => {
                         <div className="wrapper w-100p">
                             <Link to={"/restaurants"} className="d-f al-center gap-10">
                                 <div style={{ transform: "rotateZ(180deg)" }} className="f-c-col">
-                                    <ArrowMiniRightIcon width={17} height={17} />
+                                    <ArrowMiniRightIcon stroke={main.isDarkTheme ? "#c3c3c3" : "#434343"} width={17} height={17} />
                                 </div>
-                                <div className="sectionTitle grayColor_dark">
+                                <div className={`sectionTitle ${gTheme("lt-coal-c", "dk-gray-c")}`}>
                                     Все рестораны
                                 </div>
                             </Link>
@@ -120,10 +121,10 @@ const ChosenRestaurant: FC = () => {
                         <div className={`${styles.choosenMapWrapper} wrapper w-100p`}>
                             <div className={`of-hide w-100p f-row-betw ${styles.restaurantsSection}`}>
                                 <div
-                                    className={`${styles.sideWrapper} ${styles.choosenRestaruantBlock} f-column-betw gap-20 pd-20`}>
+                                    className={`${styles.sideWrapper} ${styles.choosenRestaruantBlock}  ${gTheme("lt-sidewrapper", "dk-sidewrapper")} f-column-betw gap-20 pd-20`}>
                                     <div className="top f-column gap-15">
                                         <div className="address f-column">
-                                            <h3 className={styles.addressTitle}>{restaurantInfo.data.adress}</h3>
+                                            <h3 className={`${gTheme("lt-coal-c", "dk-gray-c")} ${styles.addressTitle}`}>{restaurantInfo.data.adress}</h3>
                                             <p className={styles.addressAreaText}>{""}</p>
                                         </div>
                                         <div className="d-f p-rel">
@@ -178,27 +179,27 @@ const ChosenRestaurant: FC = () => {
                                     </div>
                                     <div className={`${styles.workTimeBlock} f-column gap-20 f-1`}>
                                         <div className="f-column">
-                                            <p className={styles.phoneLabel}>Телефон</p>
-                                            <a href={`tel:+${restaurantInfo.data.phone}`} className={styles.phone}>{formatPhoneNumber(restaurantInfo.data.phone)}</a>
+                                            <p className={`${gTheme("lt-c", "dk-c")} ${styles.phoneLabel}`}>Телефон</p>
+                                            <a href={`tel:+${restaurantInfo.data.phone}`} className={`${gTheme("lt-coal-c", "dk-gray-c")} ${styles.phone}`}>{formatPhoneNumber(restaurantInfo.data.phone)}</a>
                                         </div>
                                         <div className={`f-column gap-5 ${styles.workClocks}`}>
-                                            <p className={styles.phoneLabel}>График работы</p>
+                                            <p className={`${styles.phoneLabel} ${gTheme("lt-c", "dk-c")}`}>График работы</p>
 
                                             {
                                                 restaurantInfo.data.time.length ?
                                                     weekItems.map((item, index) => (
                                                         index > 0 ? <div key={item.id}
-                                                            className={`f-row-betw ${index === dayOfWeek ? "colorRed" : ""}`}>
-                                                            <b>{item.day}</b>
-                                                            <b>{deleteSeconds(restaurantInfo.data.time[index][0])} - {deleteSeconds(restaurantInfo.data.time[index][1])}</b>
+                                                            className={`f-row-betw ${index === dayOfWeek ? gTheme("lt-active-week", "dk-active-week") : ""}`}>
+                                                            <b className={`${gTheme("lt-dark-coal-c", "dk-selectedValue")}`}>{item.day}</b>
+                                                            <b className={`${gTheme("lt-dark-coal-c", "dk-selectedValue")}`}>{deleteSeconds(restaurantInfo.data.time[index][0])} - {deleteSeconds(restaurantInfo.data.time[index][1])}</b>
                                                         </div> : null
 
                                                     )) : null
                                             }
                                             {
-                                                restaurantInfo.data.time.length ? <div className={`f-row-betw ${dayOfWeek === 0 && "colorRed"}`}>
-                                                    <b>{weekItems[0].day}</b>
-                                                    <b>{deleteSeconds(restaurantInfo.data.time[0][0])} - {deleteSeconds(restaurantInfo.data.time[0][1])}</b>
+                                                restaurantInfo.data.time.length ? <div className={`f-row-betw ${dayOfWeek === 0 && gTheme("lt-active-week", "dk-active-week")}`}>
+                                                    <b className={`${gTheme("lt-dark-coal-c", "dk-selectedValue")}`}>{weekItems[0].day}</b>
+                                                    <b className={`${gTheme("lt-dark-coal-c", "dk-selectedValue")}`}>{deleteSeconds(restaurantInfo.data.time[0][0])} - {deleteSeconds(restaurantInfo.data.time[0][1])}</b>
                                                 </div> : null
                                             }
 

@@ -12,6 +12,7 @@ import {getFromCartAddedSupplements} from "../../../../../utils/products/getFrom
 import useProduct from "../../../../../hooks/useProduct";
 import {getSupplementsTotalPrice} from "../../../../../utils/products/getSupplementsTotalPrice";
 import {handleProductAdditives} from "../../../../../features/modals/modalsSlice";
+import useTheme from '../../../../../hooks/useTheme';
 
 const EditProductVariant = () => {
     const {
@@ -32,12 +33,14 @@ const EditProductVariant = () => {
     const [addedSupplements, setAddedSupplements] = useState<number[]>(getFromCartAddedSupplements(cart, id, additives))
     const [addProduct, saveProduct] = useProduct(id, addedSupplements)
     const additivePrice = getSupplementsTotalPrice(addedSupplements, additives)
+    const gTheme = useTheme()
     const saveMode = useAppSelector(state => state.modals.isChangingModeAdditives)
     const handleProductWindow = () => dispatch(handleProductAdditives())
+    
     const RenderSupplementsList = () => {
         if (additives?.length) {
             return <div className={`${styles.additivesListBlock} f-1 gap-10 f-column`}>
-                <h4>Дополнительно</h4>
+                <h4 className={gTheme("lt-dark-coal-c", "dk-gray-c")}>Дополнительно</h4>
                 <List
                     listBlockClassname={`${styles.supplementsList} f-column gap-10`}
                     list={additives}
@@ -84,7 +87,7 @@ const EditProductVariant = () => {
                                 <RenderSupplementsList/>
                             </div>
                         </div>
-                        <div className={`${styles.additivesBtnWrapper} d-f al-end f-1 w-100p`}>
+                        <div className={`${styles.additivesBtnWrapper} ${gTheme("lt-white-bg", "dk-gray-bg")} d-f al-end f-1 w-100p`}>
                             <RedButton onClick={saveMode ? saveProduct : addProduct} disabled={false}
                                        className={`${styles.additivesBtn} pd-10-0`}>
 

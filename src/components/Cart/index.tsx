@@ -11,6 +11,7 @@ import {useNavigate} from "react-router-dom";
 import CartAdditiveItem from "./CartAdditiveItem";
 import CartList from "./CartList";
 import useIsWorkTime from "../../hooks/useIsWorkTime";
+import useTheme from '../../hooks/useTheme';
 
 
 const Cart = () => {
@@ -23,6 +24,7 @@ const Cart = () => {
     const [classAdditivesAdded, setClassAdditivesAdded] = useState(false)
     const [classOpened, setClassOpened] = useState(false)
     const {isCurrent} = useIsWorkTime({...workTimes, is_around_time: workTimes.isAroundTime})
+    const gTheme = useTheme()
 
     const handleOpenAdditives = () => {
         setAdditivesOpened(true)
@@ -73,16 +75,16 @@ const Cart = () => {
         <ShadowWrapper onClick={handleCloseCart} className={"d-f jc-end p-fix h-100v w-100v"}>
 
             <div onClick={e => e.stopPropagation()}
-                 className={`${styles.cartBlock} ${classOpened ? styles.cartBlockOpened : ""} bg-white f-column p-rel`}>
+                 className={`${styles.cartBlock} ${gTheme("lt-cart", "dk-cart")} ${classOpened ? styles.cartBlockOpened : ""} bg-white f-column p-rel`}>
                 {
                     additivesOpened ?
                         <div
-                            className={`${classAdditivesAdded ? styles.additivesWindowOpened : ""} top-0 p-abs h-100v w-100p`}>
+                            className={`${classAdditivesAdded ? styles.additivesWindowOpened : ""}  top-0 p-abs h-100v w-100p`}>
                             <ShadowWrapper onClick={handleCloseAdditives}
                                            className={`${styles.additivesWindowShadow} d-f al-end h-100p w-100p p-abs top-0 t-opacity-visible-transform-3`}>
                             </ShadowWrapper>
                             <div
-                                className={`${styles.cartAdditivesBar} bg-white p-abs left-0 w-100p pd-30 f-column gap-15`}>
+                                className={`${styles.cartAdditivesBar} ${gTheme("lt-white-bg", "dk-white-bg")} bg-white p-abs left-0 w-100p pd-30 f-column gap-15`}>
                                 <h3>Соусы для ваших блюд</h3>
                                 <div className={`${styles.additivesList} f-column gap-10`}>
                                     {
@@ -111,7 +113,7 @@ const Cart = () => {
                 <div className={`${styles.content} pd-20 f-1 f-column-betw`}>
                     <div className="f-column gap-25">
                         <div className="itemsBlock f-column">
-                            <div className={`${styles.cartBlockTop} f-column gap-20`}>
+                            <div className={`${styles.cartBlockTop} ${gTheme("lt-cart", "dk-cart")} f-column gap-20`}>
                                 <h2>
                                     {
                                         items.length ? `${totalCount} товаров на ${formatNumberWithSpaces(totalPrice)} ₽` :
@@ -152,10 +154,10 @@ const Cart = () => {
                                     <h3>Добавить к заказу?</h3>
                                     <div className={`f-row-betw gap-10 `}>
                                         <div onClick={handleOpenAdditives}
-                                             className={`${styles.souses} cur-pointer al-center bg-white pd-20 f-column gap-5 ${styles.addSousesBlock}`}>
+                                             className={`${styles.souses} cur-pointer al-center ${gTheme("lt-white-bg", "dk-cartItem")} pd-20 f-column gap-5 ${styles.addSousesBlock}`}>
                                             <div style={{backgroundImage: `url(${getImgPath("productAdditive.png")})`}}
                                                  className={styles.img}></div>
-                                            <p className={"grayColor_dark"}>Соусы</p>
+                                            <p className={gTheme("lt-coal-c", "dk-gray-c")}>Соусы</p>
                                         </div>
                                         <div
                                             className={`${styles.bread} cur-pointer h-100p f-1 bg-white pd-20 gap-10 d-n al-center`}>
@@ -174,7 +176,7 @@ const Cart = () => {
 
 
                 </div>
-                <div className={`${styles.bottom} f-column gap-15`}>
+                <div className={`${styles.bottom} ${gTheme("lt-cartItem", "dk-cartItem")} f-column gap-15`}>
                     <div className="f-row-betw">
                         <b>Сумма заказа</b>
                         <b>{formatNumberWithSpaces(totalPrice)} ₽</b>

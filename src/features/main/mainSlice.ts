@@ -92,7 +92,7 @@ const initialState: MainSliceState = {
     market: getFromStorage('market') || -1,
     lightAppColor: "#9A9A9A",
     darkAppColor: "#F8CAA9",
-    isDarkTheme: true,
+    isDarkTheme: !true,
     phone: "+78005002797",
     cities: [],
     changingGeo: false,

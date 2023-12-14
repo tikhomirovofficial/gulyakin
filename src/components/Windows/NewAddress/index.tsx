@@ -13,6 +13,7 @@ import {addAddress, addAddressUser} from "../../../features/profile/profileSlice
 import {appConfig} from "../../../config/AppConfig";
 import useNewAddress from "../../../hooks/useNewAddress";
 import AddressSuggestions from "../../AddressSuggestions";
+import useAppColor from "../../../hooks/useAppColor";
 
 const NewAddressWindow = () => {
     const dispatch = useAppDispatch()
@@ -25,7 +26,7 @@ const NewAddressWindow = () => {
         handleFormNewAddress,
         isValidAddressData
     } = useNewAddress()
-
+    const appColor = useAppColor()
     const handleAddAddress = () => {
         dispatch(addAddressUser({
             addressData: {
@@ -65,7 +66,7 @@ const NewAddressWindow = () => {
                                         <div className={"d-f al-center gap-5 svgRedStroke"}>
                                             Город, улица и дом
                                             <div className={"f-c-col w-content"}>
-                                                <Geo stroke={"#FCC8A5"} width={12}/>
+                                                <Geo stroke={appColor} width={12}/>
                                             </div>
                                         </div>
                                     }/>

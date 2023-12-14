@@ -332,3 +332,7 @@
 .lt-caption a {
     color: #9a9a9a;
 }
+.lt-lightBtn {
+    color: #9a9a9a;
+    border: 1px solid #9a9a9a;
+}

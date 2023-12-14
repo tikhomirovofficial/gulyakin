@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {HasClassName} from "../../types/components.types";
 import styles from "./switcher.module.scss"
+import useTheme from '../../hooks/useTheme';
 interface SwitcherProps {
     currentSelected?: number,
     elements: Array<string>,
@@ -9,6 +10,7 @@ interface SwitcherProps {
 const Switcher: FC<SwitcherProps & HasClassName> = ({currentSelected, onSwitch, className, elements}) => {
     const [elementWidth, setElementWidth] = useState<number>(0)
     const elementRef = useRef<HTMLDivElement>(null)
+    const gTheme = useTheme()
 
     const handleSwitch = (index: number) => {
         if(onSwitch) {
@@ -33,12 +35,12 @@ const Switcher: FC<SwitcherProps & HasClassName> = ({currentSelected, onSwitch, 
             </div>
             {elements.map((element, index) => {
                 if(index) {
-                    return <div key={index} onClick={() => handleSwitch(index)} ref={elementRef} className={`${styles.item} ${currentSelected === index ? styles.selectedItem : ""} cur-pointer f-c-col txt-center`}>
+                    return <div key={index} onClick={() => handleSwitch(index)} ref={elementRef} className={`${styles.item} ${currentSelected === index ? styles.selectedItem : ""} ${gTheme("lt-coal-c", "dk-caption")} cur-pointer f-c-col txt-center`}>
                         {element} 
                     </div>
                 }
 
-                return(<div key={index} onClick={() => handleSwitch(index)} className={`${styles.item}  ${currentSelected === index ? styles.selectedItem : ""} cur-pointer  f-c-col txt-center`}>
+                return(<div key={index} onClick={() => handleSwitch(index)} className={`${styles.item}  ${currentSelected === index ? styles.selectedItem : ""}  ${gTheme("lt-coal-c", "dk-caption")} cur-pointer  f-c-col txt-center`}>
                     {element}
                 </div>)
             })}

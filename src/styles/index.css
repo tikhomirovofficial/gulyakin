@@ -164,7 +164,6 @@ body::-webkit-scrollbar-thumb {
 }
 
 .svgRedStroke path{
-    stroke: #FCC8A5;
 }
 .miniSliderArrow path{
     transition: .3s stroke;

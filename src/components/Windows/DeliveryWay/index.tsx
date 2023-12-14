@@ -26,6 +26,7 @@ import useMarketLogo from "../../../hooks/useMarketLogo";
 import useNewAddress from "../../../hooks/useNewAddress";
 import AddressSuggestions from "../../AddressSuggestions";
 import {getImgPath} from "../../../utils/common/getAssetsPath";
+import useAppColor from '../../../hooks/useAppColor';
 
 interface AddressItemProps {
     selected: boolean,
@@ -37,12 +38,12 @@ interface AddressItemProps {
 
 
 const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, timeWork, disabled = false}) => {
-    console.log(timeWork)
+    const {isDarkTheme} = useAppSelector(state => state.main)
     const hasIncorrectTimeWork = timeWork?.some(item => item === undefined || item === null)
     if (disabled) {
         return (
             <GrayBorderedBlock disabled={disabled} className={`pd-20 d-f gap-10 cur-pointer ${styles.addressItem} `}>
-                <Geo/>
+                <Geo stroke={isDarkTheme ? "white" : "black"}/>
                 <div className={`f-column gap-5 ${styles.text}`}>
                     <h2>{text}</h2>
                     {
@@ -61,7 +62,7 @@ const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, time
     return (
         <GrayBorderedBlock clickHandler={selectedHandle} isFocused={selected}
                            className={`pd-20 d-f gap-10 cur-pointer ${styles.addressItem} `}>
-            <Geo/>
+            <Geo stroke={isDarkTheme ? "white" : "black"}/>
             <div className={`f-column gap-5 ${styles.text}`}>
                 <h2>{text}</h2>
                 {
@@ -114,7 +115,7 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, s
         handleFormNewAddress,
         isValidAddressData
     } = useNewAddress()
-
+    const appColor = useAppColor()
     useEffect(() => {
         if (setMapCenter) {
             setMapCenter([formNewAddress.lat, formNewAddress.long])
@@ -152,7 +153,7 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, s
                             <div className={"d-f al-center gap-5 svgRedStroke"}>
                                 Город, улица и дом
                                 <div className={"f-c-col w-content"}>
-                                    <Geo stroke={"#FCC8A5"} width={12}/>
+                                    <Geo stroke={appColor} width={12}/>
                                 </div>
                             </div>
                         }/>

@@ -51,7 +51,7 @@ const Footer = () => {
                             <a className={styles.navItem} href="mailto:gm.group@internet.ru">gm.group@internet.ru</a>
                             <a className={styles.navItem} href={`tel:${phone}`}>{formatPhoneNumber(phone)}</a>
                             <div className={`${styles.socials} d-f gap-10`}>
-                                <a target={"_blank"} href="https://vk.com/gulyakin_foodhall" className={`${styles.item} f-c-col`}>
+                                <a target={"_blank"} href="https://vk.com/gulyakin86" className={`${styles.item} f-c-col`}>
                                     <VkIcon />
                                 </a>
                             </div>

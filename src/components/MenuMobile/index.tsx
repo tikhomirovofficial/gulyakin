@@ -102,7 +102,7 @@ const MenuMobile = () => {
                             <a href={`tel:${phone}`}>{formatPhoneNumber(phone)}</a>
                         </div>
                         <div className={`d-f gap-10`}>
-                            <a target={"_blank"} href="https://vk.com/gulyakin_foodhall" className={`f-c-col ${styles.socialItem}`}>
+                            <a target={"_blank"} href="https://vk.com/gulyakin86" className={`f-c-col ${styles.socialItem}`}>
                                 <VkIcon />
                             </a>
                         </div>

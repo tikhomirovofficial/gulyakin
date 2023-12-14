@@ -245,10 +245,10 @@ export const CartSlice = createSlice({
 
         },
         setTotalPrice: (state, action: PayloadAction<number>) => {
-            state.totalPrice = Math.floor(action.payload)
+            state.totalPrice = ~~(action.payload)
         },
         setDiscountPrice: (state, action: PayloadAction<number>) => {
-            state.totalDiscountPrice = Math.floor(action.payload)
+            state.totalDiscountPrice = ~~(action.payload)
         }
     },
     extraReducers: builder => {
@@ -288,7 +288,7 @@ export const CartSlice = createSlice({
                             image: product.image,
                             dimensions: product.dimensions,
                             is_discount: product.is_discount,
-                            price_discount: Math.floor(product.price_discount || 0),
+                            price_discount: ~~(product.price_discount || 0),
                             price: product.price,
                             short_description: product.short_description,
                         },

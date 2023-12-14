@@ -8,7 +8,7 @@ import {
 } from "../../../features/modals/modalsSlice";
 import styles from "../cart.module.scss";
 import { domain } from "../../../http/instance/instances";
-import { editCountCart, removeFromCart, removeProduct } from "../../../features/cart/cartSlice";
+import { addProduct, addToCart, editCountCart, removeFromCart, removeProduct } from "../../../features/cart/cartSlice";
 import { MiniClose, MinusIcon, PlusIcon } from "../../../icons";
 import { formatNumberWithSpaces } from "../../../utils/common/numberWithSpaces";
 import useTheme from '../../../hooks/useTheme';
@@ -22,7 +22,7 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
     const dispatch = useAppDispatch()
     const gTheme = useTheme()
     console.log(product);
-    
+
     const { items, combos } = useAppSelector(state => state.products)
     const handleChange = () => {
         dispatch(setChangingAdditivesMode(true))
@@ -141,6 +141,7 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
 
                                     <div className={"d-f al-center gap-5"}>
                                         <div onClick={() => {
+
                                             if (count > 1) {
                                                 dispatch(editCountCart({
                                                     cart_id: id,
@@ -154,11 +155,22 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
 
                                         <div className={styles.count}>{count}</div>
                                         <div onClick={() => {
+                                            // const findedProduct = items.filter(item => product !== undefined ? item.id === product.id : null)[0]
+                                            // if (!findedProduct.supplements) {
+                                            //     dispatch(editCountCart({
+                                            //         cart_id: id,
+                                            //         count: count + 1,
+                                            //         id: product.id
+                                            //     }))
+                                            // } else {
+                                            //     dispatch(addToCart(findedProduct))
+                                            // }
                                             dispatch(editCountCart({
                                                 cart_id: id,
                                                 count: count + 1,
                                                 id: product.id
                                             }))
+
                                         }} className={"cur-pointer f-c-col"}><PlusIcon fill={isDarkTheme ? "#C8C7CC" : "#434343"} width={12} />
                                         </div>
 

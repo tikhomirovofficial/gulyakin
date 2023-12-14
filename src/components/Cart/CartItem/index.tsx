@@ -21,6 +21,8 @@ type CartItemProps = {
 const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, id, count, supplements, product }) => {
     const dispatch = useAppDispatch()
     const gTheme = useTheme()
+    console.log(product);
+    
     const { items, combos } = useAppSelector(state => state.products)
     const handleChange = () => {
         dispatch(setChangingAdditivesMode(true))
@@ -123,7 +125,7 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
                                         product.is_discount ?
                                             <div className={`sale p-rel`}>
                                                 <div className={`saleLine p-abs`}></div>
-                                                <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{product.price_discount} ₽</strong>
+                                                <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{(product.price * count) + supplementsPrice} ₽</strong>
                                             </div> : null
                                     }
                                     <b className={styles.price}>

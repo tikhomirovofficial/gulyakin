@@ -23,7 +23,7 @@ import {CartApi} from "../../http/api/cart.api";
 
 type DefferedAddingProduct = {
     id: number,
-    is_combo: boolean
+    is_combo: boolean,
     selected_product?: number
     supplements?: number[]
 } | null

@@ -46,7 +46,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
                     </div>
                     <div className={`${styles.orderInfoBottom} ${gTheme("lt-orderInfoBottom-c", "dk-orderInfoBottom-c")} d-f jc-end`}>
                         <p>Сумма</p>
-                        <b>{formatNumberWithSpaces(price)} ₽</b>
+                        <b>{formatNumberWithSpaces(~~(price))} ₽</b>
                     </div>
                 </div>
             </div>

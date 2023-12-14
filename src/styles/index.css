@@ -205,7 +205,7 @@ body::-webkit-scrollbar-thumb {
 }
 .errorBlock {
     border-radius: 4px;
-    background: #ff6328ff;
+    background: #FF2000;
 }
 .whiteSelectable:hover {
     border: 1px solid #fcc8a5;

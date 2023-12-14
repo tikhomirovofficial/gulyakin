@@ -35,7 +35,7 @@ const HistoryOrderWindow = () => {
                             </div>
                             <div className={`${styles.status} f-column`}>
                                 <p>Сумма заказа</p>
-                                <b>{formatNumberWithSpaces(data.price)} ₽</b>
+                                <b>{formatNumberWithSpaces(~~(data.price))} ₽</b>
                             </div>
                             <div className="f-column gap-10">
                                 <div className="al-end d-f jc-between">

@@ -1,10 +1,7 @@
-.askGeo {
-  b {
-    color: white;
-  }
-}
+
 .menu {
-  overflow-y: auto;
+  overflow-y: scroll;
+  min-height: 100vh;
   transform: translateX(200vw);
   background: rgba(5, 5, 5, 0.95);
   backdrop-filter: blur(7.5px);
@@ -14,7 +11,10 @@
   }
   .header {
     .menuSelectCity {
-      color: white;
+      p {
+        color: white;
+      }
+     
       path {
         stroke: white;
       }

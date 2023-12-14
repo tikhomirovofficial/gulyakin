@@ -22,7 +22,7 @@ const MenuMobile = () => {
     }
 
     return (
-        <div className={`${styles.menu} ${mobileMenu ? styles.menuOpened : ""} f-column p-fix top-0 left-0 h-100v w-100v t-transform-4`}>
+        <div className={`${styles.menu} ${mobileMenu ? styles.menuOpened : ""} f-column p-fix top-0 h-100v left-0 w-100v t-transform-4`}>
             <div className={`${styles.header} f-03  w-100p pd-20-0`}>
                 <div className="wrapper w-100p d-f jc-between ">
                     <div className="f-column gap-20">

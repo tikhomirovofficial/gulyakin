@@ -10,7 +10,7 @@ import {
     setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
 import { ProductRes, Supplement } from "../../../types/api.types";
-import { editCountCart } from "../../../features/cart/cartSlice";
+import { editCountCart, removeProduct } from "../../../features/cart/cartSlice";
 import { domain } from "../../../http/instance/instances";
 import useTheme from '../../../hooks/useTheme';
 import useAppColor from '../../../hooks/useAppColor';
@@ -48,6 +48,7 @@ const Product: FC<ProductProps & HasClassName> = ({
     const cart = useAppSelector(state => state.cart.items)
     const gTheme = useTheme()
     const appColor = useAppColor()
+    
     const handleSetAdditivesData = () => {
         dispatch(setProductAdditivesData({
             id: id,
@@ -95,6 +96,8 @@ const Product: FC<ProductProps & HasClassName> = ({
                 count: count - 1,
                 id: id
             }))
+        } else {
+            dispatch(removeProduct(id))
         }
     }
 

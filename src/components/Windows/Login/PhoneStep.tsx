@@ -7,6 +7,7 @@ import {Preloader} from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
 import {LoginContext, LoginContextType} from "./index";
 import useTheme from '../../../hooks/useTheme';
+import { Link } from 'react-router-dom';
 
 const LoginPhoneStep = () => {
     const {
@@ -85,8 +86,8 @@ const LoginPhoneStep = () => {
                     <RedButton onClick={handleSendPhone} disabled={phone.includes("_") || phone.length < 1}
                                className={"pd-10-0"}>Выслать
                         код</RedButton>
-                    <div className={`caption txt-center ${gTheme("lt-caption", "dk-caption")}`}>Продолжая, вы соглашаетесь <a href=""> со сбором и
-                        обработкой персональных данных и пользовательским соглашением</a></div>
+                    <div className={`caption txt-center ${gTheme("lt-caption", "dk-caption")}`}>Продолжая, вы соглашаетесь <Link to={"/"}> со сбором и
+                            обработкой персональных данных и пользовательским соглашением</Link></div>
                 </div>
 
             </div>

@@ -17,6 +17,7 @@
 .searchedMatches {
   overflow-y: auto;
   border-radius: 6px;
+  z-index: 9;
   max-height: 26.9rem;
   top: calc(100% + .5rem);
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
@@ -35,6 +36,7 @@
 
 .addressesList {
   overflow-y: auto;
+  
   max-height: 37rem;
   padding-right: 3px;
   .addressItem {
@@ -64,12 +66,23 @@
 }
 
 
-
 .partInputBlock {
   max-width: 16.6rem;
 }
 
+
 @media (max-width: 800px) {
+  .addressesList {
+    padding-bottom: 8.5rem;
+  }
+  .deliveryBtnBlock {
+    position: fixed;
+    left: 0;
+    padding: 0 3rem;
+    padding-bottom: 3rem;
+    background: white;
+    bottom: 0;
+  }
   .window {
     height: 100vh;
     border-radius: unset;
@@ -100,7 +113,7 @@
     display: none;
   }
   .deliveryWayForm {
-    overflow-y: auto;
+    padding-bottom: 10rem;
   }
   .deliveryWayForm::-webkit-scrollbar {
     display: none;

@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react';
 import styles from './order.module.scss'
 import InputWrapper from "../../components/Inputs/InputWrapper";
-import { PaymentCard, PaymentCash, Warning } from "../../icons";
+import { MinusIcon, PaymentCard, PaymentCash, PlusIcon, Warning } from "../../icons";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import RedButton from "../../components/Buttons/RedButton";
 import RadioInput from "../../components/Inputs/RadioInput";
 import SelectInput from "../../components/Inputs/SelectInput";
 import {
+    addToolsCount,
     handleOrderCallNeeded,
     handleOrderFormVal,
     handleOrderPaymentWay,
     handleOrderTime,
     handleSelectAddressId,
     handleSelectRestaurant,
+    minusToolsCount,
     sendOrder,
     setOrderError,
     setOrderSuccess
@@ -33,6 +35,8 @@ import useOrderDisabled from "../../hooks/useOrderDisabled";
 import useIsWorkTime from "../../hooks/useIsWorkTime";
 import useTheme from '../../hooks/useTheme';
 import useActualPrice from '../../hooks/useActualPrice';
+import { count } from 'console';
+import useAppColor from '../../hooks/useAppColor';
 
 
 const Order = () => {
@@ -52,6 +56,7 @@ const Order = () => {
         isPickup,
         restaurant,
         success,
+        toolsCount,
         addressId
     } = useAppSelector(state => state.forms.orderForm)
 
@@ -74,7 +79,7 @@ const Order = () => {
             setOrderError("")
         }
         const paymentTypeOrder = paymentWay == "CARD" ? 1 : 2
-        const timeDeliveryOrder = time == "FAST" ? "40 min" : time
+        const timeDeliveryOrder = time == "FAST" ? "Ближайшее" : time
         const deliveryTypeOrder = isPickup ? 3 : orderDetails.delivery_type
         const changeWith = paymentWay == "CASH" ? Number(changeSum) : undefined
         const userAddressId = !isPickup ? addressId : undefined
@@ -82,6 +87,7 @@ const Order = () => {
         const req: CreateOrderRequest = {
             delivery_type: deliveryTypeOrder,
             is_call: callNeeded,
+            count_tools: toolsCount,
             marekt_adress_id: isPickup ? restaurant : deliveryAddress.id,
             pyment_type: paymentTypeOrder,
             time_delivery: timeDeliveryOrder,
@@ -102,6 +108,7 @@ const Order = () => {
     const { orderDisabled } = useOrderDisabled({
         isCurrentWorkTime: isCurrent,
     })
+    const appColor = useAppColor()
     useOrderDetails()
 
     return (
@@ -239,6 +246,16 @@ const Order = () => {
                                                 dispatch(handleOrderCallNeeded())
                                             }} />
                                         </div>
+                                        <div className={`${styles.timeOrder} f-column gap-10`}>
+                                            <p className={gTheme("lt-c", "dk-c")}>Количество приборов</p>
+                                            <div className={"d-f al-center gap-5"}>
+                                                <div onClick={toolsCount > 1 ? () => dispatch(minusToolsCount()) : undefined} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon fill={appColor} />
+                                                </div>
+                                                <div className={`${styles.toolsCount} txt-center ${gTheme("lt-light-coal-c", "dk-lg-c")}`}>{toolsCount}</div>
+                                                <div onClick={toolsCount < 10 ? () => dispatch(addToolsCount()) : undefined} className={"cur-pointer f-c-col"}><PlusIcon fill={appColor} /></div>
+
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -294,7 +311,7 @@ const Order = () => {
                                         <RedButton onClick={handleCreateOrder}
                                             disabled={orderDisabled || (orderDetails.delivery_type === 0 && !isPickup)}
                                             className={`pd-15 ${styles.createOrderBtn}`}>Оформить заказ
-                                            на {formatNumberWithSpaces(cart.totalPrice + orderDetails.price)} ₽</RedButton>
+                                            на {formatNumberWithSpaces(actualPrice + orderDetails.price)} ₽</RedButton>
                                     </div>
 
                                     <div className={"w-100p d-f jc-center"}>
@@ -330,7 +347,9 @@ const Order = () => {
                                     <div className={`${styles.info} ${styles.part} pd-15 f-column gap-10`}>
                                         <div className={`${styles.productsInfo} f-column gap-5`}>
                                             <div className="f-row-betw">
-                                                <p>{cart.items.length} товаров</p>
+                                                <p>{cart.items.reduce((acc, cur) => {
+                                                    return acc + cur.count
+                                                }, 0)} товаров</p>
                                                 <p>{formatNumberWithSpaces(cart.totalPrice)} ₽</p>
                                             </div>
                                             <div className="f-row-betw">
@@ -358,7 +377,7 @@ const Order = () => {
                                                     }
                                                     <b>{formatNumberWithSpaces(actualPrice + orderDetails.price)} ₽</b>
                                                 </div>
-                                                
+
                                             </div>
 
                                         </div>

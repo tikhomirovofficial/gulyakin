@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from "../../pages/Main/main.module.scss";
-import {CreatedLogo, Logo, VkIcon} from "../../icons";
-import {Link} from "react-router-dom";
+import { CreatedLogo, Logo, VkIcon } from "../../icons";
+import { Link } from "react-router-dom";
 import { useAppSelector } from '../../app/hooks';
 import { formatPhoneNumber } from '../../utils/forms/formatePhone';
 import useTheme from '../../hooks/useTheme';
 
 const Footer = () => {
-    const {phone} = useAppSelector(state => state.main)
+    const { phone } = useAppSelector(state => state.main)
     const gTheme = useTheme()
 
     return (
@@ -17,15 +17,15 @@ const Footer = () => {
                     <nav className={"d-f jc-between flex-wrap"}>
                         <div className={`${styles.navColumn} ${styles.navLogoColumn} f-column gap-10`}>
                             <Link to={"/"}>
-                                <Logo className={styles.logo}/>
+                                <Logo className={styles.logo} />
                             </Link>
 
                             <Link className={styles.navItem} to={"/empty"}>О нас</Link>
                         </div>
                         <div className={`${styles.navColumn} f-column gap-10`}>
                             <b className={styles.navItem}>Работа</b>
-                            <Link className={styles.navItem} to={"/empty"}>В Гулякин <br/> Фудхолл</Link>
-                            <Link className={styles.navItem} to={"/empty"}>В Гуленьки <br/> Пельменная</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В Гулякин <br /> Фудхолл</Link>
+                            <Link className={styles.navItem} to={"/empty"}>В Гуленьки <br /> Пельменная</Link>
                             <Link className={styles.navItem} to={"/empty"}>В iFood</Link>
                             <Link className={styles.navItem} to={"/empty"}>В Воробушек</Link>
                             <Link className={styles.navItem} to={"/empty"}>В Gusto</Link>
@@ -52,7 +52,7 @@ const Footer = () => {
                             <a className={styles.navItem} href={`tel:${phone}`}>{formatPhoneNumber(phone)}</a>
                             <div className={`${styles.socials} d-f gap-10`}>
                                 <a target={"_blank"} href="https://vk.com/gulyakin_foodhall" className={`${styles.item} f-c-col`}>
-                                    <VkIcon/>
+                                    <VkIcon />
                                 </a>
                             </div>
                         </div>
@@ -65,7 +65,10 @@ const Footer = () => {
                         </div>
                         <div className={styles.created}>
                             <p>Создание сайта</p>
-                            <CreatedLogo/>
+                            <a target={"_blank"} href="https://vk.com/vspodosenov">
+                                <CreatedLogo />
+                            </a>
+
                         </div>
                     </div>
                 </div>

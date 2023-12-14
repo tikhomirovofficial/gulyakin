@@ -39,6 +39,7 @@ const EditProductVariant = () => {
     const saveMode = useAppSelector(state => state.modals.isChangingModeAdditives)
     const handleProductWindow = () => dispatch(handleProductAdditives())
     
+    
     const RenderSupplementsList = () => {
         if (additives?.length) {
             return <div className={`${styles.additivesListBlock} f-1 gap-10 f-column`}>

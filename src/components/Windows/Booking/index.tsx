@@ -27,6 +27,7 @@ import useBookingTimes from "../../../hooks/useBookingTimes";
 import { getDayOfWeekNumber } from "../../../utils/datetime/getWeekDay";
 import { deleteSeconds } from "../../../utils/datetime/deleteSecondsInTime";
 import useTheme from "../../../hooks/useTheme";
+import { Link } from "react-router-dom";
 
 const countGuests = [
     "1",
@@ -126,7 +127,7 @@ const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
                         <CloseIcon isDark={true} />
                     </div>
                 </div>
-                
+
                 <div className="f-column gap-30">
                     <div className={`${styles.bookingForm} f-column gap-20`}>
                         <h2>Бронирование столика</h2>
@@ -208,8 +209,8 @@ const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
                                 className={"pd-10-0"}>Забронировать</RedButton>
                         </div>
 
-                        <div className={`caption ${gTheme("lt-caption", "dk-caption")} txt-center`}>Продолжая, вы соглашаетесь <a href=""> со сбором и
-                            обработкой персональных данных и пользовательским соглашением</a></div>
+                        <div className={`caption ${gTheme("lt-caption", "dk-caption")} txt-center`}>Продолжая, вы соглашаетесь <Link to={"/"}> со сбором и
+                            обработкой персональных данных и пользовательским соглашением</Link></div>
                     </div>
                 </div>
 

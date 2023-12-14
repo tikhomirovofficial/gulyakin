@@ -310,6 +310,7 @@ export type CreateOrderRequest = {
     user_adress_id?: number,
     marekt_adress_id?: number,
     is_call: boolean,
+    count_tools: number,
     time_delivery: string,
     delivery_type: number,
     pyment_type: number,

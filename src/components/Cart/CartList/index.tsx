@@ -24,6 +24,8 @@ const CartList = () => {
                             product={{
                                 products: [],
                                 dimensions: item.product.dimensions,
+                                is_discount: item.product.is_discount,
+                                price_discount: ~~(item.product.price_discount || 0),
                                 composition: item.product.composition,
                                 id: item.product.id,
                                 image: item.product.image,

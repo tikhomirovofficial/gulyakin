@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React, {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {UserApi} from "../../../http/api/user.api";
@@ -228,8 +228,8 @@ const LoginCodeStep = () => {
                     <RedButton onClick={handleNewCode} disabled={freezed} className={"pd-10-0"}>
                         Получить новый код {freezed ? `через ${codeFreezedSeconds} сек` : ""}
                     </RedButton>
-                    <div className={`caption txt-center ${gTheme("lt-caption", "dk-caption")}`}>Продолжая, вы соглашаетесь <a href=""> со сбором и
-                        обработкой персональных данных и пользовательским соглашением</a></div>
+                    <div className={`caption txt-center ${gTheme("lt-caption", "dk-caption")}`}>Продолжая, вы соглашаетесь <Link to={"/"}> со сбором и
+                            обработкой персональных данных и пользовательским соглашением</Link></div>
                 </div>
 
             </div>

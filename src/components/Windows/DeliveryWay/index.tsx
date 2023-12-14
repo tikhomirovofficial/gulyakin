@@ -1,31 +1,31 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import WindowBody from "../WhiteWrapper";
-import {CloseIcon, Geo} from "../../../icons";
+import { CloseIcon, Geo } from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
 import ShadowWrapper from "../ShadowWrapper";
 import styles from './deliveryWay.module.scss'
 import Switcher from "../../Switcher";
 import InputWrapper from "../../Inputs/InputWrapper";
-import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
+import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
     handleDeliveryVariant,
     handleDeliveryWayWindow,
     setAddressSuccess,
     setAddressSuccessTitle
 } from "../../../features/modals/modalsSlice";
-import {handleSelectAddressId, handleSelectRestaurant} from "../../../features/forms/formsSlice";
-import {addToCart, addToCartCombo, setProductAfterAddress} from "../../../features/cart/cartSlice";
-import {setSelectedInDelivery, setSelectedInPickup} from "../../../features/restaurants/restaurantsSlice";
-import {addAddressUser} from "../../../features/profile/profileSlice";
-import {AddressByCityItem, AddressByMarketCity} from "../../../types/api.types";
-import {deleteSeconds} from "../../../utils/datetime/deleteSecondsInTime";
+import { handleSelectAddressId, handleSelectRestaurant } from "../../../features/forms/formsSlice";
+import { addToCart, addToCartCombo, setProductAfterAddress } from "../../../features/cart/cartSlice";
+import { setSelectedInDelivery, setSelectedInPickup } from "../../../features/restaurants/restaurantsSlice";
+import { addAddressUser } from "../../../features/profile/profileSlice";
+import { AddressByCityItem, AddressByMarketCity } from "../../../types/api.types";
+import { deleteSeconds } from "../../../utils/datetime/deleteSecondsInTime";
 import useCartAdd from "../../../hooks/useCartAdd";
 import useMarketLogo from "../../../hooks/useMarketLogo";
 import useNewAddress from "../../../hooks/useNewAddress";
 import AddressSuggestions from "../../AddressSuggestions";
-import {getImgPath} from "../../../utils/common/getAssetsPath";
+import { getImgPath } from "../../../utils/common/getAssetsPath";
 import useAppColor from '../../../hooks/useAppColor';
 import useTheme from '../../../hooks/useTheme';
 
@@ -38,13 +38,13 @@ interface AddressItemProps {
 }
 
 
-const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, timeWork, disabled = false}) => {
-    const {isDarkTheme} = useAppSelector(state => state.main)
+const AddressItem: FC<AddressItemProps> = ({ selected, text, selectedHandle, timeWork, disabled = false }) => {
+    const { isDarkTheme } = useAppSelector(state => state.main)
     const hasIncorrectTimeWork = timeWork?.some(item => item === undefined || item === null)
     if (disabled) {
         return (
             <GrayBorderedBlock disabled={disabled} className={`pd-20 d-f gap-10 cur-pointer ${styles.addressItem} `}>
-                <Geo stroke={isDarkTheme ? "white" : "black"}/>
+                <Geo stroke={isDarkTheme ? "white" : "black"} />
                 <div className={`f-column gap-5 ${styles.text}`}>
                     <h2>{text}</h2>
                     {
@@ -62,8 +62,8 @@ const AddressItem: FC<AddressItemProps> = ({selected, text, selectedHandle, time
     }
     return (
         <GrayBorderedBlock clickHandler={selectedHandle} isFocused={selected}
-                           className={`pd-20 d-f gap-10 cur-pointer ${styles.addressItem} `}>
-            <Geo stroke={isDarkTheme ? "white" : "black"}/>
+            className={`pd-20 d-f gap-10 cur-pointer ${styles.addressItem} `}>
+            <Geo stroke={isDarkTheme ? "white" : "black"} />
             <div className={`f-column gap-5 ${styles.text}`}>
                 <h2>{text}</h2>
                 {
@@ -96,8 +96,9 @@ type DeliveryWayCommonProps = {
 type SearchAddressProps = {
     handleAddress: () => any
 } & FindedAddress
-export const SearchAddressItem: FC<SearchAddressProps> = ({address, handleAddress, city}) => {
+export const SearchAddressItem: FC<SearchAddressProps> = ({ address, handleAddress, city }) => {
     const gTheme = useTheme()
+
     return (
         <div onClick={handleAddress} className={`pd-10 ${styles.searchAddressItem} ${gTheme("lt-searchItem", "dk-searchItem")} cur-pointer f-column gap-5`}>
             <b>{address}</b>
@@ -106,7 +107,7 @@ export const SearchAddressItem: FC<SearchAddressProps> = ({address, handleAddres
     )
 }
 
-const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, setMapCenter, handleSuccess}) => {
+const DeliveryVariant: FC<DeliveryWayCommonProps> = ({ addToCartWithAfterClose, setMapCenter, handleSuccess }) => {
     const dispatch = useAppDispatch()
     const {
         addressCoordsDefined,
@@ -155,14 +156,14 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, s
                             <div className={"d-f al-center gap-5 svgRedStroke"}>
                                 Город, улица и дом
                                 <div className={"f-c-col w-content"}>
-                                    <Geo stroke={appColor} width={12}/>
+                                    <Geo stroke={appColor} width={12} />
                                 </div>
                             </div>
-                        }/>
+                        } />
                     {
                         findedAddresses.length && !addressCoordsDefined ?
                             <AddressSuggestions findedAddresses={findedAddresses}
-                                                selectAddress={selectSearchedAddress}/> : null
+                                selectAddress={selectSearchedAddress} /> : null
                     }
                 </div>
                 <div className={`f-row-betw gap-20 ${styles.inputParts} flex-wrap`}>
@@ -173,7 +174,7 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, s
                         inputId={"entrance-input"}
                         className={styles.partInputBlock}
                         placeholder={""}
-                        labelText={"Подъезд"}/>
+                        labelText={"Подъезд"} />
                     <InputWrapper
                         setVal={val => handleFormNewAddress("code_door", val)}
                         changeVal={(e) => handleFormNewAddress("code_door", e.currentTarget.value)}
@@ -181,7 +182,7 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, s
                         inputId={"code_door-input"}
                         className={styles.partInputBlock}
                         placeholder={""}
-                        labelText={"Код двери"}/>
+                        labelText={"Код двери"} />
 
                 </div>
                 <div className={`f-row-betw gap-20 ${styles.inputParts} flex-wrap`}>
@@ -192,7 +193,7 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, s
                         inputId={"floor-input"}
                         className={styles.partInputBlock}
                         placeholder={""}
-                        labelText={"Этаж"}/>
+                        labelText={"Этаж"} />
                     <InputWrapper
                         setVal={val => handleFormNewAddress("flat", val)}
                         changeVal={(e) => handleFormNewAddress("flat", e.currentTarget.value)}
@@ -200,22 +201,25 @@ const DeliveryVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, s
                         inputId={"flat-input"}
                         className={styles.partInputBlock}
                         placeholder={""}
-                        labelText={"Квартира"}/>
+                        labelText={"Квартира"} />
 
                 </div>
             </div>
-            <RedButton onClick={handleAddAddress} disabled={!isValidAddressData}
-                       className={`pd-10-0 ${styles.deliveryBtn}`}>Добавить</RedButton>
+            <div className={`w-100p d-f ${styles.deliveryBtnBlock} `}>
+                <RedButton onClick={handleAddAddress} disabled={!isValidAddressData}
+                    className={`pd-10-0 w-100p ${styles.deliveryBtn}`}>Добавить</RedButton>
+            </div>
+
         </>
     )
 }
 const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({
-                                                               addToCartWithAfterClose,
-                                                               handleSuccess,
-                                                               handleIsSelectingAddress
-                                                           }) => {
-    const {addresses} = useAppSelector(state => state.profile)
-    const {selectedInDelivery} = useAppSelector(state => state.restaurants)
+    addToCartWithAfterClose,
+    handleSuccess,
+    handleIsSelectingAddress
+}) => {
+    const { addresses } = useAppSelector(state => state.profile)
+    const { selectedInDelivery } = useAppSelector(state => state.restaurants)
     const dispatch = useAppDispatch()
     const gTheme = useTheme()
 
@@ -240,22 +244,26 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({
                 {
                     addresses.map(item => (
                         <AddressItem selected={item.id === selectedInDelivery} text={item.city}
-                                     key={item.id} selectedHandle={() => dispatch(setSelectedInDelivery(item.id))}
+                            key={item.id} selectedHandle={() => dispatch(setSelectedInDelivery(item.id))}
                         />
                     ))
                 }
 
             </div>
-            <b onClick={handleToNewAddress} className={`${gTheme("lt-active-c", "dk-active-c")} cur-pointer`}>Добавить адрес</b>
-            <RedButton disabled={selectedInDelivery == -1} onClick={handleAddAddressDelivery}
-                       className={`pd-10-0 ${styles.deliveryBtn}`}>Выбрать</RedButton>
+
+            <div className={`w-100p d-f ${styles.deliveryBtnBlock} f-column gap-10`}>
+                <b style={{ maxWidth: "fit-content" }} onClick={handleToNewAddress} className={`${gTheme("lt-active-c", "dk-active-c")} cur-pointer`}>Добавить адрес</b>
+                <RedButton disabled={selectedInDelivery == -1} onClick={handleAddAddressDelivery}
+                    className={`pd-10-0 ${styles.deliveryBtn}`}>Выбрать</RedButton>
+            </div>
+
         </>
     )
 
 }
-const PickupVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, handleSuccess}) => {
-    const {cityAddresses} = useAppSelector(state => state.main)
-    const {selectedInPickup} = useAppSelector(state => state.restaurants)
+const PickupVariant: FC<DeliveryWayCommonProps> = ({ addToCartWithAfterClose, handleSuccess }) => {
+    const { cityAddresses } = useAppSelector(state => state.main)
+    const { selectedInPickup } = useAppSelector(state => state.restaurants)
 
     const dispatch = useAppDispatch()
 
@@ -275,16 +283,20 @@ const PickupVariant: FC<DeliveryWayCommonProps> = ({addToCartWithAfterClose, han
                 cityAddresses.length ? <div className={`f-column gap-10 h-100p ${styles.addressesList}`}>
                     {cityAddresses.map((item) => (
                         <AddressItem text={item.adress}
-                                     timeWork={[item.work_with, item.works_until]}
-                                     key={item.id} selectedHandle={() => selectPickupAddress(item.id)}
-                                     selected={item.id === selectedInPickup}/>
+                            timeWork={[item.work_with, item.works_until]}
+                            key={item.id} selectedHandle={() => selectPickupAddress(item.id)}
+                            selected={item.id === selectedInPickup} />
                     ))}
                 </div>
                     : <p>Пожалуйста, выберите товары только из одного магазина, либо оформите доставку</p>
             }
 
-            <RedButton onClick={handleAddAddressPickup} disabled={selectedInPickup == -1}
-                       className={"pd-10-0"}>Выбрать</RedButton>
+            <div className={`w-100p d-f ${styles.deliveryBtnBlock}`}>
+                <RedButton onClick={handleAddAddressPickup} disabled={selectedInPickup == -1}
+                    className={"pd-10-0 w-100p"}>Выбрать</RedButton>
+            </div>
+
+
         </>
 
     )
@@ -295,10 +307,10 @@ const DeliveryWay = () => {
     const dispatch = useAppDispatch()
     const handleAddedPopup = useCartAdd()
 
-    const {variant} = useAppSelector(state => state.modals.deliveryWay)
-    const {addresses, isPhone, market, cityAddresses, pickupAddresses, canOrder} = useAppSelector(state => state.main)
+    const { variant } = useAppSelector(state => state.modals.deliveryWay)
+    const { addresses, isPhone, market, cityAddresses, pickupAddresses, canOrder } = useAppSelector(state => state.main)
     const profileAddresses = useAppSelector(state => state.profile.addresses)
-    const {selectedInPickup, selectedInDelivery} = useAppSelector(state => state.restaurants)
+    const { selectedInPickup, selectedInDelivery } = useAppSelector(state => state.restaurants)
     const [currentAddress, setCurrentAddress] = useState<AddressByCityItem | null>(null)
     const [deliveryFromProfile, setDeliveryFromProfile] = useState(profileAddresses.length > 0)
     const [coordsNewAddres, setCoordsNewAddress] = useState([0, 0])
@@ -321,16 +333,16 @@ const DeliveryWay = () => {
     }, [cityAddresses, selectedInPickup])
 
     const getMapCenter = () => {
-        if(variant) {
+        if (variant) {
             if (currentAddress !== null && currentAddress !== undefined) {
                 return [currentAddress.long, currentAddress.lat]
             }
             return [0, 0]
         }
-        if(deliveryFromProfile) {
-            if(profileAddresses.length > 0) {
+        if (deliveryFromProfile) {
+            if (profileAddresses.length > 0) {
                 const address = profileAddresses.filter(item => item.id === selectedInDelivery)[0]
-                if(address !== undefined) {
+                if (address !== undefined) {
                     return [address.lat, address.long]
                 }
                 return [profileAddresses[0].lat, profileAddresses[0].long]
@@ -349,7 +361,7 @@ const DeliveryWay = () => {
         }, 2000)
     }
 
-    const {addProductAfterAddress} = useAppSelector(state => state.cart)
+    const { addProductAfterAddress } = useAppSelector(state => state.cart)
     const products = useAppSelector(state => state.products)
 
     const addToCartWithClose = () => {
@@ -413,7 +425,7 @@ const DeliveryWay = () => {
         <ShadowWrapper onClick={closeDeliveryWay}>
             <WindowBody className={`${styles.window} f-row-betw p-rel`}>
                 <div onClick={closeDeliveryWay} className={"modalAbsoluteClose closeWrapper p-abs"}>
-                    <CloseIcon isDark={true}/>
+                    <CloseIcon isDark={true} />
                 </div>
                 <div className={`${styles.content} f-column-betw pd-30 gap-20`}>
                     <div className="top f-column gap-10">
@@ -428,18 +440,18 @@ const DeliveryWay = () => {
                         </div>
 
                         <Switcher onSwitch={handleDeliveryWay} currentSelected={variant}
-                                  elements={["Доставка", "Самовывоз"]}/>
+                            elements={["Доставка", "Самовывоз"]} />
 
                     </div>
                     {isPhone ? <div className={styles.map}>
                         <YMaps>
                             <Map className={`${styles.mapContainer} h-100p w-100p`}
-                                 state={{
-                                     center: getMapCenter(),
-                                     zoom: 16
-                                 }}>
+                                state={{
+                                    center: getMapCenter(),
+                                    zoom: 16
+                                }}>
                                 {
-                                    currentAddress !== null && currentAddress !== undefined  && variant?
+                                    currentAddress !== null && currentAddress !== undefined && variant ?
                                         <Placemark geometry={[currentAddress.long, currentAddress.lat]} options={
                                             {
                                                 iconLayout: 'default#image', // Используем стандартный макет изображения
@@ -447,7 +459,7 @@ const DeliveryWay = () => {
                                                 iconImageSize: [52, 52], // Размер вашей иконки
                                                 iconImageOffset: [-26, -52],
                                             }
-                                        }/> :
+                                        } /> :
 
                                         !variant && mapCenterCoords !== undefined ? <Placemark geometry={[mapCenterCoords[0], mapCenterCoords[1]]} options={
                                             {
@@ -456,7 +468,7 @@ const DeliveryWay = () => {
                                                 iconImageSize: [30, 46], // Размер вашей иконки
                                                 iconImageOffset: [-15, -46],
                                             }
-                                        }/> : null
+                                        } /> : null
 
                                 }
 
@@ -469,11 +481,11 @@ const DeliveryWay = () => {
                     {
                         !variant ?
                             !deliveryFromProfile ?
-                                <DeliveryVariant setMapCenter={setCoordsNewAddress} addToCartWithAfterClose={addToCartWithClose}/> :
+                                <DeliveryVariant setMapCenter={setCoordsNewAddress} addToCartWithAfterClose={addToCartWithClose} /> :
                                 <AddressProfileVariant handleSuccess={handleSuccess}
-                                                       handleIsSelectingAddress={handleAddressFromProfile}
-                                                       addToCartWithAfterClose={addToCartWithClose}/> :
-                            <PickupVariant handleSuccess={handleSuccess} addToCartWithAfterClose={addToCartWithClose}/>
+                                    handleIsSelectingAddress={handleAddressFromProfile}
+                                    addToCartWithAfterClose={addToCartWithClose} /> :
+                            <PickupVariant handleSuccess={handleSuccess} addToCartWithAfterClose={addToCartWithClose} />
 
                     }
 
@@ -483,12 +495,12 @@ const DeliveryWay = () => {
                         <div className={styles.map}>
                             <YMaps>
                                 <Map className={"h-100p w-100p"}
-                                     state={{
-                                         center: getMapCenter(),
-                                         zoom: 17
-                                     }}>
+                                    state={{
+                                        center: getMapCenter(),
+                                        zoom: 17
+                                    }}>
                                     {
-                                        currentAddress !== null && currentAddress !== undefined  && variant?
+                                        currentAddress !== null && currentAddress !== undefined && variant ?
                                             <Placemark geometry={[currentAddress.long, currentAddress.lat]} options={
                                                 {
                                                     iconLayout: 'default#image', // Используем стандартный макет изображения
@@ -496,7 +508,7 @@ const DeliveryWay = () => {
                                                     iconImageSize: [52, 52], // Размер вашей иконки
                                                     iconImageOffset: [-26, -52],
                                                 }
-                                            }/> :
+                                            } /> :
 
                                             !variant && mapCenterCoords !== undefined ? <Placemark geometry={[mapCenterCoords[0], mapCenterCoords[1]]} options={
                                                 {
@@ -505,7 +517,7 @@ const DeliveryWay = () => {
                                                     iconImageSize: [30, 46], // Размер вашей иконки
                                                     iconImageOffset: [-15, -46],
                                                 }
-                                            }/> : null
+                                            } /> : null
 
                                     }
 

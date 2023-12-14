@@ -1,19 +1,19 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {withFieldType} from "../../utils/forms/withFieldType";
-import {UserData} from "../../types/user.types";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { withFieldType } from "../../utils/forms/withFieldType";
+import { UserData } from "../../types/user.types";
 import {
     BookingCreateRequest,
     BookingCreateResponse,
     CreateOrderRequest,
     CreateOrderResponse
 } from "../../types/api.types";
-import {AxiosResponse} from "axios";
-import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
-import {OrderApi} from "../../http/api/order.api";
-import {validate} from "../../utils/forms/validator";
-import {profileRules} from "../../validator/forms.rules";
-import {resetOrderForm} from "../../utils/common/resetOrderForm";
-import {AddressesApi} from "../../http/api/addresses.api";
+import { AxiosResponse } from "axios";
+import { handleTokenRefreshedRequest } from "../../utils/auth/handleThunkAuth";
+import { OrderApi } from "../../http/api/order.api";
+import { validate } from "../../utils/forms/validator";
+import { profileRules } from "../../validator/forms.rules";
+import { resetOrderForm } from "../../utils/common/resetOrderForm";
+import { AddressesApi } from "../../http/api/addresses.api";
 
 export type FieldType = {
     val: string,
@@ -37,6 +37,7 @@ type OrderFormType = Pick<ProfileFormType, "name"> & {
     isPickup: boolean,
     restaurant: number,
     addressId: number,
+    toolsCount: number,
     success: boolean,
     error: string
 }
@@ -85,6 +86,7 @@ const initialState: FormsSliceState = {
         },
         callNeeded: false,
         time: "FAST",
+        toolsCount: 1,
         paymentWay: "CARD",
         phone: "",
         address: {
@@ -121,7 +123,7 @@ type PayloadHandleBooking = PayloadAction<FormChangeValByKey<BookingFormType>>
 
 export const sendOrder = createAsyncThunk(
     'order/send',
-    async (request: CreateOrderRequest, {dispatch}) => {
+    async (request: CreateOrderRequest, { dispatch }) => {
         const res: AxiosResponse<CreateOrderResponse> = await handleTokenRefreshedRequest(OrderApi.Create, request)
         return res
 
@@ -129,7 +131,7 @@ export const sendOrder = createAsyncThunk(
 )
 export const createBooking = createAsyncThunk(
     'booking/create',
-    async (request: BookingCreateRequest, {dispatch}) => {
+    async (request: BookingCreateRequest, { dispatch }) => {
         const res: AxiosResponse<BookingCreateResponse> = await AddressesApi.CreateBooking(request)
         return res.data
 
@@ -160,7 +162,7 @@ export const formsSlice = createSlice({
                 name: newProfileFormData.name.val
             }, profileRules)
 
-            if(state.profileErrsVisible) {
+            if (state.profileErrsVisible) {
                 state.profileErrsVisible = false
             }
         },
@@ -180,19 +182,31 @@ export const formsSlice = createSlice({
             state.bookingError = action.payload
         },
         setOrderSuccess: (state, action) => {
-          state.orderForm = {
-              ...state.orderForm,
-              success: action.payload
-          }
+            state.orderForm = {
+                ...state.orderForm,
+                success: action.payload
+            }
         },
         setBookingForm: (state, action: PayloadAction<BookingFormType>) => {
-          state.bookingForm = action.payload
+            state.bookingForm = action.payload
         },
         setBookingAddress: (state, action) => {
-          state.orderForm = {
-              ...state.orderForm,
-              addressId: action.payload
-          }
+            state.orderForm = {
+                ...state.orderForm,
+                addressId: action.payload
+            }
+        },
+        minusToolsCount: (state) => {
+            state.orderForm = {
+                ...state.orderForm,
+                toolsCount: state.orderForm.toolsCount > 1 ? state.orderForm.toolsCount - 1 : 1
+            }
+        },
+        addToolsCount: (state) => {
+            state.orderForm = {
+                ...state.orderForm,
+                toolsCount: state.orderForm.toolsCount < 10 ? state.orderForm.toolsCount + 1 : 10
+            }
         },
         setProfileForm: (state, action: PayloadAction<UserData>) => {
             const userData = action.payload
@@ -239,10 +253,10 @@ export const formsSlice = createSlice({
         },
 
         setDeliveryVariant: (state, action) => {
-          state.orderForm = {
-              ...state.orderForm,
-              isPickup: action.payload
-          }
+            state.orderForm = {
+                ...state.orderForm,
+                isPickup: action.payload
+            }
         },
         handleOrderFormEditing: (state, action: PayloadHandleOrderEditing) => {
             const key = action.payload
@@ -336,7 +350,7 @@ export const formsSlice = createSlice({
     extraReducers: builder => {
         builder.addCase(sendOrder.fulfilled, (state, action) => {
             const redirectHref = action.payload.data.payment_url
-            if(redirectHref !== undefined) {
+            if (redirectHref !== undefined) {
                 resetOrderForm()
                 window.location.href = action.payload.data.payment_url
                 return;
@@ -379,6 +393,8 @@ export const {
     setBookingForm,
     handleOrderFormVal,
     handleOrderFormEditing,
+    minusToolsCount,
+    addToolsCount,
     handleOrderCallNeeded,
     setBookingAddress,
     handleOrderTime,

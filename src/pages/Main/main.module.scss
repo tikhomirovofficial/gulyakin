@@ -26,6 +26,9 @@
 .addedTextColor {
   color: #434343 !important;
 }
+.addedDimensions {
+  text-wrap: nowrap;
+}
 .addedPopupOpened {
   opacity: 1;
   visibility: visible;
@@ -464,6 +467,7 @@
     nav {
       width: unset;
       gap: 1.2rem;
+      max-height: 1.4rem;
       justify-content: center;
 
       .item {

@@ -31,7 +31,7 @@
     background: #e2e2e9;
 }
 .lt-active-c {
-    color: #9a9a9a;
+    color: #9a9a9a !important;
 }
 .lt-hover-active-bg:hover {
     background: #9a9a9a !important;
@@ -335,4 +335,10 @@
 .lt-lightBtn {
     color: #9a9a9a;
     border: 1px solid #9a9a9a;
+}
+.lt-searchItem:hover {
+    background: #F3F3F7;
+}
+.lt-searchItem p {
+    color: #B0B0B0 !important;
 }

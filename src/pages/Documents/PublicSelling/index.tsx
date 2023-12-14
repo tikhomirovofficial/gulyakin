@@ -1,14 +1,16 @@
 import React from 'react';
 import styles from '../documents.module.scss'
+import useTheme from '../../../hooks/useTheme';
 const PublicSelling = () => {
+    const gTheme = useTheme()
     return (
         <div className={"pageTop"}>
             <div className="wrapper">
                 <div className="emptyBlock f-column gap-40">
-                    <div className="sectionTitle grayColor_dark">
+                    <div className={`sectionTitle ${gTheme("lt-coal-c", "dk-gray-c")}`}>
                         Публичная оферта о продаже товаров <br/> дистанционным способом
                     </div>
-                    <p className={styles.text}>
+                    <p className={`${styles.text} ${gTheme("lt-c", "dk-c")}`}>
                         Термины
                         <br/>Оферта — предложение Продавца заключить Договор на изложенных в данном документе условиях.
                         <br/>Договор — договор розничной купли-продажи товаров, заключённый между Покупателем и Продавцом.

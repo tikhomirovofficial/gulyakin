@@ -19,6 +19,7 @@ import {
     setProductAfterLogin
 } from "../../../features/cart/cartSlice";
 import useCartAdd from "../../../hooks/useCartAdd";
+import useTheme from "../../../hooks/useTheme";
 
 const LoginCodeStep = () => {
     const navigate = useNavigate()
@@ -44,7 +45,7 @@ const LoginCodeStep = () => {
     const productAfterLogin = useAppSelector(state => state.cart.addProductAfterLogin)
     const products = useAppSelector(state => state.products)
     const dispatch = useAppDispatch()
-
+    const gTheme = useTheme()
     const handleAddedPopup = useCartAdd()
 
     const handleSendPhone = async () => {
@@ -73,7 +74,7 @@ const LoginCodeStep = () => {
     }
     const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
         const validSymbolAndValue = e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))
-
+       
         if (validSymbolAndValue) {
             setCodeErr("")
             setCode(prev => {
@@ -184,7 +185,7 @@ const LoginCodeStep = () => {
                     </p>
                     <div className="d-f gap-10">
                         <b>{phone}</b>
-                        <b onClick={() => setLoginStep(0)} className={styles.changePhone}>Изменить</b>
+                        <b onClick={() => setLoginStep(0)} className={`${styles.changePhone} ${gTheme("lt-active-c", "dk-active-c")}`}>Изменить</b>
                     </div>
 
                 </div>
@@ -227,7 +228,7 @@ const LoginCodeStep = () => {
                     <RedButton onClick={handleNewCode} disabled={freezed} className={"pd-10-0"}>
                         Получить новый код {freezed ? `через ${codeFreezedSeconds} сек` : ""}
                     </RedButton>
-                    <div className={"caption txt-center"}>Продолжая, вы соглашаетесь <a href=""> со сбором и
+                    <div className={`caption txt-center ${gTheme("lt-caption", "dk-caption")}`}>Продолжая, вы соглашаетесь <a href=""> со сбором и
                         обработкой персональных данных и пользовательским соглашением</a></div>
                 </div>
 

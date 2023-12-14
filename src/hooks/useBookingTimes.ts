@@ -13,6 +13,8 @@ const useBookingTimes = (params: BookingTimesHookProps): string[] => {
         params.workStartTime,
         params.workEndTime
     )
+    
+    
     //
     const defaultParams = {
         startDate: datesWithTimes[0], // Год, месяц (от 0 до 11), день, час, минута
@@ -21,7 +23,7 @@ const useBookingTimes = (params: BookingTimesHookProps): string[] => {
         trimPast: params.isToday, // Флаг обрезания времени, если оно прошло текущее время
         currentTime: new Date(), // Обязательное передача текущего времени
     };
-
+    
     const times = getTimes(defaultParams)
     return times
 };

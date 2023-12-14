@@ -1,14 +1,16 @@
 import React from 'react';
 import styles from '../documents.module.scss'
+import useTheme from '../../../hooks/useTheme';
 const UserDocument = () => {
+    const gTheme = useTheme()
     return (
         <div className={"pageTop"}>
             <div className="wrapper">
                 <div className="emptyBlock f-column gap-40">
-                    <div className="sectionTitle grayColor_dark">
+                    <div className={`sectionTitle ${gTheme("lt-coal-c", "dk-gray-c")}`}>
                         Пользовательское соглашение
                     </div>
-                    <p className={styles.text}>
+                    <p className={`${styles.text} ${gTheme("lt-c", "dk-c")}`}>
                         <br/>Термины
                         <br/>Соглашение — предложение Компании использовать Сайт и Мобильное приложение на изложенных в данном документе условиях.
                         <br/>Компания — ООО "ГМ ГРУПП" (ИНН 8606018000, ОГРН 1228600002025), находится по адресу: 628405, Ханты-Мансийский автономный округ - Югра, г.о. Сургут, г Сургут, пр-кт Комсомольский, д. 19.

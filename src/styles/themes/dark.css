@@ -38,7 +38,7 @@
     color: #4f4f4f;
 }
 .dk-active-c {
-    color: #f6caaf;
+    color: #f6caaf !important;
 }
 .dk-hover-active-bg:hover {
     background: #f6caaf !important;
@@ -237,4 +237,10 @@
 .dk-lightBtn {
     color: #c3c3c3;
     border: 1px solid #c3c3c3;
+}
+.dk-searchItem:hover {
+    background: #363844;
+}
+.dk-searchItem p {
+    color: #B0B0B0 !important;
 }

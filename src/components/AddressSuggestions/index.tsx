@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import styles from "../Windows/DeliveryWay/deliveryWay.module.scss";
 import {FindedAddress, SearchAddressItem} from "../Windows/DeliveryWay";
+import useTheme from '../../hooks/useTheme';
 
 type AddressSuggestionsProps = {
     findedAddresses: FindedAddress[],
@@ -8,8 +9,9 @@ type AddressSuggestionsProps = {
 
 }
 const AddressSuggestions: FC<AddressSuggestionsProps> = ({findedAddresses, selectAddress}) => {
+    const gTheme = useTheme()
     return (
-        <div className={`${styles.searchedMatches} miniScrollbar  pd-10 p-abs left-0 w-100p bg-white`}>
+        <div className={`${styles.searchedMatches} ${gTheme("lt-white-bg", "dk-light-gray-bg")} miniScrollbar  pd-10 p-abs left-0 w-100p bg-white`}>
             {
                 findedAddresses.map(item => (
                     item.house !== null && item.flat === null ?

@@ -26,6 +26,7 @@ import { checkDateAndTime } from "../../../utils/datetime/checkDateAndTime";
 import useBookingTimes from "../../../hooks/useBookingTimes";
 import { getDayOfWeekNumber } from "../../../utils/datetime/getWeekDay";
 import { deleteSeconds } from "../../../utils/datetime/deleteSecondsInTime";
+import useTheme from "../../../hooks/useTheme";
 
 const countGuests = [
     "1",
@@ -46,6 +47,7 @@ type BookingWindowProps = {
 }
 const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
     const dispatch = useAppDispatch()
+    const gTheme = useTheme()
     const { bookingAddresses } = useAppSelector(state => state.main)
     const { bookingForm, bookingSuccess, bookingError } = useAppSelector(state => state.forms)
     const { profile } = useAppSelector(state => state)
@@ -62,8 +64,8 @@ const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
     const times = useBookingTimes({
         dateValue: new Date(bookingForm.date),
         isToday: isBookingDateToday,
-        workEndTime: startBookingTime,
-        workStartTime: endBookingTime
+        workEndTime: endBookingTime,
+        workStartTime: startBookingTime
     })
 
     useEffect(() => {
@@ -78,11 +80,13 @@ const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
 
     useEffect(() => {
         const today = new Date()
+
         const datesWithTimes = getDatesWithTimes(
             today,
             startBookingTime,
             endBookingTime
         )
+
 
         const defaultDate = checkDateAndTime(datesWithTimes[1])
         const defaultIsToday = isDateToday(defaultDate)
@@ -122,6 +126,7 @@ const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
                         <CloseIcon isDark={true} />
                     </div>
                 </div>
+                
                 <div className="f-column gap-30">
                     <div className={`${styles.bookingForm} f-column gap-20`}>
                         <h2>Бронирование столика</h2>
@@ -203,7 +208,7 @@ const BookingWindow: FC<BookingWindowProps> = ({ address }) => {
                                 className={"pd-10-0"}>Забронировать</RedButton>
                         </div>
 
-                        <div className={"caption txt-center"}>Продолжая, вы соглашаетесь <a href=""> со сбором и
+                        <div className={`caption ${gTheme("lt-caption", "dk-caption")} txt-center`}>Продолжая, вы соглашаетесь <a href=""> со сбором и
                             обработкой персональных данных и пользовательским соглашением</a></div>
                     </div>
                 </div>

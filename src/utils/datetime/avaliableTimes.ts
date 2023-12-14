@@ -11,6 +11,9 @@ function getTimes(params: GetTimesParams): string[] {
     const { startDate, endDate, step, trimPast, currentTime } = params;
 
     if (trimPast && currentTime >= endDate) {
+        console.log(startDate);
+        
+        
         return [];
     }
     const startTime = new Date(startDate);

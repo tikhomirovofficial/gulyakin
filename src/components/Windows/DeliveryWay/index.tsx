@@ -27,6 +27,7 @@ import useNewAddress from "../../../hooks/useNewAddress";
 import AddressSuggestions from "../../AddressSuggestions";
 import {getImgPath} from "../../../utils/common/getAssetsPath";
 import useAppColor from '../../../hooks/useAppColor';
+import useTheme from '../../../hooks/useTheme';
 
 interface AddressItemProps {
     selected: boolean,
@@ -96,8 +97,9 @@ type SearchAddressProps = {
     handleAddress: () => any
 } & FindedAddress
 export const SearchAddressItem: FC<SearchAddressProps> = ({address, handleAddress, city}) => {
+    const gTheme = useTheme()
     return (
-        <div onClick={handleAddress} className={`pd-10 ${styles.searchAddressItem} cur-pointer f-column gap-5`}>
+        <div onClick={handleAddress} className={`pd-10 ${styles.searchAddressItem} ${gTheme("lt-searchItem", "dk-searchItem")} cur-pointer f-column gap-5`}>
             <b>{address}</b>
             <p>{city}</p>
         </div>
@@ -215,6 +217,7 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({
     const {addresses} = useAppSelector(state => state.profile)
     const {selectedInDelivery} = useAppSelector(state => state.restaurants)
     const dispatch = useAppDispatch()
+    const gTheme = useTheme()
 
     const handleToNewAddress = () => {
         if (handleIsSelectingAddress) {
@@ -243,7 +246,7 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({
                 }
 
             </div>
-            <b onClick={handleToNewAddress} className={"colorRed"}>Добавить адрес</b>
+            <b onClick={handleToNewAddress} className={`${gTheme("lt-active-c", "dk-active-c")} cur-pointer`}>Добавить адрес</b>
             <RedButton disabled={selectedInDelivery == -1} onClick={handleAddAddressDelivery}
                        className={`pd-10-0 ${styles.deliveryBtn}`}>Выбрать</RedButton>
         </>
@@ -301,6 +304,7 @@ const DeliveryWay = () => {
     const [coordsNewAddres, setCoordsNewAddress] = useState([0, 0])
 
     const logo = useMarketLogo()
+    const gTheme = useTheme()
 
     const getCurrentAddress = () => {
         if (cityAddresses.length > 0) {
@@ -417,7 +421,7 @@ const DeliveryWay = () => {
                             <h2>{!variant ? deliveryFromProfile ? "Выбрать адрес" : "Новый адрес" : "Самовывоз"}</h2>
                             {
                                 profileAddresses.length && !variant && !deliveryFromProfile ?
-                                    <b onClick={handleAddressFromProfile} className={"colorRed"}>Выбрать
+                                    <b onClick={handleAddressFromProfile} className={gTheme("lt-active-c", "dk-active-c")}>Выбрать
                                         существующий</b> : null
                             }
 

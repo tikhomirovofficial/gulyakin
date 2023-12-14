@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {setOrderWarning} from "../features/main/mainSlice";
 import {appConfig} from "../config/AppConfig";
 import { log } from "console";
+import useActualPrice from "./useActualPrice";
 
 type OrderDisabledHook = {
     orderDisabled: boolean
@@ -19,7 +20,7 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
     } = useAppSelector(state => state.forms.orderForm)
     const {orderDetails, pickupAddresses, canOrder, workTimes} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
-
+    const actualPrice = useActualPrice()
     const [disabled, setDisabled] = useState(false)
 
 
@@ -38,7 +39,7 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
                         if (addressSelected) {
                             const isCarDelivery = orderDetails.delivery_type === 2 //Доставка на машине
                             if (isCarDelivery) {
-                                if (cart.totalPrice < appConfig.MIN_ORDER_DELIVERY_SUM) {
+                                if (actualPrice < appConfig.MIN_ORDER_DELIVERY_SUM) {
                                     setDisabled(true)
                                     dispatch(setOrderWarning({
                                         title: "Доставка недоступна",

@@ -32,6 +32,7 @@ import useOrderAddress from "../../hooks/useOrderAddress";
 import useOrderDisabled from "../../hooks/useOrderDisabled";
 import useIsWorkTime from "../../hooks/useIsWorkTime";
 import useTheme from '../../hooks/useTheme';
+import useActualPrice from '../../hooks/useActualPrice';
 
 
 const Order = () => {
@@ -41,6 +42,7 @@ const Order = () => {
     const { orderDetails, pickupAddresses, orderWarning, workTimes, deliveryAddress, isDarkTheme } = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
+    const actualPrice = useActualPrice()
     const {
         name,
         callNeeded,
@@ -53,6 +55,7 @@ const Order = () => {
         addressId
     } = useAppSelector(state => state.forms.orderForm)
 
+    const hasDiscount = cart.totalDiscountPrice !== cart.totalPrice
     const {
         handleChangeDeliveryType,
         getCurrentPickupAddress,
@@ -259,7 +262,7 @@ const Order = () => {
                                                 dispatch(handleOrderPaymentWay("CASH"))
                                             }}
                                             className={`${styles.inputSelectable} ${paymentWay == "CASH" ? gTheme("lt-whiteSelectableSelected", "dk-whiteSelectableSelected") : ""} d-f al-center gap-5 whiteSelectable  ${gTheme("lt-whiteSelectable", "dk-whiteSelectable")}`}>
-                                            <PaymentCash stroke={isDarkTheme ? "#c3c3c3" : "#434343"}/>
+                                            <PaymentCash stroke={isDarkTheme ? "#c3c3c3" : "#434343"} />
                                             <p>Наличными</p>
                                         </div>
                                     </div>
@@ -315,6 +318,8 @@ const Order = () => {
                                             <OrderItem
                                                 supplements={item.supplements}
                                                 id={item.product.id}
+                                                discount_price={item.product.price_discount || 0}
+                                                is_discount={item.product.is_discount || false}
                                                 image={item.product.image}
                                                 title={item.product.title}
                                                 composition={item.product.composition}
@@ -332,11 +337,28 @@ const Order = () => {
                                                 <p>Доставка</p>
                                                 <p>{orderDetails.price} ₽</p>
                                             </div>
+                                            {hasDiscount ?
+                                                <div className="f-row-betw">
+                                                    <p>Скидка</p>
+                                                    <p>{cart.totalPrice - (cart.totalDiscountPrice || 0)} ₽</p>
+                                                </div> : null
+                                            }
+
                                         </div>
                                         <div className="totalInfo">
                                             <div className="f-row-betw">
                                                 <b>Сумма заказа</b>
-                                                <b>{formatNumberWithSpaces(cart.totalPrice + orderDetails.price)} ₽</b>
+                                                <div className="d-f al-end gap-10">
+                                                    {
+                                                        hasDiscount ?
+                                                            <div className={`sale p-rel`}>
+                                                                <div className={`saleLine p-abs`}></div>
+                                                                <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{cart.totalPrice + orderDetails.price} ₽</strong>
+                                                            </div> : null
+                                                    }
+                                                    <b>{formatNumberWithSpaces(actualPrice + orderDetails.price)} ₽</b>
+                                                </div>
+                                                
                                             </div>
 
                                         </div>

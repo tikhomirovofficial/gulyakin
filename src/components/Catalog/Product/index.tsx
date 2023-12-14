@@ -19,7 +19,8 @@ type ProductProps = {
     id: number,
     inCart?: boolean,
     count?: number,
-    sale?: number,
+    is_discount?: boolean,
+    price_discount?: number,
     supplements?: Array<Supplement>
 } & ProductRes
 
@@ -31,7 +32,8 @@ const Product: FC<ProductProps & HasClassName> = ({
     id,
     count = 0,
     inCart = false,
-    sale,
+    is_discount,
+    price_discount,
     dimensions,
     className,
     composition,
@@ -42,7 +44,7 @@ const Product: FC<ProductProps & HasClassName> = ({
     price
 }) => {
     const dispatch = useAppDispatch()
-    const { isMobile, isDarkTheme} = useAppSelector(state => state.main)
+    const { isMobile, isDarkTheme } = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart.items)
     const gTheme = useTheme()
     const appColor = useAppColor()
@@ -55,6 +57,8 @@ const Product: FC<ProductProps & HasClassName> = ({
             imageUrl: image || "",
             is_combo: false,
             name: title,
+            is_discount: is_discount,
+            price_discount: price_discount,
             is_multiple_supplements: is_multiple_supplements,
             price: price,
             weight: weight,
@@ -124,14 +128,14 @@ const Product: FC<ProductProps & HasClassName> = ({
                 <div onClick={e => e.stopPropagation()} style={{ minHeight: 37 }} className="f-row-betw">
                     {isMobile ? null :
                         <div className={"d-f al-center gap-10"}>
-                            {sale ?
-                                <div className={`${styles.sale} p-rel`}>
-                                    <div className={`${styles.line} p-abs`}></div>
-                                    <b className={gTheme("lt-light-black-c", "dk-gray-c")}>{price}</b>
+                            {is_discount ?
+                                <div className={`sale p-rel`}>
+                                    <div className={`saleLine p-abs`}></div>
+                                    <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{price} ₽</strong>
                                 </div> : null
                             }
 
-                            <h4 className={gTheme("lt-light-black-c", "dk-gray-c")}>{sale || price} ₽</h4>
+                            <h4 className={gTheme("lt-light-black-c", "dk-gray-c")}>{is_discount ? price_discount : price} ₽</h4>
                         </div>
                     }
 
@@ -146,9 +150,19 @@ const Product: FC<ProductProps & HasClassName> = ({
 
                             </div>
                             :
-                            <RedButton onClick={handleOpenAdditives} className={`${styles.btn} `}>
-                                {!isMobile ? " В корзину" : `${sale || price} ₽`}
-                            </RedButton>
+                            <div className="d-f al-center gap-15">
+                                <RedButton onClick={handleOpenAdditives} className={`${styles.btn} `}>
+                                    {!isMobile ? " В корзину" : `${is_discount ? price_discount : price} ₽`}
+                                </RedButton>
+                                {isMobile && is_discount ?
+                                    <div className={`sale p-rel`}>
+                                        <div className={`saleLine p-abs`}></div>
+                                        <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{price} ₽</strong>
+                                    </div> : null
+                                }
+
+                            </div>
+
                     }
                     {!isMobile ? null :
                         <div className={`${styles.weight} txt-right ${gTheme("lt-c", "dk-c")}`}>{weight} {dimensions}</div>

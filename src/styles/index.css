@@ -17,23 +17,22 @@
 
 html {
     font-size: 10px;
-
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
-input[type='number'] {
+input[type="number"] {
     -moz-appearance: textfield;
 }
 * {
-    font-family: 'TTChocolates', sans-serif !important;
+    font-family: "TTChocolates", sans-serif !important;
 }
 .inputFieldBlock_dark {
     background: #333;
-  }
+}
 .grayColor_dark {
-    color: #C4C4C4 !important;
+    color: #c4c4c4 !important;
 }
 .colorWhite_dark {
     color: white !important;
@@ -63,7 +62,6 @@ body::-webkit-scrollbar-thumb {
 .sectionTitle {
     font-size: 3.6rem;
     font-weight: 700;
-
 }
 .App {
     padding-top: 11rem;
@@ -81,20 +79,19 @@ body::-webkit-scrollbar-thumb {
     font-size: 1.8rem;
 }
 .validationErr {
-    color: #FF2000;
+    color: #ff2000;
     font-size: 1.4rem;
 }
 .inputField {
     height: 5.6rem;
 }
 /* styles.css */
-.p-datepicker-calendar td{
+.p-datepicker-calendar td {
     background-color: #fff; /* Замените этот цвет на ваш пользовательский цвет фона */
     color: #232222; /* Замените этот цвет на ваш пользовательский цвет текста */
     font-size: 1.4rem;
-    padding: .6rem;
+    padding: 0.6rem;
     /* Добавьте другие пользовательские стили, как необходимо */
-
 }
 .p-datepicker-today span {
     font-size: 1.4rem;
@@ -103,7 +100,7 @@ body::-webkit-scrollbar-thumb {
     font-size: 1.6rem;
     margin-right: 1rem;
 }
-.p-datepicker-year{
+.p-datepicker-year {
     font-size: 1.6rem;
 }
 .p-datepicker-header {
@@ -135,14 +132,14 @@ body::-webkit-scrollbar-thumb {
 }
 
 .inactiveColor {
-    color: #E2E2E9;
+    color: #e2e2e9;
 }
 .dropDown {
     z-index: 5;
     top: 100%;
     border-radius: 6px;
-    background: #FFF;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.10);
+    background: #fff;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
 }
 .closeWrapper {
     width: fit-content;
@@ -157,28 +154,28 @@ body::-webkit-scrollbar-thumb {
     top: 2rem;
 }
 .colorRed {
-    color: #FCC8A5 !important;
+    color: #fcc8a5 !important;
 }
 .colorError {
-    color: #FF2000;
+    color: #ff2000;
 }
 
-.svgRedStroke path{
+.svgRedStroke path {
 }
-.miniSliderArrow path{
-    transition: .3s stroke;
+.miniSliderArrow path {
+    transition: 0.3s stroke;
 }
 .miniSliderArrow:hover path {
-    stroke: #FB634D;
+    stroke: #fb634d;
 }
 .sliderArrowCircle:hover path {
-    fill: #FB634D;
+    fill: #fb634d;
 }
 .sliderArrowCircle path {
-    transition: .3s fill;
+    transition: 0.3s fill;
 }
 .sliderArrowCircle svg {
-    transition: .3s transform;
+    transition: 0.3s transform;
 }
 .sliderArrowCircle:hover svg {
     transform: translateX(2px);
@@ -187,14 +184,16 @@ body::-webkit-scrollbar-thumb {
     cursor: grabbing;
 }
 .hoverRedPath {
-    transition: .3s fill;
+    transition: 0.3s fill;
 }
 .whiteSelectable {
     border-radius: 4px;
 
-    box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.10);
+    box-shadow: 0px 1px 8px 0px rgba(56, 56, 56, 0.1);
     border: 1px solid transparent;
-    transition: .3s border, .3s box-shadow;
+    transition:
+        0.3s border,
+        0.3s box-shadow;
     cursor: pointer;
 }
 
@@ -209,16 +208,33 @@ body::-webkit-scrollbar-thumb {
     background: #ff6328ff;
 }
 .whiteSelectable:hover {
-    border: 1px solid #FCC8A5;
+    border: 1px solid #fcc8a5;
 }
 .whiteSelectableSelected {
-    border: 1px solid #FCC8A5!important;
-
+    border: 1px solid #fcc8a5 !important;
 }
 .bigSectionTitle {
-    color: #4D4D4D;
+    color: #4d4d4d;
     font-size: 4.8rem;
-    font-weight: 700
+    font-weight: 700;
+}
+.saleLine {
+    width: calc(100% + 0.5rem);
+    border-radius: 2px;
+    top: 65%;
+    transform: rotateZ(-12deg) translateY(-70%) translateX(34%);
+    height: 1px;
+    left: -50%;
+    background: #ff2000;
+}
+.sale {
+    margin-top: 0.6rem;
+}
+.text-cancel {
+    text-decoration: line-through;
+}
+.sale strong {
+    font-size: 1.2rem !important;
 }
 
 @media (max-width: 1340px) {
@@ -248,5 +264,3 @@ body::-webkit-scrollbar-thumb {
         font-size: 3.8rem;
     }
 }
-
-

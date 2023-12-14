@@ -21,6 +21,8 @@ const EditProductVariant = () => {
         price,
         weight,
         name,
+        is_discount,
+        price_discount,
         description,
         dimensions,
         is_multiple_supplements,
@@ -91,7 +93,7 @@ const EditProductVariant = () => {
                             <RedButton onClick={saveMode ? saveProduct : addProduct} disabled={false}
                                        className={`${styles.additivesBtn} pd-10-0`}>
 
-                                {!saveMode ? `Добавить в корзину за ${price + additivePrice} ₽` : "Сохранить"}
+                                {!saveMode ? <div>Добавить в корзину за {is_discount ? ((price_discount || 0) + additivePrice) : price + additivePrice} ₽</div> : "Сохранить"}
                             </RedButton>
                         </div>
 

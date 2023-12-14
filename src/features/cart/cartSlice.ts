@@ -33,6 +33,8 @@ type CartSliceState = {
     addProductAfterLogin: DefferedAddingProduct,
     addProductAfterAddress: DefferedAddingProduct,
     totalPrice: number,
+    totalDiscountPrice?: number,
+    notDiscountTotalPrice: number,
     cartAdded: boolean,
     cartClassOpened: boolean
     cartAddedPopupInfo: {
@@ -47,6 +49,8 @@ const initialState: CartSliceState = {
     addProductAfterLogin: null,
     addProductAfterAddress: null,
     totalPrice: 0,
+    notDiscountTotalPrice: 0,
+    totalDiscountPrice: 0,
     cartCounts: {},
     cartAdded: true,
     cartClassOpened: false,
@@ -60,6 +64,8 @@ export const getCart = createAsyncThunk(
         const res: AxiosResponse<GetCartResponse> = await handleTokenRefreshedRequest(CartApi.GetProducts)
         return {
             cart: res.data.cart,
+            total_price: res.data.price,
+            total_price_discount: res.data.total_price_discount,
             sup_counts: res.data.supplement_counts
         }
     }
@@ -239,19 +245,27 @@ export const CartSlice = createSlice({
 
         },
         setTotalPrice: (state, action: PayloadAction<number>) => {
-            state.totalPrice = action.payload
+            state.totalPrice = Math.floor(action.payload)
+        },
+        setDiscountPrice: (state, action: PayloadAction<number>) => {
+            state.totalDiscountPrice = Math.floor(action.payload)
         }
     },
     extraReducers: builder => {
 
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
+                console.log(action.payload);
+                
                 state.items = action.payload.cart
-                const resultPrice = action.payload.cart.reduce((prev, cur) => {
-                    //console.log(prev + (cur.count * cur.product.price))
-                    return prev + (cur.count * cur.product.price)
-                }, 0)
-                state.totalPrice = resultPrice
+                // const resultPrice = action.payload.cart.reduce((prev, cur) => {
+                //     //console.log(prev + (cur.count * cur.product.price))
+                //     const productPrice = cur.product.is_discount ? cur.product.price_discount || 0: cur.product.price
+                //     return prev + (cur.count * productPrice)
+                // }, 0)
+                state.totalPrice = action.payload.total_price
+                state.totalDiscountPrice = action.payload.total_price_discount
+                
                 state.cartCounts = action.payload.sup_counts
             }
 
@@ -267,11 +281,14 @@ export const CartSlice = createSlice({
                         is_combo: false,
                         id: res.list_id[0],
                         product: {
+
                             composition: product.composition,
                             id: product.id,
                             title: product.title,
                             image: product.image,
                             dimensions: product.dimensions,
+                            is_discount: product.is_discount,
+                            price_discount: Math.floor(product.price_discount || 0),
                             price: product.price,
                             short_description: product.short_description,
                         },
@@ -372,6 +389,7 @@ export const {
     plusProduct,
     minusProduct,
     setTotalPrice,
+    setDiscountPrice,
     removeProduct,
     setProductAfterLogin,
     setProductAfterAddress,

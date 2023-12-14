@@ -35,6 +35,8 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                             <Product
                                                 key={product.id}
                                                 title={product.title}
+                                                is_discount={product.is_discount}
+                                                price_discount={Math.floor(product.price_discount || 0)}
                                                 dimensions={product.dimensions}
                                                 is_multiple_supplements={product.is_multiple_supplements}
                                                 is_product_week={product.is_product_week !== undefined ? product.is_product_week : false}

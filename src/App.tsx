@@ -9,7 +9,7 @@ import DeliveryWay from "./components/Windows/DeliveryWay";
 import NewAddress from "./components/Windows/NewAddress";
 import AppRoutes from "./router/AppRoutes";
 import Cart from "./components/Cart";
-import { getCart, setTotalPrice } from "./features/cart/cartSlice";
+import { getCart, setDiscountPrice, setTotalPrice } from "./features/cart/cartSlice";
 import { ScrollToTop } from "./components/ServiceComponents";
 import { getAddressesUser } from "./features/profile/profileSlice";
 import useToken from "./hooks/useToken";
@@ -94,18 +94,47 @@ function App() {
     }, [orderForm])
 
     useEffect(() => {
+
         dispatch(setTotalPrice(
             items.reduce((prev, cur) => {
                 const curProduct = cur.product
                 const cartProductDefined = curProduct !== undefined
                 const cartProductHasSupplements = cur.supplements !== undefined
+            
+                console.log(curProduct);
+                
                 if (cartProductDefined) {
+                    
                     if (cartProductHasSupplements) {
+                       
                         return prev + (cur.count * curProduct.price) + (cur.supplements.reduce((p, c) => {
                             return p + c.price
                         }, 0))
                     }
                     return prev + (cur.count * curProduct.price)
+
+                }
+                return prev
+
+            }, 0)
+        ))
+        dispatch(setDiscountPrice(
+            items.reduce((prev, cur) => {
+                const curProduct = cur.product
+                const cartProductDefined = curProduct !== undefined
+                const cartProductHasSupplements = cur.supplements !== undefined
+            
+                console.log(curProduct);
+                
+                if (cartProductDefined) {
+                    
+                    if (cartProductHasSupplements) {
+                       
+                        return prev + (cur.count * (curProduct.price_discount || 0)) + (cur.supplements.reduce((p, c) => {
+                            return p + c.price
+                        }, 0))
+                    }
+                    return prev + (cur.count *  (curProduct.price_discount || 0))
 
                 }
                 return prev

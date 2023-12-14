@@ -15,22 +15,7 @@
     min-width: 3rem;
     text-align: center;
   }
-  .sale {
-    margin-top: .6rem;
-    b {
-      font-size: 1.2rem;
-      color: #999;
-    }
-    .line {
-      width: calc(100% + .5rem);
-      border-radius: 2px;
-      top: 50%;
-      transform: rotateZ(-15deg) translateY(-50%) translateX(30%);
-      height: 1px;
-      left: -50%;
-      background: #FF2000;
-    }
-  }
+ 
   .img {
     border-radius: 6px;
     background-size: contain!important;
@@ -151,7 +136,6 @@
       margin-top: .6rem;
       b {
         font-size: 1.2rem;
-        color: #999;
       }
       .line {
         width: calc(100% + .5rem);

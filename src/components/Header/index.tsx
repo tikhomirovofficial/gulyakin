@@ -9,15 +9,18 @@ import useToken from "../../hooks/useToken";
 import SelectCity from "../SelectCity";
 import AddedPopup from "../AddedPopup";
 import useTheme from '../../hooks/useTheme';
+import useActualPrice from '../../hooks/useActualPrice';
 
 
 const Header = () => {
     const dispatch = useAppDispatch()
 
-    const {totalPrice, cartClassOpened, cartAdded, cartAddedPopupInfo, items} = useAppSelector(state => state.cart)
+    const {totalPrice, cartClassOpened, cartAdded, cartAddedPopupInfo, items, totalDiscountPrice} = useAppSelector(state => state.cart)
     const {cities, currentGeo, changingGeo, askCityVisible, isDarkTheme} = useAppSelector(state => state.main)
     const token = useToken()
     const handleCart = () => dispatch(handleCartOpened())
+
+    const actualPrice = useActualPrice()
 
     const gTheme = useTheme()
 
@@ -110,7 +113,7 @@ const Header = () => {
                             className={`${items.length > 0 ? gTheme("lt-cart-btn-filled", "dk-cart-btn-filled"): gTheme("lt-cart-btn-unfilled", "dk-cart-btn-unfilled")} ${styles.cartBtn} gap-5 btn d-f al-center cur-pointer`}>
                             <CartIcon stroke={isDarkTheme ? "white" : "black"} fill={isDarkTheme ? "white" : "black"} height={22} width={22}/>
                             <b className={gTheme("c-black", "c-white")}>
-                                {formatNumberWithSpaces(totalPrice)} ₽
+                                {formatNumberWithSpaces(actualPrice)} ₽
                             </b>
                         </div>
                     </div>

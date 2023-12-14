@@ -50,7 +50,7 @@ const HistoryOrderWindow = () => {
                                 {
                                     data.products.length > 0 ?
                                         data.products.map(item => (
-                                            <OrderItem id={item.id} image={item.image} title={item.title}
+                                            <OrderItem is_discount={false} discount_price={100} id={item.id} image={item.image} title={item.title}
                                                        composition={""} price={0} count={0}/>
                                         ))
                                         : null

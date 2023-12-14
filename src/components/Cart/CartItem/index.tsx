@@ -76,7 +76,7 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
         return null
     }
     const canBeChanged = getCanBeChanged()
-    const {isDarkTheme} = useAppSelector(state => state.main)
+    const { isDarkTheme } = useAppSelector(state => state.main)
     return (
         product !== undefined ?
             <div className={`${styles.cartItem} ${gTheme("lt-cartItem", "dk-cartItem")} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
@@ -118,9 +118,19 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
                     {
                         !canNotBeAdded ?
                             <>
-                                <b className={styles.price}>
-                                    {formatNumberWithSpaces((product.price + supplementsPrice) * count)} ₽
-                                </b>
+                                <div className="d-f al-end gap-10">
+                                    {
+                                        product.is_discount ?
+                                            <div className={`sale p-rel`}>
+                                                <div className={`saleLine p-abs`}></div>
+                                                <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{product.price_discount} ₽</strong>
+                                            </div> : null
+                                    }
+                                    <b className={styles.price}>
+                                        {formatNumberWithSpaces(((product.is_discount ? product.price_discount || 0 : product.price) + supplementsPrice) * count)} ₽
+                                    </b>
+                                </div>
+
                                 <div className="d-f gap-20">
                                     {
                                         canBeChanged ? <div onClick={handleChange}

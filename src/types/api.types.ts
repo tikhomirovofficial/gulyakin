@@ -24,7 +24,8 @@ export type ProductRes = {
     is_product_day?: boolean
     is_product_week?: boolean
     short_description: string;
-
+    is_discount?: boolean,
+    price_discount?: number,
     dimensions: string;
     description: string;
     price: number;
@@ -244,6 +245,8 @@ export type CartProductItem = {
         short_description: string
         image: string
         price: number
+        is_discount?: boolean
+        price_discount?: number
         composition: string
         products?: AdditiveItem[]
         drinks?: AdditiveItem[]
@@ -258,6 +261,7 @@ export type CartProductItem = {
 export type GetCartResponse = {
     cart: Array<CartProductItem>
     price: number,
+    total_price_discount?: number,
     supplement_counts: Record<string, number>
 } & ResponseStatus
 

@@ -12,12 +12,14 @@ import CartAdditiveItem from "./CartAdditiveItem";
 import CartList from "./CartList";
 import useIsWorkTime from "../../hooks/useIsWorkTime";
 import useTheme from '../../hooks/useTheme';
+import useActualPrice from '../../hooks/useActualPrice';
 
 
 const Cart = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const {items, totalPrice} = useAppSelector(state => state.cart)
+    const actualPrice = useActualPrice()
     const {souse} = useAppSelector(state => state.products)
     const {workTimes} = useAppSelector(state => state.main)
     const [additivesOpened, setAdditivesOpened] = useState(false)
@@ -116,7 +118,7 @@ const Cart = () => {
                             <div className={`${styles.cartBlockTop} ${gTheme("lt-cart", "dk-cart")} f-column gap-20`}>
                                 <h2>
                                     {
-                                        items.length ? `${totalCount} товаров на ${formatNumberWithSpaces(totalPrice)} ₽` :
+                                        items.length ? `${totalCount} товаров на ${formatNumberWithSpaces(actualPrice)} ₽` :
                                             "Корзина пуста"
                                     }
                                 </h2>
@@ -179,7 +181,7 @@ const Cart = () => {
                 <div className={`${styles.bottom} ${gTheme("lt-cartItem", "dk-cartItem")} f-column gap-15`}>
                     <div className="f-row-betw">
                         <b>Сумма заказа</b>
-                        <b>{formatNumberWithSpaces(totalPrice)} ₽</b>
+                        <b>{formatNumberWithSpaces(actualPrice)} ₽</b>
                     </div>
                     {
                         items.length ?

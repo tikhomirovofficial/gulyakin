@@ -15,6 +15,7 @@ const useBookingTimes = (params: BookingTimesHookProps): string[] => {
     )
     
     
+    
     //
     const defaultParams = {
         startDate: datesWithTimes[0], // Год, месяц (от 0 до 11), день, час, минута

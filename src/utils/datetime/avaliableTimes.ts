@@ -10,7 +10,14 @@ type GetTimesParams =  {
 function getTimes(params: GetTimesParams): string[] {
     const { startDate, endDate, step, trimPast, currentTime } = params;
     
-    //СДЕЛАТЬ ПРОВЕРКУ НА ТО, ЧТО ВРЕМЯ ОКОНЧАНИЯ, МЕНЬШЕ ЧЕМ ВРЕМЯ НАЧАЛА И УСТАНОВИТЬ СЛЕД ДЕНЬ
+    const endDateHours = endDate.getHours()
+    const startDateHours = startDate.getHours()
+    const neededNextDay = endDateHours < startDateHours
+    
+    // if(neededNextDay) {
+    //     endDate.setDate(endDate.getDate() + 1)
+    // }
+    
 
     if (trimPast && currentTime >= endDate) {
 
@@ -21,9 +28,13 @@ function getTimes(params: GetTimesParams): string[] {
 
     const times: string[] = [];
     let current = new Date(startTime);
-
+    console.log(endDate);
+    
     while (current <= endDate) {
+        
         if (!trimPast || current > currentTime) {
+        
+            
             const currentHours = current.getHours()
             const gettedHours = currentTime.getHours()
 

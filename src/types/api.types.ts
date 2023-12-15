@@ -352,7 +352,9 @@ export type GetOrderItem = {
     products: Array<{
         id: number
         title: string,
-        image: string
+        image: string,
+        price: number,
+        count: number
     }>
 }
 

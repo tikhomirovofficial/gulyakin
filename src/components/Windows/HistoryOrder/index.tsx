@@ -14,9 +14,13 @@ const HistoryOrderWindow = () => {
     const dispatch = useAppDispatch()
     const {loading, data} = useAppSelector(state => state.ordersHistory)
     const orderStatus = getOrderStatus(data.is_active, data.is_payment)
-
+   
+    
     const orderDate = new Date(data.datetime)
+    console.log(orderDate);
+    
     const dateString = `${orderDate.getDate()}.${orderDate.getMonth() + 1}.${orderDate.getFullYear()}`
+    
     return (
         <ShadowWrapper onClick={() => dispatch(handleHistoryOrder())}>
             <WindowBody className={`${styles.window} f-column`}>
@@ -51,7 +55,7 @@ const HistoryOrderWindow = () => {
                                     data.products.length > 0 ?
                                         data.products.map(item => (
                                             <OrderItem is_discount={false} discount_price={100} id={item.id} image={item.image} title={item.title}
-                                                       composition={""} price={0} count={0}/>
+                                                       composition={""} price={item.price} count={item.count}/>
                                         ))
                                         : null
                                 }

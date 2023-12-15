@@ -26,6 +26,7 @@ const useBookingTimes = (params: BookingTimesHookProps): string[] => {
     };
     
     const times = getTimes(defaultParams)
+    
     return times
 };
 

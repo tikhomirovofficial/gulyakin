@@ -22,6 +22,9 @@ export function createDefaultParams(startTime: string, endTime: string): GetTime
     startDate.setHours(startHour, startMinute, 0, 0);
 
     const endDate = new Date(today);
+    if(endDate.getHours() < startDate.getHours()) {
+        endDate.setDate(endDate.getDate() + 1)
+    }
     endDate.setHours(endHour, endMinute, 0, 0);
 
     return {

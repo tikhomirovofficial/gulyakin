@@ -24,8 +24,6 @@ const useIsWorkTime = (params: IsWorkTimeHookProps): IsWorkTimeHook => {
             date.setMinutes(0)
             const currentTime = getTimeFromDate(date)
             const aroundEndTime = getTimeFromDate(tommorow)
-            console.log(currentTime, aroundEndTime);
-
             return createDefaultParams(currentTime, aroundEndTime)
         }
         return createDefaultParams(params.startTime, params.endTime)

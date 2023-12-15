@@ -162,7 +162,7 @@ const Main: FC = () => {
                                                                 className={"w-content cur-grabbing"}>
                                                                 <ScrollLink spy={true} activeClass={gTheme("lt-categoryActive", "dk-categoryActive")} to={`ctg-${item.id}`} smooth={true} offset={-160}>
                                                                     <GrayBorderedBlock
-                                                                        clickHandler={() => console.log(`Реализовать скролл до ${item.id}`)}
+                                    
                                                                         className={`${styles.item} ${gTheme("lt-categoryItem", "dk-categoryItem")}`}>
                                                                         {item.title}
                                                                     </GrayBorderedBlock>

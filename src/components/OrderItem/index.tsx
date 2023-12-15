@@ -45,7 +45,7 @@ const OrderItem: FC<OrderItemProps> = ({ image, id, title, supplements = [], cou
                                 <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{(price + additivePrice) * count} ₽</strong>
                             </div> : null
                     }
-                    <b className={styles.price}>{formatNumberWithSpaces(((is_discount ? ~~discount_price : price) + additivePrice) * count)} ₽</b>
+                    <strong className={`${styles.price} ${gTheme("c-black", "c-black")}`}>{formatNumberWithSpaces(((is_discount ? ~~discount_price : price) + additivePrice) * count)} ₽</strong>
                 </div>
 
             </div>

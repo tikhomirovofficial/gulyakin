@@ -21,7 +21,6 @@ type CartItemProps = {
 const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, id, count, supplements, product }) => {
     const dispatch = useAppDispatch()
     const gTheme = useTheme()
-    console.log(product);
 
     const { items, combos } = useAppSelector(state => state.products)
     const handleChange = () => {

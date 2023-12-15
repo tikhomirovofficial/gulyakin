@@ -100,8 +100,7 @@ function App() {
                 const curProduct = cur.product
                 const cartProductDefined = curProduct !== undefined
                 const cartProductHasSupplements = cur.supplements !== undefined
-            
-                console.log(curProduct);
+        
                 
                 if (cartProductDefined) {
                     
@@ -123,8 +122,6 @@ function App() {
                 const curProduct = cur.product
                 const cartProductDefined = curProduct !== undefined
                 const cartProductHasSupplements = cur.supplements !== undefined
-            
-                console.log(curProduct);
                 
                 if (cartProductDefined) {
                     

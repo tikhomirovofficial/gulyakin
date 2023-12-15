@@ -255,7 +255,6 @@ export const CartSlice = createSlice({
 
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
-                console.log(action.payload);
                 
                 state.items = action.payload.cart
                 // const resultPrice = action.payload.cart.reduce((prev, cur) => {

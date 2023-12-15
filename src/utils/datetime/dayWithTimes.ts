@@ -14,8 +14,6 @@ export function getDatesWithTimes(date: Date, time1: string, time2: string): Dat
     }
     dateWithTime2.setHours(hour2, minute2, 0, 0);
     
-    console.log(dateWithTime1, dateWithTime2);
-    
     return [dateWithTime1, dateWithTime2];
 }
 

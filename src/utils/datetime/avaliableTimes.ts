@@ -28,7 +28,7 @@ function getTimes(params: GetTimesParams): string[] {
 
     const times: string[] = [];
     let current = new Date(startTime);
-    console.log(endDate);
+
     
     while (current <= endDate) {
         

@@ -91,7 +91,6 @@ const ChosenRestaurant: FC = () => {
                 adress_id: numberedParamId
             }))
         }
-        console.log(restaurantInfo);
 
     }, [])
     return (

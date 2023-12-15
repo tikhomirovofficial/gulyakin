@@ -17,7 +17,6 @@ const HistoryOrderWindow = () => {
    
     
     const orderDate = new Date(data.datetime)
-    console.log(orderDate);
     
     const dateString = `${orderDate.getDate()}.${orderDate.getMonth() + 1}.${orderDate.getFullYear()}`
     

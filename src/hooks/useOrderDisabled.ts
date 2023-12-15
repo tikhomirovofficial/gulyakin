@@ -18,7 +18,7 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
         restaurant,
         addressId
     } = useAppSelector(state => state.forms.orderForm)
-    const {orderDetails, pickupAddresses, canOrder, workTimes} = useAppSelector(state => state.main)
+    const {orderDetails, pickupAddresses, canOrder, workTimes, deliverySettings} = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart)
     const actualPrice = useActualPrice()
     const [disabled, setDisabled] = useState(false)
@@ -38,11 +38,11 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
                         if (addressSelected) {
                             const isCarDelivery = orderDetails.delivery_type === 2 //Доставка на машине
                             if (isCarDelivery) {
-                                if (actualPrice < appConfig.MIN_ORDER_DELIVERY_SUM) {
+                                if (actualPrice < deliverySettings.autoDeliveryPrice) {
                                     setDisabled(true)
                                     dispatch(setOrderWarning({
                                         title: "Доставка недоступна",
-                                        description: `Мы доставим ваш заказ от ${appConfig.MIN_ORDER_DELIVERY_SUM} ₽`
+                                        description: `Мы доставим ваш заказ от ${deliverySettings.autoDeliveryPrice} ₽`
                                     }))
                                     
                                     return

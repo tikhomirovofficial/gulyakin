@@ -305,6 +305,11 @@ export type GetPaymentListResponse = {
     }>
 } & ResponseStatus
 
+export type GetDeliverySettingsResponse = {
+    car_min: number
+    people_min: number
+} & ResponseStatus
+
 //Если тип доставки самовывоз, то передайте marekt_adress_id, а user_adress_id можете не передавать
 export type CreateOrderRequest = {
     user_adress_id?: number,

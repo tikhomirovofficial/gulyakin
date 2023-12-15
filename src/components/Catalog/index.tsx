@@ -54,7 +54,7 @@ const Catalog: FC<CatalogProps> = ({search}) => {
                                         }/>
                                 </Element>
                             )) :
-                            <p className={`${styles.notFoundedText} grayColor_dark`}>{search.length ? `По запросу: ${search} ничего не найдено.` : "Здесь пока нет товаров."}</p>
+                            <p className={`${styles.notFoundedText} ${gTheme("lt-lg-c", " grayColor_dark")}`}>{search.length ? `По запросу: ${search} ничего не найдено.` : "Здесь пока нет товаров."}</p>
                     }
                 </div> :
                 <BigSpinner/>

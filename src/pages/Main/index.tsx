@@ -176,7 +176,7 @@ const Main: FC = () => {
                                                     <div className="f-c-col infiniteSpin w-content h-content">
                                                         <Preloader height={20} width={20} />
                                                     </div> :
-                                                    <div style={{ fontSize: 16 }} className={"grayColor_dark"}>
+                                                    <div style={{ fontSize: 16 }} className={gTheme("lt-lg-c", " grayColor_dark")}>
                                                         Категории отсутствуют.
                                                     </div>
 

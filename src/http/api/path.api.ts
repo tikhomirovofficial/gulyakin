@@ -40,6 +40,7 @@ export const PATHS = {
     PAYMENT_CONFIRMATION: "/order/success",
     GET_ORDER: "/order/get",
     ORDER_HISTORY: "/order/list",
+    ORDER_SETTINGS: "/settings/order-settings",
 
     ACCESSIBILITY_ORDER_CITY: "/order/check ",
     ACCESSIBILITY_ORDER_CITY_ADDRESSES: "/order/check/get-adress",

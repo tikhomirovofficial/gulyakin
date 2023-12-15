@@ -23,7 +23,7 @@ import {
     getAddressesByCity,
     getAddressesByMarketCity, getBookings, getCanOrderAddressesByCity,
     getCities,
-    getDeliveries, getMarketsByCity,
+    getDeliveries, getDeliverySettings, getMarketsByCity,
     getPayments,
     setIsMobile,
     setIsPhone,
@@ -80,6 +80,8 @@ function App() {
         handleResize()
         dispatch(getDeliveries())
         dispatch(getPayments())
+        dispatch(getDeliverySettings())
+        
     }, [])
 
     useEffect(() => {

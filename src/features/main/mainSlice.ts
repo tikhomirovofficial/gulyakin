@@ -16,6 +16,7 @@ import {
     GetByCityAddressesResponse,
     GetCitiesResponse,
     GetDeliveryListResponse,
+    GetDeliverySettingsResponse,
     GetMarketsByCityRequest,
     GetMarketsByCityResponse,
     GetOrderDeliveryRequest,
@@ -86,7 +87,11 @@ type MainSliceState = {
     orderDetails: OrderDeliveryDetails
     deliveryAddress: DeliveryAddress
     cityAddresses: AddressByCityItem[],
-    pickupAddresses: AddressByCityItem[]
+    pickupAddresses: AddressByCityItem[],
+    deliverySettings: {
+        personDeliveryPrice: number
+        autoDeliveryPrice: number
+    }
 }
 const initialState: MainSliceState = {
     market: getFromStorage('market') || -1,
@@ -109,6 +114,10 @@ const initialState: MainSliceState = {
     cityMarkets: [],
     cityAddresses: [],
     pickupAddresses: [],
+    deliverySettings: {
+        personDeliveryPrice: 0,
+        autoDeliveryPrice: 0
+    },
     deliveryAddress: {
         adress: "",
         id: 0,
@@ -120,7 +129,6 @@ const initialState: MainSliceState = {
         phone: "",
         time: [],
         timeaone: ""
-
     },
     workTimes: {
         startTime: "8:00",
@@ -199,6 +207,13 @@ export const getDeliveries = createAsyncThunk(
     async (_, {dispatch}) => {
         const res: AxiosResponse<GetDeliveryListResponse> = await OrderApi.DeliveriesWays()
         return res.data.delivery_list
+    }
+)
+export const getDeliverySettings = createAsyncThunk(
+    'delivery/settings/get',
+    async (_, {dispatch}) => {
+        const res: AxiosResponse<GetDeliverySettingsResponse> = await OrderApi.DeliverySettings()
+        return res.data
     }
 )
 
@@ -319,6 +334,12 @@ export const MainSlice = createSlice({
 
         builder.addCase(getPayments.fulfilled, (state, action) => {
             state.payments = action.payload
+        })
+        builder.addCase(getDeliverySettings.fulfilled, (state, action) => {
+            state.deliverySettings = {
+                personDeliveryPrice: action.payload.people_min,
+                autoDeliveryPrice: action.payload.car_min
+            }
         })
         builder.addCase(getMarketsByCity.fulfilled, (state, action) => {
             state.cityMarkets = action.payload

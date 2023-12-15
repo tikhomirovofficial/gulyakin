@@ -230,6 +230,11 @@
   }
 }
 @media (max-width: 410px) {
+  .errorDelivery {
+    p, b {
+      font-size: 1.4rem;
+    }
+  }
   .orderContainer {
     gap: 2rem;
     .errorDelivery {

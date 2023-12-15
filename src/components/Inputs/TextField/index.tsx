@@ -11,7 +11,6 @@ type TextFieldProps = {
     formValue: string,
     condValue: string,
     handleSave: () => void,
-
     handleEdit?: () => void,
 
 } & Pick<InputWrapper, "mask" | "errText" | "maskPlaceholder" | "inputId"  | "placeholder" | "labelText" | "changeVal" | "setVal" | "onInputBlur" | "onInputFocus" | "isTextArea" | "textChangeVal"> & HasClassName

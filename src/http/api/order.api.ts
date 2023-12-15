@@ -4,6 +4,7 @@ import {
     CreateOrderRequest,
     CreateOrderResponse,
     GetDeliveryListResponse,
+    GetDeliverySettingsResponse,
     GetHistoryOrdersResponse, GetOrderDeliveryRequest, GetOrderDeliveryResponse,
     GetOrderRequest,
     GetOrderResponse,
@@ -24,6 +25,10 @@ export class OrderApi {
 
     static async PaymentsWays(): Promise<AxiosResponse<GetPaymentListResponse>> {
         const res: AxiosResponse<GetPaymentListResponse> = await api.get(PATHS.PAYMENT_OPTIONS);
+        return res;
+    }
+    static async DeliverySettings(): Promise<AxiosResponse<GetDeliverySettingsResponse>> {
+        const res: AxiosResponse<GetDeliverySettingsResponse> = await api.get(PATHS.ORDER_SETTINGS);
         return res;
     }
 

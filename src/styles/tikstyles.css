@@ -665,12 +665,14 @@
 }
 
 .c-black {
-    color: black;
+    color: black !important;
 }
 .c-lightgray {
     color: lightgrey;
 }
-
+.text-nowrap {
+    text-wrap: nowrap;
+}
 /*FONT-WEIGHT*/
 .fw-1 {
     font-weight: 100;

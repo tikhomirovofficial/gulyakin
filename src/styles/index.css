@@ -157,7 +157,7 @@ body::-webkit-scrollbar-thumb {
     color: #fcc8a5 !important;
 }
 .colorError {
-    color: #ff2000;
+    color: #ff2000 !important;
 }
 
 .svgRedStroke path {

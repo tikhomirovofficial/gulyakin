@@ -36,7 +36,7 @@ export class AddressesApi {
         return res;
     }
     static async CreateBooking(requestData: BookingCreateRequest): Promise<AxiosResponse<BookingCreateResponse>> {
-        const res: AxiosResponse<BookingCreateResponse> = await api.post(PATHS.BOOKINGS_LIST, requestData);
+        const res: AxiosResponse<BookingCreateResponse> = await api.post(PATHS.BOOKING_CREATE, requestData);
         return res;
     }
 

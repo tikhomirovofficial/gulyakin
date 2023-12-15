@@ -9,11 +9,11 @@ type GetTimesParams =  {
 
 function getTimes(params: GetTimesParams): string[] {
     const { startDate, endDate, step, trimPast, currentTime } = params;
+    
+    //СДЕЛАТЬ ПРОВЕРКУ НА ТО, ЧТО ВРЕМЯ ОКОНЧАНИЯ, МЕНЬШЕ ЧЕМ ВРЕМЯ НАЧАЛА И УСТАНОВИТЬ СЛЕД ДЕНЬ
 
     if (trimPast && currentTime >= endDate) {
-        console.log(startDate);
-        
-        
+
         return [];
     }
     const startTime = new Date(startDate);

@@ -73,7 +73,10 @@
 
 @media (max-width: 800px) {
   .addressesList {
-    padding-bottom: 8.5rem;
+    padding-bottom: 20rem;
+  }
+  .addressesList::-webkit-scrollbar {
+    display: none;
   }
   .deliveryBtnBlock {
     position: fixed;
@@ -86,6 +89,7 @@
   .window {
     height: 100vh;
     border-radius: unset;
+    overflow-y: auto;
     max-height: unset;
   }
   .deliveryBtn {
@@ -114,7 +118,7 @@
     display: none;
   }
   .deliveryWayForm {
-    padding-bottom: 10rem;
+    padding-bottom: 21rem;
   }
   .deliveryWayForm::-webkit-scrollbar {
     display: none;

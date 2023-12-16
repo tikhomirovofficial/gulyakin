@@ -105,6 +105,8 @@
   }
   .weight {
     color: #C0C0C0;
+    min-width: 4rem;
+    text-align: right;
     font-size: 1.4rem;
     text-wrap: nowrap;
   }
@@ -204,7 +206,7 @@
     flex-direction: column;
   }
   .additivesListBlock {
-    padding-bottom: 7rem;
+    padding-bottom: 8rem;
   }
   .productImage {
     height: 20%;
@@ -229,7 +231,7 @@
     position: fixed;
     width: 100%;
     left: 0;
-    padding: 0 3rem 1.6rem !important;
+    padding: 0 3rem 2.6rem !important;
     bottom: 0;
   }
   .additivesBarContainer {

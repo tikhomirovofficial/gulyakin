@@ -60,12 +60,12 @@ function App() {
         addressSuccess,
         bodyLocked
     } = useAppSelector(state => state.modals)
-
+    const { mobileMenu } = useAppSelector(state => state.modals)
     const { items } = useAppSelector(state => state.cart)
     const orderForm = useAppSelector(state => state.forms.orderForm)
     const profile = useAppSelector(state => state.profile)
 
-    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses, isDarkTheme} = useAppSelector(state => state.main)
+    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses, isDarkTheme } = useAppSelector(state => state.main)
 
     const handleResize = () => {
         dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))
@@ -81,7 +81,7 @@ function App() {
         dispatch(getDeliveries())
         dispatch(getPayments())
         dispatch(getDeliverySettings())
-        
+
     }, [])
 
     useEffect(() => {
@@ -102,12 +102,12 @@ function App() {
                 const curProduct = cur.product
                 const cartProductDefined = curProduct !== undefined
                 const cartProductHasSupplements = cur.supplements !== undefined
-        
-                
+
+
                 if (cartProductDefined) {
-                    
+
                     if (cartProductHasSupplements) {
-                       
+
                         return prev + (cur.count * curProduct.price) + (cur.supplements.reduce((p, c) => {
                             return p + c.price
                         }, 0))
@@ -124,16 +124,16 @@ function App() {
                 const curProduct = cur.product
                 const cartProductDefined = curProduct !== undefined
                 const cartProductHasSupplements = cur.supplements !== undefined
-                
+
                 if (cartProductDefined) {
-                    
+
                     if (cartProductHasSupplements) {
-                       
+
                         return prev + (cur.count * (curProduct.price_discount || 0)) + (cur.supplements.reduce((p, c) => {
                             return p + c.price
                         }, 0))
                     }
-                    return prev + (cur.count *  (curProduct.price_discount || 0))
+                    return prev + (cur.count * (curProduct.price_discount || 0))
 
                 }
                 return prev
@@ -182,7 +182,7 @@ function App() {
         }
     }, [token])
     useEffect(() => {
-        if(isDarkTheme) {
+        if (isDarkTheme) {
             document.body.classList.add("dk-white-bg")
         }
     }, [isDarkTheme])
@@ -228,7 +228,15 @@ function App() {
         }
 
     }, [cityAddresses, items, orderForm.addressId, orderForm.isPickup])
-    
+    useEffect(() => {
+        const appNode = document.body
+        if(appNode !== null && (mobileMenu || deliveryWay.opened)) {
+            appNode?.classList.add("of-y-hide")
+        } else {
+            appNode?.classList.remove("of-y-hide")
+        }
+    }, [mobileMenu, deliveryWay.opened])
+
     // useEffect(() => {
     //     if(orderForm.isPickup && orderForm.restaurant > 0) {
     //         const currentRest = pickupAddresses.filter(item => item.id === orderForm.restaurant)[0]
@@ -243,11 +251,11 @@ function App() {
     //                 })
     //             )
     //         }
-           
+
     //         // dispatch(setWorkTimes({
-                
+
     //         // }))
-            
+
     //     }
     // }, [orderForm.isPickup, pickupAddresses, orderForm.restaurant])
 
@@ -263,7 +271,6 @@ function App() {
                 <Footer />
                 <SuccessWindow closeHandle={() => { }} isOpened={addressSuccess.opened} title={addressSuccess.title} />
                 {isMobile ? <CartWidget /> : null}
-                {isMobile ? <MenuMobile /> : null}
                 {loginOpened ? <LoginWindow /> : null}
                 {yourAddress ? <YourAddressWindow /> : null}
                 {deliveryWay.opened ? <DeliveryWay /> : null}
@@ -273,6 +280,7 @@ function App() {
                 {cartOpened ? <Cart /> : null}
                 <CookiePopup isOpened={cookiesAccepted} />
             </div>
+            {isMobile ? <MenuMobile /> : null}
         </>
 
 

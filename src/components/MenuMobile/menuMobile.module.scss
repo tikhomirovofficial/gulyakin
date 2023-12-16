@@ -2,6 +2,8 @@
 .menu {
   overflow-y: scroll;
   min-height: 100vh;
+  max-height: 100vh;
+  padding-bottom: 20vh;
   transform: translateX(200vw);
   background: rgba(5, 5, 5, 0.95);
   backdrop-filter: blur(7.5px);

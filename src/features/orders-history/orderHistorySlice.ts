@@ -16,6 +16,8 @@ const initialState: OrderHistorySliceType = {
         is_active: false,
         is_payment: false,
         order_id: 0,
+        is_delivery: false,
+        delivery_price: 0,
         price: 0,
         products: []
     },

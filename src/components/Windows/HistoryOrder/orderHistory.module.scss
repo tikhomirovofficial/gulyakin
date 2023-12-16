@@ -1,6 +1,7 @@
 .window {
   max-height: 80vh;
   max-width: 60rem;
+ 
   .gray {
     color: #9E9E9E;
   }
@@ -13,6 +14,10 @@
     }
   }
 }
+.window::-webkit-scrollbar {
+  display: none;
+}
+
 @media (max-width: 620px) {
   .window {
     min-height: 100vh;

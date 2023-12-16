@@ -354,12 +354,16 @@ export type GetOrderItem = {
     is_payment: boolean,
     is_active: boolean,
     address: string,
+    is_delivery: boolean,
+    delivery_price: number,
     products: Array<{
         id: number
         title: string,
         image: string,
         price: number,
-        count: number
+        count: number,
+        price_discount: number,
+        is_discount: boolean
     }>
 }
 

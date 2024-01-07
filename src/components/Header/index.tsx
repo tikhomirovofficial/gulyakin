@@ -17,8 +17,15 @@ const Header = () => {
 
     const {totalPrice, cartClassOpened, cartAdded, cartAddedPopupInfo, items, totalDiscountPrice} = useAppSelector(state => state.cart)
     const {cities, currentGeo, changingGeo, askCityVisible, isDarkTheme} = useAppSelector(state => state.main)
+    const {cartDisabled} = useAppSelector(state => state.settings)
     const token = useToken()
-    const handleCart = () => dispatch(handleCartOpened())
+
+    const handleCart = () => {
+        if(!cartDisabled) {
+            dispatch(handleCartOpened())
+            return
+        }
+    } 
 
     const actualPrice = useActualPrice()
 

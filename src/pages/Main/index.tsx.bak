@@ -62,7 +62,7 @@ const Main: FC = () => {
             }
         }
     }, [categories])
-	
+
     useEffect(() => {
         if (token && !is_auth) {
             dispatch(getUser())

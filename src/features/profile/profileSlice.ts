@@ -46,6 +46,7 @@ export const getUser = createAsyncThunk(
         return res.data.user
     }
 )
+
 export const editUser = createAsyncThunk(
     'user/edit',
     async (request: ChangeUserRequest, {dispatch}) => {

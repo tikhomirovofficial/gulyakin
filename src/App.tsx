@@ -60,6 +60,7 @@ function App() {
         addressSuccess,
         bodyLocked
     } = useAppSelector(state => state.modals)
+    
     const { mobileMenu } = useAppSelector(state => state.modals)
     const { items } = useAppSelector(state => state.cart)
     const orderForm = useAppSelector(state => state.forms.orderForm)

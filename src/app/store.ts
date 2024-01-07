@@ -8,6 +8,7 @@ import {formsReducer} from "../features/forms/formsSlice";
 import {productsReducer} from "../features/products/productsSlice";
 import {categoriesReducer} from "../features/categories/categoriesSlice";
 import {ordersHistoryReducer} from "../features/orders-history/orderHistorySlice";
+import { settingsReducer } from '../features/settings/settingsSlice';
 
 export const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
         forms: formsReducer,
         products: productsReducer,
         categories: categoriesReducer,
+        settings: settingsReducer,
         ordersHistory: ordersHistoryReducer
     }
 })

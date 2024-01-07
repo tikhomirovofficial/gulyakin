@@ -28,6 +28,7 @@ import RedButton from "../../components/Buttons/RedButton";
 import OrdersHistoryList from "./History";
 import useTheme from '../../hooks/useTheme';
 import useAppColor from '../../hooks/useAppColor';
+import useToken from '../../hooks/useToken';
 
 
 const Profile = () => {
@@ -35,6 +36,7 @@ const Profile = () => {
     const {isDarkTheme} = useAppSelector(state => state.main)
     const {name, dob, email} = useAppSelector(state => state.forms.profileForm)
     const {profileErrors, profileErrsVisible} = useAppSelector(state => state.forms)
+    const token = useToken()
 
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -63,6 +65,7 @@ const Profile = () => {
         }
 
     }
+    
     const handleLogout = () => {
         deleteCookie("tokens")
         window.location.href = "/"
@@ -71,6 +74,8 @@ const Profile = () => {
     useEffect(() => {
 
         dispatch(getHistoryOrders())
+        
+
         const handleHashChange = () => {
             const hash = window.location.hash;
             if (hash) {
@@ -81,13 +86,8 @@ const Profile = () => {
             }
         };
 
-        // Добавляем слушателя события для изменения хэша
         window.addEventListener('hashchange', handleHashChange);
-
-        // Вызываем обработчик хэша при загрузке страницы
         handleHashChange();
-
-        // Очищаем слушателя события при размонтировании компонента
         return () => {
             window.removeEventListener('hashchange', handleHashChange);
         };

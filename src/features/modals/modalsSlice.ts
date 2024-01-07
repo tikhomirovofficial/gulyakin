@@ -1,7 +1,7 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ProductAdditiveData} from "../../types/products.types";
-import {getImgPath} from "../../utils/common/getAssetsPath";
-import {addToStorage, getFromStorage} from "../../utils/common/LocalStorageExplorer";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { N_ProductCurrent, ProductAdditiveData } from "../../types/products.types";
+import { getImgPath } from "../../utils/common/getAssetsPath";
+import { addToStorage, getFromStorage } from "../../utils/common/LocalStorageExplorer";
 
 type ModalSliceState = {
     loginOpened: boolean,
@@ -18,7 +18,7 @@ type ModalSliceState = {
     mobileMenu: boolean
     isChangingModeAdditives: boolean,
     orderHistory: boolean
-    productAdditivesData: ProductAdditiveData,
+    productAdditivesData: N_ProductCurrent,
     cartOpened: boolean,
     addressSuccess: {
         opened: boolean,
@@ -45,15 +45,31 @@ const initialState: ModalSliceState = {
     productAdditivesData: {
         id: 0,
         description: "",
-        imageUrl: "",
-        name: "",
-        dimensions: "",
+        image: "",
+        title: "",
+        dimensions: {
+            id: 0,
+            title: ""
+        },
         price: 0,
         is_combo: false,
         weight: 0,
-        currentAdditive: 0,
-        additives: [
-        ],
+        is_activ: false,
+        fats: 0,
+        carbohydrates: 0,
+        category: {
+            id: 0,
+            title: ""
+        },
+        cart_id: 0,
+        count: 0,
+        sheif_life: "",
+        storeg_temperature: "",
+        discount_price: 0,
+        discount_procent: 0,
+        // currentAdditive: 0,
+        // additives: [
+        // ],
 
     },
     addressSuccess: {
@@ -69,7 +85,7 @@ export const ModalsSlice = createSlice({
     initialState,
     reducers: {
         handleCookieAccepted: (state) => {
-            if(!state.cookiesAccepted) {
+            if (!state.cookiesAccepted) {
                 state.cookiesAccepted = !state.cookiesAccepted
                 addToStorage("cookie_accepted", true)
             }
@@ -99,18 +115,18 @@ export const ModalsSlice = createSlice({
         },
         handleProductAdditives: state => {
             state.bodyLocked = !state.bodyLocked
-            if(state.productAdditives) {
+            if (state.productAdditives) {
                 state.isChangingModeAdditives = false
             }
             state.productAdditives = !state.productAdditives
         },
         setMobileMenu: (state, action: PayloadAction<boolean>) => {
             state.bodyLocked = !state.bodyLocked
-          state.mobileMenu = action.payload
+            state.mobileMenu = action.payload
         },
         handleNewAddress: state => {
             state.bodyLocked = !state.bodyLocked
-          state.newAddress = !state.newAddress
+            state.newAddress = !state.newAddress
         },
         handleDeliveryWayWindow: (state) => {
             state.bodyLocked = !state.bodyLocked
@@ -125,7 +141,7 @@ export const ModalsSlice = createSlice({
                 variant: action.payload
             }
         },
-        setProductAdditivesData: (state, action: PayloadAction<ProductAdditiveData>) => {
+        setProductAdditivesData: (state, action: PayloadAction<N_ProductCurrent>) => {
             state.productAdditivesData = action.payload
         },
         setAddressSuccess: (state, action: PayloadAction<boolean>) => {

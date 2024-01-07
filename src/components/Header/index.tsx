@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import styles from "../../pages/Main/main.module.scss";
-import {CartIcon, Logo, ProfileIcon} from "../../icons";
+import {CartIcon, GulicatLogo, Logo, ProfileIcon} from "../../icons";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {handleCartOpened, handleLogin} from "../../features/modals/modalsSlice";
 import {formatNumberWithSpaces} from "../../utils/common/numberWithSpaces";
@@ -36,9 +36,9 @@ const Header = () => {
         <header className={`${styles.header} ${gTheme("lt-white-bg", "dk-white-bg")}`}>
             <div className="wrapper">
                 <div className={`${styles.block} pd-30-0 f-row-betw gap-40`}>
-                    <div className={`${styles.left} d-f al-center gap-35`}>
+                    <div className={`${styles.left} d-f al-center gap-20`}>
                         <Link to={"/"} className="">
-                            <Logo fill={isDarkTheme ? "white" : "black"}/>
+                            <GulicatLogo fill={isDarkTheme ? "white" : "black"}/>
                         </Link>
                         <SelectCity/>
                     </div>

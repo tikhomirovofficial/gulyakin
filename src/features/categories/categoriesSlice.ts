@@ -1,11 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {Category, GetCategoriesByMarketRequest, GetCategoriesByMarketResponse} from "../../types/api.types";
+import {Category, GetCategoriesByAddressRequest, GetCategoriesByAddressResponse} from "../../types/api.types";
 import {AxiosResponse} from "axios/index";
 import {ProductsApi} from "../../http/api/products.api";
+import { N_CategoryApi } from "../../types/categories.types";
 
 
 type CategoriesSliceState = {
-    category: Category[],
+    category: N_CategoryApi[],
     isLoading: boolean
 }
 
@@ -13,10 +14,10 @@ const initialState: CategoriesSliceState = {
     category: [],
     isLoading: false
 }
-export const getCategoriesByMarket = createAsyncThunk(
-    'categories/by-market',
-    async (request: GetCategoriesByMarketRequest, {dispatch}) => {
-        const res: AxiosResponse<GetCategoriesByMarketResponse> = await ProductsApi.CategoriesByMarket(request)
+export const getCategoriesByAddress = createAsyncThunk(
+    'categories/by-address',
+    async (request: GetCategoriesByAddressRequest, {dispatch}) => {
+        const res: AxiosResponse<GetCategoriesByAddressResponse> = await ProductsApi.CategoriesByAddress(request)
         return res.data.category
     }
 )
@@ -27,16 +28,16 @@ export const CategoriesSlice = createSlice({
     reducers: {},
 
     extraReducers: builder => {
-        builder.addCase(getCategoriesByMarket.pending, (state, action) => {
+        builder.addCase(getCategoriesByAddress.pending, (state, action) => {
             state.isLoading = true
         })
-        builder.addCase(getCategoriesByMarket.fulfilled, (state, action) => {
+        builder.addCase(getCategoriesByAddress.fulfilled, (state, action) => {
             if (action.payload) {
                 state.category = action.payload
             }
             state.isLoading = false
         })
-        builder.addCase(getCategoriesByMarket.rejected, (state, action) => {
+        builder.addCase(getCategoriesByAddress.rejected, (state, action) => {
             state.isLoading = false
         })
     }

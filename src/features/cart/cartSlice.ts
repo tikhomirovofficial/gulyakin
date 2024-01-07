@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
     AddToCartComboRequest,
     AddToCartComboResponse,
@@ -16,9 +16,10 @@ import {
     GetCartResponse,
     ProductRes
 } from "../../types/api.types";
-import {AxiosResponse} from "axios";
-import {handleTokenRefreshedRequest} from "../../utils/auth/handleThunkAuth";
-import {CartApi} from "../../http/api/cart.api";
+import { AxiosResponse } from "axios";
+import { handleTokenRefreshedRequest } from "../../utils/auth/handleThunkAuth";
+import { CartApi } from "../../http/api/cart.api";
+import { N_ProductApi } from "../../types/products.types";
 
 
 type DefferedAddingProduct = {
@@ -54,13 +55,13 @@ const initialState: CartSliceState = {
     cartCounts: {},
     cartAdded: true,
     cartClassOpened: false,
-    cartAddedPopupInfo: {title: "", weight: 0}
+    cartAddedPopupInfo: { title: "", weight: 0 }
 
 }
 
 export const getCart = createAsyncThunk(
     'cart/get',
-    async (_, {dispatch}) => {
+    async (_, { dispatch }) => {
         const res: AxiosResponse<GetCartResponse> = await handleTokenRefreshedRequest(CartApi.GetProducts)
         return {
             cart: res.data.cart,
@@ -72,17 +73,12 @@ export const getCart = createAsyncThunk(
 )
 export const addToCart = createAsyncThunk(
     'cart/add',
-    async (request: ProductRes, {dispatch}) => {
+    async (request: N_ProductApi, { dispatch }) => {
         const productCartReq: AddToCartRequest = {
             products: [
                 {
                     product: request.id,
-                    supplements: request.supplements.map((item) => {
-                        return {
-                            count: 1,
-                            id: item.id,
-                        }
-                    }),
+                    supplements: [],
                     count: 1
                 }
             ]
@@ -96,9 +92,9 @@ export const addToCart = createAsyncThunk(
 )
 export const addToCartCombo = createAsyncThunk(
     'cart/add/combo',
-    async (request: AddToCartComboRequest, {dispatch}) => {
+    async (request: AddToCartComboRequest, { dispatch }) => {
 
-        const res: AxiosResponse<AddToCartComboResponse> = await handleTokenRefreshedRequest(CartApi.AddCombo, {combo: request.combo})
+        const res: AxiosResponse<AddToCartComboResponse> = await handleTokenRefreshedRequest(CartApi.AddCombo, { combo: request.combo })
         return {
             combo: request.combo,
             combo_prod: request.combo_prod,
@@ -108,9 +104,9 @@ export const addToCartCombo = createAsyncThunk(
 )
 export const editCartCombo = createAsyncThunk(
     'cart/edit/combo',
-    async (request: EditCartComboRequest, {dispatch}) => {
+    async (request: EditCartComboRequest, { dispatch }) => {
 
-        const res: AxiosResponse<EditCartComboResponse> = await handleTokenRefreshedRequest(CartApi.EditCombo, {combos: request.combos})
+        const res: AxiosResponse<EditCartComboResponse> = await handleTokenRefreshedRequest(CartApi.EditCombo, { combos: request.combos })
         return {
             data: res.data
         }
@@ -118,7 +114,7 @@ export const editCartCombo = createAsyncThunk(
 )
 export const editCountCart = createAsyncThunk(
     'cart/edit',
-    async (request: Pick<ProductRes, "id"> & ChangeCountCartRequest, {dispatch}) => {
+    async (request: Pick<ProductRes, "id"> & ChangeCountCartRequest, { dispatch }) => {
         const reqData: ChangeCountCartRequest = {
             cart_id: request.cart_id,
             count: request.count
@@ -134,7 +130,7 @@ export const editCountCart = createAsyncThunk(
 )
 export const editSupplementsCountCart = createAsyncThunk(
     'cart/supplements/edit',
-    async (request: CartCountSupplementsRequest, {dispatch}) => {
+    async (request: CartCountSupplementsRequest, { dispatch }) => {
 
         const res: AxiosResponse<CartCountSupplementsResponse> = await handleTokenRefreshedRequest(CartApi.EditSupplementsCount, request)
         return {
@@ -145,7 +141,7 @@ export const editSupplementsCountCart = createAsyncThunk(
 )
 export const removeFromCart = createAsyncThunk(
     'cart/remove',
-    async (request: CartProductDeleteRequest, {dispatch}) => {
+    async (request: CartProductDeleteRequest, { dispatch }) => {
         const res: AxiosResponse<AddToCartResponse> = await handleTokenRefreshedRequest(CartApi.RemoveProduct, {
             cart_id: request.cart_id
         })
@@ -157,7 +153,7 @@ export const removeFromCart = createAsyncThunk(
 )
 export const resetCart = createAsyncThunk(
     'cart/reset',
-    async (_, {dispatch}) => {
+    async (_, { dispatch }) => {
         const res: AxiosResponse<CartResetResponse> = await handleTokenRefreshedRequest(CartApi.Reset)
         return res.data
     }
@@ -255,7 +251,7 @@ export const CartSlice = createSlice({
 
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
-                
+
                 state.items = action.payload.cart
                 // const resultPrice = action.payload.cart.reduce((prev, cur) => {
                 //     //console.log(prev + (cur.count * cur.product.price))
@@ -264,7 +260,7 @@ export const CartSlice = createSlice({
                 // }, 0)
                 state.totalPrice = action.payload.total_price
                 state.totalDiscountPrice = action.payload.total_price_discount
-                
+
                 state.cartCounts = action.payload.sup_counts
             }
 
@@ -274,28 +270,30 @@ export const CartSlice = createSlice({
             const product = action.payload.product
             const res = action.payload.data
             if (action.payload) {
-                const newState = [
-                    ...state.items,
-                    {
-                        is_combo: false,
-                        id: res.list_id[0],
-                        product: {
+                // const newState = [
+                //     ...state.items,
+                //     {
+                //         is_combo: false,
+                //         id: res.list_id[0],
+                //         product: {
 
-                            composition: product.composition,
-                            id: product.id,
-                            title: product.title,
-                            image: product.image,
-                            dimensions: product.dimensions,
-                            is_discount: product.is_discount,
-                            price_discount: ~~(product.price_discount || 0),
-                            price: product.price,
-                            short_description: product.short_description,
-                        },
-                        supplements: product.supplements,
-                        count: 1
-                    }
+                //             composition: product.composition,
+                //             id: product.id,
+                //             title: product.title,
+                //             image: product.image,
+                //             dimensions: product.dimensions,
+                //             is_discount: product.is_discount,
+                //             price_discount: ~~(product.price_discount || 0),
+                //             price: product.price,
+                //             short_description: product.short_description,
+                //         },
+                //         supplements: product.supplements,
+                //         count: 1
+                //     }
+                // ]
+                state.items = [
+                    ...state.items
                 ]
-                state.items = newState
             }
         })
         builder.addCase(addToCartCombo.fulfilled, (state, action) => {
@@ -307,30 +305,32 @@ export const CartSlice = createSlice({
 
             const newState: CartProductItem[] = [
                 ...state.items,
-                {
-                    count: 1,
-                    id: comboRes.list_id[0],
-                    is_combo: true,
-                    product: {
-                        composition: compositionFromProds,
-                        dimensions: "г",
-                        drinks: comboProduct.drinks,
-                        id: comboProduct.id,
-                        image: comboProduct.image,
-                        price: comboProduct.price,
-                        products: comboProduct.products,
-                        selected_product: {
-                            id: selectedProductId,
-                            title: comboProduct.drinks?.filter(item => item.id === selectedProductId)[0].title || ""
-                        },
-                        short_description: "",
-                        title: comboProduct.title
+                // {
+                //     count: 1,
+                //     id: comboRes.list_id[0],
+                //     is_combo: true,
+                //     product: {
+                //         composition: compositionFromProds,
+                //         dimensions: "г",
+                //         drinks: comboProduct.drinks,
+                //         id: comboProduct.id,
+                //         image: comboProduct.image,
+                //         price: comboProduct.price,
+                //         products: comboProduct.products,
+                //         selected_product: {
+                //             id: selectedProductId,
+                //             title: comboProduct.drinks?.filter(item => item.id === selectedProductId)[0].title || ""
+                //         },
+                //         short_description: "",
+                //         title: comboProduct.title
 
-                    },
-                    supplements: []
-                }
+                //     },
+                //     supplements: []
+                // }
             ]
-            state.items = newState
+            state.items = [
+                ...state.items
+            ]
         })
         builder.addCase(editCartCombo.fulfilled, (state, action) => {
             const editedCombo = action.payload.data.product[0]

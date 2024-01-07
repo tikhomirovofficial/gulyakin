@@ -22,14 +22,14 @@ export const routes: RoutesCollection = {
             Component: Main,
             path: "/"
         },
-        {
-            Component: Restaurants,
-            path: "/restaurants"
-        },
-        {
-            Component: ChosenRestaurant,
-            path: "/restaurants/:id"
-        },
+        // {
+        //     Component: Restaurants,
+        //     path: "/restaurants"
+        // },
+        // {
+        //     Component: ChosenRestaurant,
+        //     path: "/restaurants/:id"
+        // },
         {
             Component: PublicSelling,
             path: "/public-selling"

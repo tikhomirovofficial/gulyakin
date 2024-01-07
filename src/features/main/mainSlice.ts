@@ -30,6 +30,7 @@ import {OrderApi} from "../../http/api/order.api";
 import {MarketApi} from "../../http/api/market.api";
 import {getDayOfWeekNumber} from "../../utils/datetime/getWeekDay";
 import {deleteSeconds} from "../../utils/datetime/deleteSecondsInTime";
+import { N_CityApi } from "../../types/city.types";
 
 type Market = {
     title: string,
@@ -60,14 +61,12 @@ export type WorkTimes = {
 }
 type MainSliceState = {
     isDarkTheme: boolean,
+    baseAddress: number
     lightAppColor: string,
     darkAppColor: string,
     market: number,
     phone: string,
-    cities: Array<{
-        id: number,
-        name: string
-    }>
+    cities: N_CityApi[]
     changingGeo: boolean,
     addresses: Array<AddressByMarketCity>
     askCityVisible: boolean,
@@ -96,6 +95,7 @@ type MainSliceState = {
 const initialState: MainSliceState = {
     market: getFromStorage('market') || -1,
     lightAppColor: "#9A9A9A",
+    baseAddress: -1,
     darkAppColor: "#F8CAA9",
     isDarkTheme: !true,
     phone: "+78005002797",
@@ -286,6 +286,9 @@ export const MainSlice = createSlice({
         setWorkTimes: (state, action: PayloadAction<WorkTimes>) => {
             state.workTimes = action.payload
         },
+        setBaseAddress: (state, action: PayloadAction<number>) => {
+            state.baseAddress = action.payload
+        },
         setCurrentCity: (state, action: PayloadAction<number>) => {
             state.currentGeo.city = action.payload
             addToStorage("city", action.payload)
@@ -394,6 +397,7 @@ export const {
     setCurrentCity,
     setOrderWarning,
     setIsMobile,
+    setBaseAddress,
     setOrderDetails,
     setIsPhone,
     toggleChangingGeo,

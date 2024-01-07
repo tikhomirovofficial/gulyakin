@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {Category, GetCategoriesByMarketRequest, GetCategoriesByMarketResponse} from "../../types/api.types";
+import {Category, GetCategoriesByAddressRequest, GetCategoriesByAddressResponse} from "../../types/api.types";
 import {AxiosResponse} from "axios/index";
 import {ProductsApi} from "../../http/api/products.api";
 

@@ -12,19 +12,10 @@ import AdditiveItem from "../../AdditiveItem";
 import {getImgPath} from "../../../../../utils/common/getAssetsPath";
 
 const EditComboVariant = () => {
-    const {
-        additives = [],
-        imageUrl,
-        price,
-        weight,
-        name,
-        description,
-        dimensions,
-        id
-    } = useAppSelector(state => state.modals.productAdditivesData)
+    const curCombo = useAppSelector(state => state.modals.productAdditivesData)
     //ТОЛЬКО ДЛЯ КОМБО
     const dispatch = useAppDispatch()
-    const [addCombo, editCombo, _, thisCombo, thisComboCart] = useCombo(id)
+    const [addCombo, editCombo, _, thisCombo, thisComboCart] = useCombo(curCombo.id)
     const saveMode = useAppSelector(state => state.modals.isChangingModeAdditives)
 
     const getAddedDrink = () => {
@@ -61,14 +52,14 @@ const EditComboVariant = () => {
                     </div>
                 </div>
                 <div className={`${styles.additivesContainer} f-row-betw h-100p gap-40`}>
-                    <div style={{backgroundImage: `url(${domain + imageUrl})`}}
+                    <div style={{backgroundImage: `url(${domain + curCombo.image})`}}
                          className={`${styles.productImage}`}></div>
                     <div className={`${styles.additivesBarContainer} f-column-betw gap-20 h-100p`}>
                         <div className={`${styles.productAdditivesBar} f-column-betw gap-10`}>
                             <div className="top f-column gap-10">
                                 <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
-                                    <h3>{name}</h3>
-                                    <div className={styles.weight}>{weight} {dimensions}</div>
+                                    <h3>{curCombo.title}</h3>
+                                    <div className={styles.weight}>{curCombo.weight} {curCombo.dimensions.title}</div>
                                 </div>
                                 <div className="f-column">
                                     {
@@ -81,7 +72,7 @@ const EditComboVariant = () => {
                                     }
                                 </div>
                             </div>
-                            <div className={`${!additives?.length ? "f-1" : ""} ${styles.drinksList} content gap-10 f-column-betw`}>
+                            {/* <div className={`${!additives?.length ? "f-1" : ""} ${styles.drinksList} content gap-10 f-column-betw`}>
                                 <div className="f-column gap-10">
                                     <h4>Выберите напиток</h4>
                                     <div className={`${styles.additiveList} d-f gap-10 flex-wrap`}>
@@ -95,13 +86,13 @@ const EditComboVariant = () => {
                                         }
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={`${styles.additivesBtnWrapper} d-f al-end f-1 w-100p`}>
                             <RedButton onClick={!saveMode ? handleAddCombo : handleEditCombo} disabled={false}
                                        className={`${styles.additivesBtn} pd-10-0`}>
 
-                                {!saveMode ? `Добавить в корзину за ${price} ₽` : "Сохранить"}
+                                {!saveMode ? `Добавить в корзину за ${curCombo.price} ₽` : "Сохранить"}
                             </RedButton>
                         </div>
                     </div>

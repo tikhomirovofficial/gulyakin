@@ -12,6 +12,7 @@ import { addProduct, addToCart, editCountCart, removeFromCart, removeProduct } f
 import { MiniClose, MinusIcon, PlusIcon } from "../../../icons";
 import { formatNumberWithSpaces } from "../../../utils/common/numberWithSpaces";
 import useTheme from '../../../hooks/useTheme';
+import useProduct from '../../../hooks/useProduct';
 
 type CartItemProps = {
     canNotBeAdded?: boolean,
@@ -21,44 +22,18 @@ type CartItemProps = {
 const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, id, count, supplements, product }) => {
     const dispatch = useAppDispatch()
     const gTheme = useTheme()
-
     const { items, combos } = useAppSelector(state => state.products)
+    const { handleCurrentProduct } = useProduct(product.id, [])
+
     const handleChange = () => {
         dispatch(setChangingAdditivesMode(true))
         if (!is_combo) {
-            const findedProduct = items.filter(item => product !== undefined ? item.id === product.id : null)[0]
-            dispatch(setProductAdditivesData({
-                id: findedProduct.id,
-                is_combo: is_combo,
-                description: findedProduct.composition,
-                dimensions: findedProduct.dimensions,
-                is_multiple_supplements: findedProduct.is_multiple_supplements,
-                cart_id: id,
-                imageUrl: findedProduct.image,
-                name: findedProduct.title,
-                price: findedProduct.price,
-                weight: findedProduct.weight,
-                currentAdditive: 0,
-                additives: findedProduct.supplements,
-            }))
-            dispatch(handleProductAdditives())
+            //const findedProduct = items.filter(item => product !== undefined ? item.id === product.id : null)[0]
+            handleCurrentProduct()
             return;
-
         }
-        const findedCombo = combos.filter(item => item.id === product.id)[0]
-        dispatch(setProductAdditivesData({
-            id: findedCombo.id,
-            is_combo: is_combo,
-            description: findedCombo.products?.map(combo => combo.title).join(", ") || "",
-            cart_id: id,
-            imageUrl: findedCombo.image,
-            dimensions: "г",
-            name: findedCombo.title,
-            price: findedCombo.price,
-            weight: findedCombo.weight,
-            currentAdditive: 0,
-            additives: [],
-        }))
+        //const findedCombo = combos.filter(item => item.id === product.id)[0]
+        handleCurrentProduct()
         dispatch(handleProductAdditives())
 
     }
@@ -69,14 +44,16 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
 
     const getCanBeChanged = () => {
         if (product !== undefined) {
-            if (!is_combo) {
-                return items.some(item => item.supplements.length > 0 && item.id === product.id)
-            }
-            return true
+            // if (!is_combo) {
+            //     return items.some(item => item?.supplements.length > 0 && item.id === product.id)
+            // }
+            // return true
+            return is_combo
         }
         return null
     }
     const canBeChanged = getCanBeChanged()
+
     const { isDarkTheme } = useAppSelector(state => state.main)
     return (
         product !== undefined ?

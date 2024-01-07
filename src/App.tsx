@@ -16,8 +16,8 @@ import useToken from "./hooks/useToken";
 import Header from "./components/Header";
 import LogosSection from "./components/LogosSection";
 import Footer from "./components/Footer";
-import { getCombosByMarket, getProductByMarket, getSouses } from "./features/products/productsSlice";
-import { getCategoriesByMarket } from "./features/categories/categoriesSlice";
+import { getCombosByMarket, getProductsByAddress, getSouses } from "./features/products/productsSlice";
+import { getCategoriesByAddress } from "./features/categories/categoriesSlice";
 import { addToStorage, getFromStorage } from "./utils/common/LocalStorageExplorer";
 import {
     getAddressesByCity,
@@ -25,6 +25,7 @@ import {
     getCities,
     getDeliveries, getDeliverySettings, getMarketsByCity,
     getPayments,
+    setBaseAddress,
     setIsMobile,
     setIsPhone,
     setWorkTimes
@@ -60,13 +61,13 @@ function App() {
         addressSuccess,
         bodyLocked
     } = useAppSelector(state => state.modals)
-    
+
     const { mobileMenu } = useAppSelector(state => state.modals)
     const { items } = useAppSelector(state => state.cart)
     const orderForm = useAppSelector(state => state.forms.orderForm)
     const profile = useAppSelector(state => state.profile)
 
-    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses, isDarkTheme } = useAppSelector(state => state.main)
+    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses, isDarkTheme, baseAddress } = useAppSelector(state => state.main)
 
     const handleResize = () => {
         dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))
@@ -79,9 +80,9 @@ function App() {
             setTimeout(handleResize, 800)
         })
         handleResize()
-        dispatch(getDeliveries())
-        dispatch(getPayments())
-        dispatch(getDeliverySettings())
+        // dispatch(getDeliveries())
+        // dispatch(getPayments())
+        // dispatch(getDeliverySettings())
 
     }, [])
 
@@ -150,14 +151,14 @@ function App() {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-
-        dispatch(getCategoriesByMarket({ market_id: market }))
-        dispatch(getProductByMarket({
-            market_id: market,
-            date: `${day}-${month}-${year}`
-        }))
-        dispatch(getCombosByMarket({ market_id: market }))
-        dispatch(getSouses())
+    
+        //dispatch(getCategoriesByMarket({ market_id: market }))
+        // dispatch(getProductByMarket({
+        //     market_id: market,
+        //     date: `${day}-${month}-${year}`
+        // }))
+        // dispatch(getCombosByMarket({ market_id: market }))
+        //dispatch(getSouses())
         if (!cities.length) {
             dispatch(getCities())
         }
@@ -182,6 +183,7 @@ function App() {
             dispatch(getAddressesUser())
         }
     }, [token])
+
     useEffect(() => {
         if (isDarkTheme) {
             document.body.classList.add("dk-white-bg")
@@ -189,28 +191,29 @@ function App() {
     }, [isDarkTheme])
 
     useEffect(() => {
-        if (cities.length > 0) {
-            dispatch(getAddressesByMarketCity({
-                market_id: market,
-                siti_id: currentGeo.city
-            }))
-        }
-    }, [cities, currentGeo.city, market])
-
-    useEffect(() => {
         window.scrollTo(0, 0)
         if (cities.length > 0) {
-            dispatch(getBookings({
-                siti_id: currentGeo.city
-            }))
-            dispatch(getMarketsByCity({
-                siti_id: currentGeo.city
-            }))
-            dispatch(getAddressesByCity({
-                siti_id: currentGeo.city
-            }))
+            // dispatch(getBookings({
+            //     siti_id: currentGeo.city
+            // }))
+            // dispatch(getMarketsByCity({
+            //     siti_id: currentGeo.city
+            // }))
+            // dispatch(getAddressesByCity({
+            //     siti_id: currentGeo.city
+            // }))
+            const currentBaseAddress = cities.find(item => item.id === currentGeo.city)?.base_adress_id || -1
+            dispatch(setBaseAddress(currentBaseAddress))
         }
     }, [cities, currentGeo.city])
+
+    useEffect(() => {
+        const baseAddressDefined = baseAddress !== -1
+        if (baseAddressDefined) {
+            dispatch(getCategoriesByAddress({adress_id: baseAddress}))
+            dispatch(getProductsByAddress({ adress_id: baseAddress }))
+        }
+    }, [baseAddress])
 
     useEffect(() => {
         if (token) {
@@ -221,17 +224,17 @@ function App() {
             const defaultAddressId = 17
 
             if (hasCart && hasAddresses) {
-                dispatch(getCanOrderAddressesByCity({
-                    siti_id: currentGeo.city,
-                    adress_id: hasDeliveryAddress ? orderForm.addressId : userHasAddresses ? profile.addresses[0].id : defaultAddressId
-                }))
+                // dispatch(getCanOrderAddressesByCity({
+                //     siti_id: currentGeo.city,
+                //     adress_id: hasDeliveryAddress ? orderForm.addressId : userHasAddresses ? profile.addresses[0].id : defaultAddressId
+                // }))
             }
         }
 
     }, [cityAddresses, items, orderForm.addressId, orderForm.isPickup])
     useEffect(() => {
         const appNode = document.body
-        if(appNode !== null && (mobileMenu || deliveryWay.opened)) {
+        if (appNode !== null && (mobileMenu || deliveryWay.opened)) {
             appNode?.classList.add("of-y-hide")
         } else {
             appNode?.classList.remove("of-y-hide")
@@ -266,7 +269,7 @@ function App() {
             <div className={`App f-column jc-between`}>
                 <div className="f-column">
                     {isMobile ? <HeaderMobile /> : <Header />}
-                    <LogosSection />
+                    {/* <LogosSection /> */}
                     <AppRoutes isAuth={false} />
                 </div>
                 <Footer />

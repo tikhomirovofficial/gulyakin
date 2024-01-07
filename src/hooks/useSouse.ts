@@ -23,7 +23,6 @@ const useSouse = (product_id: number) => {
             const product = souse.filter(item => item.id === product_id)[0]
             dispatch(addToCart({
                 ...product,
-                supplements: []
             }))
         }
     }

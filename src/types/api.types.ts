@@ -2,6 +2,9 @@ import { UserData } from "./user.types";
 import { ResponseStatus } from "./common.types";
 import { RestaurantDetails } from "./restaurants.types";
 import { AddressType } from "../features/main/mainSlice";
+import { N_CityApi } from "./city.types";
+import { N_ProductApi } from "./products.types";
+import { N_CategoryApi } from "./categories.types";
 
 export type JWT = {
     access?: string,
@@ -124,10 +127,7 @@ export type GetAddressInfoResponse = {
 }
 
 export type GetCitiesResponse = {
-    siti: Array<{
-        id: number,
-        name: string
-    }>
+    siti: N_CityApi[]
 } & ResponseStatus
 
 export type GetAddressesByMarketCityRequest = {
@@ -151,13 +151,21 @@ export type GetProductsByMarketRequest = {
     market_id: number,
     date: string
 }
+export type N_GetProductByAddressRequest = {
+    adress_id: number
+}
+export type N_GetProductByAddressResponse = {
+    products: N_ProductApi[]
+} & ResponseStatus
+
+
 export type GetProductsByMarketResponse = {
     products: ProductRes[];
 } & ResponseStatus
 
 export type GetSousesRequest = {}
 export type GetSousesResponse = {
-    souse: ProductRes[]
+    souse: N_ProductApi[]
 } & ResponseStatus
 
 
@@ -175,11 +183,12 @@ export type GetMarketInfoResponse = {
     }
 } & ResponseStatus
 
-export type GetCategoriesByMarketRequest = {
-    market_id: number
+
+export type GetCategoriesByAddressRequest = {
+    adress_id: number
 }
-export type GetCategoriesByMarketResponse = {
-    category: Category[];
+export type GetCategoriesByAddressResponse = {
+    category: N_CategoryApi[];
 } & ResponseStatus
 
 

@@ -5,17 +5,20 @@ import {
     GetCombosByMarketResponse,
     GetProductsByMarketRequest,
     GetProductsByMarketResponse, GetSousesRequest, GetSousesResponse,
+    N_GetProductByAddressRequest,
+    N_GetProductByAddressResponse,
     ProductRes
 } from "../../types/api.types";
 import {AxiosResponse} from "axios";
 import {ProductsApi} from "../../http/api/products.api";
+import { N_ProductApi } from "../../types/products.types";
 
 
 type ProductsSliceState = {
     productsLoading: boolean
-    items: ProductRes[]
+    items: N_ProductApi[]
     combos: Combo[]
-    souse: ProductRes[]
+    souse: N_ProductApi[]
 }
 
 const initialState: ProductsSliceState = {
@@ -24,10 +27,11 @@ const initialState: ProductsSliceState = {
     combos: [],
     souse: []
 }
-export const getProductByMarket = createAsyncThunk(
-    'product/by-market',
-    async (request: GetProductsByMarketRequest, {dispatch}) => {
-        const res: AxiosResponse<GetProductsByMarketResponse> = await ProductsApi.ProductsByMarket(request)
+
+export const getProductsByAddress = createAsyncThunk(
+    'product/by-address',
+    async (request: N_GetProductByAddressRequest, {dispatch}) => {
+        const res: AxiosResponse<N_GetProductByAddressResponse> = await ProductsApi.ProductsByAddress(request)
         return res.data.products
     }
 )
@@ -50,16 +54,16 @@ export const ProductsSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: builder => {
-        builder.addCase(getProductByMarket.fulfilled, (state, action) => {
+        builder.addCase(getProductsByAddress.fulfilled, (state, action) => {
             if (action.payload) {
                 state.items = action.payload
             }
             state.productsLoading = false
         })
-        builder.addCase(getProductByMarket.pending, (state, action) => {
+        builder.addCase(getProductsByAddress.pending, (state, action) => {
             state.productsLoading = true
         })
-        builder.addCase(getProductByMarket.rejected, (state, action) => {
+        builder.addCase(getProductsByAddress.rejected, (state, action) => {
             state.productsLoading = false
         })
         builder.addCase(getCombosByMarket.fulfilled, (state, action) => {

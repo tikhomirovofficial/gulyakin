@@ -373,9 +373,6 @@ const DeliveryWay = () => {
                     const addProductSupsDefined = addProductSups !== undefined
                     dispatch(addToCart({
                         ...matchedProduct,
-                        supplements: addProductSupsDefined ? addProductSups?.map(supId => {
-                            return matchedProduct.supplements.filter(sup => sup.id === supId)[0]
-                        }) : []
                     }))
                     handleAddedPopup(matchedProduct.title, matchedProduct.weight)
                 }
@@ -439,8 +436,8 @@ const DeliveryWay = () => {
 
                         </div>
 
-                        <Switcher onSwitch={handleDeliveryWay} currentSelected={variant}
-                            elements={["Доставка", "Самовывоз"]} />
+                        {/* <Switcher onSwitch={handleDeliveryWay} currentSelected={variant}
+                            elements={["Доставка", "Самовывоз"]} /> */}
 
                     </div>
                     {isPhone ? <div className={styles.map}>

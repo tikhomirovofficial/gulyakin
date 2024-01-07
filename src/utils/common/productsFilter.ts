@@ -1,14 +1,18 @@
-import {Category, ProductRes} from "../../types/api.types";
+import { Category, ProductRes } from "../../types/api.types";
+import { N_CategoryApi } from "../../types/categories.types";
+import { N_ProductApi } from "../../types/products.types";
 
-export const getCombinedData = (categories: Category[], products: ProductRes[]) => {
-    return categories.map((category: Category) => ({
+export const getCombinedData = (categories: N_CategoryApi[], products: N_ProductApi[]) => {
+
+    return categories.map((category: N_CategoryApi) => ({
         ...category,
-        products: products.filter((product: ProductRes) => product.category === category.id),
+        products: products.filter((product: N_ProductApi) => product.category.id === category.id),
     }));
 }
 // Функция поиска
 export function searchProducts(query: string, data: ReturnType<typeof getCombinedData>) {
     const lowerQuery = query.toLowerCase()
+
     const filtered = data.filter(item => {
         const products = item.products.filter(prod => prod.title.toLowerCase().includes(lowerQuery));
         item.products = products
@@ -17,5 +21,6 @@ export function searchProducts(query: string, data: ReturnType<typeof getCombine
         }
 
     });
+
     return filtered
 }

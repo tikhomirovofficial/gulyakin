@@ -62,7 +62,7 @@ const Main: FC = () => {
             }
         }
     }, [categories])
-	
+
     useEffect(() => {
         if (token && !is_auth) {
             dispatch(getUser())
@@ -77,7 +77,7 @@ const Main: FC = () => {
                         <div className="wrapper w-100p">
                             <div className={`${styles.restaurants} d-f jc-between gap-30`}>
                                 <div className="left d-f gap-30">
-                                    {
+                                    {/* {
                                         main.isMobile ? null :
                                             <Link to={"/restaurants"}>
                                                 <GradientGrayBtn
@@ -86,7 +86,7 @@ const Main: FC = () => {
                                                     <p>Рестораны на карте</p>
                                                 </GradientGrayBtn>
                                             </Link>
-                                    }
+                                    } */}
 
                                     <SearchInput
                                         value={searchVal}
@@ -94,7 +94,7 @@ const Main: FC = () => {
                                         setVal={setSearchVal}
                                         className={styles.search} />
                                 </div>
-                                <div className={`${styles.orderTrigger} f-1  p-rel`}>
+                                {/* <div className={`${styles.orderTrigger} f-1  p-rel`}>
                                     <div className="p-abs w-100p h-100p top-0 left-0 d-f jc-center">
                                         <div className={`${styles.backgrounds} p-rel f-row-betw h-100p`}>
                                             <img className={"h-100p"} src={getImgPath("pelmeni.png")} alt="" />
@@ -109,7 +109,7 @@ const Main: FC = () => {
                                             <p>у нас столик!</p>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -131,7 +131,7 @@ const Main: FC = () => {
                                         !categories.isLoading && categories.category.length > 0 && sliderNeeded && !isEndSlider ? <div
                                             className={`${styles.shadowRight} ${styles.shadowhtDark} ${gTheme("lt-categoriesArrow", "dk-categoriesArrow")}  d-f jc-end al-center h-100p p-abs right-0`}>
                                             <div onClick={handleNext} className={`${gTheme("lt-miniSliderArrow", "dk-miniSliderArrow")} cur-pointer f-c-col`}>
-                                                <ArrowMiniRightIcon  stroke={"black"} width={14} height={14} />
+                                                <ArrowMiniRightIcon stroke={"black"} width={14} height={14} />
                                             </div>
 
                                         </div> : null
@@ -160,7 +160,7 @@ const Main: FC = () => {
                                                                 className={"w-content cur-grabbing"}>
                                                                 <ScrollLink spy={true} activeClass={gTheme("lt-categoryActive", "dk-categoryActive")} to={`ctg-${item.id}`} smooth={true} offset={-160}>
                                                                     <GrayBorderedBlock
-                                    
+
                                                                         className={`${styles.item} ${gTheme("lt-categoryItem", "dk-categoryItem")}`}>
                                                                         {item.title}
                                                                     </GrayBorderedBlock>
@@ -225,7 +225,7 @@ const Main: FC = () => {
                     </div>
                 </div>
             </div>
-            {modals.bookingOpened ? <BookingWindow /> : null}
+            {/* {modals.bookingOpened ? <BookingWindow /> : null} */}
         </>
 
     );

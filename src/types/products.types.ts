@@ -14,6 +14,8 @@ export type N_ProductApi = {
     weight: number
     dimensions: N_ProductDimensions
     fats: number
+    calories: number,
+    proteins: number,
     carbohydrates: number
     storeg_temperature: string
     sheif_life: string

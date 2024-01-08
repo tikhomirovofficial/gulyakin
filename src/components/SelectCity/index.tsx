@@ -71,7 +71,7 @@ const SelectCity: FC<HasClassName & SelectCityProps> = ({ className, askGeoPopup
 
                 </div>
                 {
-                    askCityVisible ? <div
+                    cities.length > 1  && askCityVisible ? <div
                         className={`${styles.geoPopup} ${styles.yourCity} ${askGeoPopupClass || ""} f-column gap-15 p-abs bg-white`}>
                         <b className={`txt-center`}>Это ваш город?</b>
                         <div className="d-f gap-5 jc-around">

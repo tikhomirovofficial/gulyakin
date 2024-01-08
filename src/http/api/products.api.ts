@@ -16,6 +16,10 @@ export class ProductsApi {
         const res: AxiosResponse<N_GetProductByAddressResponse> = await api.get(PATHS.PRODUCT_BY_MARKET, { params: requestData });
         return res;
     }
+    static async SalesProductsByAddress(requestData: N_GetProductByAddressRequest): Promise<AxiosResponse<N_GetProductByAddressResponse>> {
+        const res: AxiosResponse<N_GetProductByAddressResponse> = await api.get(PATHS.SALES_PRODUCT_BY_ADDRESS, { params: requestData });
+        return res;
+    }
     static async Souses(): Promise<AxiosResponse<GetSousesResponse>> {
         const res: AxiosResponse<GetSousesResponse> = await api.get(PATHS.MARKET_SOUSES);
         return res;

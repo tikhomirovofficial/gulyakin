@@ -45,6 +45,8 @@ const initialState: ModalSliceState = {
     productAdditivesData: {
         id: 0,
         description: "",
+        proteins: 0,
+        calories: 0,
         image: "",
         title: "",
         dimensions: {

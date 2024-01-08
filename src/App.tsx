@@ -16,7 +16,7 @@ import useToken from "./hooks/useToken";
 import Header from "./components/Header";
 import LogosSection from "./components/LogosSection";
 import Footer from "./components/Footer";
-import { getCombosByMarket, getProductsByAddress, getSouses } from "./features/products/productsSlice";
+import { getCombosByMarket, getProductsByAddress, getSalesProductsByAddress, getSouses } from "./features/products/productsSlice";
 import { getCategoriesByAddress } from "./features/categories/categoriesSlice";
 import { addToStorage, getFromStorage } from "./utils/common/LocalStorageExplorer";
 import {
@@ -234,10 +234,12 @@ function App() {
             if (addressFromDefined) {
                 dispatch(getCategoriesByAddress({ adress_id: addressFrom }))
                 dispatch(getProductsByAddress({ adress_id: addressFrom }))
+                dispatch(getSalesProductsByAddress({ adress_id: addressFrom }))
             } else {
                 if (baseAddressDefined) {
                     dispatch(getCategoriesByAddress({ adress_id: baseAddress }))
                     dispatch(getProductsByAddress({ adress_id: baseAddress }))
+                    dispatch(getSalesProductsByAddress({ adress_id: baseAddress }))
                 }
             }
         }

@@ -16,14 +16,18 @@ import { N_ProductApi } from "../../types/products.types";
 
 type ProductsSliceState = {
     productsLoading: boolean
+    salesProductsLoading: boolean
     items: N_ProductApi[]
+    sales_products: N_ProductApi[]
     combos: Combo[]
     souse: N_ProductApi[]
 }
 
 const initialState: ProductsSliceState = {
     productsLoading: false,
+    salesProductsLoading: false,
     items: [],
+    sales_products: [],
     combos: [],
     souse: []
 }
@@ -32,6 +36,13 @@ export const getProductsByAddress = createAsyncThunk(
     'product/by-address',
     async (request: N_GetProductByAddressRequest, {dispatch}) => {
         const res: AxiosResponse<N_GetProductByAddressResponse> = await ProductsApi.ProductsByAddress(request)
+        return res.data.products
+    }
+)
+export const getSalesProductsByAddress = createAsyncThunk(
+    'sales-products/by-address',
+    async (request: N_GetProductByAddressRequest, {dispatch}) => {
+        const res: AxiosResponse<N_GetProductByAddressResponse> = await ProductsApi.SalesProductsByAddress(request)
         return res.data.products
     }
 )
@@ -65,6 +76,18 @@ export const ProductsSlice = createSlice({
         })
         builder.addCase(getProductsByAddress.rejected, (state, action) => {
             state.productsLoading = false
+        })
+        builder.addCase(getSalesProductsByAddress.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.sales_products = action.payload
+            }
+            state.salesProductsLoading = false
+        })
+        builder.addCase(getSalesProductsByAddress.pending, (state, action) => {
+            state.salesProductsLoading = true
+        })
+        builder.addCase(getSalesProductsByAddress.rejected, (state, action) => {
+            state.salesProductsLoading = false
         })
         builder.addCase(getCombosByMarket.fulfilled, (state, action) => {
             if (action.payload) {

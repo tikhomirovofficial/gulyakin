@@ -84,13 +84,13 @@ const EditProductVariant = () => {
                                     <div className="d-f gap-20">
                                         <div className="f-column">
                                             <div className={styles.productEnergyItem}>
-                                                {0}
+                                                {curProduct.calories}
                                             </div>
                                             <div className={styles.weight}>Ккал</div>
                                         </div>
                                         <div className="f-column">
                                             <div className={styles.productEnergyItem}>
-                                                {0} г
+                                                {curProduct.proteins} г
                                             </div>
                                             <div className={styles.weight}>Белки</div>
                                         </div>

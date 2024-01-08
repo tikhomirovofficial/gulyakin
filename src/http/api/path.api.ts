@@ -10,6 +10,7 @@ export const PATHS = {
 
     MARKET_CITIES: "/market/",
     PRODUCT_BY_MARKET: "/product/in-market",
+    SALES_PRODUCT_BY_ADDRESS: "/product/in-market/discount",
     CITY_ADDRESSES: "/market/adress/siti",
     MARKETS_BY_CITY: "/market/adress/market",
     MARKET_ADDRESSES_BY_CITY: "/market/adress/market/siti",

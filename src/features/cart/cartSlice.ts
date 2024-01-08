@@ -29,6 +29,7 @@ type DefferedAddingProduct = {
 
 type CartSliceState = {
     items: Array<N_CartProduct>,
+    cartLoading: boolean,
     addProductAfterLogin: DefferedAddingProduct,
     addProductAfterAddress: DefferedAddingProduct,
     totalPrice: number,
@@ -45,6 +46,7 @@ type CartSliceState = {
 
 const initialState: CartSliceState = {
     items: [],
+    cartLoading: false,
     addProductAfterLogin: null,
     addProductAfterAddress: null,
     totalPrice: 0,
@@ -223,19 +225,19 @@ export const CartSlice = createSlice({
 
         builder.addCase(getCart.fulfilled, (state, action) => {
             if (action.payload) {
-
                 state.items = action.payload.cart
-                // const resultPrice = action.payload.cart.reduce((prev, cur) => {
-                //     //console.log(prev + (cur.count * cur.product.price))
-                //     const productPrice = cur.product.is_discount ? cur.product.price_discount || 0: cur.product.price
-                //     return prev + (cur.count * productPrice)
-                // }, 0)
                 state.totalPrice = action.payload.price
                 state.totalDiscountPrice = action.payload.price_discount
-
                 state.cartCounts = {}
+                state.cartLoading = false
             }
 
+        })
+        builder.addCase(getCart.pending, (state, action) => {
+            state.cartLoading = true
+        })
+        builder.addCase(getCart.rejected, (state, action) => {
+            state.cartLoading = false
         })
 
         builder.addCase(addToCart.fulfilled, (state, action) => {
@@ -323,12 +325,11 @@ export const CartSlice = createSlice({
 
         builder.addCase(editCountCart.fulfilled, (state, action) => {
             if (action.payload) {
-                alert(action.payload.cart_id)
                 const newState = state.items.map(item => {
-                    
+
                     //console.log(item.id, action.payload.cart_id);
                     if (item.id === action.payload.cart_id) {
-                        
+
                         item.count = action.payload.count
                         //alert(`${action.payload.cart_id}`)
                         return item
@@ -337,7 +338,7 @@ export const CartSlice = createSlice({
                 })
                 //console.log("prev", state.items);
                 //console.log("next", newState);
-                
+
                 state.totalPrice = action.payload.price
                 state.totalDiscountPrice = action.payload.price_discount
                 state.items = newState
@@ -362,7 +363,7 @@ export const CartSlice = createSlice({
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
             state.items = state.items.filter(item => item.id !== action.payload.cart_id)
             state.totalPrice = action.payload.data.price
-            state.totalDiscountPrice = action.payload.data.price
+            state.totalDiscountPrice = action.payload.data.price_discount
         })
 
         builder.addCase(resetCart.fulfilled, (state, action) => {

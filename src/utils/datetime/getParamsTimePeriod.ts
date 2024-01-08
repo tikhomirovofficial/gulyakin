@@ -6,7 +6,7 @@ export interface GetTimesByClockParams {
     currentTime: Date;
 }
 
-export function createDefaultParams(startTime: string, endTime: string): GetTimesByClockParams {
+export function createDefaultParams(startTime: string, endTime: string, aroundTime: boolean = false): GetTimesByClockParams {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -22,11 +22,17 @@ export function createDefaultParams(startTime: string, endTime: string): GetTime
     startDate.setHours(startHour, startMinute, 0, 0);
 
     const endDate = new Date(today);
-    if(endDate.getHours() < startDate.getHours()) {
-        endDate.setDate(endDate.getDate() + 1)
+    
+    if(aroundTime) {
+        if (endDate.getHours() < startDate.getHours()) {
+            endDate.setDate(endDate.getDate() + 1)
+        }
     }
+  
     endDate.setHours(endHour, endMinute, 0, 0);
-
+   
+    console.log(startDate, endDate);
+    
     return {
         startDate,
         endDate,

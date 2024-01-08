@@ -44,9 +44,11 @@ const Order = () => {
     const gTheme = useTheme()
     const { data, addresses } = useAppSelector(state => state.profile)
     const { orderDetails, pickupAddresses, orderWarning, workTimes, deliveryAddress, isDarkTheme } = useAppSelector(state => state.main)
-    const cart = useAppSelector(state => state.cart)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
+    const cart = useAppSelector(state => state.cart)
     const actualPrice = useActualPrice()
+    const hasDiscount = cart.totalDiscountPrice !== cart.totalPrice
+
     const {
         name,
         callNeeded,
@@ -60,13 +62,15 @@ const Order = () => {
         addressId
     } = useAppSelector(state => state.forms.orderForm)
 
-    const hasDiscount = cart.totalDiscountPrice !== cart.totalPrice
     const {
         handleChangeDeliveryType,
         getCurrentPickupAddress,
     } = useOrderAddress()
-
+    //console.log(workTimes);
+    
     const { orderTimes, isCurrent } = useIsWorkTime({ ...workTimes, is_around_time: workTimes.isAroundTime })
+    //console.log(orderTimes);
+    
     const addressFromStorage = getFromStorage('order_form')?.addressId
 
     const closeSuccess = () => {
@@ -108,6 +112,7 @@ const Order = () => {
     const { orderDisabled } = useOrderDisabled({
         isCurrentWorkTime: isCurrent,
     })
+    
     const appColor = useAppColor()
     useOrderDetails()
 
@@ -309,7 +314,7 @@ const Order = () => {
                                         }
 
                                         <RedButton onClick={handleCreateOrder}
-                                            disabled={orderDisabled || (orderDetails.delivery_type === 0 && !isPickup)}
+                                            disabled={orderDisabled}
                                             className={`pd-15 ${styles.createOrderBtn}`}>Оформить заказ
                                             на {formatNumberWithSpaces(actualPrice + orderDetails.price)} ₽</RedButton>
                                     </div>

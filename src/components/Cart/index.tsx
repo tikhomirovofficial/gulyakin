@@ -26,21 +26,23 @@ const Cart = () => {
     const [classAdditivesAdded, setClassAdditivesAdded] = useState(false)
     const [classOpened, setClassOpened] = useState(false)
     const { isCurrent } = useIsWorkTime({ ...workTimes, is_around_time: workTimes.isAroundTime })
+
     const gTheme = useTheme()
+    const disabledOrder = !isCurrent || items.some(item => item.product.count === null || item.product.count < 1)
 
-    const handleOpenAdditives = () => {
-        setAdditivesOpened(true)
+    // const handleOpenAdditives = () => {
+    //     setAdditivesOpened(true)
 
-        setTimeout(() => {
-            setClassAdditivesAdded(true)
-        }, 200)
-    }
-    const handleCloseAdditives = () => {
-        setClassAdditivesAdded(false)
-        setTimeout(() => {
-            setAdditivesOpened(false)
-        }, 300)
-    }
+    //     setTimeout(() => {
+    //         setClassAdditivesAdded(true)
+    //     }, 200)
+    // }
+    // const handleCloseAdditives = () => {
+    //     setClassAdditivesAdded(false)
+    //     setTimeout(() => {
+    //         setAdditivesOpened(false)
+    //     }, 300)
+    // }
 
     const handleCloseCart = () => {
         setClassOpened(false)
@@ -189,9 +191,10 @@ const Cart = () => {
                     {
                         items.length ?
                             <RedButton onClick={handleToOrder}
-                                disabled={!isCurrent}
-                                className={"w-100p pd-15"}>К
-                                оформлению</RedButton> :
+                                disabled={disabledOrder}
+                                className={"w-100p pd-15"}>
+                                    К оформлению
+                                </RedButton> :
                             <RedButton onClick={handleToCatalog}
                                 disabled={items.some(item => item.product !== undefined && item.product.id < 0)}
                                 className={"w-100p pd-15"}>Перейти в меню</RedButton>

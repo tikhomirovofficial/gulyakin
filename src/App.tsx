@@ -101,13 +101,17 @@ function App() {
     }, [orderForm])
 
     useEffect(() => {
-        if (orderForm.addressId !== -1 && currentGeo.city !== 0) {
-            dispatch(getNearestAddress({
-                siti_id: currentGeo.city,
-                user_adress_id: orderForm.addressId
-            }))
+        if (token) {
+            if (orderForm.addressId !== -1 && currentGeo.city !== 0) {
+                dispatch(getNearestAddress({
+                    siti_id: currentGeo.city,
+                    user_adress_id: orderForm.addressId
+                }))
+            }
         }
-    }, [orderForm.addressId, currentGeo.city])
+
+    }, [orderForm.addressId, currentGeo.city, token])
+
     useEffect(() => {
         if (addressFrom !== -1 && addressFrom !== undefined) {
             dispatch(getCart({ adress_id: addressFrom }))
@@ -235,14 +239,10 @@ function App() {
                     dispatch(getCategoriesByAddress({ adress_id: baseAddress }))
                     dispatch(getProductsByAddress({ adress_id: baseAddress }))
                 }
-
             }
         }
-
-
-
     }, [baseAddress, addressFrom, addressFromLoading])
-    
+
     useEffect(() => {
         console.log(items);
     }, [items])

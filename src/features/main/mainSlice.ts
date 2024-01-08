@@ -136,9 +136,9 @@ const initialState: MainSliceState = {
         timeaone: ""
     },
     workTimes: {
-        startTime: "8:00",
-        endTime: "23:00",
-        isAroundTime: false
+        startTime: "9:00",
+        endTime: "21:00",
+        isAroundTime: true
     },
     canOrder: true,
     orderWarning: {
@@ -329,6 +329,9 @@ export const MainSlice = createSlice({
         setOrderWarning: (state, action: PayloadAction<OrderWarning>) => {
             state.orderWarning = action.payload
         },
+        resetDeliveryData: (state) => {
+            state.addressFrom = -1
+        }
     },
     extraReducers: builder => {
         builder.addCase(getCities.fulfilled, (state, action) => {
@@ -422,6 +425,7 @@ export const {
     setBaseAddress,
     setOrderDetails,
     setIsPhone,
+    resetDeliveryData,
     toggleChangingGeo,
     toggleAskCityVisible,
     setMarket,

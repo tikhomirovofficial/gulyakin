@@ -143,7 +143,6 @@ const useProduct = (product_id: number, addedSupplements: number[], neededWindow
     }
 
     const handlePlusProduct = () => {
-        alert(thisCartProduct.product.title)
         if(thisCartProduct.count < thisProduct.count) {
             dispatch(editCountCart({
                 cart_id: thisCartProduct.id,

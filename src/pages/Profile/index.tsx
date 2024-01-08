@@ -29,6 +29,8 @@ import OrdersHistoryList from "./History";
 import useTheme from '../../hooks/useTheme';
 import useAppColor from '../../hooks/useAppColor';
 import useToken from '../../hooks/useToken';
+import { resetDeliveryData } from '../../features/main/mainSlice';
+import { resetOrderForm } from '../../utils/common/resetOrderForm';
 
 
 const Profile = () => {
@@ -68,6 +70,8 @@ const Profile = () => {
     
     const handleLogout = () => {
         deleteCookie("tokens")
+        dispatch(resetDeliveryData())
+        resetOrderForm()
         window.location.href = "/"
     }
 

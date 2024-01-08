@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { CartProductItem } from "../../../types/api.types";
+import { CartProductItem } from "../../../types/api/api.types";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
     handleProductAdditives,
@@ -13,21 +13,24 @@ import { MiniClose, MinusIcon, PlusIcon } from "../../../icons";
 import { formatNumberWithSpaces } from "../../../utils/common/numberWithSpaces";
 import useTheme from '../../../hooks/useTheme';
 import useProduct from '../../../hooks/useProduct';
+import { N_CartProduct } from '../../../types/api/cart.api.types';
 
 type CartItemProps = {
     canNotBeAdded?: boolean,
     canBeChanged?: boolean,
     is_combo?: boolean
 } & CartProductItem
-const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, id, count, supplements, product }) => {
+
+const CartItem: FC<N_CartProduct> = (props) => {
     const dispatch = useAppDispatch()
     const gTheme = useTheme()
     const { items, combos } = useAppSelector(state => state.products)
-    const { handleCurrentProduct } = useProduct(product.id, [])
+    const { handleCurrentProduct, inCart, hasDiscount, handleMinusProduct, handlePlusProduct } = useProduct(props.product.id, [])
+    const { addressFrom } = useAppSelector(state => state.main)
 
     const handleChange = () => {
         dispatch(setChangingAdditivesMode(true))
-        if (!is_combo) {
+        if (!props.is_combo) {
             //const findedProduct = items.filter(item => product !== undefined ? item.id === product.id : null)[0]
             handleCurrentProduct()
             return;
@@ -38,41 +41,42 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
 
     }
 
-    const supplementsPrice = supplements.length > 0 ? supplements.reduce((a, b) => {
-        return a + b.price
-    }, 0) : 0
+    // const supplementsPrice = props.supplements.length > 0 ? supplements.reduce((a, b) => {
+    //     return a + b.price
+    // }, 0) : 0
 
     const getCanBeChanged = () => {
-        if (product !== undefined) {
+        if (props.product !== undefined) {
             // if (!is_combo) {
             //     return items.some(item => item?.supplements.length > 0 && item.id === product.id)
             // }
             // return true
-            return is_combo
+            return props.is_combo
         }
         return null
     }
+    const canNotBeAdded = props.product.count === null || props.product.count < 1
     const canBeChanged = getCanBeChanged()
 
     const { isDarkTheme } = useAppSelector(state => state.main)
     return (
-        product !== undefined ?
+        props.product !== undefined ?
             <div className={`${styles.cartItem} ${gTheme("lt-cartItem", "dk-cartItem")} ${canNotBeAdded ? styles.cartItemDisabled : ""} pd-15 bg-white `}>
                 <div className={`${styles.itemInfo} w-100p d-f gap-15`}>
                     <div className={styles.imageBlock}>
-                        <img src={`${domain}${product.image}`} alt="" />
+                        <img src={`${domain}${props.product.image}`} alt="" />
                     </div>
                     {/* <div style={{ backgroundImage: `url("${domain}${product.image}")` }}
                         className={`${styles.image} bg-cover`}></div> */}
                     <div className="text f-column gap-5 f-1 al-self-center">
                         <div className={"f-column gap-5"}>
-                            <b>{product.title}</b>
-                            <p>{product.composition}</p>
-                            {
+                            <b>{props.product.title}</b>
+                            <p>{props.product.description}</p>
+                            {/* {
                                 supplements.length > 0 ?
                                     <p>+ {supplements.map(item => item.title).join(", ")}</p>
                                     : null
-                            }
+                            } */}
 
                         </div>
                         {
@@ -85,7 +89,8 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
                     </div>
                     <div className="h-100p">
                         <div onClick={() => dispatch(removeFromCart({
-                            cart_id: id
+                            cart_id: props.id,
+                            adress_id: addressFrom
                         }))} className="close cur-pointer w-content h-content">
                             <MiniClose />
                         </div>
@@ -98,14 +103,14 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
                             <>
                                 <div className="d-f al-end gap-10">
                                     {
-                                        product.is_discount ?
+                                        hasDiscount ?
                                             <div className={`sale p-rel`}>
                                                 <div className={`saleLine p-abs`}></div>
-                                                <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{(product.price * count) + supplementsPrice} ₽</strong>
+                                                <strong className={gTheme("lt-gray-c", "dk-gray-c")}>{(props.product.price * props.count) + 0} ₽</strong>
                                             </div> : null
                                     }
                                     <b className={styles.price}>
-                                        {formatNumberWithSpaces(((product.is_discount ? product.price_discount || 0 : product.price) + supplementsPrice) * count)} ₽
+                                        {formatNumberWithSpaces(((hasDiscount ? props.product.discount_price || 0 : props.product.price) + 0) * props.count)} ₽
                                     </b>
                                 </div>
 
@@ -116,47 +121,19 @@ const CartItem: FC<CartItemProps> = ({ canNotBeAdded = false, is_combo = false, 
                                     }
 
                                     <div className={"d-f al-center gap-5"}>
-                                        <div onClick={() => {
-
-                                            if (count > 1) {
-                                                dispatch(editCountCart({
-                                                    cart_id: id,
-                                                    count: count - 1,
-                                                    id: product.id
-
-                                                }))
-                                            }
-                                        }} className={"cur-pointer f-c-col"}><MinusIcon fill={isDarkTheme ? "#C8C7CC" : "#434343"} width={12} />
+                                        <div onClick={() => handleMinusProduct(false)} className={"cur-pointer f-c-col"}><MinusIcon fill={isDarkTheme ? "#C8C7CC" : "#434343"} width={12} />
                                         </div>
 
-                                        <div className={styles.count}>{count}</div>
-                                        <div onClick={() => {
-                                            // const findedProduct = items.filter(item => product !== undefined ? item.id === product.id : null)[0]
-                                            // if (!findedProduct.supplements) {
-                                            //     dispatch(editCountCart({
-                                            //         cart_id: id,
-                                            //         count: count + 1,
-                                            //         id: product.id
-                                            //     }))
-                                            // } else {
-                                            //     dispatch(addToCart(findedProduct))
-                                            // }
-                                            dispatch(editCountCart({
-                                                cart_id: id,
-                                                count: count + 1,
-                                                id: product.id
-                                            }))
-
-                                        }} className={"cur-pointer f-c-col"}><PlusIcon fill={isDarkTheme ? "#C8C7CC" : "#434343"} width={12} />
+                                        <div className={styles.count}>{props.count}</div>
+                                        <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon fill={isDarkTheme ? "#C8C7CC" : "#434343"} width={12} />
                                         </div>
-
                                     </div>
                                 </div>
 
                             </> :
                             <div className="w-100p jc-end d-f">
-                                <div onClick={() => dispatch(removeProduct(id))}
-                                    className={`colorRed cur-pointer ${styles.delete}`}>Удалить
+                                <div onClick={() => dispatch(removeProduct(props.id))}
+                                    className={`cur-pointer ${gTheme("lt-active-c", "dk-active-c")} ${styles.delete}`}>Удалить
                                 </div>
                             </div>
                     }

@@ -24,6 +24,9 @@
 .lt-active-bg {
     background: #F5F5F5 !important;
 }
+.lt-active-normal-bg {
+   background: #9a9a9a 
+}
 .lt-focused {
     border: 1px solid #9a9a9a !important;
 }

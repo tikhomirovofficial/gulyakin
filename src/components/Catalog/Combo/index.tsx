@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import styles from "../../../pages/Main/main.module.scss";
 import {domain} from "../../../http/instance/instances";
 import {AddedAdditiveIcon} from "../../../icons";
-import {Combo} from "../../../types/api.types";
+import {Combo} from "../../../types/api/api.types";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import useToken from "../../../hooks/useToken";
 import useCartAdd from "../../../hooks/useCartAdd";

@@ -16,7 +16,7 @@ import {
     GetOrderResponse,
     GetUserDataResponse,
     UserAddressesResponse
-} from "../../types/api.types";
+} from "../../types/api/api.types";
 import {AxiosResponse} from "axios";
 import {OrderApi} from "../../http/api/order.api";
 import {setAddressSuccess, setAddressSuccessTitle} from "../modals/modalsSlice";

@@ -6,20 +6,18 @@ import {
     AddToCartResponse,
     CartCountSupplementsRequest,
     CartCountSupplementsResponse,
-    CartProductDeleteRequest,
     CartProductItem,
     CartResetResponse,
-    ChangeCountCartRequest,
-    ChangeCountCartResponse,
     EditCartComboRequest,
     EditCartComboResponse,
     GetCartResponse,
     ProductRes
-} from "../../types/api.types";
+} from "../../types/api/api.types";
 import { AxiosResponse } from "axios";
 import { handleTokenRefreshedRequest } from "../../utils/auth/handleThunkAuth";
 import { CartApi } from "../../http/api/cart.api";
 import { N_ProductApi } from "../../types/products.types";
+import { ChangeCountCartRequest, ChangeCountCartResponse, CartProductDeleteRequest, N_AddToCartProductRequest, N_AddToCartProductResponse, N_CartProduct, N_GetCartProductResponse, N_GetCartProductRequest, CartProductDeleteResponse } from "../../types/api/cart.api.types";
 
 
 type DefferedAddingProduct = {
@@ -30,7 +28,7 @@ type DefferedAddingProduct = {
 } | null
 
 type CartSliceState = {
-    items: Array<CartProductItem>,
+    items: Array<N_CartProduct>,
     addProductAfterLogin: DefferedAddingProduct,
     addProductAfterAddress: DefferedAddingProduct,
     totalPrice: number,
@@ -61,33 +59,16 @@ const initialState: CartSliceState = {
 
 export const getCart = createAsyncThunk(
     'cart/get',
-    async (_, { dispatch }) => {
-        const res: AxiosResponse<GetCartResponse> = await handleTokenRefreshedRequest(CartApi.GetProducts)
-        return {
-            cart: res.data.cart,
-            total_price: res.data.price,
-            total_price_discount: res.data.total_price_discount,
-            sup_counts: res.data.supplement_counts
-        }
+    async (request: N_GetCartProductRequest, { dispatch }) => {
+        const res: AxiosResponse<N_GetCartProductResponse> = await handleTokenRefreshedRequest(CartApi.GetProducts, request)
+        return res.data
     }
 )
 export const addToCart = createAsyncThunk(
     'cart/add',
-    async (request: N_ProductApi, { dispatch }) => {
-        const productCartReq: AddToCartRequest = {
-            products: [
-                {
-                    product: request.id,
-                    supplements: [],
-                    count: 1
-                }
-            ]
-        }
-        const res: AxiosResponse<AddToCartResponse> = await handleTokenRefreshedRequest(CartApi.AddProduct, productCartReq)
-        return {
-            product: request,
-            data: res.data
-        }
+    async (request: N_AddToCartProductRequest, { dispatch }) => {
+        const res: AxiosResponse<N_AddToCartProductResponse> = await handleTokenRefreshedRequest(CartApi.AddProduct, request)
+        return res.data
     }
 )
 export const addToCartCombo = createAsyncThunk(
@@ -114,18 +95,9 @@ export const editCartCombo = createAsyncThunk(
 )
 export const editCountCart = createAsyncThunk(
     'cart/edit',
-    async (request: Pick<ProductRes, "id"> & ChangeCountCartRequest, { dispatch }) => {
-        const reqData: ChangeCountCartRequest = {
-            cart_id: request.cart_id,
-            count: request.count
-        }
-        const res: AxiosResponse<ChangeCountCartResponse> = await handleTokenRefreshedRequest(CartApi.EditProductCount, reqData)
-
-        return {
-            count: request.count,
-            product_id: request.cart_id,
-            data: res.data
-        }
+    async (request: ChangeCountCartRequest, { dispatch }) => {
+        const res: AxiosResponse<ChangeCountCartResponse> = await handleTokenRefreshedRequest(CartApi.EditProductCount, request)
+        return res.data
     }
 )
 export const editSupplementsCountCart = createAsyncThunk(
@@ -142,11 +114,11 @@ export const editSupplementsCountCart = createAsyncThunk(
 export const removeFromCart = createAsyncThunk(
     'cart/remove',
     async (request: CartProductDeleteRequest, { dispatch }) => {
-        const res: AxiosResponse<AddToCartResponse> = await handleTokenRefreshedRequest(CartApi.RemoveProduct, {
+        const res: AxiosResponse<CartProductDeleteResponse> = await handleTokenRefreshedRequest(CartApi.RemoveProduct, {
             cart_id: request.cart_id
         })
         return {
-            res: res,
+            data: res.data,
             cart_id: request.cart_id
         }
     }
@@ -192,52 +164,52 @@ export const CartSlice = createSlice({
         setProductAfterAddress: (state, action: PayloadAction<DefferedAddingProduct>) => {
             state.addProductAfterAddress = action.payload
         },
-        addProduct: (state, action: PayloadAction<CartProductItem>) => {
+        addProduct: (state, action: PayloadAction<N_CartProduct>) => {
             state.items = [
                 ...state.items,
                 action.payload
             ]
         },
         plusProduct: (state, action: PayloadAction<number>) => {
-            state.items = state.items.map(item => {
-                if (item.product.id == action.payload) {
+            // state.items = state.items.map(item => {
+            //     if (item.product.id == action.payload) {
 
-                    return {
-                        ...item,
-                        count: item.count + 1
-                    }
-                }
-                return item
-            })
+            //         return {
+            //             ...item,
+            //             count: item.count + 1
+            //         }
+            //     }
+            //     return item
+            // })
 
         },
         minusProduct: (state, action: PayloadAction<number>) => {
-            const productToMinus = state.items.find(item => item.id === action.payload);
+            // const productToMinus = state.items.find(item => item.id === action.payload);
 
-            if (productToMinus) {
-                if (productToMinus.count > 1) {
-                    state.items = state.items.map(item => {
-                        if (item.id == action.payload) {
-                            return {
-                                ...item,
-                                count: item.count - 1
-                            }
-                        }
-                        return item
-                    })
-                }
-            }
+            // if (productToMinus) {
+            //     if (productToMinus.count > 1) {
+            //         state.items = state.items.map(item => {
+            //             if (item.id == action.payload) {
+            //                 return {
+            //                     ...item,
+            //                     count: item.count - 1
+            //                 }
+            //             }
+            //             return item
+            //         })
+            //     }
+            // }
 
         },
         removeProduct: (state, action: PayloadAction<number>) => {
-            const productToRemove = state.items.find(item => item.product.id === action.payload);
+            // const productToRemove = state.items.find(item => item.product.id === action.payload);
 
-            if (productToRemove) {
-                const totalThisPrice = productToRemove.count * productToRemove.product.price;
-                state.totalPrice -= totalThisPrice;
-            }
+            // if (productToRemove) {
+            //     const totalThisPrice = productToRemove.count * productToRemove.product.price;
+            //     state.totalPrice -= totalThisPrice;
+            // }
 
-            state.items = state.items.filter(item => item.product.id !== action.payload);
+            // state.items = state.items.filter(item => item.product.id !== action.payload);
 
         },
         setTotalPrice: (state, action: PayloadAction<number>) => {
@@ -258,17 +230,17 @@ export const CartSlice = createSlice({
                 //     const productPrice = cur.product.is_discount ? cur.product.price_discount || 0: cur.product.price
                 //     return prev + (cur.count * productPrice)
                 // }, 0)
-                state.totalPrice = action.payload.total_price
-                state.totalDiscountPrice = action.payload.total_price_discount
+                state.totalPrice = action.payload.price
+                state.totalDiscountPrice = action.payload.price_discount
 
-                state.cartCounts = action.payload.sup_counts
+                state.cartCounts = {}
             }
 
         })
 
         builder.addCase(addToCart.fulfilled, (state, action) => {
-            const product = action.payload.product
-            const res = action.payload.data
+            // const product = action.payload.product
+            // const res = action.payload.data
             if (action.payload) {
                 // const newState = [
                 //     ...state.items,
@@ -291,88 +263,106 @@ export const CartSlice = createSlice({
                 //         count: 1
                 //     }
                 // ]
+                state.totalPrice = action.payload.price
+                state.totalDiscountPrice = action.payload.price_discount
                 state.items = [
-                    ...state.items
+                    ...state.items,
+                    {
+                        id: action.payload.cart_id,
+                        product: action.payload.product,
+                        count: 1
+                    }
                 ]
             }
         })
-        builder.addCase(addToCartCombo.fulfilled, (state, action) => {
-            const comboRes = action.payload.data
-            const comboProduct = action.payload.combo_prod
-            const comboFromReq = action.payload.combo[0]
-            const selectedProductId = comboFromReq.selected_product
-            const compositionFromProds = comboProduct.products?.map(item => item.title).join(', ') || ""
+        // builder.addCase(addToCartCombo.fulfilled, (state, action) => {
+        //     const comboRes = action.payload.data
+        //     const comboProduct = action.payload.combo_prod
+        //     const comboFromReq = action.payload.combo[0]
+        //     const selectedProductId = comboFromReq.selected_product
+        //     const compositionFromProds = comboProduct.products?.map(item => item.title).join(', ') || ""
 
-            const newState: CartProductItem[] = [
-                ...state.items,
-                // {
-                //     count: 1,
-                //     id: comboRes.list_id[0],
-                //     is_combo: true,
-                //     product: {
-                //         composition: compositionFromProds,
-                //         dimensions: "г",
-                //         drinks: comboProduct.drinks,
-                //         id: comboProduct.id,
-                //         image: comboProduct.image,
-                //         price: comboProduct.price,
-                //         products: comboProduct.products,
-                //         selected_product: {
-                //             id: selectedProductId,
-                //             title: comboProduct.drinks?.filter(item => item.id === selectedProductId)[0].title || ""
-                //         },
-                //         short_description: "",
-                //         title: comboProduct.title
+        //     const newState: CartProductItem[] = [
+        //         ...state.items,
+        //         // {
+        //         //     count: 1,
+        //         //     id: comboRes.list_id[0],
+        //         //     is_combo: true,
+        //         //     product: {
+        //         //         composition: compositionFromProds,
+        //         //         dimensions: "г",
+        //         //         drinks: comboProduct.drinks,
+        //         //         id: comboProduct.id,
+        //         //         image: comboProduct.image,
+        //         //         price: comboProduct.price,
+        //         //         products: comboProduct.products,
+        //         //         selected_product: {
+        //         //             id: selectedProductId,
+        //         //             title: comboProduct.drinks?.filter(item => item.id === selectedProductId)[0].title || ""
+        //         //         },
+        //         //         short_description: "",
+        //         //         title: comboProduct.title
 
-                //     },
-                //     supplements: []
-                // }
-            ]
-            state.items = [
-                ...state.items
-            ]
-        })
-        builder.addCase(editCartCombo.fulfilled, (state, action) => {
-            const editedCombo = action.payload.data.product[0]
-            state.items = state.items.map(item => {
-                if (item.id === editedCombo.id && item.is_combo) {
-                    return editedCombo
-                }
-                return item
-            })
-        })
+        //         //     },
+        //         //     supplements: []
+        //         // }
+        //     ]
+        //     state.items = [
+        //         ...state.items
+        //     ]
+        // })
+        // builder.addCase(editCartCombo.fulfilled, (state, action) => {
+        //     const editedCombo = action.payload.data.product[0]
+        //     state.items = state.items.map(item => {
+        //         if (item.id === editedCombo.id && item.is_combo) {
+        //             return editedCombo
+        //         }
+        //         return item
+        //     })
+        // })
 
         builder.addCase(editCountCart.fulfilled, (state, action) => {
-            const cartProductId = action.payload.product_id
             if (action.payload) {
+                alert(action.payload.cart_id)
                 const newState = state.items.map(item => {
-                    if (item.id === cartProductId) {
+                    
+                    //console.log(item.id, action.payload.cart_id);
+                    if (item.id === action.payload.cart_id) {
+                        
                         item.count = action.payload.count
+                        //alert(`${action.payload.cart_id}`)
                         return item
                     }
                     return item
                 })
+                //console.log("prev", state.items);
+                //console.log("next", newState);
+                
+                state.totalPrice = action.payload.price
+                state.totalDiscountPrice = action.payload.price_discount
                 state.items = newState
 
             }
 
         })
 
-        builder.addCase(editSupplementsCountCart.fulfilled, (state, action) => {
-            state.items = state.items.map(cartItem => {
-                if (action.payload.cart_id === cartItem.id) {
-                    return {
-                        ...cartItem,
-                        supplements: action.payload.supplements_list
-                    }
-                }
-                return cartItem
-            })
+        // builder.addCase(editSupplementsCountCart.fulfilled, (state, action) => {
+        //     state.items = state.items.map(cartItem => {
+        //         if (action.payload.cart_id === cartItem.id) {
+        //             return {
+        //                 ...cartItem,
+        //                 supplements: action.payload.supplements_list
+        //             }
+        //         }
+        //         return cartItem
+        //     })
 
-        })
+        // })
 
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
             state.items = state.items.filter(item => item.id !== action.payload.cart_id)
+            state.totalPrice = action.payload.data.price
+            state.totalDiscountPrice = action.payload.data.price
         })
 
         builder.addCase(resetCart.fulfilled, (state, action) => {

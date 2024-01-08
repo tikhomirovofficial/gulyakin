@@ -12,10 +12,10 @@ const CartWidget = () => {
     const { items } = useAppSelector(state => state.cart)
     const gTheme = useTheme()
     const appColor = useAppColor()
-    const { market, cities, currentGeo, isMobile, isDarkTheme, phone } = useAppSelector(state => state.main)
+    const { phone } = useAppSelector(state => state.main)
     const totalCount = useMemo(() => {
         return items.reduce((prev, cur) => {
-            return prev + cur.count
+            return prev + (cur?.count !== undefined ? cur.count : 0)
         }, 0)
     }, [items])
 

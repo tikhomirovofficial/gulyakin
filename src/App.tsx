@@ -24,6 +24,7 @@ import {
     getAddressesByMarketCity, getBookings, getCanOrderAddressesByCity,
     getCities,
     getDeliveries, getDeliverySettings, getMarketsByCity,
+    getNearestAddress,
     getPayments,
     setBaseAddress,
     setIsMobile,
@@ -40,6 +41,7 @@ import HistoryOrderWindow from "./components/Windows/HistoryOrder";
 import { log } from 'console';
 import { getDayOfWeekNumber } from './utils/datetime/getWeekDay';
 import { deleteSeconds } from './utils/datetime/deleteSecondsInTime';
+import useAuth from './hooks/useAuth';
 
 const MOBILE_WIDTH = 1100
 const SMALL_WIDTH = 800
@@ -48,6 +50,7 @@ const SMALL_WIDTH = 800
 function App() {
     const dispatch = useAppDispatch()
     const token = useToken()
+    const authLoaded = useAuth()
     const {
         bookingOpened,
         loginOpened,
@@ -66,14 +69,14 @@ function App() {
     const { items } = useAppSelector(state => state.cart)
     const orderForm = useAppSelector(state => state.forms.orderForm)
     const profile = useAppSelector(state => state.profile)
+    const products = useAppSelector(state => state.products)
 
-    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses, isDarkTheme, baseAddress } = useAppSelector(state => state.main)
+    const { market, cities, currentGeo, isMobile, cityAddresses, pickupAddresses, isDarkTheme, baseAddress, addressFrom, addressFromLoading } = useAppSelector(state => state.main)
 
     const handleResize = () => {
         dispatch(setIsMobile(window.innerWidth <= MOBILE_WIDTH))
         dispatch(setIsPhone(window.innerWidth <= SMALL_WIDTH))
     }
-
 
     useEffect(() => {
         window.addEventListener('resize', () => {
@@ -98,52 +101,65 @@ function App() {
     }, [orderForm])
 
     useEffect(() => {
+        if (orderForm.addressId !== -1 && currentGeo.city !== 0) {
+            dispatch(getNearestAddress({
+                siti_id: currentGeo.city,
+                user_adress_id: orderForm.addressId
+            }))
+        }
+    }, [orderForm.addressId, currentGeo.city])
+    useEffect(() => {
+        if (addressFrom !== -1 && addressFrom !== undefined) {
+            dispatch(getCart({ adress_id: addressFrom }))
+        }
+    }, [addressFrom])
 
-        dispatch(setTotalPrice(
-            items.reduce((prev, cur) => {
-                const curProduct = cur.product
-                const cartProductDefined = curProduct !== undefined
-                const cartProductHasSupplements = cur.supplements !== undefined
+    // useEffect(() => {
+    // dispatch(setTotalPrice(
+    //     items.reduce((prev, cur) => {
+    //         const curProduct = cur.product
+    //         const cartProductDefined = curProduct !== undefined
+    //         //const cartProductHasSupplements = cur.supplements !== undefined
 
 
-                if (cartProductDefined) {
+    //         if (cartProductDefined) {
 
-                    if (cartProductHasSupplements) {
+    //             if (cartProductHasSupplements) {
 
-                        return prev + (cur.count * curProduct.price) + (cur.supplements.reduce((p, c) => {
-                            return p + c.price
-                        }, 0))
-                    }
-                    return prev + (cur.count * curProduct.price)
+    //                 return prev + (cur.count * curProduct.price) + (cur.supplements.reduce((p, c) => {
+    //                     return p + c.price
+    //                 }, 0))
+    //             }
+    //             return prev + (cur.count * curProduct.price)
 
-                }
-                return prev
+    //         }
+    //         return prev
 
-            }, 0)
-        ))
-        dispatch(setDiscountPrice(
-            items.reduce((prev, cur) => {
-                const curProduct = cur.product
-                const cartProductDefined = curProduct !== undefined
-                const cartProductHasSupplements = cur.supplements !== undefined
+    //     }, 0)
+    // ))
+    //     dispatch(setDiscountPrice(
+    //         items.reduce((prev, cur) => {
+    //             const curProduct = cur.product
+    //             const cartProductDefined = curProduct !== undefined
+    //             const cartProductHasSupplements = cur.supplements !== undefined
 
-                if (cartProductDefined) {
+    //             if (cartProductDefined) {
 
-                    if (cartProductHasSupplements) {
+    //                 if (cartProductHasSupplements) {
 
-                        return prev + (cur.count * (curProduct.price_discount || 0)) + (cur.supplements.reduce((p, c) => {
-                            return p + c.price
-                        }, 0))
-                    }
-                    return prev + (cur.count * (curProduct.price_discount || 0))
+    //                     return prev + (cur.count * (curProduct.price_discount || 0)) + (cur.supplements.reduce((p, c) => {
+    //                         return p + c.price
+    //                     }, 0))
+    //                 }
+    //                 return prev + (cur.count * (curProduct.price_discount || 0))
 
-                }
-                return prev
+    //             }
+    //             return prev
 
-            }, 0)
-        ))
+    //         }, 0)
+    //     ))
 
-    }, [items])
+    // }, [items])
 
     useEffect(() => {
         const date = new Date()
@@ -151,7 +167,7 @@ function App() {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-    
+
         //dispatch(getCategoriesByMarket({ market_id: market }))
         // dispatch(getProductByMarket({
         //     market_id: market,
@@ -179,7 +195,6 @@ function App() {
 
     useEffect(() => {
         if (token) {
-            dispatch(getCart())
             dispatch(getAddressesUser())
         }
     }, [token])
@@ -208,12 +223,57 @@ function App() {
     }, [cities, currentGeo.city])
 
     useEffect(() => {
-        const baseAddressDefined = baseAddress !== -1
-        if (baseAddressDefined) {
-            dispatch(getCategoriesByAddress({adress_id: baseAddress}))
-            dispatch(getProductsByAddress({ adress_id: baseAddress }))
+        if (!addressFromLoading) {
+            const baseAddressDefined = baseAddress !== -1
+            const addressFromDefined = addressFrom !== -1
+
+            if (addressFromDefined) {
+                dispatch(getCategoriesByAddress({ adress_id: addressFrom }))
+                dispatch(getProductsByAddress({ adress_id: addressFrom }))
+            } else {
+                if (baseAddressDefined) {
+                    dispatch(getCategoriesByAddress({ adress_id: baseAddress }))
+                    dispatch(getProductsByAddress({ adress_id: baseAddress }))
+                }
+
+            }
         }
-    }, [baseAddress])
+
+
+
+    }, [baseAddress, addressFrom, addressFromLoading])
+    
+    useEffect(() => {
+        console.log(items);
+    }, [items])
+
+    // useEffect(() => {
+    //     const baseAddressDefined = baseAddress !== -1
+    //     const addressFromDefined = addressFrom !== -1
+
+    //     if (!profile.isLoading && authLoaded && !addressFromLoading) {
+
+    //         if (addressFromDefined) {
+    //             if (profile.addresses.length) {
+    //                 dispatch(getCategoriesByAddress({ adress_id: addressFrom }))
+    //                 dispatch(getProductsByAddress({ adress_id: addressFrom }))
+    //             }
+    //         } else {
+    //             alert(addressFrom)
+    //             if (baseAddressDefined) {
+    //                 dispatch(getCategoriesByAddress({ adress_id: baseAddress }))
+    //                 dispatch(getProductsByAddress({ adress_id: baseAddress }))
+    //             }
+    //         }
+    //         return
+    //     } else {
+    //         if (baseAddressDefined) {
+    //             dispatch(getCategoriesByAddress({ adress_id: baseAddress }))
+    //             dispatch(getProductsByAddress({ adress_id: baseAddress }))
+    //         }
+    //     }
+
+    // }, [baseAddress, addressFrom, token, profile.addresses, addressFromLoading, authLoaded])
 
     useEffect(() => {
         if (token) {

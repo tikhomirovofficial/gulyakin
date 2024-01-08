@@ -1,6 +1,6 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {addToStorage, getFromStorage} from "../../utils/common/LocalStorageExplorer";
-import {AxiosResponse} from "axios";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { addToStorage, getFromStorage } from "../../utils/common/LocalStorageExplorer";
+import { AxiosResponse } from "axios";
 import {
     AddressByCityItem,
     AddressByMarketCity,
@@ -24,13 +24,14 @@ import {
     GetPaymentListResponse,
     MarketByCityItem,
     OrderDeliveryDetails
-} from "../../types/api.types";
-import {AddressesApi} from "../../http/api/addresses.api";
-import {OrderApi} from "../../http/api/order.api";
-import {MarketApi} from "../../http/api/market.api";
-import {getDayOfWeekNumber} from "../../utils/datetime/getWeekDay";
-import {deleteSeconds} from "../../utils/datetime/deleteSecondsInTime";
+} from "../../types/api/api.types";
+import { AddressesApi } from "../../http/api/addresses.api";
+import { OrderApi } from "../../http/api/order.api";
+import { MarketApi } from "../../http/api/market.api";
+import { getDayOfWeekNumber } from "../../utils/datetime/getWeekDay";
+import { deleteSeconds } from "../../utils/datetime/deleteSecondsInTime";
 import { N_CityApi } from "../../types/city.types";
+import { GetNearestAddressRequest, GetNearestAddressResponse } from "../../types/api/addresses.types";
 
 type Market = {
     title: string,
@@ -62,9 +63,11 @@ export type WorkTimes = {
 type MainSliceState = {
     isDarkTheme: boolean,
     baseAddress: number
+    addressFromLoading: boolean,
     lightAppColor: string,
     darkAppColor: string,
     market: number,
+    addressFrom: number,
     phone: string,
     cities: N_CityApi[]
     changingGeo: boolean,
@@ -96,6 +99,8 @@ const initialState: MainSliceState = {
     market: getFromStorage('market') || -1,
     lightAppColor: "#9A9A9A",
     baseAddress: -1,
+    addressFrom: -1,
+    addressFromLoading: false,
     darkAppColor: "#F8CAA9",
     isDarkTheme: !true,
     phone: "+78005002797",
@@ -125,7 +130,7 @@ const initialState: MainSliceState = {
         is_around_clock: false,
         lat: 0,
         long: 0,
-        market: {id: 0, link: 0, name: "", short_description: ""},
+        market: { id: 0, link: 0, name: "", short_description: "" },
         phone: "",
         time: [],
         timeaone: ""
@@ -189,7 +194,7 @@ const initialState: MainSliceState = {
 }
 export const getCities = createAsyncThunk(
     'cities/get',
-    async (_, {dispatch}) => {
+    async (_, { dispatch }) => {
         const res: AxiosResponse<GetCitiesResponse> = await AddressesApi.Cities()
         if (res.data.siti.length) {
             return {
@@ -204,14 +209,21 @@ export const getCities = createAsyncThunk(
 
 export const getDeliveries = createAsyncThunk(
     'deliveries/get',
-    async (_, {dispatch}) => {
+    async (_, { dispatch }) => {
         const res: AxiosResponse<GetDeliveryListResponse> = await OrderApi.DeliveriesWays()
         return res.data.delivery_list
     }
 )
+export const getNearestAddress = createAsyncThunk(
+    'nearest/get',
+    async (request: GetNearestAddressRequest, { dispatch }) => {
+        const res: AxiosResponse<GetNearestAddressResponse> = await AddressesApi.NearestAddress(request)
+        return res.data
+    }
+)
 export const getDeliverySettings = createAsyncThunk(
     'delivery/settings/get',
-    async (_, {dispatch}) => {
+    async (_, { dispatch }) => {
         const res: AxiosResponse<GetDeliverySettingsResponse> = await OrderApi.DeliverySettings()
         return res.data
     }
@@ -219,21 +231,21 @@ export const getDeliverySettings = createAsyncThunk(
 
 export const getCanOrderByCity = createAsyncThunk(
     'can/order/get',
-    async (request: CanOrderByCityRequest, {dispatch}) => {
+    async (request: CanOrderByCityRequest, { dispatch }) => {
         const res: AxiosResponse<CanOrderByCityResponse> = await OrderApi.GetCanOrderByCity(request)
         return res.data
     }
 )
 export const getCanOrderAddressesByCity = createAsyncThunk(
     'can/pickup/addresses/get',
-    async (request: CanOrderAddressesByCityRequest, {dispatch}) => {
+    async (request: CanOrderAddressesByCityRequest, { dispatch }) => {
         const res: AxiosResponse<CanOrderAddressesByCityResponse> = await OrderApi.GetCanOrderAddressesByCity(request)
         return res.data
     }
 )
 export const getMarketsByCity = createAsyncThunk(
     'markets/city/get',
-    async (request: GetMarketsByCityRequest, {dispatch}) => {
+    async (request: GetMarketsByCityRequest, { dispatch }) => {
         const res: AxiosResponse<GetMarketsByCityResponse> = await MarketApi.MarketsByCity(request)
         if (res?.data) {
             if (res.data.market.length) {
@@ -245,21 +257,21 @@ export const getMarketsByCity = createAsyncThunk(
 )
 export const getBookings = createAsyncThunk(
     'bookings/get',
-    async (request: GetBookingsRequest, {dispatch}) => {
+    async (request: GetBookingsRequest, { dispatch }) => {
         const res: AxiosResponse<GetBookingsResponse> = await AddressesApi.Bookings(request)
         return res.data.booking
     }
 )
 export const getDeliveryType = createAsyncThunk(
     'delivery/type/get',
-    async (request: GetOrderDeliveryRequest, {dispatch}) => {
+    async (request: GetOrderDeliveryRequest, { dispatch }) => {
         const res: AxiosResponse<GetOrderDeliveryResponse> = await OrderApi.GetTypeDelivery(request)
         return res.data
     }
 )
 export const getAddressesByCity = createAsyncThunk(
     'addresses/city/get',
-    async (request: GetByCityAddressesRequest, {dispatch}) => {
+    async (request: GetByCityAddressesRequest, { dispatch }) => {
         const res: AxiosResponse<GetByCityAddressesResponse> = await AddressesApi.AddressesByCityId(request)
         return res.data.adress
     }
@@ -267,14 +279,14 @@ export const getAddressesByCity = createAsyncThunk(
 
 export const getPayments = createAsyncThunk(
     'payments/get',
-    async (_, {dispatch}) => {
+    async (_, { dispatch }) => {
         const res: AxiosResponse<GetPaymentListResponse> = await OrderApi.PaymentsWays()
         return res.data.payment_list
     }
 )
 export const getAddressesByMarketCity = createAsyncThunk(
     'addresses/get',
-    async (request: GetAddressesByMarketCityRequest, {dispatch}) => {
+    async (request: GetAddressesByMarketCityRequest, { dispatch }) => {
         const res: AxiosResponse<GetAddressesByMarketCityResponse> = await AddressesApi.AddressInfoByCityAndMarketId(request)
         return res.data.adress
     }
@@ -353,6 +365,16 @@ export const MainSlice = createSlice({
         builder.addCase(getAddressesByCity.fulfilled, (state, action) => {
             state.cityAddresses = action.payload
         })
+        builder.addCase(getNearestAddress.pending, (state, action) => {
+            state.addressFromLoading = true
+        })
+        builder.addCase(getNearestAddress.fulfilled, (state, action) => {
+            state.addressFrom = action.payload.adress
+            state.addressFromLoading = false
+        })
+        builder.addCase(getNearestAddress.rejected, (state, action) => {
+            state.addressFromLoading = false
+        })
         builder.addCase(getCanOrderAddressesByCity.fulfilled, (state, action) => {
             if (action.payload.status) {
                 state.canOrder = action.payload.status
@@ -362,7 +384,7 @@ export const MainSlice = createSlice({
                 const dayWeek = getDayOfWeekNumber() - 1
                 const addressWorkTimes = action.payload.delivery_adress.time[dayWeek]
 
-                if(addressWorkTimes !== undefined) {
+                if (addressWorkTimes !== undefined) {
                     const startTime = deleteSeconds(addressWorkTimes[0])
                     const endTime = deleteSeconds(addressWorkTimes[1])
                     state.workTimes = {

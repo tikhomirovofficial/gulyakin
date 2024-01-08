@@ -8,7 +8,7 @@ import {
     N_GetProductByAddressRequest,
     N_GetProductByAddressResponse,
     ProductRes
-} from "../../types/api.types";
+} from "../../types/api/api.types";
 import {AxiosResponse} from "axios";
 import {ProductsApi} from "../../http/api/products.api";
 import { N_ProductApi } from "../../types/products.types";

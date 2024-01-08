@@ -5,7 +5,7 @@ import {
     GetCombosByMarketResponse, GetProductDayByMarketRequest, GetProductDayByMarketResponse,
     GetProductsByMarketRequest,
     GetProductsByMarketResponse, GetSousesRequest, GetSousesResponse, N_GetProductByAddressRequest, N_GetProductByAddressResponse
-} from "../../types/api.types";
+} from "../../types/api/api.types";
 import { AxiosResponse } from "axios";
 import { api } from "../instance/instances";
 import { PATHS } from "./path.api";

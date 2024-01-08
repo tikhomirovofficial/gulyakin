@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {GetOrderItem} from "../../../../types/api.types";
+import {GetOrderItem} from "../../../../types/api/api.types";
 import styles from "../../profile.module.scss";
 import {formatNumberWithSpaces} from "../../../../utils/common/numberWithSpaces";
 import {domain} from "../../../../http/instance/instances";

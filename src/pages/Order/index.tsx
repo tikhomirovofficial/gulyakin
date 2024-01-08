@@ -21,7 +21,7 @@ import {
 } from "../../features/forms/formsSlice";
 import { formatNumberWithSpaces } from "../../utils/common/numberWithSpaces";
 import { getFromStorage } from "../../utils/common/LocalStorageExplorer";
-import { CreateOrderRequest } from "../../types/api.types";
+import { CreateOrderRequest } from "../../types/api/api.types";
 import { formatPhoneNumber } from "../../utils/forms/formatePhone";
 import List from "../../components/List";
 import { handleNewAddress } from "../../features/modals/modalsSlice";
@@ -207,7 +207,7 @@ const Order = () => {
                                         </div>
                                         <b onClick={handleChangeDeliveryType}
                                             className={`${styles.wayOrderBtn} d-f ${gTheme("lt-active-c", "dk-active-c")} cur-pointer`}>
-                                            {isPickup ? "Выбрать доставку" : "Выбрать самовывоз"}
+                                            {/* {isPickup ? "Выбрать доставку" : "Выбрать самовывоз"} */}
                                         </b>
                                     </div>
                                     <div className={`f-column gap-20 ${styles.orderOptions}`}>
@@ -246,7 +246,7 @@ const Order = () => {
                                                 dispatch(handleOrderCallNeeded())
                                             }} />
                                         </div>
-                                        <div className={`${styles.timeOrder} f-column gap-10`}>
+                                        {/* <div className={`${styles.timeOrder} f-column gap-10`}>
                                             <p className={gTheme("lt-c", "dk-c")}>Количество приборов</p>
                                             <div className={"d-f al-center gap-5"}>
                                                 <div onClick={toolsCount > 1 ? () => dispatch(minusToolsCount()) : undefined} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon fill={appColor} />
@@ -255,7 +255,7 @@ const Order = () => {
                                                 <div onClick={toolsCount < 10 ? () => dispatch(addToolsCount()) : undefined} className={"cur-pointer f-c-col"}><PlusIcon fill={appColor} /></div>
 
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                 </div>
@@ -264,7 +264,7 @@ const Order = () => {
                             </div>
                             <div className={`${styles.leftContent} orderBottom f-column gap-40`}>
                                 <div className="f-column gap-20 paymentWay">
-                                    <div className={`sectionTitle  ${gTheme("lt-coal-c", "dk-gray-c")}`}>Способы оплаты</div>
+                                    <div className={`sectionTitle  ${gTheme("lt-coal-c", "dk-gray-c")}`}>Оплата</div>
                                     <div className="d-f gap-10">
                                         <div
                                             onClick={() => {
@@ -274,16 +274,16 @@ const Order = () => {
                                             <PaymentCard stroke={isDarkTheme ? "#c3c3c3" : "#434343"} />
                                             <p>Картой онлайн</p>
                                         </div>
-                                        <div
+                                        {/* <div
                                             onClick={() => {
                                                 dispatch(handleOrderPaymentWay("CASH"))
                                             }}
                                             className={`${styles.inputSelectable} ${paymentWay == "CASH" ? gTheme("lt-whiteSelectableSelected", "dk-whiteSelectableSelected") : ""} d-f al-center gap-5 whiteSelectable  ${gTheme("lt-whiteSelectable", "dk-whiteSelectable")}`}>
                                             <PaymentCash stroke={isDarkTheme ? "#c3c3c3" : "#434343"} />
                                             <p>Наличными</p>
-                                        </div>
+                                        </div> */}
                                     </div>
-                                    {
+                                    {/* {
                                         paymentWay == "CASH" ?
                                             <InputWrapper
                                                 className={styles.inputField}
@@ -299,7 +299,7 @@ const Order = () => {
                                                     "Сдача с"
                                                 } />
                                             : null
-                                    }
+                                    } */}
                                 </div>
                                 <div className="f-column gap-15">
                                     <div className="f-column gap-5">
@@ -333,22 +333,15 @@ const Order = () => {
                                         list={cart.items}
                                         renderItem={(item => (
                                             <OrderItem
-                                                supplements={item.supplements}
-                                                id={item.product.id}
-                                                discount_price={item.product.price_discount || 0}
-                                                is_discount={item.product.is_discount || false}
-                                                image={item.product.image}
-                                                title={item.product.title}
-                                                composition={item.product.composition}
-                                                price={item.product.price}
-                                                count={item.count} />
+                                                {...item}
+                                            />
                                         ))}
                                     />
                                     <div className={`${styles.info} ${styles.part} pd-15 f-column gap-10`}>
                                         <div className={`${styles.productsInfo} f-column gap-5`}>
                                             <div className="f-row-betw">
                                                 <p>{cart.items.reduce((acc, cur) => {
-                                                    return acc + cur.count
+                                                    return acc + (cur?.count !== undefined ? cur.count : 0)
                                                 }, 0)} товаров</p>
                                                 <p>{formatNumberWithSpaces(cart.totalPrice)} ₽</p>
                                             </div>

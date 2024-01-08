@@ -1,5 +1,5 @@
 import { ProductsApi } from "../http/api/products.api";
-import { Supplement } from "./api.types";
+import { Supplement } from "./api/api.types";
 import { N_CategoryApi } from "./categories.types";
 import { HasID } from "./common.types";
 

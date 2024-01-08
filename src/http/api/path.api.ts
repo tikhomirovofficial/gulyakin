@@ -19,6 +19,7 @@ export const PATHS = {
     MARKET_COMBOS: "/product/combo",
     MARKET_PRODUCT_OF_THE_DAY: "/product/day",
     MARKET_ADDRESS_INFO: "/market/adress/info",
+    GET_NEAREST: "/market/adress/nearest",
 
     BOOKINGS_LIST: "/booking/list",
     BOOKING_CREATE: "/booking/create",
@@ -29,7 +30,7 @@ export const PATHS = {
     VIEW_CART: "/cart/list",
     EDIT_CART_ITEM: "/cart/edit",
     EDIT_CART_SUPPLEMENTS: "/cart/edit/supplements",
-    DELETE_CART_ITEM: "/cart/delete/",
+    DELETE_CART_ITEM: "/cart/delete",
     RESET_CART: "/cart/clear",
 
     DELIVERY_OPTIONS: "/order/delivery/list",

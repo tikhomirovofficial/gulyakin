@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {GetOrderItem, GetOrderRequest, GetOrderResponse} from "../../types/api.types";
+import {GetOrderItem, GetOrderRequest, GetOrderResponse} from "../../types/api/api.types";
 import {AxiosResponse} from "axios/index";
 import {OrderApi} from "../../http/api/order.api";
 

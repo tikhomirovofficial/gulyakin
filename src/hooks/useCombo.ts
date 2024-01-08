@@ -15,9 +15,10 @@ import {
     setProductAfterAddress,
     setProductAfterLogin
 } from "../features/cart/cartSlice";
-import { AddToCartCombo, AddToCartComboRequest, CartProductItem, Combo, EditCartComboRequest } from "../types/api.types";
+import { AddToCartCombo, AddToCartComboRequest, CartProductItem, Combo, EditCartComboRequest } from "../types/api/api.types";
+import { N_CartProduct } from '../types/api/cart.api.types';
 
-type HookComboReturnType = [(selectedProduct: number) => void, (selectedProduct: number) => void, () => void, Combo, CartProductItem]
+type HookComboReturnType = [(selectedProduct: number) => void, (selectedProduct: number) => void, () => void, Combo, N_CartProduct]
 const useCombo = (combo_id: number): HookComboReturnType => {
     const dispatch = useAppDispatch()
     const token = useToken()
@@ -53,12 +54,12 @@ const useCombo = (combo_id: number): HookComboReturnType => {
                 dispatch(handleProductAdditives())
                 return;
             }
-            dispatch(setProductAfterAddress(comboDefferedData))
+            //dispatch(setProductAfterAddress(comboDefferedData))
             dispatch(handleYourAddress())
             dispatch(handleProductAdditives())
             return
         }
-        dispatch(setProductAfterLogin(comboDefferedData))
+        //dispatch(setProductAfterLogin(comboDefferedData))
         dispatch(handleLogin())
         dispatch(handleProductAdditives())
 

@@ -1,17 +1,17 @@
-import {Link, useNavigate} from "react-router-dom";
-import React, {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {UserApi} from "../../../http/api/user.api";
-import {extractDigits} from "../../../utils/common/normalizePhone";
-import {withChangeCodeArr} from "../../../utils/forms/withChangeCodeArr";
-import {storeTokens} from "../../../utils/auth/storeTokens";
+import { Link, useNavigate } from "react-router-dom";
+import React, { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { UserApi } from "../../../http/api/user.api";
+import { extractDigits } from "../../../utils/common/normalizePhone";
+import { withChangeCodeArr } from "../../../utils/forms/withChangeCodeArr";
+import { storeTokens } from "../../../utils/auth/storeTokens";
 import authApi from "../../../http/instance/instances";
-import {handleLogin, handleYourAddress} from "../../../features/modals/modalsSlice";
+import { handleLogin, handleYourAddress } from "../../../features/modals/modalsSlice";
 import styles from "./login.module.scss";
 import GrayBorderedBlock from "../../GrayBorderedBlock";
-import {Preloader} from "../../../icons";
+import { Preloader } from "../../../icons";
 import RedButton from "../../Buttons/RedButton";
-import {LoginContext, LoginContextType} from "./index";
+import { LoginContext, LoginContextType } from "./index";
 import {
     addToCart,
     addToCartCombo,
@@ -51,7 +51,7 @@ const LoginCodeStep = () => {
     const handleSendPhone = async () => {
         try {
             setPhoneErr("")
-            const {status} = await UserApi.Registration({
+            const { status } = await UserApi.Registration({
                 phone: extractDigits(phone)
             })
 
@@ -74,7 +74,7 @@ const LoginCodeStep = () => {
     }
     const handleChangeCodes = (e: ChangeEvent<HTMLInputElement>, index: number) => {
         const validSymbolAndValue = e.target.value == "" || (e.target.value.length < 2 && RegExp(/[0-9]/).test(e.target.value))
-       
+
         if (validSymbolAndValue) {
             setCodeErr("")
             setCode(prev => {
@@ -105,7 +105,7 @@ const LoginCodeStep = () => {
             if (codeIsFilled) {
                 try {
                     setCodeLoading(true)
-                    const {access, refresh} = await UserApi.Login({
+                    const { access, refresh } = await UserApi.Login({
                         username: extractDigits(phone),
                         password: code.join("")
                     })
@@ -197,11 +197,11 @@ const LoginCodeStep = () => {
                         {
                             code.map((digit, index) => (
                                 <GrayBorderedBlock validError={codeErr} isFocused={currentDigit === index}
-                                                   className={`${styles.codeDigitBlock} f-c-col`}><input
-                                    onBlur={() => setCurrentDigit(null)} onFocus={() => setCurrentDigit(index)}
-                                    className={styles.codeInput} onChange={(e) => handleChangeCodes(e, index)}
-                                    value={digit}
-                                    type="number"/></GrayBorderedBlock>
+                                    className={`${styles.codeDigitBlock} f-c-col`}><input
+                                        onBlur={() => setCurrentDigit(null)} onFocus={() => setCurrentDigit(index)}
+                                        className={styles.codeInput} onChange={(e) => handleChangeCodes(e, index)}
+                                        value={digit}
+                                        type="number" /></GrayBorderedBlock>
                             ))
                         }
 
@@ -212,7 +212,7 @@ const LoginCodeStep = () => {
                             <div className={`${styles.codePreloader} ${styles.codeStatusCaption} d-f al-center gap-5`}>
                                 <b>Проверяем код</b>
                                 <div className="f-c-col infiniteSpin w-content h-content">
-                                    <Preloader/>
+                                    <Preloader />
                                 </div>
 
                             </div> : null
@@ -229,7 +229,7 @@ const LoginCodeStep = () => {
                         Получить новый код {freezed ? `через ${codeFreezedSeconds} сек` : ""}
                     </RedButton>
                     <div className={`caption txt-center ${gTheme("lt-caption", "dk-caption")}`}>Продолжая, вы соглашаетесь <Link to={"/"}> со сбором и
-                            обработкой персональных данных и пользовательским соглашением</Link></div>
+                        обработкой персональных данных и пользовательским соглашением</Link></div>
                 </div>
 
             </div>

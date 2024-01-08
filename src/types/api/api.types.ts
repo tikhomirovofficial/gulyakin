@@ -1,10 +1,10 @@
-import { UserData } from "./user.types";
-import { ResponseStatus } from "./common.types";
-import { RestaurantDetails } from "./restaurants.types";
-import { AddressType } from "../features/main/mainSlice";
-import { N_CityApi } from "./city.types";
-import { N_ProductApi } from "./products.types";
-import { N_CategoryApi } from "./categories.types";
+import { UserData } from "../user.types";
+import { ResponseStatus } from "../common.types";
+import { RestaurantDetails } from "../restaurants.types";
+import { AddressType } from "../../features/main/mainSlice";
+import { N_CityApi } from "../city.types";
+import { N_ProductApi } from "../products.types";
+import { N_CategoryApi } from "../categories.types";
 
 export type JWT = {
     access?: string,
@@ -274,11 +274,7 @@ export type GetCartResponse = {
     supplement_counts: Record<string, number>
 } & ResponseStatus
 
-export type ChangeCountCartRequest = {
-    cart_id: number,
-    count: number
-}
-export type ChangeCountCartResponse = ResponseStatus
+
 
 export type CartCountSupplementsRequest = {
     cart_id: number,
@@ -291,12 +287,6 @@ export type CartCountSupplementsRequest = {
 export type CartCountSupplementsResponse = {
     supplements_list: Array<Supplement>
 } & ResponseStatus
-
-
-export type CartProductDeleteRequest = {
-    cart_id: number,
-}
-export type CartProductDeleteResponse = ResponseStatus
 
 export type CartResetResponse = ResponseStatus
 
@@ -365,15 +355,7 @@ export type GetOrderItem = {
     address: string,
     is_delivery: boolean,
     delivery_price: number,
-    products: Array<{
-        id: number
-        title: string,
-        image: string,
-        price: number,
-        count: number,
-        price_discount: number,
-        is_discount: boolean
-    }>
+    products: N_ProductApi[]
 }
 
 export type GetOrderResponse = {

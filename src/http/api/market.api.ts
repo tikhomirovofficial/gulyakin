@@ -3,7 +3,7 @@ import {
     GetAddressInfoResponse,
     GetMarketInfoRequest,
     GetMarketInfoResponse, GetMarketsByCityRequest, GetMarketsByCityResponse
-} from "../../types/api.types";
+} from "../../types/api/api.types";
 import {AxiosResponse} from "axios";
 import {api} from "../instance/instances";
 import {PATHS} from "./path.api";

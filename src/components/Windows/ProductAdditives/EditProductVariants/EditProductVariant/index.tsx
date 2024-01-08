@@ -27,7 +27,7 @@ const EditProductVariant = () => {
 
     //const saveMode = useAppSelector(state => state.modals.isChangingModeAdditives)
     const handleProductWindow = () => dispatch(handleProductAdditives())
-
+    const noCount = curProduct.count < 1
 
     // const RenderSupplementsList = () => {
     //     if (additives?.length) {
@@ -68,12 +68,57 @@ const EditProductVariant = () => {
                          className={`${styles.productImage}`}></div> */}
                     <div className={`${styles.additivesBarContainer} f-column-betw gap-20 h-100p`}>
                         <div className={`${styles.productAdditivesBar} f-column-betw gap-10`}>
-                            <div className="top f-column gap-10">
-                                <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
-                                    <h3>{curProduct.title}</h3>
+                            <div className="top f-column gap-15">
+                                <div className="f-column gap-5">
                                     <div className={styles.weight}>{curProduct.weight} {curProduct.dimensions.title}</div>
+                                    <div className={`${styles.titleBlock} jc-between d-f al-center gap-20`}>
+                                        <h3>{curProduct.title}</h3>
+                                    </div>
                                 </div>
-                                <p className={styles.description}>{curProduct.description || "Описание не заполнено"}</p>
+                                <div className="f-column gap-5">
+                                    <div className={styles.weight}>Состав</div>
+                                    <p className={styles.description}>{curProduct.description || "Описание не заполнено"}</p>
+                                </div>
+                                <div className="f-column gap-5">
+                                    <div className={styles.weight}>в 100 граммах</div>
+                                    <div className="d-f gap-20">
+                                        <div className="f-column">
+                                            <div className={styles.productEnergyItem}>
+                                                {0}
+                                            </div>
+                                            <div className={styles.weight}>Ккал</div>
+                                        </div>
+                                        <div className="f-column">
+                                            <div className={styles.productEnergyItem}>
+                                                {0} г
+                                            </div>
+                                            <div className={styles.weight}>Белки</div>
+                                        </div>
+                                        <div className="f-column">
+                                            <div className={styles.productEnergyItem}>
+                                                {curProduct.fats} г
+                                            </div>
+                                            <div className={styles.weight}>Жиры</div>
+                                        </div>
+                                        <div className="f-column">
+                                            <div className={styles.productEnergyItem}>
+                                                {curProduct.carbohydrates} г
+                                            </div>
+                                            <div className={styles.weight}>Углеводы</div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div className="f-column gap-5">
+                                    <div className={styles.weight}>Условия хранения</div>
+                                    <p className={styles.textItem}>{curProduct.storeg_temperature}</p>
+                                </div>
+                                <div className="f-column gap-5">
+                                    <div className={styles.weight}>Срок хранения</div>
+                                    <p className={styles.textItem}>{curProduct.sheif_life}</p>
+                                </div>
+
                             </div>
                             {/* <div className={`${additives?.length ? "f-1" : ""} content gap-10 f-column-betw`}>
                                 <RenderSupplementsList/>
@@ -83,10 +128,17 @@ const EditProductVariant = () => {
                             <RedButton
                                 // onClick={saveMode ? saveProduct : addProduct}
                                 onClick={addToCartProduct}
-                                disabled={false}
+                                disabled={noCount}
                                 className={`${styles.additivesBtn} pd-10-0`}>
 
-                                {!false ? <div>Добавить в корзину за {hasDiscount ? ((curProduct.discount_price || 0)) : curProduct.price} ₽</div> : "Сохранить"}
+                                {
+                                    !noCount ?
+                                        !false ?
+                                            <div>
+                                                Добавить в корзину за {hasDiscount ? ((curProduct.discount_price || 0)) : curProduct.price} ₽
+                                            </div> : "Сохранить"
+                                        : <div>Товар закончился</div>
+                                }
                             </RedButton>
                         </div>
 

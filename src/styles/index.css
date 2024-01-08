@@ -235,6 +235,7 @@ body::-webkit-scrollbar-thumb {
 }
 .sale strong {
     font-size: 1.2rem !important;
+    text-wrap: nowrap;
 }
 
 @media (max-width: 1340px) {

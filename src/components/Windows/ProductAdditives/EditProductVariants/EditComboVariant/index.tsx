@@ -21,7 +21,7 @@ const EditComboVariant = () => {
     const getAddedDrink = () => {
         const comboDrinks = thisCombo?.drinks
         if (thisComboCart) {
-            const selectedDrinkId = thisComboCart.product.selected_product?.id
+            const selectedDrinkId = thisComboCart.selected_drink
             if(selectedDrinkId !== undefined) {
                 return selectedDrinkId
             }

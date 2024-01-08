@@ -9,8 +9,8 @@ import {
     setChangingAdditivesMode,
     setProductAdditivesData
 } from "../../../features/modals/modalsSlice";
-import { ProductRes, Supplement } from "../../../types/api.types";
-import { editCountCart, removeProduct } from "../../../features/cart/cartSlice";
+import { ProductRes, Supplement } from "../../../types/api/api.types";
+import { editCountCart, removeFromCart, removeProduct } from "../../../features/cart/cartSlice";
 import { domain } from "../../../http/instance/instances";
 import useTheme from '../../../hooks/useTheme';
 import useAppColor from '../../../hooks/useAppColor';
@@ -31,9 +31,9 @@ const Product: FC<N_ProductProps & HasClassName> = (props) => {
     const gTheme = useTheme()
     const appColor = useAppColor()
 
-    const { isMobile, isDarkTheme } = useAppSelector(state => state.main)
+    const { isMobile, isDarkTheme, addressFrom } = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart.items)
-    const { handleCurrentProduct, hasDiscount } = useProduct(props.id, [])
+    const { handleCurrentProduct, hasDiscount, inCart, cartProduct, handleMinusProduct, handlePlusProduct } = useProduct(props.id, [])
 
     // const handleSetAdditivesData = () => {
     //     dispatch(setProductAdditivesData({
@@ -68,27 +68,10 @@ const Product: FC<N_ProductProps & HasClassName> = (props) => {
         return;
     }
 
-    const handlePlusProduct = () => {
-        dispatch(editCountCart({
-            cart_id: cart.filter(item => item.product.id === props.id && !item.is_combo)[0].id,
-            count: props.count + 1,
-            id: props.id
-        }))
-    }
-    const handleMinusProduct = () => {
-        if (props.count > 1) {
-            dispatch(editCountCart({
-                cart_id: cart.filter(item => item.product.id === props.id && !item.is_combo)[0].id,
-                count: props.count - 1,
-                id: props.id
-            }))
-        } else {
-            dispatch(removeProduct(props.id))
-        }
-    }
-
     return (
-        <div onClick={handleOpenAdditives} className={`${styles.product} cur-pointer h-100p f-column-betw gap-15`}>
+        <div
+            // onClick={//handleOpenAdditives}
+            className={`${styles.product} cur-pointer h-100p f-column-betw gap-15`}>
             <div className="f-column ">
                 <div className={`${styles.img} w-100p`}>
                     <img src={domain + "/" + props.image} />
@@ -130,11 +113,11 @@ const Product: FC<N_ProductProps & HasClassName> = (props) => {
 
 
                     {
-                        props.inCart ?
+                        inCart ?
                             <div className={"d-f al-center gap-5"}>
-                                <div onClick={handleMinusProduct} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon fill={appColor} />
+                                <div onClick={() => handleMinusProduct(true)} className={"cur-pointer f-c-col pd-10-0"}><MinusIcon fill={appColor} />
                                 </div>
-                                <div className={`${styles.count} ${gTheme("lt-light-coal-c", "dk-lg-c")}`}>{props.count}</div>
+                                <div className={`${styles.count} ${gTheme("lt-light-coal-c", "dk-lg-c")}`}>{cartProduct.count}</div>
                                 <div onClick={handlePlusProduct} className={"cur-pointer f-c-col"}><PlusIcon fill={appColor} /></div>
 
                             </div>

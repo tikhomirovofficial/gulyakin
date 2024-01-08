@@ -6,7 +6,7 @@ import {
     BookingCreateResponse,
     CreateOrderRequest,
     CreateOrderResponse
-} from "../../types/api.types";
+} from "../../types/api/api.types";
 import { AxiosResponse } from "axios";
 import { handleTokenRefreshedRequest } from "../../utils/auth/handleThunkAuth";
 import { OrderApi } from "../../http/api/order.api";

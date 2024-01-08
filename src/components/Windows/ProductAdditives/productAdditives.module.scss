@@ -36,6 +36,9 @@
 .additiveTitle {
 
 }
+.productEnergyItem {
+  font-size: 1.8rem;
+}
 
 .additiveList {
   overflow-y: auto;
@@ -106,17 +109,20 @@
   .weight {
     color: #C0C0C0;
     min-width: 4rem;
-    text-align: right;
+    //text-align: right;
     font-size: 1.4rem;
+    max-width: fit-content;
     text-wrap: nowrap;
   }
   .titleBlock {
     font-size: 2.4rem;
   }
+  .textItem {
+    font-size: 1.6rem;
+  }
   .description {
     min-height: 6rem;
     color:  h3 {
-    color: #c3c3c3;
   };
     font-size: 1.6rem;
   }

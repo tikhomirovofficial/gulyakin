@@ -8,7 +8,7 @@ import {
     LoginResponse, RefreshRequest, RefreshResponse,
     RegistrationRequest,
     RegistrationResponse, UserAddressesResponse
-} from "../../types/api.types";
+} from "../../types/api/api.types";
 import {AxiosResponse} from "axios";
 import authApi, {api} from "../instance/instances";
 import {UserData} from "../../types/user.types";

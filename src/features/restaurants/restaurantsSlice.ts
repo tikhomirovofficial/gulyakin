@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RestaurantDetails} from "../../types/restaurants.types";
-import {GetAddressInfoRequest, GetAddressInfoResponse} from "../../types/api.types";
+import {GetAddressInfoRequest, GetAddressInfoResponse} from "../../types/api/api.types";
 import {AxiosResponse} from "axios";
 import {AddressesApi} from "../../http/api/addresses.api";
 

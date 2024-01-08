@@ -52,7 +52,8 @@ const Cart = () => {
 
     const totalCount = useMemo(() => {
         return items.reduce((prev, cur) => {
-            return prev + cur.count
+            //return prev + cur.count
+            return prev + 1
         }, 0)
     }, [items])
 
@@ -78,7 +79,7 @@ const Cart = () => {
 
             <div onClick={e => e.stopPropagation()}
                 className={`${styles.cartBlock} ${gTheme("lt-cart", "dk-cart")} ${classOpened ? styles.cartBlockOpened : ""} bg-white f-column p-rel`}>
-                {
+                {/* {
                     additivesOpened ?
                         <div
                             className={`${classAdditivesAdded ? styles.additivesWindowOpened : ""}  top-0 p-abs h-100v w-100p`}>
@@ -94,7 +95,7 @@ const Cart = () => {
                                             const inCartSouse = items.filter(prod => prod.product.id === item.id && !prod.is_combo)[0]
                                             return <CartAdditiveItem
                                                 key={item.id}
-                                                count={inCartSouse?.count || 0}
+                                                count={inCartSouse?.count|| 0}
                                                 inCart={inCartSouse !== undefined}
                                                 short_description={item.description || ""}
                                                 id={item.id} price={item.price}
@@ -106,7 +107,7 @@ const Cart = () => {
                             </div>
                         </div> : null
 
-                }
+                } */}
 
                 <div className={`${styles.top} w-100p d-f al-end jc-end pd-0-20`}>
                     <div onClick={handleCloseCart} className={`closeWrapper`}>
@@ -152,7 +153,7 @@ const Cart = () => {
                             <CartList />
 
                         </div>
-                        {
+                        {/* {
                             items.length ?
                                 <div className={` f-column gap-5`}>
                                     <h3>Добавить к заказу?</h3>
@@ -174,7 +175,7 @@ const Cart = () => {
                                         </div>
                                     </div>
                                 </div> : null
-                        }
+                        } */}
 
                     </div>
 

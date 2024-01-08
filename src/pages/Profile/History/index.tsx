@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import List from "../../../components/List";
-import {GetOrderDetailsItem, GetOrderItem} from "../../../types/api.types";
+import {GetOrderDetailsItem, GetOrderItem} from "../../../types/api/api.types";
 import HistoryItem, {HistoryItemProps} from "./HistoryItem";
 
 type OrdersHistoryListProps = {

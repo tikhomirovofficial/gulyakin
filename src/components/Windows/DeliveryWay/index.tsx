@@ -19,7 +19,7 @@ import { handleSelectAddressId, handleSelectRestaurant } from "../../../features
 import { addToCart, addToCartCombo, setProductAfterAddress } from "../../../features/cart/cartSlice";
 import { setSelectedInDelivery, setSelectedInPickup } from "../../../features/restaurants/restaurantsSlice";
 import { addAddressUser } from "../../../features/profile/profileSlice";
-import { AddressByCityItem, AddressByMarketCity } from "../../../types/api.types";
+import { AddressByCityItem, AddressByMarketCity } from "../../../types/api/api.types";
 import { deleteSeconds } from "../../../utils/datetime/deleteSecondsInTime";
 import useCartAdd from "../../../hooks/useCartAdd";
 import useMarketLogo from "../../../hooks/useMarketLogo";
@@ -232,7 +232,7 @@ const AddressProfileVariant: FC<DeliveryWayCommonProps> = ({
 
     const handleAddAddressDelivery = () => {
         dispatch(handleSelectAddressId(selectedInDelivery))
-        addToCartWithAfterClose()
+        addToCartWithAfterClose() // СЕЙЧАС ТУТ ПРОСТО ВЫХОД ИЗ МОДАЛКИ
         if (handleSuccess) {
             handleSuccess("Адрес выбран!")
         }
@@ -365,43 +365,43 @@ const DeliveryWay = () => {
     const products = useAppSelector(state => state.products)
 
     const addToCartWithClose = () => {
-        if (addProductAfterAddress !== null) {
-            if (!addProductAfterAddress.is_combo) {
-                const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress.id)[0]
-                if (matchedProduct?.id !== undefined) {
-                    const addProductSups = addProductAfterAddress.supplements
-                    const addProductSupsDefined = addProductSups !== undefined
-                    dispatch(addToCart({
-                        ...matchedProduct,
-                    }))
-                    handleAddedPopup(matchedProduct.title, matchedProduct.weight)
-                }
-            } else {
-                const matchedCombo = products.combos.filter(item => item.id == addProductAfterAddress.id)[0]
-                if (matchedCombo?.id !== undefined) {
-                    dispatch(addToCartCombo({
-                        combo: [
-                            {
-                                count: 1,
-                                id: matchedCombo.id,
-                                selected_product: addProductAfterAddress.selected_product || 1
+        // if (addProductAfterAddress !== null) {
+        //     if (!addProductAfterAddress.is_combo) {
+        //         const matchedProduct = products.items.filter(item => item.id == addProductAfterAddress.id)[0]
+        //         if (matchedProduct?.id !== undefined) {
+        //             const addProductSups = addProductAfterAddress.supplements
+        //             const addProductSupsDefined = addProductSups !== undefined
+        //             dispatch(addToCart({
+        //                 products_id: matchedProduct.
+        //                 ...matchedProduct,
+        //             }))
+        //             handleAddedPopup(matchedProduct.title, matchedProduct.weight)
+        //         }
+        //     } else {
+        //         const matchedCombo = products.combos.filter(item => item.id == addProductAfterAddress.id)[0]
+        //         if (matchedCombo?.id !== undefined) {
+        //             dispatch(addToCartCombo({
+        //                 combo: [
+        //                     {
+        //                         count: 1,
+        //                         id: matchedCombo.id,
+        //                         selected_product: addProductAfterAddress.selected_product || 1
 
-                            }
-                        ],
-                        combo_prod: {
-                            ...matchedCombo
-                        },
+        //                     }
+        //                 ],
+        //                 combo_prod: {
+        //                     ...matchedCombo
+        //                 },
 
 
-                    }))
-                    handleAddedPopup(matchedCombo.title, matchedCombo.weight)
-                    dispatch(setAddressSuccess(true))
-                }
-            }
-            dispatch(setProductAfterAddress(null))
-            dispatch(handleDeliveryWayWindow())
-
-        }
+        //             }))
+        //             handleAddedPopup(matchedCombo.title, matchedCombo.weight)
+        //             dispatch(setAddressSuccess(true))
+        //         }
+        //     }
+        // }
+        dispatch(setProductAfterAddress(null))
+        dispatch(handleDeliveryWayWindow())
     }
 
     const handleAddressFromProfile = () => {

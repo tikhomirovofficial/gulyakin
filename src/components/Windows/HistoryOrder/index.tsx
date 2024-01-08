@@ -14,10 +14,7 @@ const HistoryOrderWindow = () => {
     const dispatch = useAppDispatch()
     const { loading, data } = useAppSelector(state => state.ordersHistory)
     const orderStatus = getOrderStatus(data.is_active, data.is_payment)
-
-
     const orderDate = new Date(data.datetime)
-
     const dateString = `${orderDate.getDate()}.${orderDate.getMonth() + 1}.${orderDate.getFullYear()}`
 
     return (
@@ -44,10 +41,10 @@ const HistoryOrderWindow = () => {
                                 <div className={`${styles.status} f-column al-end`}>
                                     <p>Доставка:</p>
                                     {
-                                        data.is_delivery ?  <b>{formatNumberWithSpaces(~~(data.delivery_price))} ₽</b>:
-                                        <b>Самовывоз</b>
+                                        data.is_delivery ? <b>{formatNumberWithSpaces(~~(data.delivery_price))} ₽</b> :
+                                            <b>Самовывоз</b>
                                     }
-    
+
                                 </div>
                             </div>
 
@@ -64,9 +61,8 @@ const HistoryOrderWindow = () => {
                                 </div>
                                 {
                                     data.products.length > 0 ?
-                                        data.products.map(item => (
-                                            <OrderItem is_discount={item.is_discount} discount_price={item.price_discount} id={item.id} image={item.image} title={item.title}
-                                                composition={""} price={item.price} count={item.count} />
+                                        data.products.map((item, index) => (
+                                            <OrderItem count={99} id={index} product={item} />
                                         ))
                                         : null
                                 }

@@ -1,4 +1,4 @@
-import { Category, ProductRes } from "../../types/api.types";
+import { Category, ProductRes } from "../../types/api/api.types";
 import { N_CategoryApi } from "../../types/categories.types";
 import { N_ProductApi } from "../../types/products.types";
 

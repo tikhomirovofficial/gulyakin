@@ -5,18 +5,22 @@ import {
     GetAddressInfoResponse, GetBookingsRequest, GetBookingsResponse,
     GetByCityAddressesRequest, GetByCityAddressesResponse,
     GetCitiesResponse
-} from "../../types/api.types";
+} from "../../types/api/api.types";
 import {AxiosResponse} from "axios";
 import {api} from "../instance/instances";
 import {PATHS} from "./path.api";
 import {ConvertDataToGetParams} from "../../utils/forms/ConvertDataToGetParams";
+import { GetNearestAddressRequest, GetNearestAddressResponse } from "../../types/api/addresses.types";
 
 export class AddressesApi {
     static async AddressInfoById(requestData: GetAddressInfoRequest): Promise<AxiosResponse<GetAddressInfoResponse>> {
         const res: AxiosResponse<GetAddressInfoResponse> = await api.get(PATHS.MARKET_ADDRESS_INFO + ConvertDataToGetParams(requestData));
         return res;
     }
-
+    static async NearestAddress(requestData: GetNearestAddressRequest): Promise<AxiosResponse<GetNearestAddressResponse>> {
+        const res: AxiosResponse<GetNearestAddressResponse> = await api.get(PATHS.GET_NEAREST + ConvertDataToGetParams(requestData));
+        return res;
+    }
 
     static async Cities(): Promise<AxiosResponse<GetCitiesResponse>> {
         const res: AxiosResponse<GetCitiesResponse> = await api.get(PATHS.MARKET_CITIES);

@@ -10,16 +10,14 @@ import {
     ChangeUserResponse,
     DeleteUserAddressRequest,
     DeleteUserAddressResponse,
-    GetHistoryOrdersResponse,
-    GetOrderDetailsItem, GetOrderItem,
     GetOrderRequest,
-    GetOrderResponse,
     GetUserDataResponse,
     UserAddressesResponse
 } from "../../types/api/api.types";
 import {AxiosResponse} from "axios";
 import {OrderApi} from "../../http/api/order.api";
 import {setAddressSuccess, setAddressSuccessTitle} from "../modals/modalsSlice";
+import { GetHistoryOrdersResponse, GetOrderResponse, OrderItemApi } from "../../types/api/order.api.types";
 
 
 export interface ProfileState {
@@ -28,7 +26,7 @@ export interface ProfileState {
     data: UserData
 
     addresses: Array<Address & { id: number }>
-    orders: GetOrderItem[]
+    orders: OrderItemApi[]
 
 }
 

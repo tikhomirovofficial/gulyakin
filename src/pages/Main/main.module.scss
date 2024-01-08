@@ -200,68 +200,7 @@
     }
   }
 }
-.promo {
-  padding-bottom: 4rem;
-  background: #2A2C36;
-  .promos {
-    .container {
-      .item {
-        overflow: hidden;
-        background: white;
-        max-width: 31rem;
-        min-height: 18.3rem;
-        border-radius: 4px;
-        border: 1px solid #FAFAFA;
-        transition: .3s border;
-        .image {
-          height: 11rem;
-          background-position: center;
-        }
-        .info {
-          h3 {
-            font-size: 2rem;
-          }
-          p {
-            font-size: 1.4rem;
-          }
-          svg {
-            transition: .3s transform;
-            path {
-              transition: .3s fill;
-            }
-          }
-        }
-        &:hover {
-          border: 1px solid #FB634D;
-          svg {
-            transform: translateX(5px);
-            path {
-              fill: #FB634D;
-            }
-          }
-        }
 
-      }
-    }
-    .salesArrowLeft {
-      left: -2rem;
-
-    }
-    .salesArrowRight {
-      right: -2rem;
-    }
-    .arrowWrapper {
-      z-index: 3;
-      .arrow {
-        height: 4rem;
-        width: 4rem;
-        background: white;
-        border-radius: 50%;
-      }
-    }
-  }
-
-}
 @media (max-width: 470px) {
   .promo {
     .promos {

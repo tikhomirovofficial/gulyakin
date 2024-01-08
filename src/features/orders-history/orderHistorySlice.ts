@@ -1,23 +1,25 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {GetOrderItem, GetOrderRequest, GetOrderResponse} from "../../types/api/api.types";
+import {GetOrderRequest} from "../../types/api/api.types";
 import {AxiosResponse} from "axios/index";
 import {OrderApi} from "../../http/api/order.api";
+import { GetOrderResponse, OrderItemApi } from "../../types/api/order.api.types";
 
 
 type OrderHistorySliceType = {
     loading: boolean
-    data: GetOrderItem
+    data: OrderItemApi
 }
 
 const initialState: OrderHistorySliceType = {
     data: {
-        address: "",
+        adress: "",
         datetime: "2023-10-13T09:17:47.712379Z",
-        is_active: false,
         is_payment: false,
-        order_id: 0,
-        is_delivery: false,
-        delivery_price: 0,
+        status: {
+            id: 0,
+            title: ""
+        },
+        id: 0,
         price: 0,
         products: []
     },

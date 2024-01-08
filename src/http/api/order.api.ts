@@ -2,12 +2,11 @@ import {
     CanOrderAddressesByCityRequest, CanOrderAddressesByCityResponse,
     CanOrderByCityRequest, CanOrderByCityResponse,
     CreateOrderRequest,
-    CreateOrderResponse,
+
     GetDeliveryListResponse,
     GetDeliverySettingsResponse,
-    GetHistoryOrdersResponse, GetOrderDeliveryRequest, GetOrderDeliveryResponse,
+    GetOrderDeliveryRequest, GetOrderDeliveryResponse,
     GetOrderRequest,
-    GetOrderResponse,
     GetPaymentListResponse,
     SendPaymentRequest,
     SendPaymentResponse
@@ -16,6 +15,7 @@ import {AxiosResponse} from "axios";
 import authApi, {api} from "../instance/instances";
 import {PATHS} from "./path.api";
 import {ConvertDataToGetParams} from "../../utils/forms/ConvertDataToGetParams";
+import { GetHistoryOrdersResponse, GetOrderResponse, N_OrderCreateRequest, N_OrderCreateResponse, OrderItemApi } from "../../types/api/order.api.types";
 
 export class OrderApi {
     static async DeliveriesWays(): Promise<AxiosResponse<GetDeliveryListResponse>> {
@@ -55,8 +55,8 @@ export class OrderApi {
         return res;
     }
 
-    static async Create(requestData: CreateOrderRequest): Promise<AxiosResponse<CreateOrderResponse>> {
-        const res: AxiosResponse<CreateOrderResponse> = await authApi.post(PATHS.CREATE_ORDER, {...requestData});
+    static async Create(requestData: N_OrderCreateRequest): Promise<AxiosResponse<N_OrderCreateResponse>> {
+        const res: AxiosResponse<N_OrderCreateResponse> = await authApi.post(PATHS.CREATE_ORDER, {...requestData});
         if (!res.data) {
             throw res
         }

@@ -4,8 +4,7 @@ import { UserData } from "../../types/user.types";
 import {
     BookingCreateRequest,
     BookingCreateResponse,
-    CreateOrderRequest,
-    CreateOrderResponse
+    CreateOrderRequest
 } from "../../types/api/api.types";
 import { AxiosResponse } from "axios";
 import { handleTokenRefreshedRequest } from "../../utils/auth/handleThunkAuth";
@@ -14,6 +13,7 @@ import { validate } from "../../utils/forms/validator";
 import { profileRules } from "../../validator/forms.rules";
 import { resetOrderForm } from "../../utils/common/resetOrderForm";
 import { AddressesApi } from "../../http/api/addresses.api";
+import { N_OrderCreateRequest, N_OrderCreateResponse } from "../../types/api/order.api.types";
 
 export type FieldType = {
     val: string,
@@ -123,8 +123,8 @@ type PayloadHandleBooking = PayloadAction<FormChangeValByKey<BookingFormType>>
 
 export const sendOrder = createAsyncThunk(
     'order/send',
-    async (request: CreateOrderRequest, { dispatch }) => {
-        const res: AxiosResponse<CreateOrderResponse> = await handleTokenRefreshedRequest(OrderApi.Create, request)
+    async (request: N_OrderCreateRequest, { dispatch }) => {
+        const res: AxiosResponse<N_OrderCreateResponse> = await handleTokenRefreshedRequest(OrderApi.Create, request)
         return res
 
     }

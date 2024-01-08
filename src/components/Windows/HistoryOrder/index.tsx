@@ -13,7 +13,6 @@ import { handleHistoryOrder } from "../../../features/modals/modalsSlice";
 const HistoryOrderWindow = () => {
     const dispatch = useAppDispatch()
     const { loading, data } = useAppSelector(state => state.ordersHistory)
-    const orderStatus = getOrderStatus(data.is_active, data.is_payment)
     const orderDate = new Date(data.datetime)
     const dateString = `${orderDate.getDate()}.${orderDate.getMonth() + 1}.${orderDate.getFullYear()}`
 
@@ -28,24 +27,24 @@ const HistoryOrderWindow = () => {
                 {
                     loading ? <Preloader /> : <div className="f-column gap-20">
                         <div className={` f-column gap-15`}>
-                            <h2>Заказ № {data.order_id}</h2>
+                            <h2>Заказ № {data.id}</h2>
                             <div className={`${styles.status} f-column`}>
                                 <p>Статус</p>
-                                <b>{orderStatus}</b>
+                                <b>{data.status.title}</b>
                             </div>
                             <div className="d-f jc-between al-end">
                                 <div className={`${styles.status} f-column`}>
                                     <p>Сумма заказа:</p>
                                     <b>{formatNumberWithSpaces(~~(data.price))} ₽</b>
                                 </div>
-                                <div className={`${styles.status} f-column al-end`}>
+                                {/* <div className={`${styles.status} f-column al-end`}>
                                     <p>Доставка:</p>
                                     {
                                         data.is_delivery ? <b>{formatNumberWithSpaces(~~(data.delivery_price))} ₽</b> :
                                             <b>Самовывоз</b>
                                     }
 
-                                </div>
+                                </div> */}
                             </div>
 
 
@@ -62,7 +61,16 @@ const HistoryOrderWindow = () => {
                                 {
                                     data.products.length > 0 ?
                                         data.products.map((item, index) => (
-                                            <OrderItem count={99} id={index} product={item} />
+                                            <OrderItem
+                                                count={item.count}
+                                                price={item.price}
+                                                discount_price={item.discount_price}
+                                                image={item.image}
+                                                discount_procent={item.discount_procent}
+                                                description={""}
+                                                title={item.title}
+                                                id={index}
+                                            />
                                         ))
                                         : null
                                 }

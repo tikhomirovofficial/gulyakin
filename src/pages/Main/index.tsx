@@ -21,6 +21,7 @@ import Combo from "../../components/Catalog/Combo";
 import { Link as ScrollLink } from "react-scroll"
 import BookingWindow from '../../components/Windows/Booking';
 import useTheme from '../../hooks/useTheme';
+import Sales from '../../components/Sales';
 
 const Main: FC = () => {
     const { categories, products, main, modals } = useAppSelector(state => state)
@@ -70,7 +71,7 @@ const Main: FC = () => {
     }, [])
     return (
         <>
-            {/*<Sales/>*/}
+            <Sales/>
             <div className={`${styles.main} f-column gap-20`}>
                 <div className={`pd-30-0`}>
                     <div className={`${styles.block} f-column gap-25`}>

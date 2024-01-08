@@ -227,6 +227,9 @@ body::-webkit-scrollbar-thumb {
     left: -50%;
     background: #ff2000;
 }
+.cur-grabbing {
+    cursor: grabbing !important;
+}
 .sale {
     margin-top: 0.6rem;
 }

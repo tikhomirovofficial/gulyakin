@@ -321,10 +321,6 @@ export type CreateOrderRequest = {
     change_with?: number
 }
 
-export type CreateOrderResponse = {
-    order_id: number,
-    payment_url: string
-} & ResponseStatus
 
 export type SendPaymentRequest = {
     order_id: number
@@ -336,36 +332,6 @@ export type GetOrderRequest = {
     order_id: number
 }
 
-export type GetOrderDetailsItem = {
-    order_id: number,
-    datetime: string,
-    price: number,
-    is_payment: false,
-    is_active: true,
-    products: string[]
-    address: string
-}
-
-export type GetOrderItem = {
-    order_id: number,
-    datetime: string,
-    price: number,
-    is_payment: boolean,
-    is_active: boolean,
-    address: string,
-    is_delivery: boolean,
-    delivery_price: number,
-    products: N_ProductApi[]
-}
-
-export type GetOrderResponse = {
-    order: GetOrderItem
-} & ResponseStatus
-
-
-export type GetHistoryOrdersResponse = {
-    order: GetOrderItem[]
-} & ResponseStatus
 
 export type GetBookingsRequest = {
     siti_id: number

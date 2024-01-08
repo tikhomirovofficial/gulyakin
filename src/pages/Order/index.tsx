@@ -37,13 +37,14 @@ import useTheme from '../../hooks/useTheme';
 import useActualPrice from '../../hooks/useActualPrice';
 import { count } from 'console';
 import useAppColor from '../../hooks/useAppColor';
+import { N_OrderCreateRequest } from '../../types/api/order.api.types';
 
 
 const Order = () => {
     const dispatch = useAppDispatch()
     const gTheme = useTheme()
     const { data, addresses } = useAppSelector(state => state.profile)
-    const { orderDetails, pickupAddresses, orderWarning, workTimes, deliveryAddress, isDarkTheme } = useAppSelector(state => state.main)
+    const { orderDetails, pickupAddresses, orderWarning, workTimes, deliveryAddress, isDarkTheme, currentGeo, addressFrom } = useAppSelector(state => state.main)
     const [changeSum, setChangeSum, setStateSum] = useInput("")
     const cart = useAppSelector(state => state.cart)
     const actualPrice = useActualPrice()
@@ -67,10 +68,10 @@ const Order = () => {
         getCurrentPickupAddress,
     } = useOrderAddress()
     //console.log(workTimes);
-    
+
     const { orderTimes, isCurrent } = useIsWorkTime({ ...workTimes, is_around_time: workTimes.isAroundTime })
     //console.log(orderTimes);
-    
+
     const addressFromStorage = getFromStorage('order_form')?.addressId
 
     const closeSuccess = () => {
@@ -88,16 +89,14 @@ const Order = () => {
         const changeWith = paymentWay == "CASH" ? Number(changeSum) : undefined
         const userAddressId = !isPickup ? addressId : undefined
 
-        const req: CreateOrderRequest = {
-            delivery_type: deliveryTypeOrder,
+        const req: N_OrderCreateRequest = {
+            user_adress_id: addressId,
             is_call: callNeeded,
-            count_tools: toolsCount,
-            marekt_adress_id: isPickup ? restaurant : deliveryAddress.id,
-            pyment_type: paymentTypeOrder,
-            time_delivery: timeDeliveryOrder,
-            change_with: changeWith,
-            user_adress_id: userAddressId
+            adress_id: addressFrom,
+            siti_id: currentGeo.city,
+            //time: timeDeliveryOrder
         }
+
         dispatch(sendOrder(req))
     }
 
@@ -112,7 +111,7 @@ const Order = () => {
     const { orderDisabled } = useOrderDisabled({
         isCurrentWorkTime: isCurrent,
     })
-    
+
     const appColor = useAppColor()
     useOrderDetails()
 
@@ -216,7 +215,7 @@ const Order = () => {
                                         </b>
                                     </div>
                                     <div className={`f-column gap-20 ${styles.orderOptions}`}>
-                                        {
+                                        {/* {
                                             isCurrent ? <div className={`${styles.timeOrder} f-column gap-10`}>
                                                 <p className={gTheme("lt-c", "dk-c")}>Время</p>
                                                 <div className={`${styles.timeOrderItems} gap-10 f-column w-100p`}>
@@ -238,7 +237,7 @@ const Order = () => {
                                                     </div>
                                                 </div>
                                             </div> : null
-                                        }
+                                        } */}
                                         <div className="f-column gap-20">
                                             <RadioInput selected={callNeeded} text={
                                                 <p className={` ${gTheme("lt-coal-c", "dk-gray-c")}`}><b>Требуется</b> звонок оператора</p>
@@ -338,7 +337,14 @@ const Order = () => {
                                         list={cart.items}
                                         renderItem={(item => (
                                             <OrderItem
-                                                {...item}
+                                                id={item.id}
+                                                image={item.product.image}
+                                                description={item.product.description}
+                                                count={item.count}
+                                                title={item.product.title}
+                                                price={item.product.price}
+                                                discount_price={item.product.discount_price}
+                                                discount_procent={item.product.discount_procent}
                                             />
                                         ))}
                                     />

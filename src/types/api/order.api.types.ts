@@ -29,6 +29,7 @@ export type OrderItemApi = {
     id: number,
     datetime: string,
     price: number,
+    payment_url: string,
     is_payment: boolean,
     status: {
         id: number,

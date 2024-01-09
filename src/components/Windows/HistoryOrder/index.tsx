@@ -9,6 +9,8 @@ import Preloader from "../../Preloader";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { getOrderStatus } from "../../../utils/orders/getOrderStatus";
 import { handleHistoryOrder } from "../../../features/modals/modalsSlice";
+import RedButton from "../../Buttons/RedButton";
+import { addZerosDate } from "../../../utils/datetime/addZerosDate";
 
 const HistoryOrderWindow = () => {
     const dispatch = useAppDispatch()
@@ -46,7 +48,13 @@ const HistoryOrderWindow = () => {
 
                                 </div> */}
                             </div>
-
+                            {
+                                !data.is_payment ?
+                                    <a style={{ width: "fit-content" }} href={data.payment_url} target={"_blank"}>
+                                        <RedButton className={styles.paymentBtn}>Оплатить</RedButton>
+                                    </a>
+                                    : null
+                            }
 
                             <div className="f-column gap-10">
                                 <div className="al-end d-f jc-between">
@@ -55,7 +63,7 @@ const HistoryOrderWindow = () => {
                                     </div>
                                     <div className={`${styles.status} d-f gap-5`}>
                                         <p>Дата заказа:</p>
-                                        <b>{dateString}</b>
+                                        <b>{addZerosDate(dateString)}</b>
                                     </div>
                                 </div>
                                 {

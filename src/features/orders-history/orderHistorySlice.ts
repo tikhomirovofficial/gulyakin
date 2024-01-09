@@ -3,6 +3,7 @@ import {GetOrderRequest} from "../../types/api/api.types";
 import {AxiosResponse} from "axios/index";
 import {OrderApi} from "../../http/api/order.api";
 import { GetOrderResponse, OrderItemApi } from "../../types/api/order.api.types";
+import { handleTokenRefreshedRequest } from "../../utils/auth/handleThunkAuth";
 
 
 type OrderHistorySliceType = {
@@ -14,6 +15,7 @@ const initialState: OrderHistorySliceType = {
     data: {
         adress: "",
         datetime: "2023-10-13T09:17:47.712379Z",
+        payment_url: "",
         is_payment: false,
         status: {
             id: 0,
@@ -30,7 +32,7 @@ const initialState: OrderHistorySliceType = {
 export const getOrderById = createAsyncThunk(
     'history/order/get',
     async (request: GetOrderRequest, {dispatch}) => {
-        const res: AxiosResponse<GetOrderResponse> = await OrderApi.GetData(request)
+        const res: AxiosResponse<GetOrderResponse> = await handleTokenRefreshedRequest(OrderApi.GetData, request)
         return res.data.order
     }
 )

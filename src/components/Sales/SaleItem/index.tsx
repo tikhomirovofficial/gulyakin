@@ -5,6 +5,7 @@ import useTheme from '../../../hooks/useTheme';
 import { getImgPath } from '../../../utils/common/getAssetsPath';
 import useAppColor from '../../../hooks/useAppColor';
 import useProduct from '../../../hooks/useProduct';
+import { domain } from '../../../http/instance/instances';
 
 export const SaleItem: FC<N_ProductApi> = (props) => {
     const gTheme = useTheme()
@@ -13,7 +14,7 @@ export const SaleItem: FC<N_ProductApi> = (props) => {
 
     return (
         <div onClick={!inCart ? handleCurrentProduct : undefined} className={"cur-grabbing f-column gap-10"} >
-            <div className={styles.image} style={{ backgroundImage: `url(${getImgPath("promo.jpg")})` }}></div>
+            <div className={styles.image} style={{ backgroundImage: `url(${domain + "/" + props.image})` }}></div>
             <div className="f-column gap-5">
                 <h3 className={gTheme("lt-dark-coal-c", "dk-gray-c")}>{props.title}</h3>
                 <p className={styles.weight}>{props.weight} {props.dimensions.title}</p>

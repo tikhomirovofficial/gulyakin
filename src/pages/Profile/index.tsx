@@ -83,9 +83,9 @@ const Profile = () => {
         const handleHashChange = () => {
             const hash = window.location.hash;
             if (hash) {
-                const targetElement = document.getElementById(hash.substring(1));
+                const targetElement = document.getElementById("orders");
                 if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    targetElement.scrollIntoView({ behavior: 'smooth'});
                 }
             }
         };

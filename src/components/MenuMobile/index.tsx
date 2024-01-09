@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './menuMobile.module.scss'
-import { Logo, MiniClose, ProfileIcon, ThinClose, VkIcon } from "../../icons";
+import { GulicatLogo, GulicatLongLogo, Logo, MiniClose, ProfileIcon, ThinClose, VkIcon } from "../../icons";
 import SelectCity from "../SelectCity";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -11,7 +11,7 @@ import { formatPhoneNumber } from '../../utils/forms/formatePhone';
 const MenuMobile = () => {
     const dispatch = useAppDispatch()
     const { mobileMenu } = useAppSelector(state => state.modals)
-    const { phone } = useAppSelector(state => state.main)
+    const { phone, isDarkTheme } = useAppSelector(state => state.main)
     const token = useToken()
     const handleClose = () => {
         dispatch(setMobileMenu(false))
@@ -27,7 +27,8 @@ const MenuMobile = () => {
                 <div className="wrapper w-100p d-f jc-between ">
                     <div className="f-column gap-20">
                         <Link onClick={handleClose} to={"/"}>
-                            <Logo fill={"white"} />
+
+                            <GulicatLongLogo fill={"white"} />
                         </Link>
 
                         <SelectCity askGeoPopupClass={styles.askGeo} classNamePopup={styles.menuSelectPopup} className={styles.menuSelectCity} />

@@ -71,7 +71,10 @@ const Main: FC = () => {
     }, [])
     return (
         <>
-            <Sales/>
+            {
+                products.sales_products.length ? <Sales /> : null
+            }
+
             <div className={`${styles.main} f-column gap-20`}>
                 <div className={`pd-30-0`}>
                     <div className={`${styles.block} f-column gap-25`}>

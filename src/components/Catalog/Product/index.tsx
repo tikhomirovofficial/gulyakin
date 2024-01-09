@@ -34,7 +34,7 @@ const Product: FC<N_ProductProps & HasClassName> = (props) => {
     const { isMobile, isDarkTheme, addressFrom } = useAppSelector(state => state.main)
     const cart = useAppSelector(state => state.cart.items)
     const { handleCurrentProduct, hasDiscount, inCart, cartProduct, handleMinusProduct, handlePlusProduct } = useProduct(props.id, [])
-
+    const countZero = props.count < 1  || props.count === null
     // const handleSetAdditivesData = () => {
     //     dispatch(setProductAdditivesData({
     //         id: id,
@@ -70,7 +70,7 @@ const Product: FC<N_ProductProps & HasClassName> = (props) => {
 
     return (
         <div
-            // onClick={//handleOpenAdditives}
+            onClick={!inCart ? handleOpenAdditives : undefined}
             className={`${styles.product} cur-pointer h-100p f-column-betw gap-15`}>
             <div className="f-column ">
                 <div className={`${styles.img} w-100p`}>
@@ -123,8 +123,11 @@ const Product: FC<N_ProductProps & HasClassName> = (props) => {
                             </div>
                             :
                             <div className="d-f al-center gap-15">
-                                <RedButton onClick={handleOpenAdditives} className={`${styles.btn} `}>
-                                    {!isMobile ? " В корзину" : `${hasDiscount ? props.discount_price : props.price} ₽`}
+                                <RedButton disabled={countZero} onClick={handleOpenAdditives} className={`${styles.btn} `}>
+                                    {
+                                        countZero ? "Закончился": !isMobile ? " В корзину" : `${hasDiscount ? props.discount_price : props.price} ₽`
+                                    }
+                                    
                                 </RedButton>
                                 {isMobile && hasDiscount ?
                                     <div className={`sale p-rel`}>

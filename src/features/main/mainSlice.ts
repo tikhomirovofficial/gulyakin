@@ -138,7 +138,7 @@ const initialState: MainSliceState = {
     workTimes: {
         startTime: "9:00",
         endTime: "21:00",
-        isAroundTime: true
+        isAroundTime: false
     },
     canOrder: true,
     orderWarning: {

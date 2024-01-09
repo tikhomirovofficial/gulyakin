@@ -15,7 +15,7 @@ const RadioInput: FC<HasClassName & RadioInputProps> = ({className, onSelect, se
             <div className={`${styles.marker} ${selected ? gTheme("lt-radioBorder", "dk-radioBorder") : ""} f-c-col`}>
                 {
                     selected ?
-                    <div className={`${styles.selectedCircle} ${gTheme("lt-active-bg", "dk-active-bg")}`}></div> : null
+                    <div className={`${styles.selectedCircle} ${gTheme("lt-active-normal-bg", "dk-active-bg")}`}></div> : null
                 }
 
             </div>

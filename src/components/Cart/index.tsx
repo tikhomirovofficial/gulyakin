@@ -133,7 +133,7 @@ const Cart = () => {
                                             <InfoCircle className={styles.infoIcon} height={18} width={18} />
                                             <p>
                                                 Сейчас заказ недоступен <br />
-                                                ресторан работает с {workTimes.startTime} до {workTimes.endTime}.
+                                                доставка работает с {workTimes.startTime} до {workTimes.endTime}.
                                             </p>
                                         </div> : null
                                 }

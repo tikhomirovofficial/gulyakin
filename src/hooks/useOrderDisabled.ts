@@ -120,7 +120,7 @@ const useOrderDisabled = (props: OrderDisabledProps): OrderDisabledHook => {
         }
         dispatch(setOrderWarning({
             title: "Заказ недоступен",
-            description: `Ресторан работает с ${workTimes.startTime} до ${workTimes.endTime}`
+            description: `Доставка работает с ${workTimes.startTime} до ${workTimes.endTime}`
         }))
         setDisabled(true)
 

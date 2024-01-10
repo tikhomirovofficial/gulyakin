@@ -228,8 +228,8 @@ function App() {
 
     useEffect(() => {
         if (!addressFromLoading) {
-            const baseAddressDefined = baseAddress !== -1
-            const addressFromDefined = addressFrom !== -1
+            const baseAddressDefined = baseAddress !== -1 && baseAddress !== undefined
+            const addressFromDefined = addressFrom !== -1 && addressFrom !== undefined
 
             if (addressFromDefined) {
                 dispatch(getCategoriesByAddress({ adress_id: addressFrom }))

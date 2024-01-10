@@ -24,7 +24,7 @@ const Footer = () => {
 
                             <Link className={styles.navItem} to={"/empty"}>О нас</Link>
                         </div>
-                        <div className={`${styles.navColumn} f-column gap-10`}>
+                        <div className={`${styles.navColumn} d-n gap-10`}>
                             <b className={styles.navItem}>Работа</b>
                             <Link className={styles.navItem} to={"/empty"}>В Гулякин <br /> Фудхолл</Link>
                             <Link className={styles.navItem} to={"/empty"}>В Гуленьки <br /> Пельменная</Link>
